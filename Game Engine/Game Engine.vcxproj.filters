@@ -40,6 +40,18 @@
     <Filter Include="Resource Files\Fonts">
       <UniqueIdentifier>{f8c81d9c-f98a-401d-b4e0-ed338c8fd242}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Config\Graphics Settings">
+      <UniqueIdentifier>{ab6228f7-03b3-4c05-b394-c68d644d25fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Config\Supported Keys">
+      <UniqueIdentifier>{42229d19-db31-4e76-8d55-b4d9ab2aa4fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Config\Settings Active Element ID">
+      <UniqueIdentifier>{b7823cda-b838-46cf-b83d-3eb5f6e17d81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Config\Keybinds">
+      <UniqueIdentifier>{49932c18-c326-4e71-95e5-63fe1b35c9cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Header.cpp">
@@ -91,17 +103,20 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Config\supported_keys.ini">
-      <Filter>Resource Files\Config</Filter>
-    </None>
-    <None Include="Config\graphics_settings.ini">
-      <Filter>Resource Files\Config</Filter>
+    <None Include="Config\settings_keybinds.ini">
+      <Filter>Resource Files\Config\Keybinds</Filter>
     </None>
     <None Include="Config\mainmenu_keybinds.ini">
-      <Filter>Resource Files\Config</Filter>
+      <Filter>Resource Files\Config\Keybinds</Filter>
+    </None>
+    <None Include="Config\graphics_settings.ini">
+      <Filter>Resource Files\Config\Graphics Settings</Filter>
+    </None>
+    <None Include="Config\supported_keys.ini">
+      <Filter>Resource Files\Config\Supported Keys</Filter>
     </None>
     <None Include="Config\settings_active_element_ID.ini">
-      <Filter>Resource Files\Config</Filter>
+      <Filter>Resource Files\Config\Settings Active Element ID</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

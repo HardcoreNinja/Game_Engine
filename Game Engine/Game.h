@@ -35,15 +35,14 @@ private:
 	void initGameInfo();
 	void initSupportedKeys();
 	void initStates();
-
 public:
-	/*Constuctor / Destructor*/
+	/*Constuctor & Destructor*/
 	Game();
 	virtual ~Game();
 
 	/*Update Functions*/
 	void updateDeltaTime();
-	void updateSFMLEvents();
+	//void updateSFMLEvents();
 	void update();
 
 	/*Render Functions*/

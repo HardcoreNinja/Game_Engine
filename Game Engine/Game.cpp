@@ -30,6 +30,7 @@ void Game::initGameInfo()
 	this->gameInfo.states = &this->states;
 	this->gameInfo.graphicsSettings = &this->graphicsSettings;
 	this->gameInfo.window = this->window.get();
+	this->gameInfo.sfmlEvent = &this->sfmlEvent;
 	this->gameInfo.supportedKeys = &this->supportedKeys;
 }
 void Game::initSupportedKeys()
@@ -79,6 +80,9 @@ void Game::updateDeltaTime()
 {
 	this->dt = this->dtClock.restart().asSeconds();
 }
+
+/*May be able to complete remove this... Not 100! sure yet!*/
+/*
 void Game::updateSFMLEvents()
 {
 
@@ -87,11 +91,12 @@ void Game::updateSFMLEvents()
 		if (this->sfmlEvent.type == sf::Event::Closed)
 			this->window->close();
 	}
-}
+}*/
+
 void Game::update()
 {
 	this->updateDeltaTime();
-	this->updateSFMLEvents();
+	//this->updateSFMLEvents();
 	if (!this->states.empty())
 	{
 		this->states.back()->update(this->dt);

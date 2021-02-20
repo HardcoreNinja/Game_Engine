@@ -9,17 +9,8 @@ class Settings;
 class MainMenu :
     public State
 {
-private:
-    /*GUI Varaiables*/
-    std::map<std::string, std::unique_ptr<GUI::Button>> buttons;
-
-    /*Initializers*/
-   void initBackground(const std::string file_path);
-   void initKeybinds(const std::string file_path);
-   void initFonts(const std::string file_path);
-   void initButtons();
 public:
-    /*Constuctor / Destructor*/
+    /*Constuctor & Destructor*/
     MainMenu(GameInfo* game_info);
     virtual ~MainMenu();
 

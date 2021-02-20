@@ -12,7 +12,7 @@ void GraphicsSettings::initVariables()
 	this->contextSettings.antialiasingLevel = 0;
 }
 
-/*Constuctor / Destructor*/
+/*Constuctor & Destructor*/
 GraphicsSettings::GraphicsSettings()
 {
 	this->initVariables();

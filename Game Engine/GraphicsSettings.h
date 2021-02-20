@@ -10,7 +10,7 @@ private:
 	/*Initializers*/
 	void initVariables();
 public:
-	/*Constuctor / Destructor*/
+	/*Constuctor & Destructor*/
 	GraphicsSettings();
 	virtual ~GraphicsSettings();
 

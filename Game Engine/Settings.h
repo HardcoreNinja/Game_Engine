@@ -14,9 +14,9 @@ private:
 
     /*Initializers*/
     void initVariables();
-    void initBackground(const std::string file_path);
-    void initKeybinds(const std::string file_path);
-    void initFonts(const std::string file_path);
+    void initBackground();
+    void initKeybinds();
+    void initFonts();
     void initButtons();
     void initDropdownLists();
 
@@ -26,7 +26,7 @@ private:
    unsigned short vSynceID;
 
 public:
-    /*Constuctor / Destructor*/
+    /*Constuctor & Destructor*/
     Settings(GameInfo* game_info);
     virtual ~Settings();
 
@@ -36,8 +36,10 @@ public:
     virtual void updateUserInput(const float& dt);
     virtual void update(const float& dt);
 
-    /*Window Functions*/
+    /*Reinitialize Functions*/
     void recreateWindow();
+    void reinitializeSettings();
+    void reinitializeMainMenu();
 
     /*Save & Load Functions*/
     void saveToFile();

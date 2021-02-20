@@ -6,7 +6,7 @@ void Settings::initVariables()
 {
 	this->videoModes = sf::VideoMode::getFullscreenModes();
 }
-void Settings::initBackground(const std::string file_path)
+void Settings::initBackground()
 {
 	this->backgroundRect.setSize(
 		sf::Vector2f(
@@ -15,14 +15,14 @@ void Settings::initBackground(const std::string file_path)
 		)
 	);
 
-	if (!this->backgroundTexture.loadFromFile(file_path))
+	if (!this->backgroundTexture.loadFromFile("Resources/Images/mainmenu_background.jpg"))
 		throw("ERROR::MAIN_MENU::FAILED_TO_LOAD::mainmenu_background.jpg");
 
 	this->backgroundRect.setTexture(&this->backgroundTexture);
 }
-void Settings::initKeybinds(const std::string file_path)
+void Settings::initKeybinds()
 {
-	std::ifstream ifs(file_path);
+	std::ifstream ifs("Config/settings_keybinds.ini");
 
 	if (ifs.is_open())
 	{
@@ -41,9 +41,9 @@ void Settings::initKeybinds(const std::string file_path)
 		std::cout << i.first << " " << i.second << '\n';
 	}
 }
-void Settings::initFonts(const std::string file_path)
+void Settings::initFonts()
 {
-	if (!this->font.loadFromFile(file_path))
+	if (!this->font.loadFromFile("Resources/Fonts/Dosis.ttf"))
 	{
 		throw ("ERROR::MAIN_MENU::FAILED_TO_LOAD:Dosis.ttf");
 	}
@@ -108,9 +108,9 @@ Settings::Settings(GameInfo* game_info)
 	: State(game_info)
 {
 	this->initVariables();
-	this->initBackground("Resources/Images/mainmenu_background.jpg");
-	this->initKeybinds("Config/mainmenu_keybinds.ini");
-	this->initFonts("Resources/Fonts/Dosis.ttf");
+	this->initBackground();
+	this->initKeybinds();
+	this->initFonts();
 	this->initButtons();
 	this->initDropdownLists();
 }
@@ -151,17 +151,38 @@ void Settings::updateButtons()
 }
 void Settings::updateDropdownLists(const float& dt)
 {
-	this->dropdownLists["VSYNC"]->update(this->mousePositionView, dt);
-	this->dropdownLists["FULLSCREEN"]->update(this->mousePositionView, dt);
-	this->dropdownLists["RESOLUTION"]->update(this->mousePositionView, dt);
+		this->dropdownLists["RESOLUTION"]->update(this->mousePositionView, dt);
+		this->dropdownLists["FULLSCREEN"]->update(this->mousePositionView, dt);
+		this->dropdownLists["VSYNC"]->update(this->mousePositionView, dt);	
 }
 void Settings::updateUserInput(const float& dt)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("QUIT_GAME"))))
 		this->endState();
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("APPLY_SETTINGS"))))
+	{
+		/*Resolution*/
+		std::cout << this->dropdownLists["RESOLUTION"]->getActiveElementID() << '\n';
+		this->resolutionID = this->dropdownLists["RESOLUTION"]->getActiveElementID();
+		this->gameInfo->graphicsSettings->resolution = this->videoModes[this->dropdownLists["RESOLUTION"]->getActiveElementID()];
+
+		/*Fullscreen*/
+		std::cout << this->dropdownLists["FULLSCREEN"]->getActiveElementID() << '\n';
+		this->fullscreenID = this->dropdownLists["FULLSCREEN"]->getActiveElementID();
+		this->gameInfo->graphicsSettings->isFullscreen = this->dropdownLists["FULLSCREEN"]->getActiveElementID();
+
+		/*VSync*/
+		std::cout << this->dropdownLists["VSYNC"]->getActiveElementID() << '\n';
+		this->vSynceID = this->dropdownLists["VSYNC"]->getActiveElementID();
+		this->gameInfo->graphicsSettings->isVSync = this->dropdownLists["VSYNC"]->getActiveElementID();
+
+		this->saveToFile();
+	}
 }
 void Settings::update(const float& dt)
 {
+	this->updateSFMLEvents();
 	this->updateKeyTime(dt);
 	this->updateButtons();
 	this->updateDropdownLists(dt);
@@ -181,11 +202,29 @@ void Settings::recreateWindow()
 			this->gameInfo->graphicsSettings->contextSettings //Anti Aliasing Level
 		);
 	}
-
 	this->window->setFramerateLimit(this->gameInfo->graphicsSettings->frameRateLimit); //Framerate Limit
 	this->window->setVerticalSyncEnabled(this->gameInfo->graphicsSettings->isVSync);   //VSync Enabled
 
-	this->initBackground("Resources/Images/mainmenu_background.jpg");
+	this->reinitializeSettings();	
+	this->reinitializeMainMenu();
+}
+
+/*Reinitialize Settings State*/
+void Settings::reinitializeSettings()
+{
+	this->initVariables();
+	this->initBackground();
+	this->initKeybinds();
+	this->initFonts();
+	this->initButtons();
+	this->initDropdownLists();
+}
+void Settings::reinitializeMainMenu()
+{
+	this->states[0].at(0)->initMainMenuBackground();
+	this->states[0].at(0)->initMainMenuKeybinds();
+	this->states[0].at(0)->initMainMenuFonts();
+	this->states[0].at(0)->initMainMenuButtons();
 }
 
 /*Save & Load Functions*/
@@ -201,7 +240,7 @@ void Settings::saveToFile()
 	}
 	ofs.close();
 
-	this->gameInfo->graphicsSettings->saveToFile();
+	this->graphicsSettings->saveToFile();
 	this->recreateWindow();
 }
 void Settings::loadFromFile()

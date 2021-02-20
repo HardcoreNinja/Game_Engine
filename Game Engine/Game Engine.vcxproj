@@ -178,6 +178,7 @@
     <None Include="Config\graphics_settings.ini" />
     <None Include="Config\mainmenu_keybinds.ini" />
     <None Include="Config\settings_active_element_ID.ini" />
+    <None Include="Config\settings_keybinds.ini" />
     <None Include="Config\supported_keys.ini" />
   </ItemGroup>
   <ItemGroup>
