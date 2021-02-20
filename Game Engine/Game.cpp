@@ -7,9 +7,9 @@ void Game::initVariables()
 	this->window = NULL;
 	this->dt = 0.f;
 }
-void Game::initGraphicsSettings(const std::string file_path)
+void Game::initGraphicsSettings()
 {
-	this->graphicsSettings.loadFromFile(file_path);
+	this->graphicsSettings.loadFromFile();
 }
 void Game::initWindow()
 {
@@ -32,9 +32,9 @@ void Game::initGameInfo()
 	this->gameInfo.window = this->window.get();
 	this->gameInfo.supportedKeys = &this->supportedKeys;
 }
-void Game::initSupportedKeys(const std::string file_path)
+void Game::initSupportedKeys()
 {
-	std::ifstream ifs(file_path);
+	std::ifstream ifs("Config/supported_keys.ini");
 
 	if (ifs.is_open())
 	{
@@ -64,10 +64,10 @@ void Game::initStates()
 Game::Game()
 {
 	this->initVariables();
-	this->initGraphicsSettings("Config/graphics_settings.ini");
+	this->initGraphicsSettings();
 	this->initWindow();
 	this->initGameInfo();
-	this->initSupportedKeys("Config/supported_keys.ini");
+	this->initSupportedKeys();
 	this->initStates();
 }
 Game::~Game()

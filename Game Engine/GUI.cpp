@@ -41,7 +41,6 @@ GUI::Button::Button(
 	this->outlineHoverColor = outline_hover_color;
 	this->outlineActiveColor = outline_active_color;
 }
-
 GUI::Button::~Button()
 {
 }
@@ -178,6 +177,13 @@ const bool GUI::DropdownList::getKeyTime()
 const unsigned short& GUI::DropdownList::getActiveElementID() const
 {
 	return this->activeElement->getID();
+}
+
+/*Setters*/
+const void GUI::DropdownList::setActiveElementID(const short unsigned id) const
+{
+	this->activeElement->setID(id);
+	this->activeElement->setText(this->buttons[id]->getText());
 }
 
 /*Update Functions*/

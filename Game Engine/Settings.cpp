@@ -68,17 +68,39 @@ void Settings::initButtons()
 }
 void Settings::initDropdownLists()
 {
-	std::vector<std::string> videoModeStringVector;
+	this->loadFromFile();
 
+	/*Resolution*/
+	std::vector<std::string> videoModeStringVector;
 	for (auto& i : this->videoModes)
 		videoModeStringVector.push_back(std::to_string(i.width) + 'x' + std::to_string(i.height));
-
 	this->dropdownLists["RESOLUTION"] = std::make_unique<GUI::DropdownList>(
-		100.f, 150.f,                                         //Dropdown List Position
+		100.f, 50.f,                                         //Dropdown List Position
 		200.f, 50.f,                                          //Dropdown List Size 
 		this->font, videoModeStringVector.data(), 25,         //Dropdown List Font, String Vector, and Character Size
 		this->keyTime, this->maxKeyTime,                      //Dropdown List Key Time Info
-		static_cast<unsigned>(videoModeStringVector.size())); // Dropdown ListString Vector Size
+		static_cast<unsigned>(videoModeStringVector.size())); //Dropdown ListString Vector Size
+	this->dropdownLists["RESOLUTION"]->setActiveElementID(this->resolutionID);
+
+	/*Fullscreen*/
+	std::vector<std::string> fullscreenStringVector = { "No", "Yes" };
+	this->dropdownLists["FULLSCREEN"] = std::make_unique<GUI::DropdownList>(
+		100.f, 200.f,                                          //Dropdown List Position
+		200.f, 50.f,                                           //Dropdown List Size 
+		this->font, fullscreenStringVector.data(), 25,         //Dropdown List Font, String Vector, and Character Size
+		this->keyTime, this->maxKeyTime,                       //Dropdown List Key Time Info
+		static_cast<unsigned>(fullscreenStringVector.size())); //Dropdown ListString Vector Size
+	this->dropdownLists["FULLSCREEN"]->setActiveElementID(this->fullscreenID);
+
+	/*VSync*/
+	std::vector<std::string> vSyncStringVector = { "No", "Yes" };
+	this->dropdownLists["VSYNC"] = std::make_unique<GUI::DropdownList>(
+		100.f, 350.f,                                     //Dropdown List Position
+		200.f, 50.f,                                      //Dropdown List Size 
+		this->font, vSyncStringVector.data(), 25,         //Dropdown List Font, String Vector, and Character Size
+		this->keyTime, this->maxKeyTime,                  //Dropdown List Key Time Info
+		static_cast<unsigned>(vSyncStringVector.size())); //Dropdown ListString Vector Size
+	this->dropdownLists["VSYNC"]->setActiveElementID(this->vSynceID);
 }
 
 /*Constuctor & Destructor*/
@@ -109,16 +131,28 @@ void Settings::updateButtons()
 	//Apply Seceleted Settings
 	if (this->buttons["APPLY"]->isPressed())
 	{
-		//Test Debug
+		/*Resolution*/
 		std::cout << this->dropdownLists["RESOLUTION"]->getActiveElementID() << '\n';
-
+		this->resolutionID = this->dropdownLists["RESOLUTION"]->getActiveElementID();
 		this->gameInfo->graphicsSettings->resolution = this->videoModes[this->dropdownLists["RESOLUTION"]->getActiveElementID()];
 
-		this->recreateWindow();
+		/*Fullscreen*/
+		std::cout << this->dropdownLists["FULLSCREEN"]->getActiveElementID() << '\n';
+		this->fullscreenID = this->dropdownLists["FULLSCREEN"]->getActiveElementID();
+		this->gameInfo->graphicsSettings->isFullscreen = this->dropdownLists["FULLSCREEN"]->getActiveElementID();
+		
+		/*VSync*/
+		std::cout << this->dropdownLists["VSYNC"]->getActiveElementID() << '\n';
+		this->vSynceID = this->dropdownLists["VSYNC"]->getActiveElementID();
+		this->gameInfo->graphicsSettings->isVSync = this->dropdownLists["VSYNC"]->getActiveElementID();
+
+		this->saveToFile();
 	}
 }
 void Settings::updateDropdownLists(const float& dt)
 {
+	this->dropdownLists["VSYNC"]->update(this->mousePositionView, dt);
+	this->dropdownLists["FULLSCREEN"]->update(this->mousePositionView, dt);
 	this->dropdownLists["RESOLUTION"]->update(this->mousePositionView, dt);
 }
 void Settings::updateUserInput(const float& dt)
@@ -154,6 +188,35 @@ void Settings::recreateWindow()
 	this->initBackground("Resources/Images/mainmenu_background.jpg");
 }
 
+/*Save & Load Functions*/
+void Settings::saveToFile()
+{
+	std::ofstream ofs("Config/settings_active_element_ID.ini");
+
+	if (ofs.is_open())
+	{
+		ofs << this->resolutionID << '\n';
+		ofs << this->fullscreenID << '\n';
+		ofs << this->vSynceID << '\n';
+	}
+	ofs.close();
+
+	this->gameInfo->graphicsSettings->saveToFile();
+	this->recreateWindow();
+}
+void Settings::loadFromFile()
+{
+	std::ifstream ifs("Config/settings_active_element_ID.ini");
+
+	if (ifs.is_open())
+	{
+		ifs >> this->resolutionID;
+		ifs >> this->fullscreenID;
+		ifs >> this->vSynceID;
+	}
+	ifs.close();
+}
+
 /*Render Functions*/
 void Settings::renderButtons(sf::RenderTarget& target)
 {
@@ -162,6 +225,8 @@ void Settings::renderButtons(sf::RenderTarget& target)
 }
 void Settings::renderDropdownLists(sf::RenderTarget& target)
 {
+	this->dropdownLists["VSYNC"]->render(target);
+	this->dropdownLists["FULLSCREEN"]->render(target);
 	this->dropdownLists["RESOLUTION"]->render(target);
 }
 void Settings::render(sf::RenderTarget* target)

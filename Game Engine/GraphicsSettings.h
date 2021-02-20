@@ -23,9 +23,7 @@ public:
 	sf::ContextSettings contextSettings;
 
 	/*Save & Load Functions*/
-	void saveToFile(std::string file_path);
-	void loadFromFile(std::string file_path);
-
-
+	void saveToFile();
+	void loadFromFile();
 };
 #endif

@@ -19,6 +19,12 @@ private:
     void initFonts(const std::string file_path);
     void initButtons();
     void initDropdownLists();
+
+    /*Active Element IDs*/
+   unsigned short resolutionID ;
+   unsigned short fullscreenID;
+   unsigned short vSynceID;
+
 public:
     /*Constuctor / Destructor*/
     Settings(GameInfo* game_info);
@@ -32,6 +38,10 @@ public:
 
     /*Window Functions*/
     void recreateWindow();
+
+    /*Save & Load Functions*/
+    void saveToFile();
+    void loadFromFile();
 
     /*Render Functions*/
     void renderButtons(sf::RenderTarget& target);

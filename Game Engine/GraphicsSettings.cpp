@@ -22,9 +22,9 @@ GraphicsSettings::~GraphicsSettings()
 }
 
 /*Save & Load Functions*/
-void GraphicsSettings::saveToFile(std::string file_path)
+void GraphicsSettings::saveToFile()
 {
-	std::ofstream ofs(file_path);
+	std::ofstream ofs("Config/graphics_settings.ini");
 
 	if (ofs.is_open())
 	{
@@ -37,9 +37,9 @@ void GraphicsSettings::saveToFile(std::string file_path)
 	}
 	ofs.close();
 }
-void GraphicsSettings::loadFromFile(std::string file_path)
+void GraphicsSettings::loadFromFile()
 {
-	std::ifstream ifs(file_path);
+	std::ifstream ifs("Config/graphics_settings.ini");
 
 	if (ifs.is_open())
 	{

@@ -30,10 +30,10 @@ private:
 
 	/*Initializers*/
 	void initVariables();
-	void initGraphicsSettings(const std::string file_path);
+	void initGraphicsSettings();
 	void initWindow();
 	void initGameInfo();
-	void initSupportedKeys(const std::string file_path);
+	void initSupportedKeys();
 	void initStates();
 
 public:

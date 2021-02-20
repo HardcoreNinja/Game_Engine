@@ -81,7 +81,6 @@ namespace GUI
 		/*Flags*/
 		bool showList;
 
-
 	public:
 		/*Constuctor / Destructor*/
 		DropdownList(
@@ -97,6 +96,9 @@ namespace GUI
 		/*Getters*/
 		const bool getKeyTime();
 		const unsigned short& getActiveElementID() const;
+
+		/*Setter*/
+		const void setActiveElementID(const short unsigned id) const;
 
 		/*Update Functions*/
 		void updateKeyTime(const float& dt);

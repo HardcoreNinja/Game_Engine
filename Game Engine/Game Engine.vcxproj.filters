@@ -100,6 +100,9 @@
     <None Include="Config\mainmenu_keybinds.ini">
       <Filter>Resource Files\Config</Filter>
     </None>
+    <None Include="Config\settings_active_element_ID.ini">
+      <Filter>Resource Files\Config</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Images\mainmenu_background.jpg">
