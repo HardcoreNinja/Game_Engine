@@ -31,6 +31,7 @@ namespace GUI
 		sf::Color textActiveColor;
 
 	public:
+		/*Constuctor / Destructor*/
 		Button(
 			float pos_x, float pos_y,
 			float width, float height,
@@ -60,6 +61,48 @@ namespace GUI
 		void update(const sf::Vector2f& mousePos);
 
 		/*Render*/
+		void render(sf::RenderTarget& target);
+	};
+
+	class DropdownList
+	{
+	private:
+	    /*Button Variables*/
+		GUI::Button* activeElement;
+		std::vector<std::unique_ptr<GUI::Button>> buttons;
+		
+		/*Font Variables*/
+		sf::Font& font;
+
+		/*Key Time Variables*/
+		int keyTime;
+		int maxKeyTime;
+
+		/*Flags*/
+		bool showList;
+
+
+	public:
+		/*Constuctor / Destructor*/
+		DropdownList(
+			float pos_x, float pos_y,
+			float width, float height,
+			sf::Font& font, std::string list[], unsigned int character_size,
+			int& key_time, int& max_key_time,
+			unsigned numofElements, unsigned default_index = 0
+		);
+
+		virtual ~DropdownList();
+
+		/*Getters*/
+		const bool getKeyTime();
+		const unsigned short& getActiveElementID() const;
+
+		/*Update Functions*/
+		void updateKeyTime(const float& dt);
+		void update(const sf::Vector2f& mousePos, const float& dt);
+
+		/*Render Functions*/
 		void render(sf::RenderTarget& target);
 	};
 }

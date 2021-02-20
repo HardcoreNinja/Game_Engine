@@ -125,3 +125,109 @@ void GUI::Button::render(sf::RenderTarget& target)
 	target.draw(this->shape);
 	target.draw(this->text);
 }
+
+/*DROPDOWN LIST =============================================================================================*/
+
+/*Constructor/Destructor*/
+GUI::DropdownList::DropdownList(
+	float pos_x, float pos_y,
+	float width, float height,
+	sf::Font& font_reference, std::string list[], unsigned int character_size,
+	int& key_time, int& max_key_time,
+	unsigned numofElements, unsigned default_index
+)
+	: font(font_reference), showList(false), keyTime(key_time), maxKeyTime(max_key_time)
+{
+	this->activeElement = new GUI::Button(
+		pos_x, pos_y, width, height,
+		&this->font, list[default_index], character_size,
+		sf::Color(255, 255, 255, 150), sf::Color(255, 255, 255, 200), sf::Color(20, 20, 20, 50),
+		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 200), sf::Color(20, 20, 20, 200),
+		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50)
+	);
+
+	for (size_t i = 0; i < numofElements; i++)
+	{
+		this->buttons.push_back(
+			std::make_unique<GUI::Button>(
+				pos_x, pos_y + ((i + 1) * height), width, height,
+				&this->font, list[i], character_size,
+				sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
+				sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 200), sf::Color(20, 20, 20, 200),
+				sf::Color(255, 255, 255, 0), sf::Color(255, 255, 255, 0), sf::Color(20, 20, 20, 0),
+				i // <-Button.m_id is index number of vector...
+			)
+		);
+	}
+}
+GUI::DropdownList::~DropdownList()
+{
+	delete this->activeElement;
+}
+
+/*Getters*/
+const bool GUI::DropdownList::getKeyTime()
+{
+	if (this->keyTime >= this->maxKeyTime)
+	{
+		this->keyTime = 0.f;
+		return true;
+	}
+	return false;
+}
+const unsigned short& GUI::DropdownList::getActiveElementID() const
+{
+	return this->activeElement->getID();
+}
+
+/*Update Functions*/
+void GUI::DropdownList::updateKeyTime(const float& dt)
+{
+	if (this->keyTime < this->maxKeyTime)
+		this->keyTime += static_cast<int>(2.f * dt * (1.f / dt));
+}
+void GUI::DropdownList::update(const sf::Vector2f& mousePos, const float& dt)
+{
+	this->updateKeyTime(dt);
+
+	this->activeElement->update(mousePos);
+
+	//Show & Hide List
+	if (this->activeElement->isPressed() && this->getKeyTime())
+	{
+		if (this->showList)
+			this->showList = false;
+		else
+			this->showList = true;
+	}
+
+	if (this->showList)
+	{
+		for (auto& i : this->buttons)
+		{
+			i->update(mousePos);
+
+			if (i->isPressed() && this->getKeyTime())
+			{
+				this->showList = false;
+				this->activeElement->setText(i->getText());
+				this->activeElement->setID(i->getID());
+			}
+		}
+	}
+
+}
+
+/*Render Functions*/
+void GUI::DropdownList::render(sf::RenderTarget& target)
+{
+	this->activeElement->render(target);
+
+	if (this->showList)
+	{
+		for (auto& i : this->buttons)
+		{
+			i->render(target);
+		}
+	}
+}
