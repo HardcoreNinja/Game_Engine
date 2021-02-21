@@ -71,9 +71,12 @@ protected:
 	sf::Vector2i mousePositionWindow;
 	sf::Vector2f mousePositionView;
 
-	/*Flags*/
+	/*End StateFlags*/
 	bool isQuit;
+
+	/*Poll Event Flags*/
 	bool mouseReleased;
+
 public:
 	/*Constuctor & Destructor*/
 	State(GameInfo* game_info);

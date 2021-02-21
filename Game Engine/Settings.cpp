@@ -8,6 +8,7 @@ void Settings::initVariables()
 	this->pauseButtons = false;
 	this->pauseFullScreen = false;
 	this->pauseVSync = false;
+	this->pauseAnti_Aliasing = false;
 }
 void Settings::initBackground()
 {
@@ -88,7 +89,7 @@ void Settings::initDropdownLists()
 	/*Fullscreen*/
 	std::vector<std::string> fullscreenStringVector = { "No", "Yes" };
 	this->dropdownLists["FULLSCREEN"] = std::make_unique<GUI::DropdownList>(
-		100.f, 200.f,                                          //Dropdown List Position
+		100.f, 150.f,                                          //Dropdown List Position
 		200.f, 50.f,                                           //Dropdown List Size 
 		this->font, fullscreenStringVector.data(), 25,         //Dropdown List Font, String Vector, and Character Size
 		this->keyTime, this->maxKeyTime,                       //Dropdown List Key Time Info
@@ -98,12 +99,22 @@ void Settings::initDropdownLists()
 	/*VSync*/
 	std::vector<std::string> vSyncStringVector = { "No", "Yes" };
 	this->dropdownLists["VSYNC"] = std::make_unique<GUI::DropdownList>(
-		100.f, 350.f,                                     //Dropdown List Position
+		100.f, 250.f,                                     //Dropdown List Position
 		200.f, 50.f,                                      //Dropdown List Size 
 		this->font, vSyncStringVector.data(), 25,         //Dropdown List Font, String Vector, and Character Size
 		this->keyTime, this->maxKeyTime,                  //Dropdown List Key Time Info
 		static_cast<unsigned>(vSyncStringVector.size())); //Dropdown ListString Vector Size
 	this->dropdownLists["VSYNC"]->setActiveElementID(this->vSynceID);
+
+	std::vector<std::string> anti_AliasingStringVector = { "0x", "1x", "2x", "4x", "8x", "16x", "32x" };
+	this->dropdownLists["ANTI_ALIASING"] = std::make_unique<GUI::DropdownList>(
+		100.f, 350.f,                                     //Dropdown List Position
+		200.f, 50.f,                                      //Dropdown List Size 
+		this->font, anti_AliasingStringVector.data(), 25,         //Dropdown List Font, String Vector, and Character Size
+		this->keyTime, this->maxKeyTime,                  //Dropdown List Key Time Info
+		static_cast<unsigned>(anti_AliasingStringVector.size())); //Dropdown ListString Vector Size
+	this->dropdownLists["ANTI_ALIASING"]->setActiveElementID(this->anti_AliasingID);
+
 }
 
 /*Constuctor & Destructor*/
@@ -150,11 +161,49 @@ void Settings::updateButtons()
 		this->vSynceID = this->dropdownLists["VSYNC"]->getActiveElementID();
 		this->gameInfo->graphicsSettings->isVSync = this->dropdownLists["VSYNC"]->getActiveElementID();
 
+		/*Anti-Aliasing*/
+		std::cout << this->dropdownLists["ANTI_ALIASING"]->getActiveElementID() << '\n';
+		this->anti_AliasingID = this->dropdownLists["ANTI_ALIASING"]->getActiveElementID();
+
+		switch (this->dropdownLists["ANTI_ALIASING"]->getActiveElementID())
+		{
+		case 0:
+			this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel = 0;
+			//std::cout << this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel << '\n';
+			break;
+		case 1:
+			this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel = 1;
+			//std::cout << this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel << '\n';
+			break;
+		case 2:
+			this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel = 2;
+			//std::cout << this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel << '\n';
+			break;
+		case 3:
+			this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel = 4;
+			//std::cout << this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel << '\n';
+			break;
+		case 4:
+			this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel = 8;
+			//std::cout << this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel << '\n';
+			break;
+		case 5:
+			this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel = 16;
+			//std::cout << this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel << '\n';
+			break;
+		case 6:
+			this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel = 32;
+			//std::cout << this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel << '\n';
+			break;
+		}
+
+
 		this->saveToFile();
 	}
 }
 void Settings::updateDropdownLists(const float& dt)
 {
+	/*Resolution*/
 		this->dropdownLists["RESOLUTION"]->update(this->mousePositionView, dt);
 
 		if (this->dropdownLists["RESOLUTION"]->getShowList())
@@ -171,6 +220,7 @@ void Settings::updateDropdownLists(const float& dt)
 			this->pauseVSync = false;
 		}
 
+		/*Fullscreen*/
 		if(!pauseFullScreen)
 		this->dropdownLists["FULLSCREEN"]->update(this->mousePositionView, dt);
 
@@ -180,10 +230,25 @@ void Settings::updateDropdownLists(const float& dt)
 		if (!this->dropdownLists["FULLSCREEN"]->getShowList() && this->mouseReleased)
 			this->pauseVSync = false;
 
+		/*VSync*/
 		if(!this->pauseVSync)
 		this->dropdownLists["VSYNC"]->update(this->mousePositionView, dt);	
 
+		if (this->dropdownLists["VSYNC"]->getShowList())
+			this->pauseAnti_Aliasing = true;
 
+		if (!this->dropdownLists["VSYNC"]->getShowList() && this->mouseReleased)
+			this->pauseAnti_Aliasing = false;
+
+		/*Anti-Aliasing*/
+		if(!this->pauseAnti_Aliasing)
+			this->dropdownLists["ANTI_ALIASING"]->update(this->mousePositionView, dt);
+
+		if (this->dropdownLists["ANTI_ALIASING"]->getShowList())
+			this->pauseButtons = true;
+
+		if (!this->dropdownLists["ANTI_ALIASING"]->getShowList() && this->mouseReleased)
+			this->pauseButtons = false;
 }
 void Settings::updateUserInput(const float& dt)
 {
@@ -267,6 +332,7 @@ void Settings::saveToFile()
 		ofs << this->resolutionID << '\n';
 		ofs << this->fullscreenID << '\n';
 		ofs << this->vSynceID << '\n';
+		ofs << this->anti_AliasingID << '\n';
 	}
 	ofs.close();
 
@@ -282,6 +348,7 @@ void Settings::loadFromFile()
 		ifs >> this->resolutionID;
 		ifs >> this->fullscreenID;
 		ifs >> this->vSynceID;
+		ifs >> this->anti_AliasingID;
 	}
 	ifs.close();
 }
@@ -294,6 +361,7 @@ void Settings::renderButtons(sf::RenderTarget& target)
 }
 void Settings::renderDropdownLists(sf::RenderTarget& target)
 {
+	this->dropdownLists["ANTI_ALIASING"]->render(target);
 	this->dropdownLists["VSYNC"]->render(target);
 	this->dropdownLists["FULLSCREEN"]->render(target);
 	this->dropdownLists["RESOLUTION"]->render(target);

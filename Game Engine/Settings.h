@@ -24,11 +24,13 @@ private:
    unsigned short resolutionID ;
    unsigned short fullscreenID;
    unsigned short vSynceID;
+   unsigned short anti_AliasingID;
 
    /*Dropdown Overlap Flags*/
    bool pauseButtons;
    bool pauseFullScreen;
    bool pauseVSync;
+   bool pauseAnti_Aliasing;
 
 public:
     /*Constuctor & Destructor*/

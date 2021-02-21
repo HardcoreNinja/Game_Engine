@@ -107,6 +107,9 @@ void State::updateSFMLEvents()
 {
 	while (this->window->pollEvent(*this->sfmlEvent))
 	{
+		if (this->sfmlEvent->type == sf::Event::Closed)
+			this->window->close();
+
 		if (this->sfmlEvent->type == sf::Event::MouseButtonPressed)
 		{
 			std::cout << "Mouse Pressed!\n";
