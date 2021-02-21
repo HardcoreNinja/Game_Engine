@@ -72,16 +72,17 @@ void Settings::initButtons()
 }
 void Settings::initDropdownLists()
 {
+	/*Load Active Element IDs*/
 	this->loadFromFile();
 
 	/*Resolution*/
 	std::vector<std::string> videoModeStringVector;
 	for (auto& i : this->videoModes)
-		videoModeStringVector.push_back(std::to_string(i.width) + 'x' + std::to_string(i.height));
+		videoModeStringVector.push_back(std::to_string(i.width) + " x " + std::to_string(i.height));
 	this->dropdownLists["RESOLUTION"] = std::make_unique<GUI::DropdownList>(
-		100.f, 50.f,                                         //Dropdown List Position
-		200.f, 50.f,                                          //Dropdown List Size 
-		this->font, videoModeStringVector.data(), 25,         //Dropdown List Font, String Vector, and Character Size
+		200.f, 163.f,                                         //Dropdown List Position
+		100.f, 25.f,                                          //Dropdown List Size 
+		this->font, videoModeStringVector.data(), 20,         //Dropdown List Font, String Vector, and Character Size
 		this->keyTime, this->maxKeyTime,                      //Dropdown List Key Time Info
 		static_cast<unsigned>(videoModeStringVector.size())); //Dropdown ListString Vector Size
 	this->dropdownLists["RESOLUTION"]->setActiveElementID(this->resolutionID);
@@ -89,8 +90,8 @@ void Settings::initDropdownLists()
 	/*Fullscreen*/
 	std::vector<std::string> fullscreenStringVector = { "No", "Yes" };
 	this->dropdownLists["FULLSCREEN"] = std::make_unique<GUI::DropdownList>(
-		100.f, 150.f,                                          //Dropdown List Position
-		200.f, 50.f,                                           //Dropdown List Size 
+		200.f, 227.f,                                          //Dropdown List Position
+		100.f, 25.f,                                           //Dropdown List Size 
 		this->font, fullscreenStringVector.data(), 25,         //Dropdown List Font, String Vector, and Character Size
 		this->keyTime, this->maxKeyTime,                       //Dropdown List Key Time Info
 		static_cast<unsigned>(fullscreenStringVector.size())); //Dropdown ListString Vector Size
@@ -99,8 +100,8 @@ void Settings::initDropdownLists()
 	/*VSync*/
 	std::vector<std::string> vSyncStringVector = { "No", "Yes" };
 	this->dropdownLists["VSYNC"] = std::make_unique<GUI::DropdownList>(
-		100.f, 250.f,                                     //Dropdown List Position
-		200.f, 50.f,                                      //Dropdown List Size 
+		200.f, 291.f,                                     //Dropdown List Position
+		100.f, 25.f,                                      //Dropdown List Size 
 		this->font, vSyncStringVector.data(), 25,         //Dropdown List Font, String Vector, and Character Size
 		this->keyTime, this->maxKeyTime,                  //Dropdown List Key Time Info
 		static_cast<unsigned>(vSyncStringVector.size())); //Dropdown ListString Vector Size
@@ -108,13 +109,21 @@ void Settings::initDropdownLists()
 
 	std::vector<std::string> anti_AliasingStringVector = { "0x", "1x", "2x", "4x", "8x", "16x", "32x" };
 	this->dropdownLists["ANTI_ALIASING"] = std::make_unique<GUI::DropdownList>(
-		100.f, 350.f,                                     //Dropdown List Position
-		200.f, 50.f,                                      //Dropdown List Size 
+		200.f, 355.f,                                             //Dropdown List Position
+		100.f, 25.f,                                              //Dropdown List Size 
 		this->font, anti_AliasingStringVector.data(), 25,         //Dropdown List Font, String Vector, and Character Size
-		this->keyTime, this->maxKeyTime,                  //Dropdown List Key Time Info
+		this->keyTime, this->maxKeyTime,                          //Dropdown List Key Time Info
 		static_cast<unsigned>(anti_AliasingStringVector.size())); //Dropdown ListString Vector Size
 	this->dropdownLists["ANTI_ALIASING"]->setActiveElementID(this->anti_AliasingID);
-
+}
+void Settings::initTextTitles()
+{
+	this->text.setFont(this->font);
+	this->text.setCharacterSize(25);
+	this->text.setOrigin(this->text.getGlobalBounds().width / 2.f, this->text.getGlobalBounds().height / 2.f);
+	this->text.setPosition(sf::Vector2f(0.f, 144.f));
+	this->text.setFillColor(sf::Color::White);
+	this->text.setString("Resolution: \n\n Fullscreen: \n\n VSync: \n\n Anti-Aliasing: \n\n");
 }
 
 /*Constuctor & Destructor*/
@@ -127,6 +136,7 @@ Settings::Settings(GameInfo* game_info)
 	this->initFonts();
 	this->initButtons();
 	this->initDropdownLists();
+	this->initTextTitles();
 }
 Settings::~Settings()
 {
@@ -371,6 +381,8 @@ void Settings::render(sf::RenderTarget* target)
 	if (!target)
 		target = this->window;
 	target->draw(this->backgroundRect);
+	target->draw(this->text);
 	this->renderButtons(*target);
 	this->renderDropdownLists(*target);
+	
 }

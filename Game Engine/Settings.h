@@ -19,6 +19,7 @@ private:
     void initFonts();
     void initButtons();
     void initDropdownLists();
+    void initTextTitles();
 
     /*Active Element IDs*/
    unsigned short resolutionID ;
