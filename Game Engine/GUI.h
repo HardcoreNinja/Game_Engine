@@ -96,6 +96,8 @@ namespace GUI
 		/*Getters*/
 		const bool getKeyTime();
 		const unsigned short& getActiveElementID() const;
+		const bool& getShowList()const;
+
 
 		/*Setter*/
 		const void setActiveElementID(const short unsigned id) const;

@@ -73,7 +73,7 @@ protected:
 
 	/*Flags*/
 	bool isQuit;
-
+	bool mouseReleased;
 public:
 	/*Constuctor & Destructor*/
 	State(GameInfo* game_info);

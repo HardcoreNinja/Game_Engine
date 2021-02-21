@@ -5,6 +5,9 @@
 void Settings::initVariables()
 {
 	this->videoModes = sf::VideoMode::getFullscreenModes();
+	this->pauseButtons = false;
+	this->pauseFullScreen = false;
+	this->pauseVSync = false;
 }
 void Settings::initBackground()
 {
@@ -121,6 +124,7 @@ Settings::~Settings()
 /*Update Functions*/
 void Settings::updateButtons()
 {
+	if(!this->pauseButtons)
 	for (auto& i : this->buttons)
 		i.second->update(this->mousePositionView);
 
@@ -152,8 +156,34 @@ void Settings::updateButtons()
 void Settings::updateDropdownLists(const float& dt)
 {
 		this->dropdownLists["RESOLUTION"]->update(this->mousePositionView, dt);
+
+		if (this->dropdownLists["RESOLUTION"]->getShowList())
+		{
+			this->pauseButtons = true;
+			this->pauseFullScreen = true;
+			this->pauseVSync = true;
+		}
+
+		if (!this->dropdownLists["RESOLUTION"]->getShowList() && this->mouseReleased)
+		{
+			this->pauseButtons = false;
+			this->pauseFullScreen = false;
+			this->pauseVSync = false;
+		}
+
+		if(!pauseFullScreen)
 		this->dropdownLists["FULLSCREEN"]->update(this->mousePositionView, dt);
+
+		if (this->dropdownLists["FULLSCREEN"]->getShowList())
+			this->pauseVSync = true;
+
+		if (!this->dropdownLists["FULLSCREEN"]->getShowList() && this->mouseReleased)
+			this->pauseVSync = false;
+
+		if(!this->pauseVSync)
 		this->dropdownLists["VSYNC"]->update(this->mousePositionView, dt);	
+
+
 }
 void Settings::updateUserInput(const float& dt)
 {

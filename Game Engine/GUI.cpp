@@ -178,6 +178,10 @@ const unsigned short& GUI::DropdownList::getActiveElementID() const
 {
 	return this->activeElement->getID();
 }
+const bool& GUI::DropdownList::getShowList() const
+{
+	return this->showList;
+}
 
 /*Setters*/
 const void GUI::DropdownList::setActiveElementID(const short unsigned id) const

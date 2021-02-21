@@ -25,6 +25,11 @@ private:
    unsigned short fullscreenID;
    unsigned short vSynceID;
 
+   /*Dropdown Overlap Flags*/
+   bool pauseButtons;
+   bool pauseFullScreen;
+   bool pauseVSync;
+
 public:
     /*Constuctor & Destructor*/
     Settings(GameInfo* game_info);

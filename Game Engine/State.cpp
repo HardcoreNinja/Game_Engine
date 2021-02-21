@@ -74,6 +74,7 @@ State::State(GameInfo* game_info)
 	this->keyTime = 0;
 	this->maxKeyTime = 100;
 	this->isQuit = false;
+	this->mouseReleased = false;
 }
 State::~State()
 {
@@ -107,9 +108,15 @@ void State::updateSFMLEvents()
 	while (this->window->pollEvent(*this->sfmlEvent))
 	{
 		if (this->sfmlEvent->type == sf::Event::MouseButtonPressed)
+		{
 			std::cout << "Mouse Pressed!\n";
+			this->mouseReleased = false;
+		}
 		if (this->sfmlEvent->type == sf::Event::MouseButtonReleased)
+		{
 			std::cout << "Mouse Released!\n";
+			this->mouseReleased = true;
+		}
 	}
 }
 
