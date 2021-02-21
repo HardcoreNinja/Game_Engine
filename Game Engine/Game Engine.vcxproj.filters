@@ -78,6 +78,9 @@
     <ClCompile Include="Settings.cpp">
       <Filter>Source Files\States</Filter>
     </ClCompile>
+    <ClCompile Include="Editor.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">
@@ -101,6 +104,9 @@
     <ClInclude Include="Settings.h">
       <Filter>Source Files\States</Filter>
     </ClInclude>
+    <ClInclude Include="Editor.h">
+      <Filter>Source Files\States</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\settings_keybinds.ini">
@@ -117,6 +123,9 @@
     </None>
     <None Include="Config\settings_active_element_ID.ini">
       <Filter>Resource Files\Config\Settings Active Element ID</Filter>
+    </None>
+    <None Include="Config\editor_keybinds.ini">
+      <Filter>Resource Files\Config\Keybinds</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

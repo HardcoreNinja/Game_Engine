@@ -27,6 +27,10 @@ void MainMenu::updateButtons()
 	//Settings
 	if (this->buttons["SETTINGS"]->isPressed() && this->getKeyTime())
 		this->states->push_back(std::make_unique<Settings>(this->gameInfo));
+
+	//Editor
+	if (this->buttons["EDITOR"]->isPressed() && this->getKeyTime())
+		this->states->push_back(std::make_unique<Editor>(this->gameInfo));
 }
 void MainMenu::updateUserInput(const float& dt)
 {

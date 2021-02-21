@@ -383,6 +383,5 @@ void Settings::render(sf::RenderTarget* target)
 	target->draw(this->backgroundRect);
 	target->draw(this->text);
 	this->renderButtons(*target);
-	this->renderDropdownLists(*target);
-	
+	this->renderDropdownLists(*target);	
 }

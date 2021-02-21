@@ -1,19 +1,21 @@
-#ifndef MAINMENU_H
-#define MAINMENU_H
-#include "Editor.h"
+#ifndef EDITOR_H
+#define EDITOR_H
 #include "State.h"
-#include "Settings.h"
-
-/*Class Forward Declarations*/
-class Settings;
-
-class MainMenu :
+class Editor :
     public State
 {
+private:
+    /*Initializers*/
+    void initVariables();
+    void initBackground();
+    void initKeybinds();
+    void initFonts();
+    void initButtons();
+
 public:
     /*Constuctor & Destructor*/
-    MainMenu(GameInfo* game_info);
-    virtual ~MainMenu();
+    Editor(GameInfo* game_info);
+    virtual ~Editor();
 
     /*Update Functions*/
     void updateButtons();

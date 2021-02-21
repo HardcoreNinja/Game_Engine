@@ -44,21 +44,13 @@ protected:
 	/*Polling Events*/
 	sf::Event* sfmlEvent;
 
-	/*MainMenu Button Map*/
-	std::map<std::string, std::unique_ptr<GUI::Button>> buttons;
-public:
-	/* MainMenu Initializers*/
-	void initMainMenuBackground();
-	void initMainMenuKeybinds();
-	void initMainMenuFonts();
-	void initMainMenuButtons();
-protected:
-
 	/*GUI*/
 	sf::RectangleShape backgroundRect;
 	sf::Texture backgroundTexture;
 	sf::Font font;
 	sf::Text text;
+	std::map<std::string, std::unique_ptr<GUI::Button>> buttons;
+	std::map<std::string, std::unique_ptr<GUI::DropdownList>> dropdownLists;
 
 	/*KeyTime Variables*/
 	int keyTime;
@@ -76,6 +68,13 @@ protected:
 
 	/*Poll Event Flags*/
 	bool mouseReleased;
+
+public:
+	/*MainMenu Initializers*/
+	void initMainMenuBackground();
+	void initMainMenuKeybinds();
+	void initMainMenuFonts();
+	void initMainMenuButtons();
 
 public:
 	/*Constuctor & Destructor*/

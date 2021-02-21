@@ -5,10 +5,6 @@ class Settings :
     public State
 {
 private:
-    /*GUI Varaiables*/
-    std::map<std::string, std::unique_ptr<GUI::Button>> buttons;
-    std::map<std::string, std::unique_ptr<GUI::DropdownList>> dropdownLists;
-
     /*Video Modes*/
     std::vector<sf::VideoMode> videoModes;
 
