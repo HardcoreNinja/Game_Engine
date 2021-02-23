@@ -83,6 +83,7 @@ State::State(GameInfo* game_info)
 	this->isQuit = false;
 	this->mouseReleased = false;
 	this->tileSize = 48.f;
+	this->isPaused = false;
 }
 State::~State()
 {
@@ -161,4 +162,14 @@ void State::updateKeyTime(const float& dt)
 	/*Test Debug
 	std::cout << this->keyTime << '\n';
 	*/
+}
+
+/*Pause Menu Functions*/
+void State::pause()
+{
+	this->isPaused = true;
+}
+void State::unpause()
+{
+	this->isPaused = false;
 }

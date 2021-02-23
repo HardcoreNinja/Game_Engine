@@ -93,6 +93,9 @@
     <ClCompile Include="TileMap.cpp">
       <Filter>Source Files\TileMap</Filter>
     </ClCompile>
+    <ClCompile Include="PauseMenu.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">
@@ -121,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="TileMap.h">
       <Filter>Source Files\TileMap</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseMenu.h">
+      <Filter>Source Files\States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

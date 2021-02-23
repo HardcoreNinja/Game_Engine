@@ -15,6 +15,9 @@ private:
     /*Tile Map*/
     std::unique_ptr<TILEMAP::TileMap> tileMap;
 
+    /*Pause Menu*/
+    std::unique_ptr<PauseMenu> pauseMenu;
+
     /*Initializers*/
     void initVariables();
     void initBackground();
@@ -22,6 +25,7 @@ private:
     void initFonts();
     void initButtons();
     void initTileMap();
+    void initPauseMenu();
 
 public:
     /*Constuctor & Destructor*/
@@ -29,11 +33,13 @@ public:
     virtual ~Editor();
 
     /*Update Functions*/
+    void updateTileMap();
     void updateButtons();
     virtual void updateUserInput(const float& dt);
     virtual void update(const float& dt);
 
     /*Render Functions*/
+    void renderPauseMenu(sf::RenderTarget& target);
     void renderTiles(sf::RenderTarget& target);
     void renderButtons(sf::RenderTarget& target);
     virtual void render(sf::RenderTarget* target);

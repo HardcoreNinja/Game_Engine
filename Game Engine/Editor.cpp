@@ -65,6 +65,13 @@ void Editor::initTileMap()
 		"Resources/Images/Tiles/grass.png"
 		);
 }
+void Editor::initPauseMenu()
+{
+	this->pauseMenu = std::make_unique<PauseMenu>(
+		*this->window, //Pause Menu Render Window
+		this->font    //Pause Menu Font;
+		);
+}
 
 /*Constuctor & Destructor*/
 Editor::Editor(GameInfo* game_info)
@@ -76,22 +83,14 @@ Editor::Editor(GameInfo* game_info)
 	this->initFonts();
 	this->initButtons();
 	this->initTileMap();
+	this->initPauseMenu();
 }
 Editor::~Editor()
 {
 }
 
 /*Update Functions*/
-void Editor::updateButtons()
-{
-		for (auto& i : this->buttons)
-			i.second->update(this->mousePositionView);
-
-	//Back to Main Menu
-	if (this->buttons["BACK"]->isPressed() && this->getKeyTime())
-		this->endState();	
-}
-void Editor::updateUserInput(const float& dt)
+void Editor::updateTileMap()
 {
 	/*Add Tile*/
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -112,21 +111,48 @@ void Editor::updateUserInput(const float& dt)
 			0                          //Tile Layer
 		);
 	}
+}
+void Editor::updateButtons()
+{
+		for (auto& i : this->buttons)
+			i.second->update(this->mousePositionView);
 
+	//Back to Main Menu
+	if (this->buttons["BACK"]->isPressed() && this->getKeyTime())
+		this->endState();	
+}
+void Editor::updateUserInput(const float& dt)
+{
 	/*Quit Game*/
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("QUIT_GAME"))))
-		this->endState();
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("PAUSE_GAME"))) && this->getKeyTime())
+		if (!this->isPaused)
+			this->pause();
+		else
+			this->unpause();
 }
 void Editor::update(const float& dt)
 {
 	this->updateSFMLEvents();
 	this->updateKeyTime(dt);
-	this->updateButtons();
 	this->updateMousePosition();
 	this->updateUserInput(dt);
+
+	if (this->isPaused) //Paused
+	{
+
+	}
+	else               //Unpaused
+	{
+		this->updateTileMap();
+		this->updateButtons();
+	}
 }
 
 /*Render Functions*/
+void Editor::renderPauseMenu(sf::RenderTarget& target)
+{
+	this->pauseMenu->render(target);
+}
 void Editor::renderTiles(sf::RenderTarget& target)
 {
 	this->tileMap->render(target);
@@ -143,4 +169,6 @@ void Editor::render(sf::RenderTarget* target)
 	target->draw(this->backgroundRect);
 	this->renderButtons(*target);
 	this->renderTiles(*target);
+	if(this->isPaused)
+	this->renderPauseMenu(*target);
 }

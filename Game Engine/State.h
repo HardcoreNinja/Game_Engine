@@ -2,11 +2,13 @@
 #define STATE_H
 #include "GraphicsSettings.h"
 #include "GUI.h"
+#include "PauseMenu.h"
 
 /*Class Forward Declarations*/
 class State;
 class Button;
 class GraphicsSettings;
+class PauseMenu;
 class sf::RenderWindow;
 class sf::RectangleShape;
 class sf::Texture;
@@ -73,6 +75,9 @@ protected:
 	/*Poll Event Flags*/
 	bool mouseReleased;
 
+	/*Pause Menu Flags*/
+	bool isPaused;
+
 public:
 	/*MainMenu Initializers*/
 	void initMainMenuBackground();
@@ -100,6 +105,10 @@ public:
 	virtual void updateKeyTime(const float& dt);
 	virtual void updateUserInput(const float& dt) = 0;
 	virtual void update(const float& dt) = 0;
+
+	/*Pause Menu Functions*/
+	void pause();
+	void unpause();
 
 	/*Render Functions*/
 	virtual void render(sf::RenderTarget* target = NULL) = 0;
