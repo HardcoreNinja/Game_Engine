@@ -84,7 +84,6 @@ Editor::~Editor()
 /*Update Functions*/
 void Editor::updateButtons()
 {
-	
 		for (auto& i : this->buttons)
 			i.second->update(this->mousePositionView);
 
@@ -92,7 +91,6 @@ void Editor::updateButtons()
 	if (this->buttons["BACK"]->isPressed() && this->getKeyTime())
 		this->endState();	
 }
-
 void Editor::updateUserInput(const float& dt)
 {
 	/*Add Tile*/
@@ -100,10 +98,20 @@ void Editor::updateUserInput(const float& dt)
 		this->tileMap->addTile(
 			this->mousePositionTile.x, //Mouse Position Tile X
 			this->mousePositionTile.y, //Mouse Position Tile Y
-			0,                         //Tile
+			0,                         //Tile Layer
 			false,                     //Collision
 			0                          //Tile Type
 		);
+
+	/*Remove Tile*/
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+	{
+		this->tileMap->removeTile(
+			this->mousePositionTile.x, //Mouse Position Tile X
+			this->mousePositionTile.y, //Mouse Position Tile Y
+			0                          //Tile Layer
+		);
+	}
 
 	/*Quit Game*/
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("QUIT_GAME"))))

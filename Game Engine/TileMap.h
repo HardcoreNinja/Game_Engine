@@ -49,7 +49,7 @@ namespace TILEMAP
 		
 	public:
 		/*Constuctor & Destructor*/
-		TileMap(float tile_size, unsigned map_width, unsigned map_height, std::string tilesheet_file_path);
+		TileMap(float tile_size, unsigned map_width, unsigned map_height, std::string tile_sheet_file_path);
 		virtual ~TileMap();
 
 		/*Add & Remove Tile Functions*/
@@ -58,6 +58,11 @@ namespace TILEMAP
 			const unsigned tile_layer,
 			const bool& collision, 
 			const unsigned short& tile_type
+		);
+
+		void removeTile(
+			const unsigned pos_x, const unsigned pos_y,
+			const unsigned tile_layer
 		);
 
 		/*Render Functions*/

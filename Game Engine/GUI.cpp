@@ -1,8 +1,6 @@
 #include "Header.h"
 #include "GUI.h"
-
 /*Buttons===========================================================================================================================================*/
-
 /*Constructor/Destructor*/
 GUI::Button::Button(
 	float pos_x, float pos_y,
@@ -126,7 +124,6 @@ void GUI::Button::render(sf::RenderTarget& target)
 }
 
 /*DROPDOWN LIST =============================================================================================*/
-
 /*Constructor/Destructor*/
 GUI::DropdownList::DropdownList(
 	float pos_x, float pos_y,

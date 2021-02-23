@@ -48,19 +48,18 @@ void TILEMAP::Tile::render(sf::RenderTarget& target)
 }
 
 /*TILE_MAP=======================================================================================================================================================*/
-
 /*Constuctor & Destructor*/
-TILEMAP::TileMap::TileMap(float tile_size, unsigned map_width, unsigned map_height, std::string tilesheet_file_path)
+TILEMAP::TileMap::TileMap(float tile_size, unsigned map_width, unsigned map_height, std::string tile_sheet_file_path)
 {
 	this->tileSizeF = tile_size;
 	this->tileSizeU = static_cast<unsigned>(tileSizeF);
 	this->mapSizeU.x = map_width;
 	this->mapSizeU.y = map_height;
 	this->textureIntRect = sf::IntRect(0, 0, static_cast<int>(tileSizeU), static_cast<int>(tileSizeU));
-	this->textureFilePath = tilesheet_file_path;
+	this->textureFilePath = tile_sheet_file_path;
 	this->tileLayers = 1;
 
-	if (!this->texture.loadFromFile(tilesheet_file_path))
+	if (!this->texture.loadFromFile(tile_sheet_file_path))
 	{
 		throw("ERROR::TILE_MAP::FAILED_TO_LOAD::this->texture");
 	}
@@ -82,17 +81,17 @@ TILEMAP::TileMap::~TileMap()
 /*Add & Remove Tile Functions*/
 void TILEMAP::TileMap::addTile(
 	const unsigned pos_x, const unsigned pos_y, 
-	const unsigned tile, 
+	const unsigned tile_layer,
 	const bool& tile_collision, 
 	const unsigned short& tile_type)
 {
 	if (pos_x < this->mapSizeU.x && pos_x >= 0 &&
 		pos_y < this->mapSizeU.y && pos_y >= 0 &&
-		tile < this->tileLayers && tile >=0)
+		tile_layer < this->tileLayers && tile_layer >=0)
 	{
-		if (this->tileMap[pos_x][pos_y][tile] == NULL)
+		if (this->tileMap[pos_x][pos_y][tile_layer] == NULL)
 		{
-			this->tileMap[pos_x][pos_y][tile] = std::make_unique<TILEMAP::Tile>(
+			this->tileMap[pos_x][pos_y][tile_layer] = std::make_unique<TILEMAP::Tile>(
 				this->tileSizeF,
 				pos_x, pos_y,
 				this->texture,
@@ -100,6 +99,19 @@ void TILEMAP::TileMap::addTile(
 				tile_collision,
 				tile_type
 				);
+		}
+	}
+}
+
+void TILEMAP::TileMap::removeTile(const unsigned pos_x, const unsigned pos_y, const unsigned tile_layer)
+{
+	if (pos_x < this->mapSizeU.x && pos_x >= 0 &&
+		pos_y < this->mapSizeU.y && pos_y >= 0 &&
+		tile_layer < this->tileLayers && tile_layer >= 0)
+	{
+		if (this->tileMap[pos_x][pos_y][tile_layer] != NULL)
+		{
+			this->tileMap[pos_x][pos_y][tile_layer].reset();
 		}
 	}
 }
