@@ -206,8 +206,6 @@ void Settings::updateButtons()
 			//std::cout << this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel << '\n';
 			break;
 		}
-
-
 		this->saveToFile();
 	}
 }
@@ -282,6 +280,41 @@ void Settings::updateUserInput(const float& dt)
 		this->vSynceID = this->dropdownLists["VSYNC"]->getActiveElementID();
 		this->gameInfo->graphicsSettings->isVSync = this->dropdownLists["VSYNC"]->getActiveElementID();
 
+		/*Anti-Aliasing*/
+		std::cout << this->dropdownLists["ANTI_ALIASING"]->getActiveElementID() << '\n';
+		this->anti_AliasingID = this->dropdownLists["ANTI_ALIASING"]->getActiveElementID();
+
+		switch (this->dropdownLists["ANTI_ALIASING"]->getActiveElementID())
+		{
+		case 0:
+			this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel = 0;
+			//std::cout << this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel << '\n';
+			break;
+		case 1:
+			this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel = 1;
+			//std::cout << this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel << '\n';
+			break;
+		case 2:
+			this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel = 2;
+			//std::cout << this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel << '\n';
+			break;
+		case 3:
+			this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel = 4;
+			//std::cout << this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel << '\n';
+			break;
+		case 4:
+			this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel = 8;
+			//std::cout << this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel << '\n';
+			break;
+		case 5:
+			this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel = 16;
+			//std::cout << this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel << '\n';
+			break;
+		case 6:
+			this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel = 32;
+			//std::cout << this->gameInfo->graphicsSettings->contextSettings.antialiasingLevel << '\n';
+			break;
+		}
 		this->saveToFile();
 	}
 }
@@ -289,9 +322,9 @@ void Settings::update(const float& dt)
 {
 	this->updateSFMLEvents();
 	this->updateKeyTime(dt);
+	this->updateMousePosition();
 	this->updateButtons();
 	this->updateDropdownLists(dt);
-	this->updateMousePosition();
 	this->updateUserInput(dt);
 }
 
