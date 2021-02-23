@@ -82,6 +82,7 @@ State::State(GameInfo* game_info)
 	this->maxKeyTime = 100;
 	this->isQuit = false;
 	this->mouseReleased = false;
+	this->tileSize = 48.f;
 }
 State::~State()
 {
@@ -133,12 +134,22 @@ void State::updateSFMLEvents()
 /*Update Functions*/
 void State::updateMousePosition(sf::View* view)
 {
+	/*Mouse Position Desktop*/
 	this->mousePositionDesktop = sf::Mouse::getPosition();
+
+	/*Mouse Position Window*/
 	this->mousePositionWindow = sf::Mouse::getPosition(*this->window);
 
+	/*Mouse Position View*/
 	if (view)
 		this->window->setView(*view);
 	this->mousePositionView = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));
+
+	/*Mouse Position Tile w/ View as Base*/
+	this->mousePositionTile = sf::Vector2u(
+		static_cast<unsigned>(this->mousePositionView.x) / static_cast<unsigned>(this->tileSize),
+		static_cast<unsigned>(this->mousePositionView.y) / static_cast<unsigned>(this->tileSize)
+	);
 
 	this->window->setView(this->window->getDefaultView());
 }

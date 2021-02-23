@@ -52,6 +52,9 @@ protected:
 	std::map<std::string, std::unique_ptr<GUI::Button>> buttons;
 	std::map<std::string, std::unique_ptr<GUI::DropdownList>> dropdownLists;
 
+	/*Tile Size*/
+	float tileSize;
+
 	/*KeyTime Variables*/
 	int keyTime;
 	int maxKeyTime;
@@ -62,6 +65,7 @@ protected:
 	sf::Vector2i mousePositionDesktop;
 	sf::Vector2i mousePositionWindow;
 	sf::Vector2f mousePositionView;
+	sf::Vector2u mousePositionTile;
 
 	/*End StateFlags*/
 	bool isQuit;

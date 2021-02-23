@@ -165,6 +165,7 @@
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="State.cpp" />
+    <ClCompile Include="TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Editor.h" />
@@ -175,6 +176,7 @@
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="State.h" />
+    <ClInclude Include="TileMap.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\editor_keybinds.ini" />
@@ -186,6 +188,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Images\mainmenu_background.jpg" />
+    <Image Include="Resources\Tiles\grass.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Fonts\Dosis.ttf" />

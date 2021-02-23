@@ -1,16 +1,27 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 #include "State.h"
+#include "TileMap.h"
+
+/*Class Forward Declarations*/
+class Tile;
+class TileMap;
+class sf::RenderTarget;
+
 class Editor :
     public State
 {
 private:
+    /*Tile Map*/
+    std::unique_ptr<TILEMAP::TileMap> tileMap;
+
     /*Initializers*/
     void initVariables();
     void initBackground();
     void initKeybinds();
     void initFonts();
     void initButtons();
+    void initTileMap();
 
 public:
     /*Constuctor & Destructor*/
@@ -23,6 +34,7 @@ public:
     virtual void update(const float& dt);
 
     /*Render Functions*/
+    void renderTiles(sf::RenderTarget& target);
     void renderButtons(sf::RenderTarget& target);
     virtual void render(sf::RenderTarget* target);
 };
