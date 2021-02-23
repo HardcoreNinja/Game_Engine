@@ -69,6 +69,9 @@ protected:
 	sf::Vector2f mousePositionView;
 	sf::Vector2u mousePositionTile;
 
+	/*Pause Menu*/
+	std::unique_ptr<PauseMenu> pauseMenu;
+
 	/*End StateFlags*/
 	bool isQuit;
 

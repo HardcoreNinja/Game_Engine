@@ -15,9 +15,6 @@ private:
     /*Tile Map*/
     std::unique_ptr<TILEMAP::TileMap> tileMap;
 
-    /*Pause Menu*/
-    std::unique_ptr<PauseMenu> pauseMenu;
-
     /*Initializers*/
     void initVariables();
     void initBackground();
@@ -33,6 +30,7 @@ public:
     virtual ~Editor();
 
     /*Update Functions*/
+    void updatePauseMenuButtons();
     void updateTileMap();
     void updateButtons();
     virtual void updateUserInput(const float& dt);

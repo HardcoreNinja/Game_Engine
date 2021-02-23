@@ -53,7 +53,7 @@ void Editor::initButtons()
 	this->buttons["BACK"] = std::make_unique<GUI::Button>(
 		100.f, 550.f,                  //Button Rect Position
 		200.f, 50.f,                   //Button Rect Size
-		&this->font, "Back", 50,//Button Font, Text, and Character Size
+		&this->font, "Back", 50,       //Button Font, Text, and Character Size
 		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50),//Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));    //Button Rect Fill Color (Outline Color Optional)
 }
@@ -71,6 +71,12 @@ void Editor::initPauseMenu()
 		*this->window, //Pause Menu Render Window
 		this->font    //Pause Menu Font;
 		);
+
+	this->pauseMenu->addButton(
+		"EXIT", //Key
+		300.f,  // Pos_Y
+		"Exit"  // Button Text
+	); 
 }
 
 /*Constuctor & Destructor*/
@@ -90,6 +96,11 @@ Editor::~Editor()
 }
 
 /*Update Functions*/
+void Editor::updatePauseMenuButtons()
+{
+	if (this->pauseMenu->isButtonPressed("EXIT") && this->getKeyTime())
+		this->endState();
+}
 void Editor::updateTileMap()
 {
 	/*Add Tile*/
@@ -139,7 +150,8 @@ void Editor::update(const float& dt)
 
 	if (this->isPaused) //Paused
 	{
-
+		this->pauseMenu->update(static_cast<sf::Vector2f>(mousePositionWindow));
+		this->updatePauseMenuButtons();
 	}
 	else               //Unpaused
 	{
