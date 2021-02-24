@@ -5,6 +5,12 @@ void Editor::initVariables()
 {
 	this->collision = false;
 	this->tileType = TILEMAP::TileType::Default;
+	this->cameraSpeed = 10.f;
+}
+void Editor::initView()
+{
+	this->view.setSize(static_cast<float>(this->graphicsSettings->resolution.width), static_cast<float>(this->graphicsSettings->resolution.height));
+	this->view.setCenter(static_cast<float>(this->graphicsSettings->resolution.width) / 2.f, static_cast<float>(this->graphicsSettings->resolution.height) / 2.f);
 }
 void Editor::initKeybinds()
 {
@@ -104,6 +110,7 @@ Editor::Editor(GameInfo* game_info)
 	: State(game_info)
 {
 	this->initVariables();
+	this->initView();
 	this->initKeybinds();
 	this->initFonts();
 	this->initTileMap();
@@ -136,7 +143,9 @@ void Editor::updateSelectorRect()
 		this->selectorRect.setTextureRect(this->tileMap->getTextureIntRect());
 		this->selectorRect.setTexture(this->tileMap->getTexture());
 
-		std::cout << "Selector Int Rect: " << this->tileMap->getTextureIntRect().left << " X " << this->tileMap->getTextureIntRect().top << '\n';
+		//Debug Test
+		//std::cout << "Selector Int Rect: " << this->tileMap->getTextureIntRect().left << " X " << this->tileMap->getTextureIntRect().top << '\n';
+		
 		this->selectorRect.setPosition(sf::Vector2f(
 			static_cast<float>(this->mousePositionTile.x * this->tileSize),
 			static_cast<float>(this->mousePositionTile.y * this->tileSize)
@@ -157,7 +166,7 @@ void Editor::updatePauseMenuButtons()
 }
 void Editor::updateTextureSelector(const float& dt)
 {
-	this->textureSelector->update(this->mousePositionWindow, dt);
+	this->textureSelector->update(static_cast<sf::Vector2i>(this->mousePositionView), dt);
 }
 void Editor::updateTileMap()
 {
@@ -180,8 +189,8 @@ void Editor::updateTileMap()
 			this->tileMap->setTextureIntRect(this->textureSelector->getTextureIntRect());
 
 			//Debug Test
-			std::cout << this->textureSelector->getTextureIntRect().left << " x " << this->textureSelector->getTextureIntRect().top << '\n';
-			std::cout << this->textureSelector->getTextureIntRect().width << " x " << this->textureSelector->getTextureIntRect().height << '\n';
+			//std::cout << this->textureSelector->getTextureIntRect().left << " x " << this->textureSelector->getTextureIntRect().top << '\n';
+			//std::cout << this->textureSelector->getTextureIntRect().width << " x " << this->textureSelector->getTextureIntRect().height << '\n';
 		}
 	}
 
@@ -197,13 +206,18 @@ void Editor::updateTileMap()
 }
 void Editor::updateUserInput(const float& dt)
 {
-	/*Quit Game*/
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("PAUSE_GAME"))) && this->getKeyTime())
-		if (!this->isPaused)
-			this->pause();
-		else
-			this->unpause();
+	/*Camera Controls*/
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_UP"))))
+		this->view.move(sf::Vector2f(0.f, -this->cameraSpeed * dt * (1.f / dt)));
 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_DOWN"))))
+		this->view.move(sf::Vector2f(0.f, this->cameraSpeed * dt * (1.f / dt)));
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_LEFT"))))
+		this->view.move(sf::Vector2f(-this->cameraSpeed * dt * (1.f / dt), 0.f));
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_RIGHT"))))
+		this->view.move(sf::Vector2f(this->cameraSpeed * dt * (1.f / dt), 0.f));
 
 	/*Collision Toggle*/
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("COLLISION_TOGGLE"))) && this->getKeyTime())
@@ -220,17 +234,24 @@ void Editor::updateUserInput(const float& dt)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("DECREASE_TYPE"))) && this->getKeyTime() && this->tileType != 0)
 		this->tileType -= 1;
 
+	/*Quit Game*/
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("PAUSE_GAME"))) && this->getKeyTime())
+		if (!this->isPaused)
+			this->pause();
+		else
+			this->unpause();
+
 }
 void Editor::update(const float& dt)
 {
 	this->updateSFMLEvents();
 	this->updateKeyTime(dt);
-	this->updateMousePosition();
+	this->updateMousePosition(&this->view);
 	this->updateUserInput(dt);
 
 	if (this->isPaused) //Paused
 	{
-		this->pauseMenu->update(static_cast<sf::Vector2f>(mousePositionWindow));
+		this->pauseMenu->update(static_cast<sf::Vector2f>(this->mousePositionView));
 		this->updatePauseMenuButtons();
 	}
 	else               //Unpaused
@@ -268,6 +289,7 @@ void Editor::render(sf::RenderTarget* target)
 {
 	if (!target)
 		target = this->window;
+	target->setView(this->view);
 	this->renderTiles(*target);
 	this->renderTextureSelector(*target);
 	this->renderSelectorRect(*target);

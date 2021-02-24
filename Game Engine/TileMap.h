@@ -137,7 +137,7 @@ namespace TILEMAP
 
 		/*Update Functions*/
 		void updateKeyTime(const float& dt);
-		void update(sf::Vector2i& mouse_position_window, const float& dt);
+		void update(const sf::Vector2i& mouse_position_window, const float& dt);
 
 		/*Render Functions*/
 		void render(sf::RenderTarget& target);

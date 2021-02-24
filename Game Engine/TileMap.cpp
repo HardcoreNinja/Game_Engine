@@ -312,7 +312,9 @@ TILEMAP::TextureSelector::TextureSelector(
 		48.f, 48.f,                   //Button Rect Size
 		&hide_button_font, "TS", 16,    //Button Font, Text, and Character Size
 		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50),//Text Color
-		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));    //Button Rect Fill Color (Outline Color Optional)
+		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0),
+		sf::Color::White, sf::Color::White, sf::Color::White
+		);//Button Rect Fill Color (Outline Color Optional)
 
 	/*Tile Size*/
 	this->tileSize = tile_size;
@@ -352,7 +354,7 @@ void TILEMAP::TextureSelector::updateKeyTime(const float& dt)
 	if (this->keyTime < this->maxKeyTime)
 		this->keyTime += static_cast<int>(2.f * dt * (1.f / dt));
 }
-void TILEMAP::TextureSelector::update(sf::Vector2i& mouse_position_window, const float& dt)
+void TILEMAP::TextureSelector::update(const sf::Vector2i& mouse_position_window, const float& dt)
 {
 	/*Key Time*/
 	this->updateKeyTime(dt);

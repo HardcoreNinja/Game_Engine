@@ -35,7 +35,7 @@ GUI::Button::Button(
 	this->hoverColor = hover_color;
 	this->activeColor = active_color;
 
-	this->outlineIdleColor = sf::Color::White;
+	this->outlineIdleColor = outline_idle_color;
 	this->outlineHoverColor = outline_hover_color;
 	this->outlineActiveColor = outline_active_color;
 }

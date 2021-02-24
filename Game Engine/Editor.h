@@ -26,8 +26,12 @@ private:
     /*Texture Selector Side Bar*/
     sf::RectangleShape sideBar;
 
+    /*View Camera Speed*/
+    float cameraSpeed;
+
     /*Initializers*/
     void initVariables();
+    void initView();
     void initKeybinds();
     void initFonts();
     void initTileMap();
