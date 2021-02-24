@@ -4,7 +4,7 @@
 void Editor::initVariables()
 {
 	this->collision = false;
-	this->tileType = 0;
+	this->tileType = TILEMAP::TileType::Default;
 }
 void Editor::initKeybinds()
 {
@@ -35,6 +35,9 @@ void Editor::initFonts()
 	}
 
 	this->text.setFont(this->font);
+	this->text.setFillColor(sf::Color::White);
+	this->text.setCharacterSize(12);
+	this->text.setPosition(sf::Vector2f(static_cast<float>(this->mousePositionWindow.x), static_cast<float>(this->mousePositionWindow.y)));
 }
 void Editor::initTileMap()
 {
@@ -112,6 +115,20 @@ Editor::~Editor()
 }
 
 /*Update Functions*/
+void Editor::updateCursorText()
+{
+	this->text.setPosition((static_cast<float>(this->mousePositionWindow.x) + 100.f), (static_cast<float>(this->mousePositionWindow.y) - 50.f));
+
+	std::stringstream ss;
+
+	ss << "Mouse Position View: " << this->mousePositionView.x << " x " << this->mousePositionView.y << '\n'
+		<< "Mouse Position Tile: " << this->mousePositionTile.x << " x " << this->mousePositionTile.y << '\n'
+		<< "Tile Map Int Rec (left & top): " << this->tileMap->getTextureIntRect().left << " x " << this->tileMap->getTextureIntRect().top << '\n'
+		<< "Collision Bool: " << this->collision << '\n'
+		<< "Tile Type: " << this->tileType << '\n';
+
+	this->text.setString(ss.str());
+}
 void Editor::updateSelectorRect()
 {
 	if (!this->textureSelector->getIsActive())
@@ -154,8 +171,8 @@ void Editor::updateTileMap()
 				this->mousePositionTile.x, //Mouse Position Tile X
 				this->mousePositionTile.y, //Mouse Position Tile Y
 				0,                         //Tile Layer
-				false,                     //Collision
-				0                          //Tile Type
+				this->collision,           //Collision
+				this->tileType             //Tile Type
 			);
 		}
 		else if(!this->sideBar.getGlobalBounds().contains(static_cast<sf::Vector2f>(this->mousePositionWindow)))
@@ -186,6 +203,23 @@ void Editor::updateUserInput(const float& dt)
 			this->pause();
 		else
 			this->unpause();
+
+
+	/*Collision Toggle*/
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("COLLISION_TOGGLE"))) && this->getKeyTime())
+		if (this->collision)
+			this->collision = false;
+		else
+			this->collision = true;
+
+	/*Increase Tile Type*/
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("INCREASE_TYPE"))) && this->getKeyTime())
+		this->tileType += 1;
+
+	/*Decrease Tile Type*/
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("DECREASE_TYPE"))) && this->getKeyTime() && this->tileType != 0)
+		this->tileType -= 1;
+
 }
 void Editor::update(const float& dt)
 {
@@ -201,7 +235,7 @@ void Editor::update(const float& dt)
 	}
 	else               //Unpaused
 	{
-		//this->updateButtons();
+		this->updateCursorText();
 		this->updateSelectorRect();
 		this->updateTextureSelector(dt);
 		this->updateTileMap();	
@@ -209,12 +243,18 @@ void Editor::update(const float& dt)
 }
 
 /*Render Functions*/
+void Editor::renderCursorText(sf::RenderTarget& target)
+{
+		target.draw(this->text);
+}
+void Editor::renderSelectorRect(sf::RenderTarget& target)
+{
+	if (!this->textureSelector->getIsActive())
+		target.draw(this->selectorRect);
+}
 void Editor::renderTextureSelector(sf::RenderTarget& target)
 {
 	this->textureSelector->render(target);
-
-	if(!this->textureSelector->getIsActive())
-		target.draw(this->selectorRect);
 }
 void Editor::renderPauseMenu(sf::RenderTarget& target)
 {
@@ -230,6 +270,8 @@ void Editor::render(sf::RenderTarget* target)
 		target = this->window;
 	this->renderTiles(*target);
 	this->renderTextureSelector(*target);
+	this->renderSelectorRect(*target);
+	this->renderCursorText(*target);
 	target->draw(this->sideBar);
 
 	if(this->isPaused)

@@ -40,6 +40,7 @@ public:
     virtual ~Editor();
 
     /*Update Functions*/
+    void updateCursorText();
     void updateSelectorRect();
     void updatePauseMenuButtons();
     void updateTextureSelector(const float& dt);
@@ -48,8 +49,10 @@ public:
     virtual void update(const float& dt);
 
     /*Render Functions*/
-    void renderPauseMenu(sf::RenderTarget& target);
+    void renderCursorText(sf::RenderTarget& target);
+    void renderSelectorRect(sf::RenderTarget& target);
     void renderTextureSelector(sf::RenderTarget& target);
+    void renderPauseMenu(sf::RenderTarget& target);
     void renderTiles(sf::RenderTarget& target);
     virtual void render(sf::RenderTarget* target);
 };
