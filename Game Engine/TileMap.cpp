@@ -157,10 +157,10 @@ void TILEMAP::TileMap::saveToFile(std::string file_path)
 
 	if (ofs.is_open())
 	{
-		ofs << this->mapSizeU.x << " " << this->mapSizeU.y  << '\n'
-			<< this->tileSizeU << '\n'
-			<< this->tileLayers << '\n'
-			<< textureFilePath << '\n';
+		ofs << this->mapSizeU.x << " " << this->mapSizeU.y << '\n';
+		ofs << this->tileSizeU << '\n';
+		ofs << this->tileLayers << '\n';
+		ofs << this->textureFilePath << '\n';
 
 		this->tileMap.push_back(std::vector<std::vector<std::unique_ptr<TILEMAP::Tile>>>());
 
