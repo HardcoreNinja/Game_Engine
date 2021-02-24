@@ -1,12 +1,16 @@
 #ifndef TILEMAP_H
 #define TILEMAP_H
+#include "GUI.h"
 
 namespace TILEMAP 
 {
 	/*Class Forward Declarations*/
+	class Button;
 	class sf::Texture;
+	class sf::RectangleShape;
 	class sf::RenderTarget;
 
+	/*Tile*/
 	enum TileType {Default = 0, Grass, Water, Road, Building};
 	class Tile
 	{
@@ -35,6 +39,7 @@ namespace TILEMAP
 		void render(sf::RenderTarget& target);
 	};
 
+	/*Tile Map*/
 	class TileMap
 	{
 	private:
@@ -49,8 +54,19 @@ namespace TILEMAP
 		
 	public:
 		/*Constuctor & Destructor*/
-		TileMap(float tile_size, unsigned map_width, unsigned map_height, std::string tile_sheet_file_path);
+		TileMap(
+			float tile_size,
+			unsigned map_width, unsigned map_height,
+			int texture_width, int texture_height,
+			std::string tile_sheet_file_path
+		);
 		virtual ~TileMap();
+
+		/*Getters*/
+		const sf::Texture* getTexture();
+
+		/*Setters*/
+		void setTextureIntRect(sf::IntRect texture_int_rect);
 
 		/*Add & Remove Tile Functions*/
 		void addTile(
@@ -67,6 +83,57 @@ namespace TILEMAP
 
 		/*Render Functions*/
 		void render(sf::RenderTarget& target);
+	};
+
+	/*Texture Selector*/
+	class TextureSelector
+	{
+	private:
+		/*Texture Selector Variables*/
+		sf::RectangleShape bounds;
+		sf::Sprite spriteSheet;
+		sf::IntRect textureIntRect;
+		sf::Vector2u mousePositionTile;
+		sf::RectangleShape selector;
+
+		/*Tile Variables*/
+		float tileSize;
+
+		/*Hide Button*/
+		std::unique_ptr<GUI::Button> hideButton;
+
+		/*Flags*/
+		bool isHidden;
+		bool isActive;
+
+		/*Key Time Variables*/
+		int keyTime;
+		int maxKeyTime;
+
+	public:
+		/*Constuctor & Destructor*/
+		TextureSelector(
+			float pos_x, float pos_y,
+			float bounds_width, float bounds_height,
+			float tile_size,
+			const sf::Texture* texture_Sheet,
+			sf::Font& hide_button_font,
+			int key_time, int max_key_time
+			);
+		virtual ~TextureSelector();
+
+		/*Getters*/
+		const sf::IntRect& getTextureIntRect();
+		const bool& getIsActive();
+		bool getKeyTime();
+
+		/*Update Functions*/
+		void updateKeyTime(const float& dt);
+		void update(sf::Vector2i& mouse_position_window, const float& dt);
+
+		/*Render Functions*/
+		void render(sf::RenderTarget& target);
+
 	};
 }
 #endif

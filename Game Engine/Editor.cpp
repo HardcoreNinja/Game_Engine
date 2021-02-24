@@ -62,7 +62,24 @@ void Editor::initTileMap()
 	this->tileMap = std::make_unique<TILEMAP::TileMap>(
 		this->tileSize,
 		10, 10,
-		"Resources/Images/Tiles/grass.png"
+		this->tileSize, this->tileSize,
+		"Resources/Images/Tiles/grass-dirt-sand-water-mountains-trees.png"
+		);
+}
+void Editor::initTextureSelector()
+{
+	this->sideBar.setSize(sf::Vector2f(48.f, static_cast<float>(this->window->getSize().y)));
+	this->sideBar.setFillColor(sf::Color(50, 50, 50, 100));
+	this->sideBar.setOutlineColor(sf::Color::White);
+	this->sideBar.setOutlineThickness(1.f);
+
+	this->textureSelector = std::make_unique<TILEMAP::TextureSelector>(
+		0.f, 0.f,                       //Texture Selector Position
+		432.f, 240.f,                   //Bounds Size
+		this->tileSize,                 //Tile Size
+		this->tileMap->getTexture(),    //Tile Map Texture
+		this->font,                     //Hide Button Font
+		this->keyTime, this->maxKeyTime //Key Time Variables
 		);
 }
 void Editor::initPauseMenu()
@@ -89,6 +106,7 @@ Editor::Editor(GameInfo* game_info)
 	this->initFonts();
 	this->initButtons();
 	this->initTileMap();
+	this->initTextureSelector();
 	this->initPauseMenu();
 }
 Editor::~Editor()
@@ -101,17 +119,35 @@ void Editor::updatePauseMenuButtons()
 	if (this->pauseMenu->isButtonPressed("EXIT") && this->getKeyTime())
 		this->endState();
 }
+void Editor::updateTextureSelector(const float& dt)
+{
+	this->textureSelector->update(this->mousePositionWindow, dt);
+}
 void Editor::updateTileMap()
 {
 	/*Add Tile*/
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		this->tileMap->addTile(
-			this->mousePositionTile.x, //Mouse Position Tile X
-			this->mousePositionTile.y, //Mouse Position Tile Y
-			0,                         //Tile Layer
-			false,                     //Collision
-			0                          //Tile Type
-		);
+	{
+		if (!this->textureSelector->getIsActive() &&
+			!this->sideBar.getGlobalBounds().contains(static_cast<sf::Vector2f>(this->mousePositionWindow)))
+		{
+			this->tileMap->addTile(
+				this->mousePositionTile.x, //Mouse Position Tile X
+				this->mousePositionTile.y, //Mouse Position Tile Y
+				0,                         //Tile Layer
+				false,                     //Collision
+				0                          //Tile Type
+			);
+		}
+		else if(!this->sideBar.getGlobalBounds().contains(static_cast<sf::Vector2f>(this->mousePositionWindow)))
+		{
+			this->tileMap->setTextureIntRect(this->textureSelector->getTextureIntRect());
+
+			//Debug Test
+			std::cout << this->textureSelector->getTextureIntRect().left << " x " << this->textureSelector->getTextureIntRect().top << '\n';
+			std::cout << this->textureSelector->getTextureIntRect().width << " x " << this->textureSelector->getTextureIntRect().height << '\n';
+		}
+	}
 
 	/*Remove Tile*/
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
@@ -155,12 +191,18 @@ void Editor::update(const float& dt)
 	}
 	else               //Unpaused
 	{
-		this->updateTileMap();
 		this->updateButtons();
+		this->updateTextureSelector(dt);
+		this->updateTileMap();	
 	}
 }
 
+
 /*Render Functions*/
+void Editor::renderTextureSelector(sf::RenderTarget& target)
+{
+	this->textureSelector->render(target);
+}
 void Editor::renderPauseMenu(sf::RenderTarget& target)
 {
 	this->pauseMenu->render(target);
@@ -179,8 +221,11 @@ void Editor::render(sf::RenderTarget* target)
 	if (!target)
 		target = this->window;
 	target->draw(this->backgroundRect);
-	this->renderButtons(*target);
 	this->renderTiles(*target);
+	this->renderTextureSelector(*target);
+	target->draw(this->sideBar);
+	this->renderButtons(*target);
+
 	if(this->isPaused)
 	this->renderPauseMenu(*target);
 }

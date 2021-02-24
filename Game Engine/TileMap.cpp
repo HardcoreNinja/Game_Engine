@@ -19,7 +19,6 @@ TILEMAP::Tile::Tile(
 	this->shape.setOutlineColor(sf::Color::Green);
 	this->shape.setOutlineThickness(1.f);
 }
-
 TILEMAP::Tile::~Tile()
 {
 }
@@ -49,13 +48,18 @@ void TILEMAP::Tile::render(sf::RenderTarget& target)
 
 /*TILE_MAP=======================================================================================================================================================*/
 /*Constuctor & Destructor*/
-TILEMAP::TileMap::TileMap(float tile_size, unsigned map_width, unsigned map_height, std::string tile_sheet_file_path)
+TILEMAP::TileMap::TileMap(
+	float tile_size, 
+	unsigned map_width, unsigned map_height, 
+	int texture_width, int texture_height, 
+	std::string tile_sheet_file_path
+)
 {
 	this->tileSizeF = tile_size;
 	this->tileSizeU = static_cast<unsigned>(tileSizeF);
 	this->mapSizeU.x = map_width;
 	this->mapSizeU.y = map_height;
-	this->textureIntRect = sf::IntRect(0, 0, static_cast<int>(tileSizeU), static_cast<int>(tileSizeU));
+	this->textureIntRect = sf::IntRect(0, 0, texture_width, texture_height);
 	this->textureFilePath = tile_sheet_file_path;
 	this->tileLayers = 1;
 
@@ -76,6 +80,18 @@ TILEMAP::TileMap::TileMap(float tile_size, unsigned map_width, unsigned map_heig
 }
 TILEMAP::TileMap::~TileMap()
 {
+}
+
+/*Getters*/
+const sf::Texture* TILEMAP::TileMap::getTexture()
+{
+	return &this->texture;
+}
+
+/*Setters*/
+void TILEMAP::TileMap::setTextureIntRect(sf::IntRect texture_int_rect)
+{
+	this->textureIntRect = texture_int_rect;
 }
 
 /*Add & Remove Tile Functions*/
@@ -102,7 +118,6 @@ void TILEMAP::TileMap::addTile(
 		}
 	}
 }
-
 void TILEMAP::TileMap::removeTile(const unsigned pos_x, const unsigned pos_y, const unsigned tile_layer)
 {
 	if (pos_x < this->mapSizeU.x && pos_x >= 0 &&
@@ -132,3 +147,142 @@ void TILEMAP::TileMap::render(sf::RenderTarget& target)
 	}
 }
 
+/*TEXTURE_SELECTOR=======================================================================================================================================================*/
+/*Constuctor & Destructor*/
+TILEMAP::TextureSelector::TextureSelector(
+	float pos_x, float pos_y,
+	float bounds_width, float bounds_height,
+	float tile_size,
+	const sf::Texture* texture_Sheet,
+	sf::Font& hide_button_font,
+	int key_time, int max_key_time
+) : keyTime(key_time), maxKeyTime(max_key_time)
+{
+	/*X Position Offset*/
+	float xOffset = 48.f;
+	float hideButtonOffset = 24.f;
+	
+
+	/*Bounds*/
+	this->bounds.setPosition(sf::Vector2f(pos_x + xOffset, pos_y));
+	this->bounds.setSize(sf::Vector2f(bounds_width, bounds_height));
+	this->bounds.setFillColor(sf::Color(50, 50, 50, 100));
+	this->bounds.setOutlineColor(sf::Color::White);
+	this->bounds.setOutlineThickness(1.f);
+
+	/*Sprite Sheet*/
+	this->spriteSheet.setPosition(sf::Vector2f(this->bounds.getPosition().x, this->bounds.getPosition().y));
+	this->spriteSheet.setTexture(*texture_Sheet);
+	this->spriteSheet.setTextureRect(sf::IntRect(0, 0, static_cast<int>(bounds_width), static_cast<int>(bounds_height)));
+
+	this->textureIntRect.width = static_cast<int>(tile_size);
+	this->textureIntRect.height = static_cast<int>(tile_size);
+
+	/*Selector*/
+	this->selector.setPosition(sf::Vector2f(pos_x + xOffset, pos_y));
+	this->selector.setSize(sf::Vector2f(tile_size, tile_size));
+	this->selector.setFillColor(sf::Color::Transparent);
+	this->selector.setOutlineColor(sf::Color::Red);
+	this->selector.setOutlineThickness(1.f);
+
+
+	/*Hide Buttons*/
+	this->hideButton = std::make_unique<GUI::Button>(
+		pos_x + hideButtonOffset, pos_y + hideButtonOffset,                  //Button Rect Position
+		48.f, 48.f,                   //Button Rect Size
+		&hide_button_font, "TS", 16,    //Button Font, Text, and Character Size
+		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50),//Text Color
+		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));    //Button Rect Fill Color (Outline Color Optional)
+
+	/*Tile Size*/
+	this->tileSize = tile_size;
+
+	/*Flags*/
+	this->isHidden = false;
+	this->isActive = false;
+}
+TILEMAP::TextureSelector::~TextureSelector()
+{
+}
+
+/*Getters*/
+const sf::IntRect& TILEMAP::TextureSelector::getTextureIntRect()
+{
+	return this->textureIntRect;
+}
+const bool& TILEMAP::TextureSelector::getIsActive()
+{
+	return this->isActive;
+}
+bool TILEMAP::TextureSelector::getKeyTime()
+{
+	if (this->keyTime >= this->maxKeyTime)
+	{
+		this->keyTime = 0;
+
+		return true;
+	}
+	else
+		return false;
+}
+
+/*Update Functions*/
+void TILEMAP::TextureSelector::updateKeyTime(const float& dt)
+{
+	if (this->keyTime < this->maxKeyTime)
+		this->keyTime += static_cast<int>(2.f * dt * (1.f / dt));
+}
+void TILEMAP::TextureSelector::update(sf::Vector2i& mouse_position_window, const float& dt)
+{
+	/*Key Time*/
+	this->updateKeyTime(dt);
+
+	/*Hide Button*/
+	this->hideButton->update(static_cast<sf::Vector2f>( mouse_position_window));
+	if (this->hideButton->isPressed() && this->getKeyTime())
+	{
+		if (this->isHidden)
+			this->isHidden = false;
+		else
+			this->isHidden = true;
+	}
+
+	/*Check if mouse is within bounds if it's not hidden*/
+	if (!this->isHidden)
+	{
+		if (this->bounds.getGlobalBounds().contains(static_cast<sf::Vector2f>(mouse_position_window)))
+			this->isActive = true;
+		else
+			this->isActive = false;
+
+		if (this->isActive)
+		{
+			this->mousePositionTile.x = (mouse_position_window.x - static_cast<int>(this->bounds.getPosition().x)) / static_cast<unsigned>(this->tileSize);
+			this->mousePositionTile.y = (mouse_position_window.y - static_cast<int>(this->bounds.getPosition().y)) / static_cast<unsigned>(this->tileSize);
+
+			this->selector.setPosition(sf::Vector2f(
+				this->bounds.getPosition().x + this->mousePositionTile.x * this->tileSize,
+				this->bounds.getPosition().y + this->mousePositionTile.y * this->tileSize
+			)
+			);
+
+			this->textureIntRect.left = static_cast<int>(this->selector.getPosition().x - this->bounds.getPosition().x);
+			this->textureIntRect.top = static_cast<int>(this->selector.getPosition().y - this->bounds.getPosition().y);
+		}
+	}
+}
+
+/*Render Functions*/
+void TILEMAP::TextureSelector::render(sf::RenderTarget& target)
+{
+	this->hideButton->render(target);
+	
+	if (!isHidden)
+	{
+		target.draw(this->bounds);
+		target.draw(this->spriteSheet);
+
+		if(this->isActive)
+		target.draw(this->selector);
+	}
+}

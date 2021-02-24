@@ -190,6 +190,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Images\mainmenu_background.jpg" />
+    <Image Include="Resources\Images\Tiles\grass-dirt-sand-water-mountains-trees.png" />
     <Image Include="Resources\Tiles\grass.png" />
   </ItemGroup>
   <ItemGroup>

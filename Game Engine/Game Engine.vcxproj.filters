@@ -161,5 +161,8 @@
     <Image Include="Resources\Tiles\grass.png">
       <Filter>Resource Files\Images\Tiles</Filter>
     </Image>
+    <Image Include="Resources\Images\Tiles\grass-dirt-sand-water-mountains-trees.png">
+      <Filter>Resource Files\Images\Tiles</Filter>
+    </Image>
   </ItemGroup>
 </Project>
