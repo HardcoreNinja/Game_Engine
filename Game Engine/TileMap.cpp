@@ -87,6 +87,10 @@ const sf::Texture* TILEMAP::TileMap::getTexture()
 {
 	return &this->texture;
 }
+const sf::IntRect& TILEMAP::TileMap::getTextureIntRect()
+{
+	return this->textureIntRect;
+}
 
 /*Setters*/
 void TILEMAP::TileMap::setTextureIntRect(sf::IntRect texture_int_rect)

@@ -15,18 +15,21 @@ private:
     /*Tile Map*/
     std::unique_ptr<TILEMAP::TileMap> tileMap;
 
-    /*Texture Selector*/
+    /*Tile Map Flags*/
+    bool collision;
+    unsigned short tileType;
+
+    /*Texture Selector Variables*/
     std::unique_ptr<TILEMAP::TextureSelector> textureSelector;
+    sf::RectangleShape selectorRect;
 
     /*Texture Selector Side Bar*/
     sf::RectangleShape sideBar;
 
     /*Initializers*/
     void initVariables();
-    void initBackground();
     void initKeybinds();
     void initFonts();
-    void initButtons();
     void initTileMap();
     void initTextureSelector();
     void initPauseMenu();
@@ -37,10 +40,10 @@ public:
     virtual ~Editor();
 
     /*Update Functions*/
+    void updateSelectorRect();
     void updatePauseMenuButtons();
     void updateTextureSelector(const float& dt);
     void updateTileMap();
-    void updateButtons();
     virtual void updateUserInput(const float& dt);
     virtual void update(const float& dt);
 
@@ -48,7 +51,6 @@ public:
     void renderPauseMenu(sf::RenderTarget& target);
     void renderTextureSelector(sf::RenderTarget& target);
     void renderTiles(sf::RenderTarget& target);
-    void renderButtons(sf::RenderTarget& target);
     virtual void render(sf::RenderTarget* target);
 };
 #endif

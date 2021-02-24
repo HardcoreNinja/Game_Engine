@@ -64,6 +64,7 @@ namespace TILEMAP
 
 		/*Getters*/
 		const sf::Texture* getTexture();
+		const sf::IntRect& getTextureIntRect();
 
 		/*Setters*/
 		void setTextureIntRect(sf::IntRect texture_int_rect);

@@ -3,20 +3,8 @@
 /*Initializers*/
 void Editor::initVariables()
 {
-}
-void Editor::initBackground()
-{
-	this->backgroundRect.setSize(
-		sf::Vector2f(
-			static_cast<float>(this->graphicsSettings->resolution.width),
-			static_cast<float>(this->graphicsSettings->resolution.height)
-		)
-	);
-
-	if (!this->backgroundTexture.loadFromFile("Resources/Images/mainmenu_background.jpg"))
-		throw("ERROR::MAIN_MENU::FAILED_TO_LOAD::mainmenu_background.jpg");
-
-	this->backgroundRect.setTexture(&this->backgroundTexture);
+	this->collision = false;
+	this->tileType = 0;
 }
 void Editor::initKeybinds()
 {
@@ -48,15 +36,6 @@ void Editor::initFonts()
 
 	this->text.setFont(this->font);
 }
-void Editor::initButtons()
-{
-	this->buttons["BACK"] = std::make_unique<GUI::Button>(
-		100.f, 550.f,                  //Button Rect Position
-		200.f, 50.f,                   //Button Rect Size
-		&this->font, "Back", 50,       //Button Font, Text, and Character Size
-		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50),//Text Color
-		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));    //Button Rect Fill Color (Outline Color Optional)
-}
 void Editor::initTileMap()
 {
 	this->tileMap = std::make_unique<TILEMAP::TileMap>(
@@ -68,11 +47,7 @@ void Editor::initTileMap()
 }
 void Editor::initTextureSelector()
 {
-	this->sideBar.setSize(sf::Vector2f(48.f, static_cast<float>(this->window->getSize().y)));
-	this->sideBar.setFillColor(sf::Color(50, 50, 50, 100));
-	this->sideBar.setOutlineColor(sf::Color::White);
-	this->sideBar.setOutlineThickness(1.f);
-
+	/*Texture Selector Box*/
 	this->textureSelector = std::make_unique<TILEMAP::TextureSelector>(
 		0.f, 0.f,                       //Texture Selector Position
 		432.f, 240.f,                   //Bounds Size
@@ -81,6 +56,19 @@ void Editor::initTextureSelector()
 		this->font,                     //Hide Button Font
 		this->keyTime, this->maxKeyTime //Key Time Variables
 		);
+
+	/*Green Selector That Follows Mouse*/
+	this->selectorRect.setSize(sf::Vector2f(this->tileSize, this->tileSize));
+	this->selectorRect.setOutlineColor(sf::Color::Green);
+	this->selectorRect.setOutlineThickness(1.f);
+	this->selectorRect.setTextureRect(this->tileMap->getTextureIntRect());
+	this->selectorRect.setTexture(this->tileMap->getTexture());
+
+	/*Gray Side Bar*/
+	this->sideBar.setSize(sf::Vector2f(48.f, static_cast<float>(this->window->getSize().y)));
+	this->sideBar.setFillColor(sf::Color(50, 50, 50, 100));
+	this->sideBar.setOutlineColor(sf::Color::White);
+	this->sideBar.setOutlineThickness(1.f);
 }
 void Editor::initPauseMenu()
 {
@@ -113,10 +101,8 @@ Editor::Editor(GameInfo* game_info)
 	: State(game_info)
 {
 	this->initVariables();
-	this->initBackground();
 	this->initKeybinds();
 	this->initFonts();
-	this->initButtons();
 	this->initTileMap();
 	this->initTextureSelector();
 	this->initPauseMenu();
@@ -126,6 +112,21 @@ Editor::~Editor()
 }
 
 /*Update Functions*/
+void Editor::updateSelectorRect()
+{
+	if (!this->textureSelector->getIsActive())
+	{
+		this->selectorRect.setTextureRect(this->tileMap->getTextureIntRect());
+		this->selectorRect.setTexture(this->tileMap->getTexture());
+
+		std::cout << "Selector Int Rect: " << this->tileMap->getTextureIntRect().left << " X " << this->tileMap->getTextureIntRect().top << '\n';
+		this->selectorRect.setPosition(sf::Vector2f(
+			static_cast<float>(this->mousePositionTile.x * this->tileSize),
+			static_cast<float>(this->mousePositionTile.y * this->tileSize)
+		)
+		);
+	}
+}
 void Editor::updatePauseMenuButtons()
 {
 	if (this->pauseMenu->isButtonPressed("SAVE"))
@@ -177,15 +178,6 @@ void Editor::updateTileMap()
 		);
 	}
 }
-void Editor::updateButtons()
-{
-		for (auto& i : this->buttons)
-			i.second->update(this->mousePositionView);
-
-	//Back to Main Menu
-	if (this->buttons["BACK"]->isPressed() && this->getKeyTime())
-		this->endState();	
-}
 void Editor::updateUserInput(const float& dt)
 {
 	/*Quit Game*/
@@ -209,17 +201,20 @@ void Editor::update(const float& dt)
 	}
 	else               //Unpaused
 	{
-		this->updateButtons();
+		//this->updateButtons();
+		this->updateSelectorRect();
 		this->updateTextureSelector(dt);
 		this->updateTileMap();	
 	}
 }
 
-
 /*Render Functions*/
 void Editor::renderTextureSelector(sf::RenderTarget& target)
 {
 	this->textureSelector->render(target);
+
+	if(!this->textureSelector->getIsActive())
+		target.draw(this->selectorRect);
 }
 void Editor::renderPauseMenu(sf::RenderTarget& target)
 {
@@ -229,20 +224,13 @@ void Editor::renderTiles(sf::RenderTarget& target)
 {
 	this->tileMap->render(target);
 }
-void Editor::renderButtons(sf::RenderTarget& target)
-{
-	for (auto& i : this->buttons)
-		i.second->render(target);
-}
 void Editor::render(sf::RenderTarget* target)
 {
 	if (!target)
 		target = this->window;
-	target->draw(this->backgroundRect);
 	this->renderTiles(*target);
 	this->renderTextureSelector(*target);
 	target->draw(this->sideBar);
-	this->renderButtons(*target);
 
 	if(this->isPaused)
 	this->renderPauseMenu(*target);
