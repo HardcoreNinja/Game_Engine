@@ -61,6 +61,9 @@
     <Filter Include="Resource Files\Images\Main Menu Background">
       <UniqueIdentifier>{b9afb2bb-800b-459b-b45e-71299e6f3799}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Config\Tile Map File">
+      <UniqueIdentifier>{733552ba-031d-4549-ba57-5de37ff2764d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Header.cpp">
@@ -147,6 +150,9 @@
     </None>
     <None Include="Config\editor_keybinds.ini">
       <Filter>Resource Files\Config\Keybinds</Filter>
+    </None>
+    <None Include="Config\tile_map.ini">
+      <Filter>Resource Files\Config\Tile Map File</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -5,8 +5,8 @@
 TILEMAP::Tile::Tile(
 	float tile_size, 
 	float pos_x, float pos_y, 
-	sf::Texture& texture, 
-	sf::IntRect& texture_intrect, 
+	const sf::Texture& texture, 
+	const sf::IntRect& texture_intrect, 
 	bool tile_collision, 
 	unsigned short type
 )
@@ -129,6 +129,122 @@ void TILEMAP::TileMap::removeTile(const unsigned pos_x, const unsigned pos_y, co
 			this->tileMap[pos_x][pos_y][tile_layer].reset();
 		}
 	}
+}
+
+/*Clear Memory Functions*/
+void TILEMAP::TileMap::clearMemory()
+{
+	for (size_t pos_x = 0; pos_x < this->mapSizeU.x; pos_x++)
+	{
+		for (size_t pos_y = 0; pos_y < this->mapSizeU.y; pos_y++)
+		{
+			for (size_t tile = 0; tile < this->tileLayers; tile++)
+			{
+				this->tileMap[pos_x][pos_y][tile].reset();
+			}
+			this->tileMap[pos_x][pos_y].clear();
+		}
+		this->tileMap[pos_x].clear();
+	}
+	this->tileMap.clear();
+}
+
+/*Save & Load Functions*/
+void TILEMAP::TileMap::saveToFile(std::string file_path)
+{
+	std::ofstream ofs;
+	ofs.open(file_path);
+
+	if (ofs.is_open())
+	{
+		ofs << this->mapSizeU.x << " " << this->mapSizeU.y  << '\n'
+			<< this->tileSizeU << '\n'
+			<< this->tileLayers << '\n'
+			<< textureFilePath << '\n';
+
+		this->tileMap.push_back(std::vector<std::vector<std::unique_ptr<TILEMAP::Tile>>>());
+
+		for (size_t pos_x = 0; pos_x < this->mapSizeU.x; pos_x++)
+		{
+			for (size_t pos_y = 0; pos_y < this->mapSizeU.y; pos_y++)
+			{
+				for (size_t tile = 0; tile < this->tileLayers; tile++)
+				{
+					if (this->tileMap[pos_x][pos_y][tile])
+						ofs << pos_x << " " << pos_y << " " << tile << " " << this->tileMap[pos_x][pos_y][tile]->getAsString() << " ";
+				}
+			}
+		}
+	}
+	else
+		throw("ERROR::TILEMAP::TILE_MAP::FAILED_TO_SAVE::ofs");
+
+	ofs.close();
+	std::cout << "Saved Tile Map\n";
+}
+void TILEMAP::TileMap::loadFromFile(std::string tile_map_file_path, std::string texture_sheet_file_path)
+{
+	std::ifstream ifs;
+	ifs.open(tile_map_file_path);
+
+	if (ifs.is_open())
+	{
+		sf::Vector2u mapSizeU;
+		unsigned tileSize = 0;
+		unsigned tileLayers = 0;
+		std::string textureFilePath = "";
+		unsigned pos_x = 0;
+		unsigned pos_y = 0;
+		unsigned tile = 0;
+		unsigned intRectLeft = 0;
+		unsigned intRectTop = 0;
+		bool collision = false;
+		short type = 0;
+
+		ifs >> mapSizeU.x >> mapSizeU.y;
+		ifs >> tileSize;
+		ifs >> tileLayers;
+		ifs >> textureFilePath;
+
+		this->mapSizeU = sf::Vector2u(mapSizeU.x, mapSizeU.y);
+		this->tileSizeU = tileSize;
+		this->tileSizeF = static_cast<float>(tileSize);
+		this->tileLayers = tileLayers;
+		this->textureFilePath = textureFilePath;
+
+		this->clearMemory();
+
+		
+		this->tileMap.resize(this->mapSizeU.x);
+		for (size_t pos_x = 0; pos_x < this->mapSizeU.x; pos_x++)
+		{
+			this->tileMap[pos_x].resize(this->mapSizeU.y);
+			for (size_t pos_y = 0; pos_y < this->mapSizeU.y; pos_y++)
+			{
+				this->tileMap[pos_x][pos_y].resize(this->tileLayers);
+			}
+		}
+
+		if(!this->texture.loadFromFile(texture_sheet_file_path))
+			throw("ERROR::TILEMAP::TILE_MAP::FAILED_TO_SAVE::texture_sheet_file_path");
+
+		while (ifs >> pos_x >> pos_y >> tile >> intRectLeft >> intRectTop >> collision >> type)
+		{
+			this->tileMap[pos_x][pos_y][tile] = std::make_unique <TILEMAP::Tile>(
+				this->tileSizeF,
+				pos_x, pos_y,
+				this->texture,
+				sf::IntRect(intRectLeft, intRectTop, this->tileSizeU, this->tileSizeU),
+				collision,
+				type
+				);
+		}
+	}
+	else
+		throw("ERROR::TILEMAP::TILE_MAP::FAILED_TO_LOAD::tile_map_file_path");
+
+	ifs.close();
+	std::cout << "Loaded Tile Map\n";
 }
 
 /*Render Functions*/

@@ -24,8 +24,8 @@ namespace TILEMAP
 		Tile(
 			float tile_size, 
 			float pos_x, float pos_y, 
-			sf::Texture& texture, 
-			sf::IntRect& texture_intrect, 
+			const sf::Texture& texture, 
+			const sf::IntRect& texture_intrect, 
 			bool tile_collision, 
 			unsigned short type = 0
 		);
@@ -80,6 +80,13 @@ namespace TILEMAP
 			const unsigned pos_x, const unsigned pos_y,
 			const unsigned tile_layer
 		);
+
+		/*Clear Memory Functions*/
+		void clearMemory();
+
+		/*Save & Load Functions*/
+		void saveToFile(std::string file_path);
+		void loadFromFile(std::string file_path, std::string texture_sheet_file_path);
 
 		/*Render Functions*/
 		void render(sf::RenderTarget& target);

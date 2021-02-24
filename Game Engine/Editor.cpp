@@ -90,10 +90,22 @@ void Editor::initPauseMenu()
 		);
 
 	this->pauseMenu->addButton(
-		"EXIT", //Key
-		300.f,  // Pos_Y
-		"Exit"  // Button Text
-	); 
+		"EXIT",                                                 //Key
+		static_cast<float>(this->window->getSize().y) - 100.f,  // Pos_Y
+		"Exit"                                                  // Button Text
+	);
+
+	this->pauseMenu->addButton(
+		"SAVE",                                              //Key
+		static_cast<float>(this->window->getSize().y)/ 2.f,  // Pos_Y
+		"Save"                                               // Button Text
+	);
+
+	this->pauseMenu->addButton(
+		"LOAD",                                                         //Key
+		(static_cast<float>(this->window->getSize().y) / 2.f) + 100.f,  // Pos_Y
+		"Load"                                                          // Button Text
+	);
 }
 
 /*Constuctor & Destructor*/
@@ -116,6 +128,12 @@ Editor::~Editor()
 /*Update Functions*/
 void Editor::updatePauseMenuButtons()
 {
+	if (this->pauseMenu->isButtonPressed("SAVE"))
+		this->tileMap->saveToFile("Config/tile_map.ini");
+
+	if (this->pauseMenu->isButtonPressed("LOAD"))
+		this->tileMap->loadFromFile("Config/tile_map.ini", "Resources/Images/Tiles/grass-dirt-sand-water-mountains-trees.png");
+
 	if (this->pauseMenu->isButtonPressed("EXIT") && this->getKeyTime())
 		this->endState();
 }

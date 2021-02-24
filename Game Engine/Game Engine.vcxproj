@@ -187,6 +187,7 @@
     <None Include="Config\settings_active_element_ID.ini" />
     <None Include="Config\settings_keybinds.ini" />
     <None Include="Config\supported_keys.ini" />
+    <None Include="Config\tile_map.ini" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Images\mainmenu_background.jpg" />
