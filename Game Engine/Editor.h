@@ -57,7 +57,7 @@ public:
     void renderSelectorRect(sf::RenderTarget& target);
     void renderTextureSelector(sf::RenderTarget& target);
     void renderPauseMenu(sf::RenderTarget& target);
-    void renderTiles(sf::RenderTarget& target);
+    void renderTileMap(sf::RenderTarget& target);
     virtual void render(sf::RenderTarget* target);
 };
 #endif

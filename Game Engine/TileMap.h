@@ -140,7 +140,7 @@ namespace TILEMAP
 		void update(const sf::Vector2i& mouse_position_window, const float& dt);
 
 		/*Render Functions*/
-		void render(sf::RenderTarget& target);
+		void render(sf::RenderTarget& target, const sf::View& view);
 
 	};
 }

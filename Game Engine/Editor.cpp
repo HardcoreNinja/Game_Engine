@@ -9,8 +9,8 @@ void Editor::initVariables()
 }
 void Editor::initView()
 {
-	this->view.setSize(static_cast<float>(this->graphicsSettings->resolution.width), static_cast<float>(this->graphicsSettings->resolution.height));
-	this->view.setCenter(static_cast<float>(this->graphicsSettings->resolution.width) / 2.f, static_cast<float>(this->graphicsSettings->resolution.height) / 2.f);
+	this->view.setSize(static_cast<float>(this->window->getSize().x), static_cast<float>(this->window->getSize().y));
+	this->view.setCenter(static_cast<float>(this->window->getSize().x) / 2.f, static_cast<float>(this->window->getSize().y) / 2.f);
 }
 void Editor::initKeybinds()
 {
@@ -166,7 +166,7 @@ void Editor::updatePauseMenuButtons()
 }
 void Editor::updateTextureSelector(const float& dt)
 {
-	this->textureSelector->update(static_cast<sf::Vector2i>(this->mousePositionView), dt);
+	this->textureSelector->update(static_cast<sf::Vector2i>(this->mousePositionWindow), dt);
 }
 void Editor::updateTileMap()
 {
@@ -251,7 +251,7 @@ void Editor::update(const float& dt)
 
 	if (this->isPaused) //Paused
 	{
-		this->pauseMenu->update(static_cast<sf::Vector2f>(this->mousePositionView));
+		this->pauseMenu->update(static_cast<sf::Vector2f>(this->mousePositionWindow));
 		this->updatePauseMenuButtons();
 	}
 	else               //Unpaused
@@ -270,18 +270,21 @@ void Editor::renderCursorText(sf::RenderTarget& target)
 }
 void Editor::renderSelectorRect(sf::RenderTarget& target)
 {
+	/*View*/
+	this->window->setView(this->view);
+
 	if (!this->textureSelector->getIsActive())
 		target.draw(this->selectorRect);
 }
 void Editor::renderTextureSelector(sf::RenderTarget& target)
 {
-	this->textureSelector->render(target);
+	this->textureSelector->render(target, this->window->getDefaultView());
 }
 void Editor::renderPauseMenu(sf::RenderTarget& target)
 {
 	this->pauseMenu->render(target);
 }
-void Editor::renderTiles(sf::RenderTarget& target)
+void Editor::renderTileMap(sf::RenderTarget& target)
 {
 	this->tileMap->render(target);
 }
@@ -289,13 +292,17 @@ void Editor::render(sf::RenderTarget* target)
 {
 	if (!target)
 		target = this->window;
+
+	/*Items Rendered with Camera View*/
 	target->setView(this->view);
-	this->renderTiles(*target);
+	this->renderTileMap(*target);
 	this->renderTextureSelector(*target);
 	this->renderSelectorRect(*target);
+
+	/*Items Rendered with Default Window View*/
+	this->window->setView(this->window->getDefaultView());
 	this->renderCursorText(*target);
 	target->draw(this->sideBar);
-
 	if(this->isPaused)
 	this->renderPauseMenu(*target);
 }

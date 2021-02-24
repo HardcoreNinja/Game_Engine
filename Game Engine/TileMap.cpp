@@ -395,8 +395,11 @@ void TILEMAP::TextureSelector::update(const sf::Vector2i& mouse_position_window,
 }
 
 /*Render Functions*/
-void TILEMAP::TextureSelector::render(sf::RenderTarget& target)
+void TILEMAP::TextureSelector::render(sf::RenderTarget& target, const sf::View& view)
 {
+	/*View*/
+	target.setView(view);
+
 	this->hideButton->render(target);
 	
 	if (!isHidden)
