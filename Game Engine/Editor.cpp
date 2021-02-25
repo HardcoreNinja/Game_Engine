@@ -53,7 +53,7 @@ void Editor::initTileMap()
 {
 	this->tileMap = std::make_unique<TILEMAP::TileMap>(
 		this->tileSize,                        //Tile Size
-		10, 10,                                // Map Width & Height (in Squares)
+		9, 9,                                  // Map Width & Height (in Squares)
 		this->tileSize, this->tileSize,        //Texture Width & Height
 		"Resources/Images/Tiles/buildings.png" //Tile Sheet File Path
 		);
@@ -108,6 +108,10 @@ void Editor::initPauseMenu()
 		"Load"                                                          // Button Text
 	);
 }
+void Editor::initLatestTileMap()
+{
+	this->tileMap->loadFromFile("Config/tile_map.ini", "Resources/Images/Tiles/buildings.png");
+}
 
 /*Constuctor & Destructor*/
 Editor::Editor(GameInfo* game_info)
@@ -120,6 +124,7 @@ Editor::Editor(GameInfo* game_info)
 	this->initTileMap();
 	this->initTextureSelector();
 	this->initPauseMenu();
+	this->initLatestTileMap();
 }
 Editor::~Editor()
 {

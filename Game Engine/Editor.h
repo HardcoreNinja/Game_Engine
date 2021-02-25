@@ -41,6 +41,7 @@ private:
     void initTileMap();
     void initTextureSelector();
     void initPauseMenu();
+    void initLatestTileMap();
 
 public:
     /*Constuctor & Destructor*/
