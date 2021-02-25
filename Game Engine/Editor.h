@@ -18,6 +18,10 @@ private:
     /*Tile Map Flags*/
     bool collision;
     unsigned short tileType;
+    unsigned short tileRotationDegrees;
+    unsigned short maxTileRotationDegrees;
+    unsigned short tileLayers;
+    unsigned short maxTileLayers;
 
     /*Texture Selector Variables*/
     std::unique_ptr<TILEMAP::TextureSelector> textureSelector;
@@ -44,6 +48,8 @@ public:
     virtual ~Editor();
 
     /*Update Functions*/
+    void updateTileRotation();
+    void updateTileLayers();
     void updateCursorText();
     void updateSelectorRect();
     void updatePauseMenuButtons();

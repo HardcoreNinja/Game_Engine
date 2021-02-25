@@ -8,16 +8,18 @@ TILEMAP::Tile::Tile(
 	const sf::Texture& texture, 
 	const sf::IntRect& texture_intrect, 
 	bool tile_collision, 
-	unsigned short type
+	unsigned short type,
+	unsigned short shape_rotation
 )
-	: collision(tile_collision), tileType(type)
+	: collision(tile_collision), tileType(type), shapeRotation(shape_rotation)
 {
 	this->shape.setSize(sf::Vector2f(tile_size, tile_size));
 	this->shape.setPosition(sf::Vector2f(static_cast<float>(pos_x) * tile_size, static_cast<float>(pos_y) * tile_size));
 	this->shape.setTexture(&texture);
 	this->shape.setTextureRect(texture_intrect);
-	this->shape.setOutlineColor(sf::Color::Green);
+	this->shape.setOutlineColor(sf::Color::Transparent);
 	this->shape.setOutlineThickness(1.f);
+	this->shape.setRotation(this->shapeRotation);
 }
 TILEMAP::Tile::~Tile()
 {
@@ -35,7 +37,8 @@ const std::string TILEMAP::Tile::getAsString() const
 	ss << this->shape.getTextureRect().left << " "
 		<< this->shape.getTextureRect().top << " "
 		<< this->collision << " "
-		<< this->tileType;
+		<< this->tileType << " "
+		<< this->shapeRotation;
 
 	return ss.str();
 }
@@ -61,7 +64,7 @@ TILEMAP::TileMap::TileMap(
 	this->mapSizeU.y = map_height;
 	this->textureIntRect = sf::IntRect(0, 0, texture_width, texture_height);
 	this->textureFilePath = tile_sheet_file_path;
-	this->tileLayers = 1;
+	this->tileLayers = 3;
 
 	if (!this->texture.loadFromFile(tile_sheet_file_path))
 	{
@@ -103,7 +106,8 @@ void TILEMAP::TileMap::addTile(
 	const unsigned pos_x, const unsigned pos_y, 
 	const unsigned tile_layer,
 	const bool& tile_collision, 
-	const unsigned short& tile_type)
+	const unsigned short& tile_type,
+	unsigned short& rotation_degrees)
 {
 	if (pos_x < this->mapSizeU.x && pos_x >= 0 &&
 		pos_y < this->mapSizeU.y && pos_y >= 0 &&
@@ -117,7 +121,8 @@ void TILEMAP::TileMap::addTile(
 				this->texture,
 				this->textureIntRect,
 				tile_collision,
-				tile_type
+				tile_type,
+				rotation_degrees
 				);
 		}
 	}
@@ -204,6 +209,7 @@ void TILEMAP::TileMap::loadFromFile(std::string tile_map_file_path, std::string 
 		unsigned intRectTop = 0;
 		bool collision = false;
 		short type = 0;
+		unsigned short shapeRotation;
 
 		ifs >> mapSizeU.x >> mapSizeU.y;
 		ifs >> tileSize;
@@ -232,7 +238,7 @@ void TILEMAP::TileMap::loadFromFile(std::string tile_map_file_path, std::string 
 		if(!this->texture.loadFromFile(texture_sheet_file_path))
 			throw("ERROR::TILEMAP::TILE_MAP::FAILED_TO_SAVE::texture_sheet_file_path");
 
-		while (ifs >> pos_x >> pos_y >> tile >> intRectLeft >> intRectTop >> collision >> type)
+		while (ifs >> pos_x >> pos_y >> tile >> intRectLeft >> intRectTop >> collision >> type >> shapeRotation)
 		{
 			this->tileMap[pos_x][pos_y][tile] = std::make_unique <TILEMAP::Tile>(
 				this->tileSizeF,
@@ -240,7 +246,8 @@ void TILEMAP::TileMap::loadFromFile(std::string tile_map_file_path, std::string 
 				this->texture,
 				sf::IntRect(intRectLeft, intRectTop, this->tileSizeU, this->tileSizeU),
 				collision,
-				type
+				type,
+				shapeRotation
 				);
 		}
 	}
@@ -308,13 +315,13 @@ TILEMAP::TextureSelector::TextureSelector(
 
 	/*Hide Buttons*/
 	this->hideButton = std::make_unique<GUI::Button>(
-		pos_x + hideButtonOffset, pos_y + hideButtonOffset,                  //Button Rect Position
-		48.f, 48.f,                   //Button Rect Size
-		&hide_button_font, "TS", 16,    //Button Font, Text, and Character Size
-		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50),//Text Color
-		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0),
-		sf::Color::White, sf::Color::White, sf::Color::White
-		);//Button Rect Fill Color (Outline Color Optional)
+		pos_x + hideButtonOffset, pos_y + hideButtonOffset,                              //Button Rect Position
+		48.f, 48.f,                                                                      //Button Rect Size
+		&hide_button_font, "TS", 16,                                                     //Button Font, Text, and Character Size
+		sf::Color::White, sf::Color::White, sf::Color::White,                            //Text Color
+		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0), //Button Rect Fill Color
+		sf::Color::White, sf::Color::White, sf::Color::White                             //Button Rect Outline Color
+		);
 
 	/*Tile Size*/
 	this->tileSize = tile_size;

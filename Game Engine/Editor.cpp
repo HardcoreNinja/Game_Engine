@@ -6,6 +6,10 @@ void Editor::initVariables()
 	this->collision = false;
 	this->tileType = TILEMAP::TileType::Default;
 	this->cameraSpeed = 10.f;
+	this->tileRotationDegrees = 0;
+	this->maxTileRotationDegrees = 360;
+	this->tileLayers = 0;
+	this->maxTileLayers = 3;
 }
 void Editor::initView()
 {
@@ -48,10 +52,10 @@ void Editor::initFonts()
 void Editor::initTileMap()
 {
 	this->tileMap = std::make_unique<TILEMAP::TileMap>(
-		this->tileSize,
-		10, 10,
-		this->tileSize, this->tileSize,
-		"Resources/Images/Tiles/grass-dirt-sand-water-mountains-trees.png"
+		this->tileSize,                        //Tile Size
+		10, 10,                                // Map Width & Height (in Squares)
+		this->tileSize, this->tileSize,        //Texture Width & Height
+		"Resources/Images/Tiles/buildings.png" //Tile Sheet File Path
 		);
 }
 void Editor::initTextureSelector()
@@ -59,7 +63,7 @@ void Editor::initTextureSelector()
 	/*Texture Selector Box*/
 	this->textureSelector = std::make_unique<TILEMAP::TextureSelector>(
 		0.f, 0.f,                       //Texture Selector Position
-		432.f, 240.f,                   //Bounds Size
+		384.f, 816.f,                   //Bounds Size
 		this->tileSize,                 //Tile Size
 		this->tileMap->getTexture(),    //Tile Map Texture
 		this->font,                     //Hide Button Font
@@ -122,6 +126,20 @@ Editor::~Editor()
 }
 
 /*Update Functions*/
+void Editor::updateTileRotation()
+{
+	if (this->tileRotationDegrees < this->maxTileRotationDegrees)
+		this->tileRotationDegrees += 90;
+	else if (this->tileRotationDegrees == this->maxTileRotationDegrees)
+		this->tileRotationDegrees = 0;
+}
+void Editor::updateTileLayers()
+{
+	if (this->tileLayers < this->maxTileLayers)
+		this->tileLayers += 1;
+	else if (this->tileLayers == this->maxTileLayers)
+		this->tileLayers = 0;
+}
 void Editor::updateCursorText()
 {
 	this->text.setPosition((static_cast<float>(this->mousePositionWindow.x) + 100.f), (static_cast<float>(this->mousePositionWindow.y) - 50.f));
@@ -132,7 +150,9 @@ void Editor::updateCursorText()
 		<< "Mouse Position Tile: " << this->mousePositionTile.x << " x " << this->mousePositionTile.y << '\n'
 		<< "Tile Map Int Rec (left & top): " << this->tileMap->getTextureIntRect().left << " x " << this->tileMap->getTextureIntRect().top << '\n'
 		<< "Collision Bool: " << this->collision << '\n'
-		<< "Tile Type: " << this->tileType << '\n';
+		<< "Tile Type: " << this->tileType << '\n'
+		<< "Rotation Degrees" << this->tileRotationDegrees << '\n'
+		<< "Tile Layer: " << this->tileLayers << '\n';
 
 	this->text.setString(ss.str());
 }
@@ -142,6 +162,7 @@ void Editor::updateSelectorRect()
 	{
 		this->selectorRect.setTextureRect(this->tileMap->getTextureIntRect());
 		this->selectorRect.setTexture(this->tileMap->getTexture());
+		this->selectorRect.setRotation(this->tileRotationDegrees);
 
 		//Debug Test
 		//std::cout << "Selector Int Rect: " << this->tileMap->getTextureIntRect().left << " X " << this->tileMap->getTextureIntRect().top << '\n';
@@ -159,7 +180,7 @@ void Editor::updatePauseMenuButtons()
 		this->tileMap->saveToFile("Config/tile_map.ini");
 
 	if (this->pauseMenu->isButtonPressed("LOAD"))
-		this->tileMap->loadFromFile("Config/tile_map.ini", "Resources/Images/Tiles/grass-dirt-sand-water-mountains-trees.png");
+		this->tileMap->loadFromFile("Config/tile_map.ini", "Resources/Images/Tiles/buildings.png");
 
 	if (this->pauseMenu->isButtonPressed("EXIT") && this->getKeyTime())
 		this->endState();
@@ -179,9 +200,10 @@ void Editor::updateTileMap()
 			this->tileMap->addTile(
 				this->mousePositionTile.x, //Mouse Position Tile X
 				this->mousePositionTile.y, //Mouse Position Tile Y
-				0,                         //Tile Layer
+				this->tileLayers,          //Tile Layer
 				this->collision,           //Collision
-				this->tileType             //Tile Type
+				this->tileType,            //Tile Type
+				this->tileRotationDegrees
 			);
 		}
 		else if(!this->sideBar.getGlobalBounds().contains(static_cast<sf::Vector2f>(this->mousePositionWindow)))
@@ -200,7 +222,7 @@ void Editor::updateTileMap()
 		this->tileMap->removeTile(
 			this->mousePositionTile.x, //Mouse Position Tile X
 			this->mousePositionTile.y, //Mouse Position Tile Y
-			0                          //Tile Layer
+			this->tileLayers           //Tile Layer
 		);
 	}
 }
@@ -233,6 +255,14 @@ void Editor::updateUserInput(const float& dt)
 	/*Decrease Tile Type*/
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("DECREASE_TYPE"))) && this->getKeyTime() && this->tileType != 0)
 		this->tileType -= 1;
+
+	/*Rotate Tile*/
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("ROTATE_TILE"))) && this->getKeyTime())
+		this->updateTileRotation();
+
+	/*Tile Layers*/
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("TILE_LAYERS"))) && this->getKeyTime())
+		this->updateTileLayers();
 
 	/*Quit Game*/
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("PAUSE_GAME"))) && this->getKeyTime())

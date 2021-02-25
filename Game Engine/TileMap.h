@@ -18,6 +18,7 @@ namespace TILEMAP
 		sf::RectangleShape shape;
 		bool collision;
 		unsigned short tileType;
+		unsigned short shapeRotation;
 
 	public:
 		/*Constuctor & Destructor*/
@@ -27,7 +28,8 @@ namespace TILEMAP
 			const sf::Texture& texture, 
 			const sf::IntRect& texture_intrect, 
 			bool tile_collision, 
-			unsigned short type = 0
+			unsigned short type = 0,
+			unsigned short shape_rotation = 0
 		);
 		virtual ~Tile();
 
@@ -74,7 +76,8 @@ namespace TILEMAP
 		const unsigned pos_x, const unsigned pos_y,
 			const unsigned tile_layer,
 			const bool& collision, 
-			const unsigned short& tile_type
+			const unsigned short& tile_type,
+			unsigned short& rotation_degrees
 		);
 
 		void removeTile(

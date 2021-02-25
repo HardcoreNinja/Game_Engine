@@ -80,19 +80,6 @@ void Game::updateDeltaTime()
 {
 	this->dt = this->dtClock.restart().asSeconds();
 }
-
-/*May be able to complete remove this... Not 100! sure yet!*/
-/*
-void Game::updateSFMLEvents()
-{
-
-	while (this->window->pollEvent(this->sfmlEvent))
-	{
-		if (this->sfmlEvent.type == sf::Event::Closed)
-			this->window->close();
-	}
-}*/
-
 void Game::update()
 {
 	this->updateDeltaTime();
@@ -113,7 +100,7 @@ void Game::update()
 /*Render Functions*/
 void Game::render()
 {
-	this->window->clear(sf::Color::Black);
+	this->window->clear(sf::Color(57, 68, 37));
 	if(!this->states.empty())
 	this->states.back()->render();
 	this->window->display();
