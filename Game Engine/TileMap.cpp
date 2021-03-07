@@ -327,7 +327,7 @@ TILEMAP::TextureSelector::TextureSelector(
 	this->tileSize = tile_size;
 
 	/*Flags*/
-	this->isHidden = false;
+	this->isHidden = true;
 	this->isActive = false;
 }
 TILEMAP::TextureSelector::~TextureSelector()
