@@ -1,5 +1,15 @@
 #include "Header.h"
 #include "State.h"
+/*Initializers*/
+void State::initView()
+{
+	this->defaultWindowView = this->window->getDefaultView();
+	this->defaultWindowView.setCenter(this->window->getDefaultView().getCenter());
+
+	this->view.setSize(static_cast<float>(this->window->getSize().x), static_cast<float>(this->window->getSize().y));
+	this->view.setCenter(static_cast<float>(this->window->getSize().x) / 2.f, static_cast<float>(this->window->getSize().y) / 2.f);
+}
+
 /*MainMenu Initializers*/
 void State::initMainMenuBackground()
 {
@@ -84,6 +94,7 @@ State::State(GameInfo* game_info)
 	this->mouseReleased = false;
 	this->tileSize = 48.f;
 	this->isPaused = false;
+	this->initView();
 }
 State::~State()
 {
@@ -129,11 +140,13 @@ void State::updateSFMLEvents()
 			std::cout << "Mouse Released!\n";
 			this->mouseReleased = true;
 		}
+		if (this->sfmlEvent->type == sf::Event::Resized)
+			this->resizeView();
 	}
 }
 
 /*Update Functions*/
-void State::updateMousePosition(sf::View* view)
+void State::updateMousePosition(sf::View* view, sf::View* default_window_view)
 {
 	/*Mouse Position Desktop*/
 	this->mousePositionDesktop = sf::Mouse::getPosition();
@@ -145,6 +158,11 @@ void State::updateMousePosition(sf::View* view)
 	if (view)
 		this->window->setView(*view);
 	this->mousePositionView = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));
+
+	/*Mouse Position GUI*/
+	if (default_window_view)
+		this->window->setView(*default_window_view);
+	this->mousePositionGUI = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));
 
 	/*Mouse Position Tile w/ View as Base*/
 	this->mousePositionTile = sf::Vector2u(
@@ -162,6 +180,16 @@ void State::updateKeyTime(const float& dt)
 	/*Test Debug
 	std::cout << this->keyTime << '\n';
 	*/
+}
+
+/*Resize View*/
+void State::resizeView()
+{
+	float aspectRatio = static_cast<float>(this->window->getSize().x) / static_cast<float>(this->window->getSize().y);
+
+	this->defaultWindowView.setSize(static_cast<float>(this->window->getSize().x) * aspectRatio, static_cast<float>(this->window->getSize().y) * aspectRatio);
+
+	this->view.setSize(static_cast<float>(this->window->getSize().x) * aspectRatio, static_cast<float>(this->window->getSize().y) * aspectRatio);
 }
 
 /*Pause Menu Functions*/

@@ -67,9 +67,11 @@ protected:
 	sf::Vector2i mousePositionDesktop;
 	sf::Vector2i mousePositionWindow;
 	sf::Vector2f mousePositionView;
+	sf::Vector2f mousePositionGUI;
 	sf::Vector2u mousePositionTile;
 
 	/*View*/
+	sf::View defaultWindowView;
 	sf::View view;
 
 	/*Pause Menu*/
@@ -83,6 +85,9 @@ protected:
 
 	/*Pause Menu Flags*/
 	bool isPaused;
+
+	/*Initializers*/
+	void initView();
 
 public:
 	/*MainMenu Initializers*/
@@ -107,10 +112,13 @@ public:
 	void updateSFMLEvents();
 
 	/*Update Functions*/
-	virtual void updateMousePosition(sf::View* view = NULL);
+	virtual void updateMousePosition(sf::View* view = NULL, sf::View* default_window_view = NULL);
 	virtual void updateKeyTime(const float& dt);
 	virtual void updateUserInput(const float& dt) = 0;
 	virtual void update(const float& dt) = 0;
+
+	/*Resize View*/
+	void resizeView();
 
 	/*Pause Menu Functions*/
 	void pause();

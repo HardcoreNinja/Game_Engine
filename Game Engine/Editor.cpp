@@ -11,11 +11,6 @@ void Editor::initVariables()
 	this->tileLayers = 0;
 	this->maxTileLayers = 3;
 }
-void Editor::initView()
-{
-	this->view.setSize(static_cast<float>(this->window->getSize().x), static_cast<float>(this->window->getSize().y));
-	this->view.setCenter(static_cast<float>(this->window->getSize().x) / 2.f, static_cast<float>(this->window->getSize().y) / 2.f);
-}
 void Editor::initKeybinds()
 {
 	std::ifstream ifs("Config/editor_keybinds.ini");
@@ -118,7 +113,6 @@ Editor::Editor(GameInfo* game_info)
 	: State(game_info)
 {
 	this->initVariables();
-	this->initView();
 	this->initKeybinds();
 	this->initFonts();
 	this->initTileMap();
@@ -147,7 +141,7 @@ void Editor::updateTileLayers()
 }
 void Editor::updateCursorText()
 {
-	this->text.setPosition((static_cast<float>(this->mousePositionWindow.x) + 100.f), (static_cast<float>(this->mousePositionWindow.y) - 50.f));
+	this->text.setPosition((static_cast<float>(this->mousePositionGUI.x) + 100.f), (static_cast<float>(this->mousePositionGUI.y) - 50.f));
 
 	std::stringstream ss;
 
@@ -192,7 +186,7 @@ void Editor::updatePauseMenuButtons()
 }
 void Editor::updateTextureSelector(const float& dt)
 {
-	this->textureSelector->update(static_cast<sf::Vector2i>(this->mousePositionWindow), dt);
+	this->textureSelector->update(static_cast<sf::Vector2i>(this->mousePositionGUI), dt);
 }
 void Editor::updateTileMap()
 {
@@ -281,12 +275,12 @@ void Editor::update(const float& dt)
 {
 	this->updateSFMLEvents();
 	this->updateKeyTime(dt);
-	this->updateMousePosition(&this->view);
+	this->updateMousePosition(&this->view, &this->defaultWindowView);
 	this->updateUserInput(dt);
 
 	if (this->isPaused) //Paused
 	{
-		this->pauseMenu->update(static_cast<sf::Vector2f>(this->mousePositionWindow));
+		this->pauseMenu->update(static_cast<sf::Vector2f>(this->mousePositionGUI));
 		this->updatePauseMenuButtons();
 	}
 	else               //Unpaused
@@ -313,7 +307,7 @@ void Editor::renderSelectorRect(sf::RenderTarget& target)
 }
 void Editor::renderTextureSelector(sf::RenderTarget& target)
 {
-	this->textureSelector->render(target, this->window->getDefaultView());
+	this->textureSelector->render(target, this->defaultWindowView);
 }
 void Editor::renderPauseMenu(sf::RenderTarget& target)
 {
@@ -335,7 +329,7 @@ void Editor::render(sf::RenderTarget* target)
 	this->renderSelectorRect(*target);
 
 	/*Items Rendered with Default Window View*/
-	this->window->setView(this->window->getDefaultView());
+	this->window->setView(this->defaultWindowView);
 	this->renderCursorText(*target);
 	target->draw(this->sideBar);
 	if(this->isPaused)

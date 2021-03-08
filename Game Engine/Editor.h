@@ -35,7 +35,6 @@ private:
 
     /*Initializers*/
     void initVariables();
-    void initView();
     void initKeybinds();
     void initFonts();
     void initTileMap();
