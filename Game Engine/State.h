@@ -108,14 +108,17 @@ public:
 	/*Setters*/
 	void endState();
 
-	/*Polling Event Functions*/
-	void updateSFMLEvents();
-
 	/*Update Functions*/
+	void updateGraphicsSettings();
+	void updateSFMLEvents();
 	virtual void updateMousePosition(sf::View* view = NULL, sf::View* default_window_view = NULL);
 	virtual void updateKeyTime(const float& dt);
 	virtual void updateUserInput(const float& dt) = 0;
 	virtual void update(const float& dt) = 0;
+
+	/*Reinitialize Functions*/
+	void createWindow();
+	void initializeMainMenu();
 
 	/*Resize View*/
 	void resizeView();

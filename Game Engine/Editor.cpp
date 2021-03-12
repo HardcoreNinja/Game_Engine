@@ -145,7 +145,8 @@ void Editor::updateCursorText()
 
 	std::stringstream ss;
 
-	ss << "Mouse Position View: " << this->mousePositionView.x << " x " << this->mousePositionView.y << '\n'
+	ss << "Mouse Position Window: " << this->mousePositionWindow.x << " x " << this->mousePositionWindow.y << '\n'
+		<< "Mouse Position View: " << this->mousePositionView.x << " x " << this->mousePositionView.y << '\n'
 		<< "Mouse Position Tile: " << this->mousePositionTile.x << " x " << this->mousePositionTile.y << '\n'
 		<< "Tile Map Int Rec (left & top): " << this->tileMap->getTextureIntRect().left << " x " << this->tileMap->getTextureIntRect().top << '\n'
 		<< "Collision Bool: " << this->collision << '\n'

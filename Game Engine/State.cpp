@@ -122,7 +122,14 @@ void State::endState()
 	this->isQuit = true;
 }
 
-/*Polling Event Functions*/
+/*Update Functions*/
+void State::updateGraphicsSettings()
+{
+	this->gameInfo->graphicsSettings->resolution = sf::VideoMode(this->window->getSize().x, this->window->getSize().y);
+	this->graphicsSettings->saveToFile();
+	this->createWindow();
+	this->initializeMainMenu();
+}
 void State::updateSFMLEvents()
 {
 	while (this->window->pollEvent(*this->sfmlEvent))
@@ -141,11 +148,13 @@ void State::updateSFMLEvents()
 			this->mouseReleased = true;
 		}
 		if (this->sfmlEvent->type == sf::Event::Resized)
+		{
+			std::cout << "New Resized Window Size: " << this->window->getSize().x << "x" << this->window->getSize().y << '\n';
 			this->resizeView();
+			this->updateGraphicsSettings();
+		}
 	}
 }
-
-/*Update Functions*/
 void State::updateMousePosition(sf::View* view, sf::View* default_window_view)
 {
 	/*Mouse Position Desktop*/
@@ -182,12 +191,35 @@ void State::updateKeyTime(const float& dt)
 	*/
 }
 
+/*Reinitialize Functions*/
+void State::createWindow()
+{
+	auto style = this->gameInfo->graphicsSettings->isFullscreen ? sf::Style::Fullscreen : sf::Style::Default;
+	{
+		this->window->create(
+			this->gameInfo->graphicsSettings->resolution,     //Window Resolution
+			this->gameInfo->graphicsSettings->title,          //Window Title
+			style,                                            //Fullscreen Style or not
+			this->gameInfo->graphicsSettings->contextSettings //Anti Aliasing Level
+		);
+	}
+	this->window->setFramerateLimit(this->gameInfo->graphicsSettings->frameRateLimit); //Framerate Limit
+	this->window->setVerticalSyncEnabled(this->gameInfo->graphicsSettings->isVSync);   //VSync Enabled
+}
+void State::initializeMainMenu()
+{
+	this->states[0].at(0)->initMainMenuBackground();
+	this->states[0].at(0)->initMainMenuKeybinds();
+	this->states[0].at(0)->initMainMenuFonts();
+	this->states[0].at(0)->initMainMenuButtons();
+}
+
 /*Resize View*/
 void State::resizeView()
 {
 	float aspectRatio = static_cast<float>(this->window->getSize().x) / static_cast<float>(this->window->getSize().y);
 
-	this->defaultWindowView.setSize(static_cast<float>(this->window->getSize().x) * aspectRatio, static_cast<float>(this->window->getSize().y) * aspectRatio);
+	//this->defaultWindowView.setSize(static_cast<float>(this->window->getSize().x) * aspectRatio, static_cast<float>(this->window->getSize().y) * aspectRatio);
 
 	this->view.setSize(static_cast<float>(this->window->getSize().x) * aspectRatio, static_cast<float>(this->window->getSize().y) * aspectRatio);
 }
