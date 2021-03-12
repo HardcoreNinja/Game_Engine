@@ -231,49 +231,51 @@ void Editor::updateTileMap()
 }
 void Editor::updateUserInput(const float& dt)
 {
-	/*Camera Controls*/
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_UP"))))
-		this->view.move(sf::Vector2f(0.f, -this->cameraSpeed * dt * (1.f / dt)));
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_DOWN"))))
-		this->view.move(sf::Vector2f(0.f, this->cameraSpeed * dt * (1.f / dt)));
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_LEFT"))))
-		this->view.move(sf::Vector2f(-this->cameraSpeed * dt * (1.f / dt), 0.f));
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_RIGHT"))))
-		this->view.move(sf::Vector2f(this->cameraSpeed * dt * (1.f / dt), 0.f));
-
-	/*Collision Toggle*/
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("COLLISION_TOGGLE"))) && this->getKeyTime())
-		if (this->collision)
-			this->collision = false;
-		else
-			this->collision = true;
-
-	/*Increase Tile Type*/
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("INCREASE_TYPE"))) && this->getKeyTime())
-		this->tileType += 1;
-
-	/*Decrease Tile Type*/
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("DECREASE_TYPE"))) && this->getKeyTime() && this->tileType != 0)
-		this->tileType -= 1;
-
-	/*Rotate Tile*/
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("ROTATE_TILE"))) && this->getKeyTime())
-		this->updateTileRotation();
-
-	/*Tile Layers*/
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("TILE_LAYERS"))) && this->getKeyTime())
-		this->updateTileLayers();
-
-	/*Quit Game*/
+	/*Pause Game*/
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("PAUSE_GAME"))) && this->getKeyTime())
 		if (!this->isPaused)
 			this->pause();
 		else
 			this->unpause();
 
+	if (!this->isPaused)
+	{
+		/*Camera Controls*/
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_UP"))))
+			this->view.move(sf::Vector2f(0.f, -this->cameraSpeed * dt * (1.f / dt)));
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_DOWN"))))
+			this->view.move(sf::Vector2f(0.f, this->cameraSpeed * dt * (1.f / dt)));
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_LEFT"))))
+			this->view.move(sf::Vector2f(-this->cameraSpeed * dt * (1.f / dt), 0.f));
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_RIGHT"))))
+			this->view.move(sf::Vector2f(this->cameraSpeed * dt * (1.f / dt), 0.f));
+
+		/*Collision Toggle*/
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("COLLISION_TOGGLE"))) && this->getKeyTime())
+			if (this->collision)
+				this->collision = false;
+			else
+				this->collision = true;
+
+		/*Increase Tile Type*/
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("INCREASE_TYPE"))) && this->getKeyTime())
+			this->tileType += 1;
+
+		/*Decrease Tile Type*/
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("DECREASE_TYPE"))) && this->getKeyTime() && this->tileType != 0)
+			this->tileType -= 1;
+
+		/*Rotate Tile*/
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("ROTATE_TILE"))) && this->getKeyTime())
+			this->updateTileRotation();
+
+		/*Tile Layers*/
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("TILE_LAYERS"))) && this->getKeyTime())
+			this->updateTileLayers();
+	}
 }
 void Editor::update(const float& dt)
 {
