@@ -326,6 +326,9 @@ void Settings::update(const float& dt)
 	this->updateButtons();
 	this->updateDropdownLists(dt);
 	this->updateUserInput(dt);
+
+	if (this->resized)
+		this->reinitializeSettings();
 }
 
 /*Window Functions*/
@@ -356,6 +359,7 @@ void Settings::reinitializeSettings()
 	this->initFonts();
 	this->initButtons();
 	this->initDropdownLists();
+	this->resized = false;
 }
 void Settings::reinitializeMainMenu()
 {
