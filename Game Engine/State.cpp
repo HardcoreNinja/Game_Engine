@@ -92,6 +92,7 @@ State::State(GameInfo* game_info)
 	this->maxKeyTime = 100;
 	this->isQuit = false;
 	this->mouseReleased = false;
+	this->resized = false;
 	this->tileSize = 48.f;
 	this->isPaused = false;
 	this->initView();
@@ -127,8 +128,8 @@ void State::updateGraphicsSettings()
 {
 	this->gameInfo->graphicsSettings->resolution = sf::VideoMode(this->window->getSize().x, this->window->getSize().y);
 	this->graphicsSettings->saveToFile();
+
 	this->createWindow();
-	this->initializeMainMenu();
 }
 void State::updateSFMLEvents()
 {
@@ -205,6 +206,8 @@ void State::createWindow()
 	}
 	this->window->setFramerateLimit(this->gameInfo->graphicsSettings->frameRateLimit); //Framerate Limit
 	this->window->setVerticalSyncEnabled(this->gameInfo->graphicsSettings->isVSync);   //VSync Enabled
+
+	this->initializeMainMenu();
 }
 void State::initializeMainMenu()
 {
@@ -212,6 +215,9 @@ void State::initializeMainMenu()
 	this->states[0].at(0)->initMainMenuKeybinds();
 	this->states[0].at(0)->initMainMenuFonts();
 	this->states[0].at(0)->initMainMenuButtons();
+
+	this->initView();
+	this->resized = true;
 }
 
 /*Resize View*/

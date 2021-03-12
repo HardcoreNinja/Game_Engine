@@ -82,6 +82,7 @@ protected:
 
 	/*Poll Event Flags*/
 	bool mouseReleased;
+	bool resized;
 
 	/*Pause Menu Flags*/
 	bool isPaused;

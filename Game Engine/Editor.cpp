@@ -183,7 +183,10 @@ void Editor::updatePauseMenuButtons()
 		this->tileMap->loadFromFile("Config/tile_map.ini", "Resources/Images/Tiles/buildings.png");
 
 	if (this->pauseMenu->isButtonPressed("EXIT") && this->getKeyTime())
+	{
+		this->tileMap->saveToFile("Config/tile_map.ini");
 		this->endState();
+	}
 }
 void Editor::updateTextureSelector(const float& dt)
 {
@@ -279,6 +282,9 @@ void Editor::update(const float& dt)
 	this->updateMousePosition(&this->view, &this->defaultWindowView);
 	this->updateUserInput(dt);
 
+	if (this->resized)
+		this->reinitializeEditor();
+
 	if (this->isPaused) //Paused
 	{
 		this->pauseMenu->update(static_cast<sf::Vector2f>(this->mousePositionGUI));
@@ -291,6 +297,21 @@ void Editor::update(const float& dt)
 		this->updateTextureSelector(dt);
 		this->updateTileMap();	
 	}
+}
+
+/*Reinitialize Functions*/
+void Editor::reinitializeEditor()
+{
+	std::cout << "Reinitializing Editor!\n";
+	this->tileMap->saveToFile("Config/tile_map.ini");
+	this->initVariables();
+	this->initKeybinds();
+	this->initFonts();
+	this->initTileMap();
+	this->initTextureSelector();
+	this->initPauseMenu();
+	this->initLatestTileMap();
+	this->resized = false;
 }
 
 /*Render Functions*/
