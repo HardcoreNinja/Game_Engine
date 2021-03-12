@@ -260,8 +260,8 @@ void Settings::updateDropdownLists(const float& dt)
 }
 void Settings::updateUserInput(const float& dt)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("QUIT_GAME"))))
-		this->endState();
+	/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("QUIT_GAME"))))
+		this->endState();*/
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("APPLY_SETTINGS"))))
 	{
