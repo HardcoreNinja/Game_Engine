@@ -29,12 +29,16 @@ PauseMenu::PauseMenu(sf::RenderWindow& window, sf::Font& font)
 	this->buttonContainer.setFillColor(sf::Color(20, 20, 20, 200));
 	
 	/*Menu Text*/
-	this->text.setFont(this->font);
-	this->text.setCharacterSize(25);
-	this->text.setOrigin(sf::Vector2f(this->text.getGlobalBounds().width / 2.f, this->text.getGlobalBounds().height / 2.f));
-	this->text.setPosition(this->buttonContainer.getPosition().x - this->buttonContainer.getGlobalBounds().width / 4.f, 30.f);
-	this->text.setFillColor(sf::Color::White);
+	this->shape.setPosition(sf::Vector2f(static_cast<float>(window.getSize().x) / 2.f, 30.f));
+	this->shape.setSize(sf::Vector2f(200.f, 50.f));
+	this->shape.setOrigin(this->shape.getGlobalBounds().width / 2.f, this->shape.getGlobalBounds().height / 2.f);
+
+	this->text.setFont(font);
 	this->text.setString("PAUSE MENU");
+	this->text.setFillColor(sf::Color::White);
+	this->text.setCharacterSize(30);
+	this->text.setOrigin(this->text.getGlobalBounds().width / 2.f, this->text.getGlobalBounds().height / 2.f);
+	this->text.setPosition(sf::Vector2f(this->shape.getPosition().x, this->shape.getPosition().y - static_cast<float>(this->text.getCharacterSize()) / 4.f));
 }
 PauseMenu::~PauseMenu()
 {

@@ -19,6 +19,7 @@ private:
 	/*Font & Text*/
 	sf::Font& font;
 	sf::Text text;
+	sf::RectangleShape shape;
 
 	/*Button Map*/
 	std::map<std::string, std::unique_ptr<GUI::Button>> buttons;
