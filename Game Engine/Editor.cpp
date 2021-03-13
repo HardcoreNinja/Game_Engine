@@ -74,7 +74,7 @@ void Editor::initTextureSelector()
 
 	/*Gray Side Bar*/
 	this->sideBar.setSize(sf::Vector2f(48.f, static_cast<float>(this->window->getSize().y)));
-	this->sideBar.setFillColor(sf::Color(50, 50, 50, 100));
+	this->sideBar.setFillColor(sf::Color(50, 50, 50, 255));
 	this->sideBar.setOutlineColor(sf::Color::White);
 	this->sideBar.setOutlineThickness(1.f);
 }
@@ -349,13 +349,19 @@ void Editor::render(sf::RenderTarget* target)
 	/*Items Rendered with Camera View*/
 	target->setView(this->view);
 	this->renderTileMap(*target);
+
+	/*Items Rendered with Default Window View*/
+	this->window->setView(this->defaultWindowView);
+	target->draw(this->sideBar);
+
+	/*Items Rendered with Camera View*/
+	target->setView(this->view);
 	this->renderTextureSelector(*target);
 	this->renderSelectorRect(*target);
 
 	/*Items Rendered with Default Window View*/
 	this->window->setView(this->defaultWindowView);
 	this->renderCursorText(*target);
-	target->draw(this->sideBar);
 	if(this->isPaused)
 	this->renderPauseMenu(*target);
 }
