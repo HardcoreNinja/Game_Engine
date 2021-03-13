@@ -48,7 +48,7 @@ void Editor::initTileMap()
 {
 	this->tileMap = std::make_unique<TILEMAP::TileMap>(
 		this->tileSize,                              //Tile Size
-		36, 36,                                      //Map Width & Height (in Squares)
+		90, 90,                                      //Map Width & Height (in Squares)
 		this->tileSize, this->tileSize,              //Texture Width & Height
 		"Resources/Images/Tiles/MasterTileSheet.png" //Tile Sheet File Path
 		);
