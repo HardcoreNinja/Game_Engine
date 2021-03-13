@@ -286,8 +286,8 @@ TILEMAP::TextureSelector::TextureSelector(
 ) : keyTime(key_time), maxKeyTime(max_key_time)
 {
 	/*X Position Offset*/
-	float xOffset = 48.f;
-	float hideButtonOffset = 24.f;
+	float xOffset = 40.f;
+	float hideButtonOffset = 20.f;
 	
 
 	/*Bounds*/
@@ -316,7 +316,7 @@ TILEMAP::TextureSelector::TextureSelector(
 	/*Hide Buttons*/
 	this->hideButton = std::make_unique<GUI::Button>(
 		pos_x + hideButtonOffset, pos_y + hideButtonOffset,                              //Button Rect Position
-		48.f, 48.f,                                                                      //Button Rect Size
+		40.f, 40.f,                                                                      //Button Rect Size
 		&hide_button_font, "TS", 16,                                                     //Button Font, Text, and Character Size
 		sf::Color::White, sf::Color::White, sf::Color::White,                            //Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0), //Button Rect Fill Color

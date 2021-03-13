@@ -93,7 +93,7 @@ State::State(GameInfo* game_info)
 	this->isQuit = false;
 	this->mouseReleased = false;
 	this->resized = false;
-	this->tileSize = 48.f;
+	this->tileSize = 40.f;
 	this->isPaused = false;
 	this->initView();
 }

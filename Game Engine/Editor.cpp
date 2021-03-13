@@ -58,7 +58,7 @@ void Editor::initTextureSelector()
 	/*Texture Selector Box*/
 	this->textureSelector = std::make_unique<TILEMAP::TextureSelector>(
 		0.f, 0.f,                       //Texture Selector Position
-		1104.f, 816.f,                  //Bounds Size
+		1520.f, 720.f,                  //Bounds Size
 		this->tileSize,                 //Tile Size
 		this->tileMap->getTexture(),    //Tile Map Texture
 		this->font,                     //Hide Button Font
@@ -73,7 +73,7 @@ void Editor::initTextureSelector()
 	this->selectorRect.setTexture(this->tileMap->getTexture());
 
 	/*Gray Side Bar*/
-	this->sideBar.setSize(sf::Vector2f(48.f, static_cast<float>(this->window->getSize().y)));
+	this->sideBar.setSize(sf::Vector2f(40.f, static_cast<float>(this->window->getSize().y)));
 	this->sideBar.setFillColor(sf::Color(50, 50, 50, 255));
 	this->sideBar.setOutlineColor(sf::Color::White);
 	this->sideBar.setOutlineThickness(1.f);
