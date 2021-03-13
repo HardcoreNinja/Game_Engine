@@ -219,44 +219,51 @@ void Settings::updateDropdownLists(const float& dt)
 			this->pauseButtons = true;
 			this->pauseFullScreen = true;
 			this->pauseVSync = true;
+			this->pauseAnti_Aliasing = true;
 		}
-
-		if (!this->dropdownLists["RESOLUTION"]->getShowList() && this->mouseReleased)
+		else if (!this->dropdownLists["RESOLUTION"]->getShowList() && this->mouseReleased)
 		{
 			this->pauseButtons = false;
 			this->pauseFullScreen = false;
 			this->pauseVSync = false;
+			this->pauseAnti_Aliasing = false;
 		}
 
 		/*Fullscreen*/
-		if(!pauseFullScreen)
-		this->dropdownLists["FULLSCREEN"]->update(this->mousePositionView, dt);
+		if (!pauseFullScreen)
+		{
+			this->dropdownLists["FULLSCREEN"]->update(this->mousePositionView, dt);
 
-		if (this->dropdownLists["FULLSCREEN"]->getShowList())
-			this->pauseVSync = true;
+			if (this->dropdownLists["FULLSCREEN"]->getShowList())
+				this->pauseVSync = true;
 
-		if (!this->dropdownLists["FULLSCREEN"]->getShowList() && this->mouseReleased)
-			this->pauseVSync = false;
+			if (!this->dropdownLists["FULLSCREEN"]->getShowList() && this->mouseReleased)
+				this->pauseVSync = false;
+		}
 
 		/*VSync*/
-		if(!this->pauseVSync)
-		this->dropdownLists["VSYNC"]->update(this->mousePositionView, dt);	
+		if (!this->pauseVSync)
+		{
+			this->dropdownLists["VSYNC"]->update(this->mousePositionView, dt);
 
-		if (this->dropdownLists["VSYNC"]->getShowList())
-			this->pauseAnti_Aliasing = true;
+			if (this->dropdownLists["VSYNC"]->getShowList())
+				this->pauseAnti_Aliasing = true;
 
-		if (!this->dropdownLists["VSYNC"]->getShowList() && this->mouseReleased)
-			this->pauseAnti_Aliasing = false;
+			if (!this->dropdownLists["VSYNC"]->getShowList() && this->mouseReleased)
+				this->pauseAnti_Aliasing = false;
+		}
 
 		/*Anti-Aliasing*/
-		if(!this->pauseAnti_Aliasing)
+		if (!this->pauseAnti_Aliasing)
+		{
 			this->dropdownLists["ANTI_ALIASING"]->update(this->mousePositionView, dt);
 
-		if (this->dropdownLists["ANTI_ALIASING"]->getShowList())
-			this->pauseButtons = true;
+			if (this->dropdownLists["ANTI_ALIASING"]->getShowList())
+				this->pauseButtons = true;
 
-		if (!this->dropdownLists["ANTI_ALIASING"]->getShowList() && this->mouseReleased)
-			this->pauseButtons = false;
+			if (!this->dropdownLists["ANTI_ALIASING"]->getShowList() && this->mouseReleased)
+				this->pauseButtons = false;
+		}
 }
 void Settings::updateUserInput(const float& dt)
 {
