@@ -164,10 +164,7 @@
     <Image Include="Resources\Images\mainmenu_background.jpg">
       <Filter>Resource Files\Images\Main Menu Background</Filter>
     </Image>
-    <Image Include="Resources\Tiles\grass.png">
-      <Filter>Resource Files\Images\Tiles</Filter>
-    </Image>
-    <Image Include="Resources\Images\Tiles\grass-dirt-sand-water-mountains-trees.png">
+    <Image Include="Resources\Images\Tiles\MasterTileSheet.png">
       <Filter>Resource Files\Images\Tiles</Filter>
     </Image>
   </ItemGroup>

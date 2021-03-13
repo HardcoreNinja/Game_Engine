@@ -47,10 +47,10 @@ void Editor::initFonts()
 void Editor::initTileMap()
 {
 	this->tileMap = std::make_unique<TILEMAP::TileMap>(
-		this->tileSize,                        //Tile Size
-		9, 9,                                  // Map Width & Height (in Squares)
-		this->tileSize, this->tileSize,        //Texture Width & Height
-		"Resources/Images/Tiles/buildings.png" //Tile Sheet File Path
+		this->tileSize,                              //Tile Size
+		36, 36,                                      //Map Width & Height (in Squares)
+		this->tileSize, this->tileSize,              //Texture Width & Height
+		"Resources/Images/Tiles/MasterTileSheet.png" //Tile Sheet File Path
 		);
 }
 void Editor::initTextureSelector()
@@ -58,7 +58,7 @@ void Editor::initTextureSelector()
 	/*Texture Selector Box*/
 	this->textureSelector = std::make_unique<TILEMAP::TextureSelector>(
 		0.f, 0.f,                       //Texture Selector Position
-		384.f, 816.f,                   //Bounds Size
+		1104.f, 816.f,                  //Bounds Size
 		this->tileSize,                 //Tile Size
 		this->tileMap->getTexture(),    //Tile Map Texture
 		this->font,                     //Hide Button Font
@@ -105,7 +105,7 @@ void Editor::initPauseMenu()
 }
 void Editor::initLatestTileMap()
 {
-	this->tileMap->loadFromFile("Config/tile_map.ini", "Resources/Images/Tiles/buildings.png");
+	this->tileMap->loadFromFile("Config/tile_map.ini", "Resources/Images/Tiles/MasterTileSheet.png");
 }
 
 /*Constuctor & Destructor*/
@@ -180,7 +180,7 @@ void Editor::updatePauseMenuButtons()
 		this->tileMap->saveToFile("Config/tile_map.ini");
 
 	if (this->pauseMenu->isButtonPressed("LOAD"))
-		this->tileMap->loadFromFile("Config/tile_map.ini", "Resources/Images/Tiles/buildings.png");
+		this->tileMap->loadFromFile("Config/tile_map.ini", "Resources/Images/Tiles/MasterTileSheet.png");
 
 	if (this->pauseMenu->isButtonPressed("EXIT") && this->getKeyTime())
 	{
