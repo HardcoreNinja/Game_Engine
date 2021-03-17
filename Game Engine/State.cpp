@@ -23,7 +23,6 @@ State::State(GameInfo* game_info)
 	this->maxKeyTime = 100;
 	this->isQuit = false;
 	this->mouseReleased = false;
-	this->resized = false;
 	this->tileSize = 40.f;
 	this->isPaused = false;
 	this->initView();
