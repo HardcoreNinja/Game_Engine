@@ -93,7 +93,7 @@ namespace TILEMAP
 		void loadFromFile(std::string file_path, std::string texture_sheet_file_path);
 
 		/*Render Functions*/
-		void render(sf::RenderTarget& target, sf::View& view);
+		void render(sf::RenderTarget& target, const sf::View& view);
 	};
 
 	/*Texture Selector*/
