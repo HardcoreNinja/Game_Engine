@@ -259,8 +259,19 @@ void TILEMAP::TileMap::loadFromFile(std::string tile_map_file_path, std::string 
 }
 
 /*Render Functions*/
-void TILEMAP::TileMap::render(sf::RenderTarget& target)
+void TILEMAP::TileMap::render(sf::RenderTarget& target, sf::View& view)
 {
+	sf::FloatRect viewPort{
+		view.getCenter().x - view.getSize().x / 2.f,
+		view.getCenter().y - view.getSize().y / 2.f,
+		view.getSize().x, view.getSize().y
+	};
+
+	sf::FloatRect tileRect{
+		0,0,
+		this->tileSizeF, this->tileSizeF
+	};
+
 	for (auto& pos_x : this->tileMap)
 	{
 		for (auto& pos_y : pos_x)
@@ -268,7 +279,12 @@ void TILEMAP::TileMap::render(sf::RenderTarget& target)
 			for (auto& tile : pos_y)
 			{
 				if (tile != NULL)
+				{
+					tileRect.left = tile->getPosition().x;
+					tileRect.top = tile->getPosition().y;
+					if(tileRect.intersects(viewPort))
 					tile->render(target);
+				}
 			}
 		}
 	}

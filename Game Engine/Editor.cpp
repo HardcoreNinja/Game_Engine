@@ -339,7 +339,7 @@ void Editor::renderPauseMenu(sf::RenderTarget& target)
 }
 void Editor::renderTileMap(sf::RenderTarget& target)
 {
-	this->tileMap->render(target);
+	this->tileMap->render(target, this->view);
 }
 void Editor::render(sf::RenderTarget* target)
 {
