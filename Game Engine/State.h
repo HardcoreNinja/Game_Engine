@@ -82,20 +82,12 @@ protected:
 
 	/*Poll Event Flags*/
 	bool mouseReleased;
-	bool resized;
 
 	/*Pause Menu Flags*/
 	bool isPaused;
 
 	/*Initializers*/
 	void initView();
-
-public:
-	/*MainMenu Initializers*/
-	void initMainMenuBackground();
-	void initMainMenuKeybinds();
-	void initMainMenuFonts();
-	void initMainMenuButtons();
 
 public:
 	/*Constuctor & Destructor*/
@@ -119,7 +111,8 @@ public:
 
 	/*Reinitialize Functions*/
 	void createWindow();
-	void initializeMainMenu();
+	virtual void reinitializeState() = 0;
+	void reinitializeStates();
 
 	/*Resize View*/
 	void resizeView();

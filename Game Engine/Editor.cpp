@@ -284,9 +284,6 @@ void Editor::update(const float& dt)
 	this->updateMousePosition(&this->view, &this->defaultWindowView);
 	this->updateUserInput(dt);
 
-	if (this->resized)
-		this->reinitializeEditor();
-
 	if (this->isPaused) //Paused
 	{
 		this->pauseMenu->update(static_cast<sf::Vector2f>(this->mousePositionGUI));
@@ -302,7 +299,7 @@ void Editor::update(const float& dt)
 }
 
 /*Reinitialize Functions*/
-void Editor::reinitializeEditor()
+void Editor::reinitializeState()
 {
 	std::cout << "Reinitializing Editor!\n";
 	this->tileMap->saveToFile("Config/tile_map.ini");
@@ -313,7 +310,6 @@ void Editor::reinitializeEditor()
 	this->initTextureSelector();
 	this->initPauseMenu();
 	this->initLatestTileMap();
-	this->resized = false;
 }
 
 /*Render Functions*/

@@ -333,9 +333,6 @@ void Settings::update(const float& dt)
 	this->updateButtons();
 	this->updateDropdownLists(dt);
 	this->updateUserInput(dt);
-
-	if (this->resized)
-		this->reinitializeSettings();
 }
 
 /*Window Functions*/
@@ -353,27 +350,19 @@ void Settings::recreateWindow()
 	this->window->setFramerateLimit(this->gameInfo->graphicsSettings->frameRateLimit); //Framerate Limit
 	this->window->setVerticalSyncEnabled(this->gameInfo->graphicsSettings->isVSync);   //VSync Enabled
 
-	this->reinitializeSettings();	
-	this->reinitializeMainMenu();
+	this->reinitializeStates();
 }
 
-/*Reinitialize Settings State*/
-void Settings::reinitializeSettings()
+/*Reinitialize Functions*/
+void Settings::reinitializeState()
 {
+	std::cout << "Reinitializing Settings!\n";
 	this->initVariables();
 	this->initBackground();
 	this->initKeybinds();
 	this->initFonts();
 	this->initButtons();
 	this->initDropdownLists();
-	this->resized = false;
-}
-void Settings::reinitializeMainMenu()
-{
-	this->states[0].at(0)->initMainMenuBackground();
-	this->states[0].at(0)->initMainMenuKeybinds();
-	this->states[0].at(0)->initMainMenuFonts();
-	this->states[0].at(0)->initMainMenuButtons();
 }
 
 /*Save & Load Functions*/

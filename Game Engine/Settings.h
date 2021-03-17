@@ -42,8 +42,7 @@ public:
 
     /*Reinitialize Functions*/
     void recreateWindow();
-    void reinitializeSettings();
-    void reinitializeMainMenu();
+    void reinitializeState();
 
     /*Save & Load Functions*/
     void saveToFile();

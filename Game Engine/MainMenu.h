@@ -10,6 +10,11 @@ class Settings;
 class MainMenu :
     public State
 {
+private:
+    void initMainMenuBackground();
+    void initMainMenuKeybinds();
+    void initMainMenuFonts();
+    void initMainMenuButtons();
 public:
     /*Constuctor & Destructor*/
     MainMenu(GameInfo* game_info);
@@ -19,6 +24,9 @@ public:
     void updateButtons();
     virtual void updateUserInput(const float& dt);
     virtual void update(const float& dt);
+
+    /*Reinitialize Functions*/
+    void reinitializeState();
 
     /*Render Functions*/
     void renderButtons(sf::RenderTarget& target);

@@ -59,7 +59,7 @@ public:
     virtual void update(const float& dt);
 
     /*Reinitialize Functions*/
-    void reinitializeEditor();
+    void reinitializeState();
 
     /*Render Functions*/
     void renderCursorText(sf::RenderTarget& target);

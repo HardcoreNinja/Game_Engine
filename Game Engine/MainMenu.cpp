@@ -1,5 +1,73 @@
 #include "Header.h"
 #include "MainMenu.h"
+/*Initializers*/
+void MainMenu::initMainMenuBackground()
+{
+	this->backgroundRect.setSize(
+		sf::Vector2f(
+			static_cast<float>(this->graphicsSettings->resolution.width),
+			static_cast<float>(this->graphicsSettings->resolution.height)
+		)
+	);
+
+	if (!this->backgroundTexture.loadFromFile("Resources/Images/mainmenu_background.jpg"))
+		throw("ERROR::MAIN_MENU::FAILED_TO_LOAD::mainmenu_background.jpg");
+
+	this->backgroundRect.setTexture(&this->backgroundTexture);
+}
+void MainMenu::initMainMenuKeybinds()
+{
+	std::ifstream ifs("Config/mainmenu_keybinds.ini");
+
+	if (ifs.is_open())
+	{
+		std::string key = "";
+		std::string keyboardKey = "";
+
+		while (ifs >> key >> keyboardKey)
+
+			this->keybinds[key] = this->supportedKeys->at(keyboardKey);
+	}
+	ifs.close();
+
+	//Debug Tester
+	for (auto i : this->keybinds)
+	{
+		std::cout << i.first << " " << i.second << '\n';
+	}
+}
+void MainMenu::initMainMenuFonts()
+{
+	if (!this->font.loadFromFile("Resources/Fonts/Dosis.ttf"))
+	{
+		throw ("ERROR::MAIN_MENU::FAILED_TO_LOAD:Dosis.ttf");
+	}
+
+	this->text.setFont(this->font);
+}
+void MainMenu::initMainMenuButtons()
+{
+	this->buttons["QUIT_GAME"] = std::make_unique<GUI::Button>(
+		100.f, 550.f,                  //Button Rect Position
+		200.f, 50.f,                   // Button Rect Size
+		&this->font, "Quit Game", 50,//Button Font, Text, and Character Size
+		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50),//Text Color
+		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));    //Button Rect Fill Color (Outline Color Optional)
+
+	this->buttons["SETTINGS"] = std::make_unique<GUI::Button>(
+		100.f, 450.f,                  //Button Rect Position
+		200.f, 50.f,                   // Button Rect Size
+		&this->font, "Settings", 50,//Button Font, Text, and Character Size
+		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50),//Text Color
+		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));    //Button Rect Fill Color (Outline Color Optional)
+
+	this->buttons["EDITOR"] = std::make_unique<GUI::Button>(
+		100.f, 350.f,                  //Button Rect Position
+		200.f, 50.f,                   // Button Rect Size
+		&this->font, "Editor", 50,//Button Font, Text, and Character Size
+		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50),//Text Color
+		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));    //Button Rect Fill Color (Outline Color Optional)
+}
 
 /*Constuctor & Destructor*/
 MainMenu::MainMenu(GameInfo* game_info)
@@ -44,6 +112,16 @@ void MainMenu::update(const float& dt)
 	this->updateButtons();
 	this->updateMousePosition();
 	this->updateUserInput(dt);
+}
+
+/*Reinitialize Functions*/
+void MainMenu::reinitializeState()
+{
+	std::cout << "Reinitializing MainMenu!\n";
+	this->initMainMenuBackground();
+	this->initMainMenuKeybinds();
+	this->initMainMenuFonts();
+	this->initMainMenuButtons();
 }
 
 /*Render Functions*/
