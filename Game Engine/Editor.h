@@ -18,6 +18,7 @@ private:
     /*Tile Map Flags*/
     bool collision;
     unsigned short tileType;
+    unsigned short maxTileType;
     unsigned short tileRotationDegrees;
     unsigned short maxTileRotationDegrees;
     unsigned short tileLayers;
@@ -48,6 +49,7 @@ public:
     virtual ~Editor();
 
     /*Update Functions*/
+    void updateTileType();
     void updateTileRotation();
     void updateTileLayers();
     void updateCursorText();

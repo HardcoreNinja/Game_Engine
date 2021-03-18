@@ -5,6 +5,7 @@ void Editor::initVariables()
 {
 	this->collision = false;
 	this->tileType = TILEMAP::TileType::Default;
+	this->maxTileType = TILEMAP::TileType::Building;
 	this->cameraSpeed = 10.f;
 	this->tileRotationDegrees = 0;
 	this->maxTileRotationDegrees = 360;
@@ -125,6 +126,13 @@ Editor::~Editor()
 }
 
 /*Update Functions*/
+void Editor::updateTileType()
+{
+	if (this->tileType < this->maxTileType)
+		this->tileType += 1;
+	else if (this->tileType == this->maxTileType)
+		this->tileType = 0;
+}
 void Editor::updateTileRotation()
 {
 	if (this->tileRotationDegrees < this->maxTileRotationDegrees)
@@ -151,7 +159,7 @@ void Editor::updateCursorText()
 		<< "Tile Map Int Rec (left & top): " << this->tileMap->getTextureIntRect().left << " x " << this->tileMap->getTextureIntRect().top << '\n'
 		<< "Collision Bool: " << this->collision << '\n'
 		<< "Tile Type: " << this->tileType << '\n'
-		<< "Rotation Degrees" << this->tileRotationDegrees << '\n'
+		<< "Rotation Degrees: " << this->tileRotationDegrees << '\n'
 		<< "Tile Layer: " << this->tileLayers << '\n';
 
 	this->text.setString(ss.str());
@@ -260,13 +268,9 @@ void Editor::updateUserInput(const float& dt)
 			else
 				this->collision = true;
 
-		/*Increase Tile Type*/
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("INCREASE_TYPE"))) && this->getKeyTime())
-			this->tileType += 1;
-
-		/*Decrease Tile Type*/
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("DECREASE_TYPE"))) && this->getKeyTime() && this->tileType != 0)
-			this->tileType -= 1;
+		/*Tile Type*/
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("TILE_TYPE"))) && this->getKeyTime())
+			this->updateTileType();
 
 		/*Rotate Tile*/
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("ROTATE_TILE"))) && this->getKeyTime())
