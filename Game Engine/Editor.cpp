@@ -283,10 +283,20 @@ void Editor::updateUserInput(const float& dt)
 		/*Scroll Texture Selector Up*/
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SCROLL_UP"))))
 			this->textureSelector->scrollUp();
+		else if (this->sfmlEvent->type == sf::Event::MouseWheelScrolled)
+		{
+			if (sfmlEvent->mouseWheelScroll.delta > 0)
+				this->textureSelector->scrollUp();
+		}
 
 		/*Scroll Texture Selector Down*/
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SCROLL_DOWN"))))
 			this->textureSelector->scrollDown();
+		else if (this->sfmlEvent->type == sf::Event::MouseWheelScrolled)
+		{
+			if (sfmlEvent->mouseWheelScroll.delta < 0)
+				this->textureSelector->scrollDown();
+		}
 	}
 }
 void Editor::update(const float& dt)
