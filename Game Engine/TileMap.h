@@ -121,6 +121,9 @@ namespace TILEMAP
 		int keyTime;
 		int maxKeyTime;
 
+		/*Scroll Incrementer*/
+		int scrollIncrementer;
+
 	public:
 		/*Constuctor & Destructor*/
 		TextureSelector(
@@ -141,6 +144,10 @@ namespace TILEMAP
 		/*Update Functions*/
 		void updateKeyTime(const float& dt);
 		void update(const sf::Vector2i& mouse_position_window, const float& dt);
+
+		/*Scroll Functions*/
+		void scrollUp();
+		void scrollDown();
 
 		/*Render Functions*/
 		void render(sf::RenderTarget& target, const sf::View& view);

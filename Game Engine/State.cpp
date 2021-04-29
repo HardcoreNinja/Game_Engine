@@ -23,7 +23,7 @@ State::State(GameInfo* game_info)
 	this->maxKeyTime = 100;
 	this->isQuit = false;
 	this->mouseReleased = false;
-	this->tileSize = 40.f;
+	this->tileSize = 32.f;
 	this->isPaused = false;
 	this->initView();
 }
@@ -68,17 +68,17 @@ void State::updateSFMLEvents()
 		if (this->sfmlEvent->type == sf::Event::Closed)
 			this->window->close();
 
-		if (this->sfmlEvent->type == sf::Event::MouseButtonPressed)
+		else if (this->sfmlEvent->type == sf::Event::MouseButtonPressed)
 		{
 			std::cout << "Mouse Pressed!\n";
 			this->mouseReleased = false;
 		}
-		if (this->sfmlEvent->type == sf::Event::MouseButtonReleased)
+		else if (this->sfmlEvent->type == sf::Event::MouseButtonReleased)
 		{
 			std::cout << "Mouse Released!\n";
 			this->mouseReleased = true;
 		}
-		if (this->sfmlEvent->type == sf::Event::Resized)
+		else if (this->sfmlEvent->type == sf::Event::Resized)
 		{
 			std::cout << "New Resized Window Size: " << this->window->getSize().x << "x" << this->window->getSize().y << '\n';
 			this->resizeView();

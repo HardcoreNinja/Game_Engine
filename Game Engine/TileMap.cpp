@@ -305,7 +305,6 @@ TILEMAP::TextureSelector::TextureSelector(
 	float xOffset = 40.f;
 	float hideButtonOffset = 20.f;
 	
-
 	/*Bounds*/
 	this->bounds.setPosition(sf::Vector2f(pos_x + xOffset, pos_y));
 	this->bounds.setSize(sf::Vector2f(bounds_width, bounds_height));
@@ -328,6 +327,8 @@ TILEMAP::TextureSelector::TextureSelector(
 	this->selector.setOutlineColor(sf::Color::Red);
 	this->selector.setOutlineThickness(1.f);
 
+	/*Scroll Incrementer*/
+	this->scrollIncrementer = 0;
 
 	/*Hide Buttons*/
 	this->hideButton = std::make_unique<GUI::Button>(
@@ -412,9 +413,30 @@ void TILEMAP::TextureSelector::update(const sf::Vector2i& mouse_position_window,
 			);
 
 			this->textureIntRect.left = static_cast<int>(this->selector.getPosition().x - this->bounds.getPosition().x);
-			this->textureIntRect.top = static_cast<int>(this->selector.getPosition().y - this->bounds.getPosition().y);
+			this->textureIntRect.top = static_cast<int>(this->selector.getPosition().y - this->bounds.getPosition().y) + (this->tileSize * this->scrollIncrementer);
 		}
 	}
+}
+
+/*Scroll Functions*/
+void TILEMAP::TextureSelector::scrollUp()
+{
+	if (this->scrollIncrementer != 0)
+		this->scrollIncrementer -= 1;
+
+	this->spriteSheet.setTextureRect(sf::IntRect(
+		0, (this->tileSize * this->scrollIncrementer), 
+		static_cast<int>(this->bounds.getSize().x), static_cast<int>(this->bounds.getSize().y)
+	));
+}
+void TILEMAP::TextureSelector::scrollDown()
+{
+	this->scrollIncrementer += 1;
+
+	this->spriteSheet.setTextureRect(sf::IntRect(
+		0, (this->tileSize * this->scrollIncrementer),
+		static_cast<int>(this->bounds.getSize().x), static_cast<int>(this->bounds.getSize().y)
+	));
 }
 
 /*Render Functions*/

@@ -51,7 +51,7 @@ void Editor::initTileMap()
 		this->tileSize,                              //Tile Size
 		90, 90,                                      //Map Width & Height (in Squares)
 		this->tileSize, this->tileSize,              //Texture Width & Height
-		"Resources/Images/Tiles/MasterTileSheet.png" //Tile Sheet File Path
+		"Resources/Images/Tiles/MasterLevelTileSheet.png" //Tile Sheet File Path
 		);
 }
 void Editor::initTextureSelector()
@@ -59,7 +59,7 @@ void Editor::initTextureSelector()
 	/*Texture Selector Box*/
 	this->textureSelector = std::make_unique<TILEMAP::TextureSelector>(
 		0.f, 0.f,                       //Texture Selector Position
-		1520.f, 720.f,                  //Bounds Size
+		256.f, 512.f,                  //Bounds Size
 		this->tileSize,                 //Tile Size
 		this->tileMap->getTexture(),    //Tile Map Texture
 		this->font,                     //Hide Button Font
@@ -106,7 +106,7 @@ void Editor::initPauseMenu()
 }
 void Editor::initLatestTileMap()
 {
-	this->tileMap->loadFromFile("Config/tile_map.ini", "Resources/Images/Tiles/MasterTileSheet.png");
+	this->tileMap->loadFromFile("Config/tile_map.ini", "Resources/Images/Tiles/MasterLevelTileSheet.png");
 }
 
 /*Constuctor & Destructor*/
@@ -279,6 +279,14 @@ void Editor::updateUserInput(const float& dt)
 		/*Tile Layers*/
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("TILE_LAYERS"))) && this->getKeyTime())
 			this->updateTileLayers();
+
+		/*Scroll Texture Selector Up*/
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SCROLL_UP"))))
+			this->textureSelector->scrollUp();
+
+		/*Scroll Texture Selector Down*/
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SCROLL_DOWN"))))
+			this->textureSelector->scrollDown();
 	}
 }
 void Editor::update(const float& dt)

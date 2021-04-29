@@ -191,7 +191,8 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Images\mainmenu_background.jpg" />
-    <Image Include="Resources\Images\Tiles\MasterTileSheet.png" />
+    <Image Include="Resources\Images\Tiles\MasterLevelTileSheet.png" />
+    <Image Include="Resources\Images\Tiles\MasterMapTileSheet.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Fonts\Dosis.ttf" />
