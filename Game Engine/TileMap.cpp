@@ -20,6 +20,28 @@ TILEMAP::Tile::Tile(
 	this->shape.setOutlineColor(sf::Color::Transparent);
 	this->shape.setOutlineThickness(1.f);
 	this->shape.setRotation(this->shapeRotation);
+
+	/*Color Codes for Collision & Tile Types*/
+	if (this->collision)
+	{
+		this->shape.setFillColor(sf::Color::Red);
+	}
+
+	switch (this->tileType)
+	{
+	case TILEMAP::TileType::Default:
+		this->shape.setOutlineColor(sf::Color::Transparent);
+		break;
+	case TILEMAP::TileType::Chest:
+		this->shape.setOutlineColor(sf::Color::Yellow);
+		break;
+	case TILEMAP::TileType::Door:
+		this->shape.setOutlineColor(sf::Color::Blue);
+		break;
+	case TILEMAP::TileType::Wall:
+		this->shape.setOutlineColor(sf::Color::Magenta);
+		break;
+	}
 }
 TILEMAP::Tile::~Tile()
 {
