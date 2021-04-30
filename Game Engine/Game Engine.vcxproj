@@ -193,6 +193,7 @@
     <Image Include="Resources\Images\mainmenu_background.jpg" />
     <Image Include="Resources\Images\Tiles\MasterLevelTileSheet.png" />
     <Image Include="Resources\Images\Tiles\MasterMapTileSheet.png" />
+    <Image Include="Resources\Images\Tiles\PipoyaMasterLevel.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Fonts\Dosis.ttf" />

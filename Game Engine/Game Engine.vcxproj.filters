@@ -52,9 +52,6 @@
     <Filter Include="Resource Files\Config\Keybinds">
       <UniqueIdentifier>{49932c18-c326-4e71-95e5-63fe1b35c9cd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\TileMap">
-      <UniqueIdentifier>{2e61caa6-32c3-44af-aa7c-69fdad257624}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Images\Tiles">
       <UniqueIdentifier>{b5d115a5-26a0-4c05-9d5d-7c851d97b9ff}</UniqueIdentifier>
     </Filter>
@@ -63,6 +60,9 @@
     </Filter>
     <Filter Include="Resource Files\Config\Tile Map File">
       <UniqueIdentifier>{733552ba-031d-4549-ba57-5de37ff2764d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\TileMap">
+      <UniqueIdentifier>{2e61caa6-32c3-44af-aa7c-69fdad257624}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +168,9 @@
       <Filter>Resource Files\Images\Tiles</Filter>
     </Image>
     <Image Include="Resources\Images\Tiles\MasterLevelTileSheet.png">
+      <Filter>Resource Files\Images\Tiles</Filter>
+    </Image>
+    <Image Include="Resources\Images\Tiles\PipoyaMasterLevel.png">
       <Filter>Resource Files\Images\Tiles</Filter>
     </Image>
   </ItemGroup>

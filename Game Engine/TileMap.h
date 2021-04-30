@@ -121,15 +121,17 @@ namespace TILEMAP
 		int keyTime;
 		int maxKeyTime;
 
-		/*Scroll Incrementer*/
-		int scrollIncrementer;
+		/*Scroll Incrementers*/
+		int horizontalScrollIncrementer;
+		int verticalScrollIncrementer;
 
 	public:
 		/*Constuctor & Destructor*/
 		TextureSelector(
+			std::string texture_selector_data_file_path,
+			float tile_size,
 			float pos_x, float pos_y,
 			float bounds_width, float bounds_height,
-			float tile_size,
 			const sf::Texture* texture_Sheet,
 			sf::Font& hide_button_font,
 			int key_time, int max_key_time
@@ -148,6 +150,12 @@ namespace TILEMAP
 		/*Scroll Functions*/
 		void scrollUp();
 		void scrollDown();
+		void scrollLeft();
+		void scrollRight();
+
+		/*Save & Load Functions*/
+		void saveToFile(std::string file_path);
+		void loadFromFile(std::string file_path);
 
 		/*Render Functions*/
 		void render(sf::RenderTarget& target, const sf::View& view);

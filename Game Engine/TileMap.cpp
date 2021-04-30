@@ -291,16 +291,23 @@ void TILEMAP::TileMap::render(sf::RenderTarget& target, const sf::View& view)
 }
 
 /*TEXTURE_SELECTOR=======================================================================================================================================================*/
-/*Constuctor & Destructor*/
+/*Constructor & Destructor*/
 TILEMAP::TextureSelector::TextureSelector(
+	std::string texture_selector_data_file_path,
+	float tile_size,
 	float pos_x, float pos_y,
 	float bounds_width, float bounds_height,
-	float tile_size,
 	const sf::Texture* texture_Sheet,
 	sf::Font& hide_button_font,
 	int key_time, int max_key_time
 ) : keyTime(key_time), maxKeyTime(max_key_time)
 {
+	/*Load Texture Selector Data File*/
+	this->loadFromFile(texture_selector_data_file_path);
+
+	/*Tile Size*/
+	this->tileSize = tile_size;
+
 	/*X Position Offset*/
 	float xOffset = 40.f;
 	float hideButtonOffset = 20.f;
@@ -315,7 +322,11 @@ TILEMAP::TextureSelector::TextureSelector(
 	/*Sprite Sheet*/
 	this->spriteSheet.setPosition(sf::Vector2f(this->bounds.getPosition().x, this->bounds.getPosition().y));
 	this->spriteSheet.setTexture(*texture_Sheet);
-	this->spriteSheet.setTextureRect(sf::IntRect(0, 0, static_cast<int>(bounds_width), static_cast<int>(bounds_height)));
+	this->spriteSheet.setTextureRect(sf::IntRect(
+		(static_cast<int>(this->tileSize) * this->horizontalScrollIncrementer), (static_cast<int>(this->tileSize) * this->verticalScrollIncrementer),
+		static_cast<int>(bounds_width), static_cast<int>(bounds_height)
+	)
+	);
 
 	this->textureIntRect.width = static_cast<int>(tile_size);
 	this->textureIntRect.height = static_cast<int>(tile_size);
@@ -327,9 +338,6 @@ TILEMAP::TextureSelector::TextureSelector(
 	this->selector.setOutlineColor(sf::Color::Red);
 	this->selector.setOutlineThickness(1.f);
 
-	/*Scroll Incrementer*/
-	this->scrollIncrementer = 0;
-
 	/*Hide Buttons*/
 	this->hideButton = std::make_unique<GUI::Button>(
 		pos_x + hideButtonOffset, pos_y + hideButtonOffset,                              //Button Rect Position
@@ -339,9 +347,6 @@ TILEMAP::TextureSelector::TextureSelector(
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0), //Button Rect Fill Color
 		sf::Color::White, sf::Color::White, sf::Color::White                             //Button Rect Outline Color
 		);
-
-	/*Tile Size*/
-	this->tileSize = tile_size;
 
 	/*Flags*/
 	this->isHidden = true;
@@ -412,8 +417,8 @@ void TILEMAP::TextureSelector::update(const sf::Vector2i& mouse_position_window,
 			)
 			);
 
-			this->textureIntRect.left = static_cast<int>(this->selector.getPosition().x - this->bounds.getPosition().x);
-			this->textureIntRect.top = static_cast<int>(this->selector.getPosition().y - this->bounds.getPosition().y) + (this->tileSize * this->scrollIncrementer);
+			this->textureIntRect.left = static_cast<int>(this->selector.getPosition().x - this->bounds.getPosition().x) + (static_cast<int>(this->tileSize) * this->horizontalScrollIncrementer);
+			this->textureIntRect.top = static_cast<int>(this->selector.getPosition().y - this->bounds.getPosition().y) + (static_cast<int>(this->tileSize) * this->verticalScrollIncrementer);
 		}
 	}
 }
@@ -421,22 +426,87 @@ void TILEMAP::TextureSelector::update(const sf::Vector2i& mouse_position_window,
 /*Scroll Functions*/
 void TILEMAP::TextureSelector::scrollUp()
 {
-	if (this->scrollIncrementer != 0)
-		this->scrollIncrementer -= 1;
+	if (this->verticalScrollIncrementer != 0)
+		this->verticalScrollIncrementer -= 1;
 
 	this->spriteSheet.setTextureRect(sf::IntRect(
-		0, (this->tileSize * this->scrollIncrementer), 
+		(static_cast<int>(this->tileSize) * this->horizontalScrollIncrementer), (static_cast<int>(this->tileSize) * this->verticalScrollIncrementer),
 		static_cast<int>(this->bounds.getSize().x), static_cast<int>(this->bounds.getSize().y)
-	));
+	)
+	);
 }
 void TILEMAP::TextureSelector::scrollDown()
 {
-	this->scrollIncrementer += 1;
+	if(this->verticalScrollIncrementer != 117)
+	this->verticalScrollIncrementer += 1;
 
 	this->spriteSheet.setTextureRect(sf::IntRect(
-		0, (this->tileSize * this->scrollIncrementer),
+		(static_cast<int>(this->tileSize) * this->horizontalScrollIncrementer), (static_cast<int>(this->tileSize) * this->verticalScrollIncrementer),
 		static_cast<int>(this->bounds.getSize().x), static_cast<int>(this->bounds.getSize().y)
-	));
+	)
+	);
+}
+void TILEMAP::TextureSelector::scrollLeft()
+{
+	if (this->horizontalScrollIncrementer != 0)
+		this->horizontalScrollIncrementer -= 1;
+
+	this->spriteSheet.setTextureRect(sf::IntRect(
+		(static_cast<int>(this->tileSize) * this->horizontalScrollIncrementer), (static_cast<int>(this->tileSize) * this->verticalScrollIncrementer),
+		static_cast<int>(this->bounds.getSize().x), static_cast<int>(this->bounds.getSize().y)
+	)
+	);
+}
+void TILEMAP::TextureSelector::scrollRight()
+{
+	if (this->horizontalScrollIncrementer != 64)
+		this->horizontalScrollIncrementer += 1;
+
+	this->spriteSheet.setTextureRect(sf::IntRect(
+		(static_cast<int>(this->tileSize) * this->horizontalScrollIncrementer), (static_cast<int>(this->tileSize) * this->verticalScrollIncrementer),
+		static_cast<int>(this->bounds.getSize().x), static_cast<int>(this->bounds.getSize().y)
+	)
+	);
+}
+
+/*Save & Load Functions*/
+void TILEMAP::TextureSelector::saveToFile(std::string file_path)
+{
+	std::ofstream ofs;
+	ofs.open(file_path);
+
+	if (ofs.is_open())
+	{
+		ofs << this->horizontalScrollIncrementer << " " << this->verticalScrollIncrementer << '\n';
+	}
+	else
+		throw("ERROR::TILEMAP::TEXTURE_SELECTOR::FAILED_TO_SAVE::ofs");
+
+	ofs.close();
+	std::cout << "Saved Texture Selector Data File \n";
+}
+void TILEMAP::TextureSelector::loadFromFile(std::string file_path)
+{
+	std::ifstream ifs;
+	ifs.open(file_path);
+
+	if (ifs.is_open())
+	{
+		int hScrollIncrementer;
+		int vScrollIncrementer;
+
+		ifs >> hScrollIncrementer >> vScrollIncrementer;
+
+		std::cout << "Horizontal: " << hScrollIncrementer << " " << "Vertical: " << vScrollIncrementer << '\n';
+
+		this->horizontalScrollIncrementer = hScrollIncrementer;
+		this->verticalScrollIncrementer = vScrollIncrementer;
+	}
+	else
+		throw("ERROR::TILEMAP::TEXTURE_SELECTOR::FAILED_TO_LOAD::ifs");
+
+	ifs.close();
+	std::cout << "Loaded Texture Selector Data File \n";
 }
 
 /*Render Functions*/

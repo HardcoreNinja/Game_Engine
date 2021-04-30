@@ -48,22 +48,23 @@ void Editor::initFonts()
 void Editor::initTileMap()
 {
 	this->tileMap = std::make_unique<TILEMAP::TileMap>(
-		this->tileSize,                              //Tile Size
-		90, 90,                                      //Map Width & Height (in Squares)
-		this->tileSize, this->tileSize,              //Texture Width & Height
-		"Resources/Images/Tiles/MasterLevelTileSheet.png" //Tile Sheet File Path
+		this->tileSize,                                //Tile Size
+		90, 90,                                        //Map Width & Height (in Squares)
+		this->tileSize, this->tileSize,                //Texture Width & Height
+		"Resources/Images/Tiles/PipoyaMasterLevel.png" //Tile Sheet File Path
 		);
 }
 void Editor::initTextureSelector()
 {
 	/*Texture Selector Box*/
 	this->textureSelector = std::make_unique<TILEMAP::TextureSelector>(
-		0.f, 0.f,                       //Texture Selector Position
-		256.f, 512.f,                  //Bounds Size
-		this->tileSize,                 //Tile Size
-		this->tileMap->getTexture(),    //Tile Map Texture
-		this->font,                     //Hide Button Font
-		this->keyTime, this->maxKeyTime //Key Time Variables
+		"Config/texture_selector_data_file.ini", //Texture Selector Date File Path
+		this->tileSize,                          //Tile Size
+		0.f, 0.f,                                //Texture Selector Position
+		256.f, 512.f,                            //Bounds Size         
+		this->tileMap->getTexture(),             //Tile Map Texture
+		this->font,                              //Hide Button Font
+		this->keyTime, this->maxKeyTime          //Key Time Variables
 		);
 
 	/*Green Selector That Follows Mouse*/
@@ -106,7 +107,7 @@ void Editor::initPauseMenu()
 }
 void Editor::initLatestTileMap()
 {
-	this->tileMap->loadFromFile("Config/tile_map.ini", "Resources/Images/Tiles/MasterLevelTileSheet.png");
+	this->tileMap->loadFromFile("Config/tile_map.ini", "Resources/Images/Tiles/PipoyaMasterLevel.png");
 }
 
 /*Constuctor & Destructor*/
@@ -193,6 +194,7 @@ void Editor::updatePauseMenuButtons()
 	if (this->pauseMenu->isButtonPressed("EXIT") && this->getKeyTime())
 	{
 		this->tileMap->saveToFile("Config/tile_map.ini");
+		this->textureSelector->saveToFile("Config/texture_selector_data_file.ini");
 		this->endState();
 	}
 }
@@ -283,19 +285,55 @@ void Editor::updateUserInput(const float& dt)
 		/*Scroll Texture Selector Up*/
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SCROLL_UP"))))
 			this->textureSelector->scrollUp();
-		else if (this->sfmlEvent->type == sf::Event::MouseWheelScrolled)
+		else if (this->sfmlEvent->type == sf::Event::MouseWheelScrolled && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))))
 		{
-			if (sfmlEvent->mouseWheelScroll.delta > 0)
+			if (this->sfmlEvent->mouseWheelScroll.delta > 0)
+			{
+				std::cout << "Scroll Wheel Delta: " << this->sfmlEvent->mouseWheelScroll.delta << '\n';
 				this->textureSelector->scrollUp();
+				this->sfmlEvent->mouseWheelScroll.delta = 0;
+				std::cout << "Scroll Wheel Delta: " << this->sfmlEvent->mouseWheelScroll.delta << '\n';
+			}
 		}
 
 		/*Scroll Texture Selector Down*/
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SCROLL_DOWN"))))
 			this->textureSelector->scrollDown();
-		else if (this->sfmlEvent->type == sf::Event::MouseWheelScrolled)
+		else if (this->sfmlEvent->type == sf::Event::MouseWheelScrolled && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))))
 		{
+			std::cout << "Scroll Wheel Delta: " << this->sfmlEvent->mouseWheelScroll.delta << '\n';
 			if (sfmlEvent->mouseWheelScroll.delta < 0)
 				this->textureSelector->scrollDown();
+			this->sfmlEvent->mouseWheelScroll.delta = 0;
+			std::cout << "Scroll Wheel Delta: " << this->sfmlEvent->mouseWheelScroll.delta << '\n';
+		}
+
+		/*Scroll Texture Selector Left*/
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SCROLL_LEFT"))))
+			this->textureSelector->scrollLeft();
+		else if (this->sfmlEvent->type == sf::Event::MouseWheelScrolled && sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))))
+		{
+			if (this->sfmlEvent->mouseWheelScroll.delta < 0)
+			{
+				std::cout << "Scroll Wheel Delta: " << this->sfmlEvent->mouseWheelScroll.delta << '\n';
+				this->textureSelector->scrollLeft();
+				this->sfmlEvent->mouseWheelScroll.delta = 0;
+				std::cout << "Scroll Wheel Delta: " << this->sfmlEvent->mouseWheelScroll.delta << '\n';
+			}
+		}
+
+		/*Scroll Texture Selector Right*/
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SCROLL_RIGHT"))))
+			this->textureSelector->scrollRight();
+		else if (this->sfmlEvent->type == sf::Event::MouseWheelScrolled && sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))))
+		{
+			if (this->sfmlEvent->mouseWheelScroll.delta > 0)
+			{
+				std::cout << "Scroll Wheel Delta: " << this->sfmlEvent->mouseWheelScroll.delta << '\n';
+				this->textureSelector->scrollRight();
+				this->sfmlEvent->mouseWheelScroll.delta = 0;
+				std::cout << "Scroll Wheel Delta: " << this->sfmlEvent->mouseWheelScroll.delta << '\n';
+			}
 		}
 	}
 }
