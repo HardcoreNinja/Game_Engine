@@ -1,7 +1,6 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 #include "State.h"
-#include "TileMap.h"
 
 /*Class Forward Declarations*/
 class Tile;

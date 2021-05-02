@@ -1,8 +1,9 @@
 #ifndef MAINMENU_H
 #define MAINMENU_H
-#include "Editor.h"
 #include "State.h"
 #include "Settings.h"
+#include "Editor.h"
+#include "GameState.h"
 
 /*Class Forward Declarations*/
 class Settings;

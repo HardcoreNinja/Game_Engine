@@ -50,23 +50,30 @@ void MainMenu::initMainMenuButtons()
 	this->buttons["QUIT_GAME"] = std::make_unique<GUI::Button>(
 		100.f, 550.f,                  //Button Rect Position
 		200.f, 50.f,                   // Button Rect Size
-		&this->font, "Quit Game", 50,//Button Font, Text, and Character Size
-		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50),//Text Color
-		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));    //Button Rect Fill Color (Outline Color Optional)
+		&this->font, "Quit Game", 50,  //Button Font, Text, and Character Size
+		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
+		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 
 	this->buttons["SETTINGS"] = std::make_unique<GUI::Button>(
 		100.f, 450.f,                  //Button Rect Position
 		200.f, 50.f,                   // Button Rect Size
-		&this->font, "Settings", 50,//Button Font, Text, and Character Size
-		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50),//Text Color
-		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));    //Button Rect Fill Color (Outline Color Optional)
+		&this->font, "Settings", 50,   //Button Font, Text, and Character Size
+		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
+		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 
 	this->buttons["EDITOR"] = std::make_unique<GUI::Button>(
 		100.f, 350.f,                  //Button Rect Position
 		200.f, 50.f,                   // Button Rect Size
-		&this->font, "Editor", 50,//Button Font, Text, and Character Size
-		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50),//Text Color
-		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));    //Button Rect Fill Color (Outline Color Optional)
+		&this->font, "Editor", 50,     //Button Font, Text, and Character Size
+		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
+		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
+
+	this->buttons["GAME_STATE"] = std::make_unique<GUI::Button>(
+		100.f, 250.f,                  //Button Rect Position
+		200.f, 50.f,                   // Button Rect Size
+		&this->font, "New Game", 50,   //Button Font, Text, and Character Size
+		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
+		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 }
 
 /*Constuctor & Destructor*/
@@ -99,6 +106,10 @@ void MainMenu::updateButtons()
 	//Editor
 	if (this->buttons["EDITOR"]->isPressed() && this->getKeyTime())
 		this->states->push_back(std::make_unique<Editor>(this->gameInfo));
+
+	//Game State
+	if (this->buttons["GAME_STATE"]->isPressed() && this->getKeyTime())
+		this->states->push_back(std::make_unique<GameState>(this->gameInfo));
 }
 void MainMenu::updateUserInput(const float& dt)
 {

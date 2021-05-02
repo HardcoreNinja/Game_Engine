@@ -120,7 +120,7 @@ Editor::Editor(GameInfo* game_info)
 	this->initTileMap();
 	this->initTextureSelector();
 	this->initPauseMenu();
-	//this->initLatestTileMap();
+	this->initLatestTileMap();
 }
 Editor::~Editor()
 {

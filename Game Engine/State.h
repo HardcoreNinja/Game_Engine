@@ -3,6 +3,7 @@
 #include "GraphicsSettings.h"
 #include "GUI.h"
 #include "PauseMenu.h"
+#include "TileMap.h"
 
 /*Class Forward Declarations*/
 class State;
