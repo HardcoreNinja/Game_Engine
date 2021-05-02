@@ -64,6 +64,9 @@
     <Filter Include="Source Files\TileMap">
       <UniqueIdentifier>{2e61caa6-32c3-44af-aa7c-69fdad257624}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Config\Texture Selector Data File">
+      <UniqueIdentifier>{9d31b541-23d8-4220-b8ce-6517bae07e35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Header.cpp">
@@ -153,6 +156,9 @@
     </None>
     <None Include="Config\tile_map.ini">
       <Filter>Resource Files\Config\Tile Map File</Filter>
+    </None>
+    <None Include="Config\texture_selector_data_file.ini">
+      <Filter>Resource Files\Config\Texture Selector Data File</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
