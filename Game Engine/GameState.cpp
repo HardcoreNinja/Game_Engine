@@ -64,6 +64,10 @@ void GameState::initLatestTileMap()
 {
 	this->tileMap->loadFromFile("Config/tile_map.ini", "Resources/Images/Tiles/PipoyaMasterLevel.png");
 }
+void GameState::initPlayer()
+{
+	this->player = std::make_unique<Player>(Actors::Actor_0);
+}
 
 /*Constuctor & Destructor*/
 GameState::GameState(GameInfo* game_info)
@@ -75,6 +79,7 @@ GameState::GameState(GameInfo* game_info)
 	this->initTileMap();
 	this->initPauseMenu();
 	this->initLatestTileMap();
+	this->initPlayer();
 }
 GameState::~GameState()
 {
@@ -97,18 +102,6 @@ void GameState::updateUserInput(const float& dt)
 
 	if (!this->isPaused)
 	{
-		/*Camera Controls*/
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_UP"))))
-			this->view.move(sf::Vector2f(0.f, -this->cameraSpeed * dt * (1.f / dt)));
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_DOWN"))))
-			this->view.move(sf::Vector2f(0.f, this->cameraSpeed * dt * (1.f / dt)));
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_LEFT"))))
-			this->view.move(sf::Vector2f(-this->cameraSpeed * dt * (1.f / dt), 0.f));
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_RIGHT"))))
-			this->view.move(sf::Vector2f(this->cameraSpeed * dt * (1.f / dt), 0.f));
 	}
 }
 void GameState::update(const float& dt)
@@ -149,6 +142,10 @@ void GameState::renderTileMap(sf::RenderTarget& target)
 {
 	this->tileMap->render(target, this->view);
 }
+void GameState::renderPlayer(sf::RenderTarget& target)
+{
+	this->player->render(target);
+}
 void GameState::render(sf::RenderTarget* target)
 {
 	if (!target)
@@ -157,6 +154,7 @@ void GameState::render(sf::RenderTarget* target)
 	/*Items Rendered with Camera View*/
 	target->setView(this->view);
 	this->renderTileMap(*target);
+	this->renderPlayer(*target);
 
 	/*Items Rendered with Default Window View*/
 	this->window->setView(this->defaultWindowView);

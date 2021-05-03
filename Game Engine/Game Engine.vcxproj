@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GraphicsSettings.cpp" />
@@ -165,12 +166,14 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Editor.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GraphicsSettings.h" />
@@ -178,6 +181,7 @@
     <ClInclude Include="Header.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="PauseMenu.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="TileMap.h" />
