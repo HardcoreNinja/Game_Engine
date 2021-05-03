@@ -28,26 +28,48 @@ enum class Actors
     Actor_22,
     Actor_23,
 };
+enum class PlayerDirection
+{
+    Idle = 0,
+    Up,
+    Down,
+    Left,
+    Right
+};
 
 class Player :
     public Entity
 {
 private:
+    /*Actor Enumerator*/
     Actors actor;
+    PlayerDirection playerDirection;
+
+    /*Movement Variables*/
+    float movementSpeed;
+
+    /*User Input*/
+    std::map<std::string, int> keybinds;
 
     /*Initializers*/
+    void initVariables();
+    void initKeybinds();
     void initIntRectVector();
     void initSpriteRect();
     void initSprite(Actors actor);
 
 public:
     /*Constuctor & Destructor*/
-    Player(Actors actor);
+    Player(Actors actor, std::map<std::string, int>* supported_keys);
     virtual ~Player();
 
+    /*Movement Functions*/
+    void movement(const float& dt);
+
+    /*Update Functions*/
     void update(const float& dt);
 
+    /*Render Functions*/
     void render(sf::RenderTarget& target);
-
 };
 #endif

@@ -1,6 +1,32 @@
 #include "Header.h"
 #include "Player.h"
+
 /*Initializers*/
+void Player::initVariables()
+{
+	this->movementSpeed = 10.f;
+}
+void Player::initKeybinds()
+{
+	std::ifstream ifs("Config/player_keybinds.ini");
+
+	if (ifs.is_open())
+	{
+		std::string key = "";
+		std::string keyboardKey = "";
+
+		while (ifs >> key >> keyboardKey)
+
+			this->keybinds[key] = this->supportedKeys->at(keyboardKey);
+	}
+	ifs.close();
+
+	//Debug Tester
+	for (auto i : this->keybinds)
+	{
+		std::cout << i.first << " " << i.second << '\n';
+	}
+}
 void Player::initIntRectVector()
 {
 	int intRectLeftX = 48;
@@ -10,25 +36,25 @@ void Player::initIntRectVector()
 	int intRectHeight = 64;
 
 	/*Actors 0-3*/
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 0, intRectTopY * 0, intRectWidth, intRectHeight));
+	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 1, intRectTopY * 0, intRectWidth, intRectHeight));
 	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 4, intRectTopY * 0, intRectWidth, intRectHeight));
 	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 7, intRectTopY * 0, intRectWidth, intRectHeight));
 	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 10, intRectTopY * 0, intRectWidth, intRectHeight));
 
 	/*Actors 4-7*/
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 0, intRectTopY * 1, intRectWidth, intRectHeight));
+	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 1, intRectTopY * 1, intRectWidth, intRectHeight));
 	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 4, intRectTopY * 1, intRectWidth, intRectHeight));
 	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 7, intRectTopY * 1, intRectWidth, intRectHeight));
 	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 10, intRectTopY * 1, intRectWidth, intRectHeight));
 
 	/*Actors 8-11*/
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 0, intRectTopY * 2, intRectWidth, intRectHeight));
+	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 1, intRectTopY * 2, intRectWidth, intRectHeight));
 	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 4, intRectTopY * 2, intRectWidth, intRectHeight));
 	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 7, intRectTopY * 2, intRectWidth, intRectHeight));
 	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 10, intRectTopY * 2, intRectWidth, intRectHeight));
 
 	/*Actors 12-15*/
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 0, intRectTopY * 3, intRectWidth, intRectHeight));
+	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 1, intRectTopY * 3, intRectWidth, intRectHeight));
 	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 4, intRectTopY * 3, intRectWidth, intRectHeight));
 	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 7, intRectTopY * 3, intRectWidth, intRectHeight));
 	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 10, intRectTopY * 3, intRectWidth, intRectHeight));
@@ -40,12 +66,11 @@ void Player::initIntRectVector()
 	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 10, intRectTopY * 4, intRectWidth, intRectHeight));
 
 	/*Actors 20-23*/
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 0, intRectTopY * 5, intRectWidth, intRectHeight));
+	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 1, intRectTopY * 5, intRectWidth, intRectHeight));
 	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 4, intRectTopY * 5, intRectWidth, intRectHeight));
 	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 7, intRectTopY * 5, intRectWidth, intRectHeight));
 	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 10, intRectTopY * 5, intRectWidth, intRectHeight));
 }
-
 void Player::initSpriteRect()
 {
 	this->spriteRect.setSize(sf::Vector2f(26, 42.f));
@@ -55,7 +80,6 @@ void Player::initSpriteRect()
 	this->spriteRect.setOrigin(this->spriteRect.getGlobalBounds().width / 2.f, this->spriteRect.getGlobalBounds().height / 2.f);
 	this->spriteRect.setPosition(207, 176);
 }
-
 void Player::initSprite(Actors actor)
 {
 	this->actor = actor;
@@ -69,8 +93,11 @@ void Player::initSprite(Actors actor)
 }
 
 /*Constuctor & Destructor*/
-Player::Player(Actors actor)
+Player::Player(Actors actor, std::map<std::string, int>* supported_keys)
 {
+	this->supportedKeys = supported_keys;
+	this->initVariables();
+	this->initKeybinds();
 	this->initIntRectVector();
 	this->initSpriteRect();
 	this->initSprite(actor);
@@ -79,6 +106,160 @@ Player::~Player()
 {
 }
 
+/*Movement Functions*/
+void Player::movement(const float& dt)
+{
+	/*IntRect Variables*/
+	int intRectTop_Up;
+	int intRectTop_Down;
+	int intRectTop_Left;
+	int intRectTop_Right;
+
+	int intRectLeft_Start;
+	int intRectLeft_End;
+
+	int intRectLeft_FrameSize = 48;
+
+	int intRectWidth = 48;
+	int intRectHeight = 64;
+
+	sf::IntRect idleUp;
+	sf::IntRect idleDown;
+	sf::IntRect idleLeft;
+	sf::IntRect idleRight;
+
+	/*Actor IntRect Switch*/
+	switch (this->actor)
+	{
+	case Actors::Actor_0:
+		intRectTop_Up = 192;
+		intRectTop_Down = 0;
+		intRectTop_Left = 64;
+		intRectTop_Right = 128;
+
+		intRectLeft_Start = 0;
+		intRectLeft_End = 96;
+
+		idleUp = sf::IntRect(intRectWidth * 1, intRectTop_Up, intRectWidth, intRectHeight);
+		idleDown = sf::IntRect(intRectWidth * 1, intRectTop_Down, intRectWidth, intRectHeight);
+		idleLeft = sf::IntRect(intRectWidth * 1, intRectTop_Left, intRectWidth, intRectHeight);
+		idleRight = sf::IntRect(intRectWidth * 1, intRectTop_Right, intRectWidth, intRectHeight);
+		break;
+	}
+
+	float deltaTime = this->animationClock.getElapsedTime().asSeconds();
+	float switchTime = .1f;
+
+	if (deltaTime > switchTime)
+	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("UP"))))
+		{
+			this->spriteRect.move(0, -this->movementSpeed * dt * (1.f / dt));
+			this->playerDirection = PlayerDirection::Up;
+
+			this->spriteIntRect.top = intRectTop_Up;
+
+			if (this->spriteIntRect.left == intRectLeft_End)
+				this->spriteIntRect.left = intRectLeft_Start;
+			
+			else
+			{
+				this->spriteIntRect.left += intRectLeft_FrameSize;
+				this->sprite.setTextureRect(this->spriteIntRect);
+				this->animationClock.restart();
+			}
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("DOWN"))))
+		{
+			this->spriteRect.move(0, this->movementSpeed * dt * (1.f / dt));
+			this->playerDirection = PlayerDirection::Down;
+
+			this->spriteIntRect.top = intRectTop_Down;
+
+			if (this->spriteIntRect.left == intRectLeft_End)
+			{
+				this->spriteIntRect.left = intRectLeft_Start;
+			}
+			else
+			{
+				this->spriteIntRect.left += intRectLeft_FrameSize;
+				this->sprite.setTextureRect(this->spriteIntRect);
+				this->animationClock.restart();
+			}
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT"))))
+		{
+			this->spriteRect.move(-this->movementSpeed * dt * (1.f / dt), 0);
+			this->playerDirection = PlayerDirection::Left;
+
+			this->spriteIntRect.top = intRectTop_Left;
+
+			if (this->spriteIntRect.left == intRectLeft_End)
+			{
+				this->spriteIntRect.left = intRectLeft_Start;
+			}
+			else
+			{
+				this->spriteIntRect.left += intRectLeft_FrameSize;
+				this->sprite.setTextureRect(this->spriteIntRect);
+				this->animationClock.restart();
+			}
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("RIGHT"))))
+		{
+			this->spriteRect.move(this->movementSpeed * dt * (1.f / dt), 0);
+			this->playerDirection = PlayerDirection::Right;
+
+			this->spriteIntRect.top = intRectTop_Right;
+
+			if (this->spriteIntRect.left == intRectLeft_End)
+			{
+				this->spriteIntRect.left = intRectLeft_Start;
+			}
+			else
+			{
+				this->spriteIntRect.left += intRectLeft_FrameSize;
+				this->sprite.setTextureRect(this->spriteIntRect);
+				this->animationClock.restart();
+			}
+		}
+		else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("UP"))) 
+			|| !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("DOWN")))
+			|| !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT")))
+			|| !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("RIGHT"))))
+		{
+			if (this->playerDirection == PlayerDirection::Up)
+			{
+				this->spriteIntRect = idleUp;
+				this->sprite.setTextureRect(this->spriteIntRect);
+			}
+			else if (this->playerDirection == PlayerDirection::Down)
+			{
+				this->spriteIntRect = idleDown;
+				this->sprite.setTextureRect(this->spriteIntRect);
+			}
+			else if (this->playerDirection == PlayerDirection::Left)
+			{
+				this->spriteIntRect = idleLeft;
+				this->sprite.setTextureRect(this->spriteIntRect);
+			}
+			else if (this->playerDirection == PlayerDirection::Right)
+			{
+				this->spriteIntRect = idleRight;
+				this->sprite.setTextureRect(this->spriteIntRect);
+			}
+		}
+	}
+}
+
+/*Update Functions*/
+void Player::update(const float& dt)
+{
+	this->movement(dt);
+	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x, this->spriteRect.getPosition().y - 10));
+}
+
+/*Render Functions*/
 void Player::render(sf::RenderTarget& target)
 {
 	target.draw(this->spriteRect);

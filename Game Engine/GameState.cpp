@@ -66,7 +66,7 @@ void GameState::initLatestTileMap()
 }
 void GameState::initPlayer()
 {
-	this->player = std::make_unique<Player>(Actors::Actor_0);
+	this->player = std::make_unique<Player>(Actors::Actor_0, this->supportedKeys);
 }
 
 /*Constuctor & Destructor*/
@@ -110,6 +110,7 @@ void GameState::update(const float& dt)
 	this->updateKeyTime(dt);
 	this->updateMousePosition(&this->view, &this->defaultWindowView);
 	this->updateUserInput(dt);
+	this->player->update(dt);
 
 	if (this->isPaused) //Paused
 	{

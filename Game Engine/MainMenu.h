@@ -7,6 +7,8 @@
 
 /*Class Forward Declarations*/
 class Settings;
+class Editor;
+class GameState;
 
 class MainMenu :
     public State

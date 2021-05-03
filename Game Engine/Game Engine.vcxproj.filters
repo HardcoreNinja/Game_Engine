@@ -181,6 +181,9 @@
     <None Include="Config\texture_selector_data_file.ini">
       <Filter>Resource Files\Config\Texture Selector Data File</Filter>
     </None>
+    <None Include="Config\player_keybinds.ini">
+      <Filter>Resource Files\Config\Keybinds</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Fonts\Dosis.ttf">
