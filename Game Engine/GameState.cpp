@@ -7,7 +7,7 @@ void GameState::initVariables()
 }
 void GameState::initKeybinds()
 {
-	std::ifstream ifs("Config/editor_keybinds.ini");
+	std::ifstream ifs("Config/game_state_keybinds.ini");
 
 	if (ifs.is_open())
 	{
@@ -102,6 +102,7 @@ void GameState::updateUserInput(const float& dt)
 
 	if (!this->isPaused)
 	{
+		this->player->update(dt);
 	}
 }
 void GameState::update(const float& dt)
@@ -110,8 +111,7 @@ void GameState::update(const float& dt)
 	this->updateKeyTime(dt);
 	this->updateMousePosition(&this->view, &this->defaultWindowView);
 	this->updateUserInput(dt);
-	this->player->update(dt);
-
+	
 	if (this->isPaused) //Paused
 	{
 		this->pauseMenu->update(static_cast<sf::Vector2f>(this->mousePositionGUI));

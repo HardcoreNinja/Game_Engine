@@ -184,6 +184,9 @@
     <None Include="Config\player_keybinds.ini">
       <Filter>Resource Files\Config\Keybinds</Filter>
     </None>
+    <None Include="Config\game_state_keybinds.ini">
+      <Filter>Resource Files\Config\Keybinds</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Fonts\Dosis.ttf">

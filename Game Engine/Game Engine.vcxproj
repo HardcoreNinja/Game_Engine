@@ -188,6 +188,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\editor_keybinds.ini" />
+    <None Include="Config\game_state_keybinds.ini" />
     <None Include="Config\graphics_settings.ini" />
     <None Include="Config\mainmenu_keybinds.ini" />
     <None Include="Config\player_keybinds.ini" />
