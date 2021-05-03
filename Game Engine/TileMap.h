@@ -16,9 +16,9 @@ namespace TILEMAP
 	{
 	private:
 		sf::RectangleShape shape;
+		unsigned short shapeRotation;
 		bool collision;
 		unsigned short tileType;
-		unsigned short shapeRotation;
 
 	public:
 		/*Constuctor & Destructor*/
@@ -36,6 +36,10 @@ namespace TILEMAP
 		/*Getters*/
 		const sf::Vector2f& getPosition() const;
 		const std::string getAsString() const;
+		sf::RectangleShape& getShape();
+		bool getCollision() const;
+		unsigned short getTileType() const;
+
 
 		/*Render Functions*/
 		void render(sf::RenderTarget& target);
@@ -67,6 +71,7 @@ namespace TILEMAP
 		/*Getters*/
 		const sf::Texture* getTexture();
 		const sf::IntRect& getTextureIntRect();
+		std::tuple<bool, unsigned short> getCollision(sf::RectangleShape player_rect);
 
 		/*Setters*/
 		void setTextureIntRect(sf::IntRect texture_int_rect);
@@ -159,7 +164,6 @@ namespace TILEMAP
 
 		/*Render Functions*/
 		void render(sf::RenderTarget& target, const sf::View& view);
-
 	};
 }
 #endif

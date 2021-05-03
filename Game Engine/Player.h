@@ -48,6 +48,9 @@ private:
     /*Movement Variables*/
     float movementSpeed;
 
+    /*Collision Variables*/
+    bool wallCollision;
+
     /*User Input*/
     std::map<std::string, int> keybinds;
 
@@ -63,8 +66,14 @@ public:
     Player(Actors actor, std::map<std::string, int>* supported_keys);
     virtual ~Player();
 
+    /*Getters*/
+    sf::RectangleShape getSpriteRect();
+
     /*Movement Functions*/
     void movement(const float& dt);
+
+    /*Tile Collisions Functions*/
+    void tileCollision(std::tuple<bool, unsigned short> collision_tuple);
 
     /*Update Functions*/
     void update(const float& dt);

@@ -5,6 +5,7 @@
 void Player::initVariables()
 {
 	this->movementSpeed = 10.f;
+	this->wallCollision = false;
 }
 void Player::initKeybinds()
 {
@@ -106,6 +107,12 @@ Player::~Player()
 {
 }
 
+/*Getters*/
+sf::RectangleShape Player::getSpriteRect()
+{
+	return this->spriteRect;
+}
+
 /*Movement Functions*/
 void Player::movement(const float& dt)
 {
@@ -154,73 +161,85 @@ void Player::movement(const float& dt)
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("UP"))))
 		{
-			this->spriteRect.move(0, -this->movementSpeed * dt * (1.f / dt));
 			this->playerDirection = PlayerDirection::Up;
-
-			this->spriteIntRect.top = intRectTop_Up;
-
-			if (this->spriteIntRect.left == intRectLeft_End)
-				this->spriteIntRect.left = intRectLeft_Start;
-			
-			else
+			if (!this->wallCollision && this->playerDirection == PlayerDirection::Up)
 			{
-				this->spriteIntRect.left += intRectLeft_FrameSize;
-				this->sprite.setTextureRect(this->spriteIntRect);
-				this->animationClock.restart();
+				this->spriteRect.move(0, -this->movementSpeed * dt * (1.f / dt));
+
+				this->spriteIntRect.top = intRectTop_Up;
+
+				if (this->spriteIntRect.left == intRectLeft_End)
+					this->spriteIntRect.left = intRectLeft_Start;
+
+				else
+				{
+					this->spriteIntRect.left += intRectLeft_FrameSize;
+					this->sprite.setTextureRect(this->spriteIntRect);
+					this->animationClock.restart();
+				}
 			}
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("DOWN"))))
 		{
-			this->spriteRect.move(0, this->movementSpeed * dt * (1.f / dt));
 			this->playerDirection = PlayerDirection::Down;
-
-			this->spriteIntRect.top = intRectTop_Down;
-
-			if (this->spriteIntRect.left == intRectLeft_End)
+			if (!this->wallCollision && this->playerDirection == PlayerDirection::Down)
 			{
-				this->spriteIntRect.left = intRectLeft_Start;
-			}
-			else
-			{
-				this->spriteIntRect.left += intRectLeft_FrameSize;
-				this->sprite.setTextureRect(this->spriteIntRect);
-				this->animationClock.restart();
+				this->spriteRect.move(0, this->movementSpeed * dt * (1.f / dt));
+
+				this->spriteIntRect.top = intRectTop_Down;
+
+				if (this->spriteIntRect.left == intRectLeft_End)
+				{
+					this->spriteIntRect.left = intRectLeft_Start;
+				}
+				else
+				{
+					this->spriteIntRect.left += intRectLeft_FrameSize;
+					this->sprite.setTextureRect(this->spriteIntRect);
+					this->animationClock.restart();
+				}
 			}
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT"))))
 		{
-			this->spriteRect.move(-this->movementSpeed * dt * (1.f / dt), 0);
 			this->playerDirection = PlayerDirection::Left;
-
-			this->spriteIntRect.top = intRectTop_Left;
-
-			if (this->spriteIntRect.left == intRectLeft_End)
+			if (!this->wallCollision && this->playerDirection == PlayerDirection::Left)
 			{
-				this->spriteIntRect.left = intRectLeft_Start;
-			}
-			else
-			{
-				this->spriteIntRect.left += intRectLeft_FrameSize;
-				this->sprite.setTextureRect(this->spriteIntRect);
-				this->animationClock.restart();
+				this->spriteRect.move(-this->movementSpeed * dt * (1.f / dt), 0);
+
+				this->spriteIntRect.top = intRectTop_Left;
+
+				if (this->spriteIntRect.left == intRectLeft_End)
+				{
+					this->spriteIntRect.left = intRectLeft_Start;
+				}
+				else
+				{
+					this->spriteIntRect.left += intRectLeft_FrameSize;
+					this->sprite.setTextureRect(this->spriteIntRect);
+					this->animationClock.restart();
+				}
 			}
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("RIGHT"))))
 		{
-			this->spriteRect.move(this->movementSpeed * dt * (1.f / dt), 0);
 			this->playerDirection = PlayerDirection::Right;
-
-			this->spriteIntRect.top = intRectTop_Right;
-
-			if (this->spriteIntRect.left == intRectLeft_End)
+			if (!this->wallCollision && this->spriteIntRect.top == intRectTop_Right)
 			{
-				this->spriteIntRect.left = intRectLeft_Start;
-			}
-			else
-			{
-				this->spriteIntRect.left += intRectLeft_FrameSize;
-				this->sprite.setTextureRect(this->spriteIntRect);
-				this->animationClock.restart();
+				this->spriteRect.move(this->movementSpeed * dt * (1.f / dt), 0);
+
+				this->spriteIntRect.top = intRectTop_Right;
+
+				if (this->spriteIntRect.left == intRectLeft_End)
+				{
+					this->spriteIntRect.left = intRectLeft_Start;
+				}
+				else
+				{
+					this->spriteIntRect.left += intRectLeft_FrameSize;
+					this->sprite.setTextureRect(this->spriteIntRect);
+					this->animationClock.restart();
+				}
 			}
 		}
 		else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("UP"))) 
@@ -250,6 +269,27 @@ void Player::movement(const float& dt)
 			}
 		}
 	}
+}
+
+/*Tile Collisions Functions*/
+void Player::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
+{
+	if (std::get<0>(collision_tuple) == true && std::get<1>(collision_tuple) == 3)
+	{
+		this->wallCollision = true;
+		std::cout << "Wall Collision: " << this->wallCollision << '\n';
+	}
+	else
+		this->wallCollision = false;
+
+	if (this->wallCollision == true && this->playerDirection == PlayerDirection::Left)
+		this->spriteRect.move(10, 0);
+	else if (this->wallCollision == true && this->playerDirection == PlayerDirection::Right)
+		this->spriteRect.move(-10, 0);
+	else if (this->wallCollision == true && this->playerDirection == PlayerDirection::Up)
+		this->spriteRect.move(0, 10);
+	else if (this->wallCollision == true && this->playerDirection == PlayerDirection::Down)
+		this->spriteRect.move(0, -10);
 }
 
 /*Update Functions*/

@@ -111,6 +111,7 @@ void GameState::update(const float& dt)
 	this->updateKeyTime(dt);
 	this->updateMousePosition(&this->view, &this->defaultWindowView);
 	this->updateUserInput(dt);
+	this->player->tileCollision(this->tileMap->getCollision(this->player->getSpriteRect()));
 	
 	if (this->isPaused) //Paused
 	{
