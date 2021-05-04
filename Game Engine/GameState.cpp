@@ -55,6 +55,12 @@ void GameState::initPauseMenu()
 		);
 
 	this->pauseMenu->addButton(
+		"SETTINGS",                                                 //Key
+		static_cast<float>(this->window->getSize().y) / 2.f,  // Pos_Y
+		"Settings"                                                  // Button Text
+	);
+
+	this->pauseMenu->addButton(
 		"EXIT",                                                 //Key
 		static_cast<float>(this->window->getSize().y) - 100.f,  // Pos_Y
 		"Exit"                                                  // Button Text
@@ -88,6 +94,9 @@ GameState::~GameState()
 /*Update Functions*/
 void GameState::updatePauseMenuButtons()
 {
+	if (this->pauseMenu->isButtonPressed("SETTINGS") && this->getKeyTime())
+		this->states->push_back(std::make_unique<Settings>(this->gameInfo));
+
 	if (this->pauseMenu->isButtonPressed("EXIT") && this->getKeyTime())
 		this->endState();
 }

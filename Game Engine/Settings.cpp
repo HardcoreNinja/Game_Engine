@@ -207,6 +207,8 @@ void Settings::updateButtons()
 			break;
 		}
 		this->saveToFile();
+		this->resizeView();
+		this->updateGraphicsSettings();
 	}
 }
 void Settings::updateDropdownLists(const float& dt)
@@ -350,7 +352,7 @@ void Settings::recreateWindow()
 	this->window->setFramerateLimit(this->gameInfo->graphicsSettings->frameRateLimit); //Framerate Limit
 	this->window->setVerticalSyncEnabled(this->gameInfo->graphicsSettings->isVSync);   //VSync Enabled
 
-	this->reinitializeStates();
+	//this->reinitializeStates();
 }
 
 /*Reinitialize Functions*/
@@ -379,8 +381,8 @@ void Settings::saveToFile()
 	}
 	ofs.close();
 
-	this->graphicsSettings->saveToFile();
-	this->recreateWindow();
+	//this->graphicsSettings->saveToFile();
+	//this->recreateWindow();
 }
 void Settings::loadFromFile()
 {
