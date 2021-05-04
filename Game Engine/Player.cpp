@@ -113,17 +113,38 @@ sf::RectangleShape Player::getSpriteRect()
 	return this->spriteRect;
 }
 
+/*Tile Collision Functions*/
+void Player::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
+{
+	if (std::get<0>(collision_tuple) == true && std::get<1>(collision_tuple) == 3)
+	{
+		this->wallCollision = true;
+		std::cout << "Wall Collision: " << this->wallCollision << '\n';
+	}
+	else
+		this->wallCollision = false;
+
+	if (this->wallCollision == true && this->playerDirection == PlayerDirection::Up)
+		this->spriteRect.move(0, 10);
+	else if (this->wallCollision == true && this->playerDirection == PlayerDirection::Down)
+		this->spriteRect.move(0, -10);
+	else if (this->wallCollision == true && this->playerDirection == PlayerDirection::Left)
+		this->spriteRect.move(10, 0);
+	else if (this->wallCollision == true && this->playerDirection == PlayerDirection::Right)
+		this->spriteRect.move(-10, 0);
+}
+
 /*Movement Functions*/
 void Player::movement(const float& dt)
 {
 	/*IntRect Variables*/
-	int intRectTop_Up;
-	int intRectTop_Down;
-	int intRectTop_Left;
-	int intRectTop_Right;
+	int intRectTop_Up = 0;
+	int intRectTop_Down = 0;
+	int intRectTop_Left = 0;
+	int intRectTop_Right = 0;
 
-	int intRectLeft_Start;
-	int intRectLeft_End;
+	int intRectLeft_Start = 0;
+	int intRectLeft_End = 0;
 
 	int intRectLeft_FrameSize = 48;
 
@@ -154,9 +175,11 @@ void Player::movement(const float& dt)
 		break;
 	}
 
+	/*Animation Switch Time Variables*/
 	float deltaTime = this->animationClock.getElapsedTime().asSeconds();
 	float switchTime = .1f;
 
+	/*Movement "If" Statement*/
 	if (deltaTime > switchTime)
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("UP"))))
@@ -224,7 +247,7 @@ void Player::movement(const float& dt)
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("RIGHT"))))
 		{
 			this->playerDirection = PlayerDirection::Right;
-			if (!this->wallCollision && this->spriteIntRect.top == intRectTop_Right)
+			if (!this->wallCollision && this->playerDirection == PlayerDirection::Right)
 			{
 				this->spriteRect.move(this->movementSpeed * dt * (1.f / dt), 0);
 
@@ -269,27 +292,6 @@ void Player::movement(const float& dt)
 			}
 		}
 	}
-}
-
-/*Tile Collisions Functions*/
-void Player::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
-{
-	if (std::get<0>(collision_tuple) == true && std::get<1>(collision_tuple) == 3)
-	{
-		this->wallCollision = true;
-		std::cout << "Wall Collision: " << this->wallCollision << '\n';
-	}
-	else
-		this->wallCollision = false;
-
-	if (this->wallCollision == true && this->playerDirection == PlayerDirection::Left)
-		this->spriteRect.move(10, 0);
-	else if (this->wallCollision == true && this->playerDirection == PlayerDirection::Right)
-		this->spriteRect.move(-10, 0);
-	else if (this->wallCollision == true && this->playerDirection == PlayerDirection::Up)
-		this->spriteRect.move(0, 10);
-	else if (this->wallCollision == true && this->playerDirection == PlayerDirection::Down)
-		this->spriteRect.move(0, -10);
 }
 
 /*Update Functions*/
