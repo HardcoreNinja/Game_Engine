@@ -2,7 +2,6 @@
 #define GAMESTATE_H
 #include "State.h"
 #include "Player.h"
-#include "Settings.h"
 
 /*Class Forward Declarations*/
 class Tile;
