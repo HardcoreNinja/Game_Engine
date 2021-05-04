@@ -68,6 +68,11 @@ void GameState::initPlayer()
 {
 	this->player = std::make_unique<Player>(Actors::Actor_0, this->supportedKeys);
 }
+void GameState::initPlayerView()
+{
+	this->view.setSize(static_cast<float>(this->window->getSize().x), static_cast<float>(this->window->getSize().y));
+	this->view.setCenter(this->player->getSpriteRect().getPosition());
+}
 
 /*Constuctor & Destructor*/
 GameState::GameState(GameInfo* game_info)
@@ -99,11 +104,6 @@ void GameState::updateUserInput(const float& dt)
 			this->pause();
 		else
 			this->unpause();
-
-	if (!this->isPaused)
-	{
-		this->player->update(dt);
-	}
 }
 void GameState::update(const float& dt)
 {
@@ -111,7 +111,6 @@ void GameState::update(const float& dt)
 	this->updateKeyTime(dt);
 	this->updateMousePosition(&this->view, &this->defaultWindowView);
 	this->updateUserInput(dt);
-	this->player->tileCollision(this->tileMap->getCollision(this->player->getSpriteRect()));
 	
 	if (this->isPaused) //Paused
 	{
@@ -120,6 +119,9 @@ void GameState::update(const float& dt)
 	}
 	else               //Unpaused
 	{
+		this->player->update(dt);
+		this->player->tileCollision(this->tileMap->getCollision(this->player->getSpriteRect()));
+		this->view.setCenter(this->player->getSpriteRect().getPosition());
 	}
 }
 

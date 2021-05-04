@@ -157,6 +157,7 @@ void State::resizeView()
 	//this->defaultWindowView.setSize(static_cast<float>(this->window->getSize().x) * aspectRatio, static_cast<float>(this->window->getSize().y) * aspectRatio);
 
 	this->view.setSize(static_cast<float>(this->window->getSize().x) * aspectRatio, static_cast<float>(this->window->getSize().y) * aspectRatio);
+	this->playerView.setSize(static_cast<float>(this->window->getSize().x) * aspectRatio, static_cast<float>(this->window->getSize().y) * aspectRatio);
 }
 
 /*Pause Menu Functions*/

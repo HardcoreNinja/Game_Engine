@@ -26,6 +26,7 @@ private:
     void initPauseMenu();
     void initLatestTileMap();
     void initPlayer();
+    void initPlayerView();
 
 public:
     /*Constuctor & Destructor*/
