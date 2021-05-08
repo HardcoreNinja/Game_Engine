@@ -38,6 +38,14 @@ void GameState::initFonts()
 	this->text.setCharacterSize(12);
 	this->text.setPosition(sf::Vector2f(static_cast<float>(this->mousePositionWindow.x), static_cast<float>(this->mousePositionWindow.y)));
 }
+void GameState::initRenderTexture()
+{
+	//std::cout << "Window Size: " << this->window->getSize().x << " x " << this->window->getSize().y << '\n';
+	this->renderTexture.create(this->window->getSize().x, this->window->getSize().y);
+	this->renderTexture.setSmooth(true);
+	this->renderSprite.setTexture(this->renderTexture.getTexture());
+	this->renderSprite.setTextureRect(sf::IntRect(0, 0, this->window->getSize().x, this->window->getSize().y));
+}
 void GameState::initTileMap()
 {
 	this->tileMap = std::make_unique<TILEMAP::TileMap>(
@@ -68,11 +76,6 @@ void GameState::initPlayer()
 {
 	this->player = std::make_unique<Player>(Actors::Actor_0, this->supportedKeys);
 }
-void GameState::initPlayerView()
-{
-	this->view.setSize(static_cast<float>(this->window->getSize().x), static_cast<float>(this->window->getSize().y));
-	this->view.setCenter(this->player->getSpriteRect().getPosition());
-}
 
 /*Constuctor & Destructor*/
 GameState::GameState(GameInfo* game_info)
@@ -81,6 +84,7 @@ GameState::GameState(GameInfo* game_info)
 	this->initVariables();
 	this->initKeybinds();
 	this->initFonts();
+	this->initRenderTexture();
 	this->initTileMap();
 	this->initPauseMenu();
 	this->initLatestTileMap();
@@ -132,6 +136,7 @@ void GameState::reinitializeState()
 	this->initVariables();
 	this->initKeybinds();
 	this->initFonts();
+	this->initRenderTexture();
 	this->initTileMap();
 	this->initPauseMenu();
 	this->initLatestTileMap();
@@ -155,16 +160,14 @@ void GameState::render(sf::RenderTarget* target)
 	if (!target)
 		target = this->window;
 
-	/*Items Rendered with Camera View*/
-	target->setView(this->view);
-	this->renderTileMap(*target);
-	this->renderPlayer(*target);
-
-	/*Items Rendered with Default Window View*/
-	this->window->setView(this->defaultWindowView);
-
-	/*Items Rendered with Camera View*/
-	target->setView(this->view);
+	/*Items Rendered to Render Texture*/
+	this->renderTexture.clear();
+	this->renderTexture.setView(this->view);
+	this->renderTileMap(this->renderTexture);
+	this->renderSprite.setTexture(this->renderTexture.getTexture());
+	this->renderPlayer(this->renderTexture);
+	this->renderTexture.display();
+	target->draw(this->renderSprite);
 
 	/*Items Rendered with Default Window View*/
 	this->window->setView(this->defaultWindowView);

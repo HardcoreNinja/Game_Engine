@@ -15,6 +15,10 @@ private:
     /*Tile Map*/
     std::unique_ptr<TILEMAP::TileMap> tileMap;
 
+    /*Render Texture*/
+    sf::RenderTexture renderTexture;
+    sf::Sprite renderSprite;
+
     /*Player*/
     std::unique_ptr<Player> player;
 
@@ -22,11 +26,11 @@ private:
     void initVariables();
     void initKeybinds();
     void initFonts();
+    void initRenderTexture();
     void initTileMap();
     void initPauseMenu();
     void initLatestTileMap();
     void initPlayer();
-    void initPlayerView();
 
 public:
     /*Constuctor & Destructor*/

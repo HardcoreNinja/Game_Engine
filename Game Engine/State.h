@@ -74,7 +74,6 @@ protected:
 	/*View*/
 	sf::View defaultWindowView;
 	sf::View view;
-	sf::View playerView;
 
 	/*Pause Menu*/
 	std::unique_ptr<PauseMenu> pauseMenu;

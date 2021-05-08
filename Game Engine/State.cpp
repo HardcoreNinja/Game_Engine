@@ -157,7 +157,7 @@ void State::resizeView()
 	//this->defaultWindowView.setSize(static_cast<float>(this->window->getSize().x) * aspectRatio, static_cast<float>(this->window->getSize().y) * aspectRatio);
 
 	this->view.setSize(static_cast<float>(this->window->getSize().x) * aspectRatio, static_cast<float>(this->window->getSize().y) * aspectRatio);
-	this->playerView.setSize(static_cast<float>(this->window->getSize().x) * aspectRatio, static_cast<float>(this->window->getSize().y) * aspectRatio);
+	this->view.setCenter((static_cast<float>(this->window->getSize().x) * aspectRatio) / 2.f, (static_cast<float>(this->window->getSize().y) * aspectRatio) / 2.f);
 }
 
 /*Pause Menu Functions*/
