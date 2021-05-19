@@ -314,10 +314,14 @@ void TILEMAP::TileMap::loadFromFile(std::string tile_map_file_path, std::string 
 /*Render Functions*/
 void TILEMAP::TileMap::render(sf::RenderTarget& target, const sf::View& view)
 {
+	sf::Vector2f viewSize = view.getSize();
+	viewSize.x = viewSize.x + (this->tileSizeF * 2.f);
+	viewSize.y = viewSize.y + (this->tileSizeF * 2.f);
+
 	sf::FloatRect viewPort{
-		view.getCenter().x - view.getSize().x / 2.f,
-		view.getCenter().y - view.getSize().y / 2.f,
-		view.getSize().x, view.getSize().y
+		view.getCenter().x - viewSize.x / 2.f,
+		view.getCenter().y - viewSize.y / 2.f,
+		viewSize.x, viewSize.y
 	};
 
 	sf::FloatRect tileRect{

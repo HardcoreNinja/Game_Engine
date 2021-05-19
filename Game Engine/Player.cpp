@@ -1,10 +1,14 @@
 #include "Header.h"
 #include "Player.h"
+#include "TileMap.h"
 
 /*Initializers*/
 void Player::initVariables()
 {
-	this->movementSpeed = 10.f;
+	this->velocity = sf::Vector2f(0.f, 0.f);
+	this->maxVelocity = 10.f;
+	this->acceleration = 0.2f;
+	this->deceleration = 0.15f;
 	this->wallCollision = false;
 }
 void Player::initKeybinds()
@@ -116,7 +120,7 @@ sf::RectangleShape Player::getSpriteRect()
 /*Tile Collision Functions*/
 void Player::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
 {
-	if (std::get<0>(collision_tuple) == true && std::get<1>(collision_tuple) == 3)
+	if (std::get<0>(collision_tuple) == true && std::get<1>(collision_tuple) == TILEMAP::TileType::Wall)
 	{
 		this->wallCollision = true;
 		std::cout << "Wall Collision: " << this->wallCollision << '\n';
@@ -124,18 +128,118 @@ void Player::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
 	else
 		this->wallCollision = false;
 
-	if (this->wallCollision == true && this->playerDirection == PlayerDirection::Up)
-		this->spriteRect.move(0, 10);
-	else if (this->wallCollision == true && this->playerDirection == PlayerDirection::Down)
-		this->spriteRect.move(0, -10);
-	else if (this->wallCollision == true && this->playerDirection == PlayerDirection::Left)
-		this->spriteRect.move(10, 0);
-	else if (this->wallCollision == true && this->playerDirection == PlayerDirection::Right)
-		this->spriteRect.move(-10, 0);
+	if (this->wallCollision == true)
+	{
+		sf::Vector2f position = this->spriteRect.getPosition();
+
+		if (this->velocity.x != 0.f)
+		{
+			position.x = this->oldPosition.x;
+			this->velocity.x = 0.f;
+		}
+
+		if (this->velocity.y != 0.f)
+		{
+			position.y = this->oldPosition.y;
+			this->velocity.y = 0.f;
+		}
+
+		this->spriteRect.setPosition(position);
+	}
 }
 
-/*Movement Functions*/
-void Player::movement(const float& dt)
+/*Update Functions*/
+void Player::updateUserInput(const float& dt)
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("UP"))))
+	{
+		this->playerDirection = PlayerDirection::Up;
+		this->updateVelocity(0.f, -1.f, dt);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("DOWN"))))
+	{
+		this->playerDirection = PlayerDirection::Down;
+		this->updateVelocity(0.f, 1.f, dt);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT"))))
+	{
+		this->playerDirection = PlayerDirection::Left;
+		this->updateVelocity(-1.f, 0.f, dt);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("RIGHT"))))
+	{
+		this->playerDirection = PlayerDirection::Right;
+		this->updateVelocity(1.f, 0.f, dt);
+	}
+	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("UP")))
+		|| !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("DOWN")))
+		|| !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT")))
+		|| !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("RIGHT"))))
+	{
+		this->playerDirection = PlayerDirection::Idle;
+		this->updateVelocity(0.f, 0.f, dt);
+	}
+}
+void Player::updateVelocity(float dir_x, float dir_y, const float& dt)
+{
+	this->velocity.x += this->acceleration * dir_x;
+	this->velocity.y += this->acceleration * dir_y;
+
+	this->updateMovement(dt);
+}
+void Player::updateMovement(const float& dt)
+{
+	/*Up*/
+	if (this->velocity.y < 0.f)
+	{
+		if (this->velocity.y < -this->maxVelocity)
+			this->velocity.y = -this->maxVelocity;
+
+		this->velocity.y += this->deceleration;
+
+		if (this->velocity.y > 0.f)
+			this->velocity.y = 0.f;
+	}
+	/*Down*/
+	else if (this->velocity.y > 0.f)
+	{
+		if (this->velocity.y > this->maxVelocity)
+			this->velocity.y = this->maxVelocity;
+
+		this->velocity.y -= this->deceleration;
+
+		if (this->velocity.y < 0.f)
+			this->velocity.y = 0.f;
+	}
+
+	/*Left*/
+	if (this->velocity.x < 0.f)
+	{
+		if (this->velocity.x < -this->maxVelocity)
+			this->velocity.x = -this->maxVelocity;
+
+		this->velocity.x += this->deceleration;
+
+		if (this->velocity.x > 0.f)
+			this->velocity.x = 0.f;
+	}
+	/*Right*/
+	else if (this->velocity.x > 0.f)
+	{
+		if (this->velocity.x > this->maxVelocity)
+			this->velocity.x = this->maxVelocity;
+
+		this->velocity.x -= this->deceleration;
+
+		if (this->velocity.x < 0.f)
+			this->velocity.x = 0.f;
+	}
+
+	this->oldPosition = this->spriteRect.getPosition();
+	this->spriteRect.move(sf::Vector2f(this->velocity.x, this->velocity.y) * dt * (1.f / dt));
+	this->updateAnimation();
+}
+void Player::updateAnimation()
 {
 	/*IntRect Variables*/
 	int intRectTop_Up = 0;
@@ -182,18 +286,12 @@ void Player::movement(const float& dt)
 	/*Movement "If" Statement*/
 	if (deltaTime > switchTime)
 	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("UP"))))
-		{
-			this->playerDirection = PlayerDirection::Up;
-			if (!this->wallCollision && this->playerDirection == PlayerDirection::Up)
+			if (this->playerDirection == PlayerDirection::Up)
 			{
-				this->spriteRect.move(0, -this->movementSpeed * dt * (1.f / dt));
-
 				this->spriteIntRect.top = intRectTop_Up;
 
 				if (this->spriteIntRect.left == intRectLeft_End)
 					this->spriteIntRect.left = intRectLeft_Start;
-
 				else
 				{
 					this->spriteIntRect.left += intRectLeft_FrameSize;
@@ -201,20 +299,12 @@ void Player::movement(const float& dt)
 					this->animationClock.restart();
 				}
 			}
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("DOWN"))))
-		{
-			this->playerDirection = PlayerDirection::Down;
-			if (!this->wallCollision && this->playerDirection == PlayerDirection::Down)
+			else if (this->playerDirection == PlayerDirection::Down)
 			{
-				this->spriteRect.move(0, this->movementSpeed * dt * (1.f / dt));
-
 				this->spriteIntRect.top = intRectTop_Down;
 
 				if (this->spriteIntRect.left == intRectLeft_End)
-				{
 					this->spriteIntRect.left = intRectLeft_Start;
-				}
 				else
 				{
 					this->spriteIntRect.left += intRectLeft_FrameSize;
@@ -222,20 +312,12 @@ void Player::movement(const float& dt)
 					this->animationClock.restart();
 				}
 			}
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT"))))
-		{
-			this->playerDirection = PlayerDirection::Left;
-			if (!this->wallCollision && this->playerDirection == PlayerDirection::Left)
+			else if (this->playerDirection == PlayerDirection::Left)
 			{
-				this->spriteRect.move(-this->movementSpeed * dt * (1.f / dt), 0);
-
 				this->spriteIntRect.top = intRectTop_Left;
 
 				if (this->spriteIntRect.left == intRectLeft_End)
-				{
 					this->spriteIntRect.left = intRectLeft_Start;
-				}
 				else
 				{
 					this->spriteIntRect.left += intRectLeft_FrameSize;
@@ -243,20 +325,12 @@ void Player::movement(const float& dt)
 					this->animationClock.restart();
 				}
 			}
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("RIGHT"))))
-		{
-			this->playerDirection = PlayerDirection::Right;
-			if (!this->wallCollision && this->playerDirection == PlayerDirection::Right)
+			else if (this->playerDirection == PlayerDirection::Right)
 			{
-				this->spriteRect.move(this->movementSpeed * dt * (1.f / dt), 0);
-
 				this->spriteIntRect.top = intRectTop_Right;
 
 				if (this->spriteIntRect.left == intRectLeft_End)
-				{
 					this->spriteIntRect.left = intRectLeft_Start;
-				}
 				else
 				{
 					this->spriteIntRect.left += intRectLeft_FrameSize;
@@ -264,11 +338,7 @@ void Player::movement(const float& dt)
 					this->animationClock.restart();
 				}
 			}
-		}
-		else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("UP"))) 
-			|| !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("DOWN")))
-			|| !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT")))
-			|| !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("RIGHT"))))
+		else if (this->velocity.x == 0.f && this->velocity.y == 0.f)
 		{
 			if (this->playerDirection == PlayerDirection::Up)
 			{
@@ -293,11 +363,9 @@ void Player::movement(const float& dt)
 		}
 	}
 }
-
-/*Update Functions*/
 void Player::update(const float& dt)
 {
-	this->movement(dt);
+	this->updateUserInput(dt);
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x, this->spriteRect.getPosition().y - 10));
 }
 

@@ -46,10 +46,14 @@ private:
     PlayerDirection playerDirection;
 
     /*Movement Variables*/
-    float movementSpeed;
+    sf::Vector2f velocity;
+    float maxVelocity;
+    float acceleration;
+    float deceleration;
 
     /*Collision Variables*/
     bool wallCollision;
+    sf::Vector2f oldPosition;
 
     /*User Input*/
     std::map<std::string, int> keybinds;
@@ -69,13 +73,14 @@ public:
     /*Getters*/
     sf::RectangleShape getSpriteRect();
 
-    /*Movement Functions*/
-    void movement(const float& dt);
-
     /*Tile Collisions Functions*/
     void tileCollision(std::tuple<bool, unsigned short> collision_tuple);
 
     /*Update Functions*/
+    void updateUserInput(const float& dt);
+    void updateVelocity(float dir_x, float dir_y, const float& dt);
+    void updateMovement(const float& dt);
+    void updateAnimation();
     void update(const float& dt);
 
     /*Render Functions*/
