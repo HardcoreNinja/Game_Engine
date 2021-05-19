@@ -44,6 +44,7 @@ private:
     /*Actor Enumerator*/
     Actors actor;
     PlayerDirection playerDirection;
+    PlayerDirection oldDirection;
 
     /*Movement Variables*/
     sf::Vector2f velocity;

@@ -154,21 +154,25 @@ void Player::updateUserInput(const float& dt)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("UP"))))
 	{
 		this->playerDirection = PlayerDirection::Up;
+		this->oldDirection = PlayerDirection::Up;
 		this->updateVelocity(0.f, -1.f, dt);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("DOWN"))))
 	{
 		this->playerDirection = PlayerDirection::Down;
+		this->oldDirection = PlayerDirection::Down;
 		this->updateVelocity(0.f, 1.f, dt);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT"))))
 	{
 		this->playerDirection = PlayerDirection::Left;
+		this->oldDirection = PlayerDirection::Left;
 		this->updateVelocity(-1.f, 0.f, dt);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("RIGHT"))))
 	{
 		this->playerDirection = PlayerDirection::Right;
+		this->oldDirection = PlayerDirection::Right;
 		this->updateVelocity(1.f, 0.f, dt);
 	}
 	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("UP")))
@@ -338,29 +342,29 @@ void Player::updateAnimation()
 					this->animationClock.restart();
 				}
 			}
-		else if (this->velocity.x == 0.f && this->velocity.y == 0.f)
-		{
-			if (this->playerDirection == PlayerDirection::Up)
+			else if (this->playerDirection == PlayerDirection::Idle)
 			{
+				if (this->oldDirection == PlayerDirection::Up)
+				{
 				this->spriteIntRect = idleUp;
 				this->sprite.setTextureRect(this->spriteIntRect);
-			}
-			else if (this->playerDirection == PlayerDirection::Down)
-			{
+				}
+				else if (this->oldDirection == PlayerDirection::Down)
+				{
 				this->spriteIntRect = idleDown;
 				this->sprite.setTextureRect(this->spriteIntRect);
-			}
-			else if (this->playerDirection == PlayerDirection::Left)
-			{
+				}
+				else if (this->oldDirection == PlayerDirection::Left)
+				{
 				this->spriteIntRect = idleLeft;
 				this->sprite.setTextureRect(this->spriteIntRect);
-			}
-			else if (this->playerDirection == PlayerDirection::Right)
-			{
+				}
+				else if (this->oldDirection == PlayerDirection::Right)
+				{
 				this->spriteIntRect = idleRight;
 				this->sprite.setTextureRect(this->spriteIntRect);
+				}
 			}
-		}
 	}
 }
 void Player::update(const float& dt)
