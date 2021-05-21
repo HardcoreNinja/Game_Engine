@@ -134,18 +134,18 @@ const sf::IntRect& TILEMAP::TileMap::getTextureIntRect()
 }
 std::tuple<bool, unsigned short> TILEMAP::TileMap::getCollision(sf::RectangleShape player_rect)
 {
-	for(int x = 0; x != this->tileMap.size(); x++)
-		for(int y = 0; y != this->tileMap[x].size(); y++)
-			for (int tileLayer = 0; tileLayer != this->tileMap[x][y].size(); tileLayer++)
+	for(int tile_layer = 0; tile_layer != this->tileMap.size(); tile_layer++)
+		for(int pos_x = 0; pos_x != this->tileMap[tile_layer].size(); pos_x++)
+			for (int pos_y = 0; pos_y != this->tileMap[tile_layer][pos_x].size(); pos_y++)
 			{
-				if (this->tileMap[x][y][tileLayer] != NULL)
+				if (this->tileMap[tile_layer][pos_x][pos_y] != NULL)
 				{
-					if (tileLayer > 0)
+					if (tile_layer > 0)
 					{
-						if (this->tileMap[x][y][tileLayer]->getShape().getGlobalBounds().intersects(player_rect.getGlobalBounds()))
+						if (this->tileMap[tile_layer][pos_x][pos_y]->getShape().getGlobalBounds().intersects(player_rect.getGlobalBounds()))
 						{
 							//std::cout << "Collision Enabled: " << this->tileMap[x][y][tileLayer]->getCollision() << " " << "Tile Type: " << this->tileMap[x][y][tileLayer]->getTileType() << '\n';
-							return std::make_tuple(this->tileMap[x][y][tileLayer]->getCollision(), this->tileMap[x][y][tileLayer]->getTileType());
+							return std::make_tuple(this->tileMap[tile_layer][pos_x][pos_y]->getCollision(), this->tileMap[tile_layer][pos_x][pos_y]->getTileType());
 						}
 					}
 				}
@@ -296,7 +296,7 @@ void TILEMAP::TileMap::loadFromFile(std::string tile_map_file_path, std::string 
 
 		this->mapSizeU = sf::Vector2u(mapSizeU.x, mapSizeU.y);
 		this->tileSizeU = mapTileSize;
-		this->tileSizeF = static_cast<float>(mapTileSize);
+		//this->tileSizeF = static_cast<float>(mapTileSize);
 		this->tileLayers = tileLayers;
 		this->textureFilePath = textureFilePath;
 
@@ -340,8 +340,8 @@ void TILEMAP::TileMap::loadFromFile(std::string tile_map_file_path, std::string 
 void TILEMAP::TileMap::render(sf::RenderTarget& target, const sf::View& view)
 {
 	sf::Vector2f viewSize = view.getSize();
-	viewSize.x = viewSize.x + (this->tileSizeF * 2.f);
-	viewSize.y = viewSize.y + (this->tileSizeF * 2.f);
+	viewSize.x = viewSize.x + 128.f;
+	viewSize.y = viewSize.y + 128.f;
 
 	sf::FloatRect viewPort{
 		view.getCenter().x - viewSize.x / 2.f,
