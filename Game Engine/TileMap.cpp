@@ -339,9 +339,11 @@ void TILEMAP::TileMap::loadFromFile(std::string tile_map_file_path, std::string 
 /*Render Functions*/
 void TILEMAP::TileMap::render(sf::RenderTarget& target, const sf::View& view)
 {
+	float viewSizeOffset = 256.f;
+
 	sf::Vector2f viewSize = view.getSize();
-	viewSize.x = viewSize.x + 128.f;
-	viewSize.y = viewSize.y + 128.f;
+	viewSize.x = viewSize.x + viewSizeOffset;
+	viewSize.y = viewSize.y + viewSizeOffset;
 
 	sf::FloatRect viewPort{
 		view.getCenter().x - viewSize.x / 2.f,
