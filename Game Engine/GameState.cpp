@@ -76,6 +76,10 @@ void GameState::initPlayer()
 {
 	this->player = std::make_unique<Player>(Actors::Actor_0, this->supportedKeys);
 }
+void GameState::initProjectileType()
+{
+	this->projectileType = ProjectileTypes::Type_0;
+}
 
 /*Constuctor & Destructor*/
 GameState::GameState(GameInfo* game_info)
@@ -89,6 +93,7 @@ GameState::GameState(GameInfo* game_info)
 	this->initPauseMenu();
 	this->initLatestTileMap();
 	this->initPlayer();
+	this->initProjectileType();
 }
 GameState::~GameState()
 {
@@ -109,6 +114,67 @@ void GameState::updateUserInput(const float& dt)
 		else
 			this->unpause();
 }
+void GameState::updateInGameActions()
+{
+	float deltaTime = this->projectileClock.getElapsedTime().asSeconds();
+	float switchTime = 0.2;
+
+	if (deltaTime > switchTime)
+	{
+		this->projectileClock.restart();
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SHOOT"))))
+		{
+			this->projectile = std::make_unique<Projectile>();
+			this->projectile->setProjectileType(this->projectileType);
+			this->projectile->setProjectileDirection(this->player->getPlayerDirection());
+			this->projectile->setProjectilePosition(this->player->getSpriteRect());
+			this->projectileVector.push_back(std::move(this->projectile));
+		}
+	}
+}
+void GameState::updateProjectileSpawnLoop(const float& dt)
+{
+	int counter = 0;
+	for (this->projectileItr = this->projectileVector.begin(); this->projectileItr != this->projectileVector.end(); this->projectileItr++)
+	{
+		this->projectileVector[counter]->update(dt);
+
+		counter++;
+	}
+}
+void GameState::updateProjectileDestroyLoop()
+{
+	int counter = 0;
+	for (this->projectileItr = this->projectileVector.begin(); this->projectileItr != this->projectileVector.end(); this->projectileItr++)
+	{
+		
+		if (this->projectileVector[counter]->getDestroy())
+		{
+			this->projectileVector.erase(projectileItr);
+			break;
+		}
+
+		counter++;
+	}
+	
+}
+void GameState::updateProjectileWallCollision()
+{
+	int counter = 0;
+	for (this->projectileItr = this->projectileVector.begin(); this->projectileItr != this->projectileVector.end(); this->projectileItr++)
+	{
+		this->projectileVector[counter]->tileCollision(this->tileMap->getCollision(this->projectileVector[counter]->getSpriteRect()));
+
+		if (this->projectileVector[counter]->getDestroy())
+		{
+			this->projectileVector.erase(projectileItr);
+			break;
+		}
+
+		counter++;
+	}
+}
 void GameState::update(const float& dt)
 {
 	this->updateSFMLEvents();
@@ -123,9 +189,22 @@ void GameState::update(const float& dt)
 	}
 	else               //Unpaused
 	{
+		/*Player*/
 		this->player->update(dt);
 		this->player->tileCollision(this->tileMap->getCollision(this->player->getSpriteRect()));
 		this->view.setCenter(this->player->getSpriteRect().getPosition());
+
+		/*In-Game Actions*/
+		this->updateInGameActions();
+
+		/*Projectile Spawn*/
+		this->updateProjectileSpawnLoop(dt);
+
+		/*Projectile Wall Collision Loop*/
+		this->updateProjectileWallCollision();
+
+		/*Projectile Destroy*/
+		this->updateProjectileDestroyLoop();
 	}
 }
 
@@ -155,6 +234,16 @@ void GameState::renderPlayer(sf::RenderTarget& target)
 {
 	this->player->render(target);
 }
+void GameState::renderProjectiles(sf::RenderTarget& target)
+{
+	int counter = 0;
+	for (this->projectileItr = this->projectileVector.begin(); this->projectileItr != this->projectileVector.end(); this->projectileItr++)
+	{
+		this->projectileVector[counter]->render(target);
+
+		counter++;
+	}
+}
 void GameState::render(sf::RenderTarget* target)
 {
 	if (!target)
@@ -165,6 +254,7 @@ void GameState::render(sf::RenderTarget* target)
 	this->renderTexture.setView(this->view);
 	this->renderTileMap(this->renderTexture);
 	this->renderSprite.setTexture(this->renderTexture.getTexture());
+	this->renderProjectiles(this->renderTexture);
 	this->renderPlayer(this->renderTexture);
 	this->renderTexture.display();
 	target->draw(this->renderSprite);

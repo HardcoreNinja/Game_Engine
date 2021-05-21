@@ -67,12 +67,13 @@ private:
     void initSprite(Actors actor);
 
 public:
-    /*Constuctor & Destructor*/
+    /*Constructor & Destructor*/
     Player(Actors actor, std::map<std::string, int>* supported_keys);
     virtual ~Player();
 
     /*Getters*/
     sf::RectangleShape getSpriteRect();
+    int getPlayerDirection();
 
     /*Tile Collisions Functions*/
     void tileCollision(std::tuple<bool, unsigned short> collision_tuple);

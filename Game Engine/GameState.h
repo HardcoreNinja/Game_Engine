@@ -2,11 +2,13 @@
 #define GAMESTATE_H
 #include "State.h"
 #include "Player.h"
+#include "Projectile.h"
 
 /*Class Forward Declarations*/
 class Tile;
 class TileMap;
 class sf::RenderTarget;
+class sf::Clock;
 
 class GameState :
     public State
@@ -22,6 +24,13 @@ private:
     /*Player*/
     std::unique_ptr<Player> player;
 
+    /*Projectile Variables*/
+    sf::Clock projectileClock;
+    ProjectileTypes projectileType;
+    std::unique_ptr<Projectile> projectile;
+    std::vector<std::unique_ptr<Projectile>> projectileVector;
+    std::vector<std::unique_ptr<Projectile>>::const_iterator projectileItr;
+
     /*Initializers*/
     void initVariables();
     void initKeybinds();
@@ -31,6 +40,7 @@ private:
     void initPauseMenu();
     void initLatestTileMap();
     void initPlayer();
+    void initProjectileType();
 
 public:
     /*Constuctor & Destructor*/
@@ -40,6 +50,10 @@ public:
     /*Update Functions*/
     void updatePauseMenuButtons();
     virtual void updateUserInput(const float& dt);
+    void updateInGameActions();
+    void updateProjectileSpawnLoop(const float& dt);
+    void updateProjectileDestroyLoop();
+    void updateProjectileWallCollision();
     virtual void update(const float& dt);
 
     /*Reinitialize Functions*/
@@ -49,6 +63,7 @@ public:
     void renderPauseMenu(sf::RenderTarget& target);
     void renderTileMap(sf::RenderTarget& target);
     void renderPlayer(sf::RenderTarget& target);
+    void renderProjectiles(sf::RenderTarget& target);
     virtual void render(sf::RenderTarget* target);
 };
 #endif

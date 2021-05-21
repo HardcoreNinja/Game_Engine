@@ -97,7 +97,7 @@ void Player::initSprite(Actors actor)
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x, this->spriteRect.getPosition().y-10));
 }
 
-/*Constuctor & Destructor*/
+/*Constructor & Destructor*/
 Player::Player(Actors actor, std::map<std::string, int>* supported_keys)
 {
 	this->supportedKeys = supported_keys;
@@ -115,6 +115,10 @@ Player::~Player()
 sf::RectangleShape Player::getSpriteRect()
 {
 	return this->spriteRect;
+}
+int Player::getPlayerDirection()
+{
+	return static_cast<int>(this->oldDirection);
 }
 
 /*Tile Collision Functions*/
