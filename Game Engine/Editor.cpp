@@ -110,7 +110,7 @@ void Editor::initLatestTileMap()
 	this->tileMap->loadFromFile("Config/tile_map.ini", "Resources/Images/Tiles/PipoyaMasterLevel.png");
 }
 
-/*Constuctor & Destructor*/
+/*Constructor & Destructor*/
 Editor::Editor(GameInfo* game_info)
 	: State(game_info)
 {
@@ -193,6 +193,8 @@ void Editor::updatePauseMenuButtons()
 
 	if (this->pauseMenu->isButtonPressed("EXIT") && this->getKeyTime())
 	{
+		this->tileSize = 32.f;
+		this->tileMap->setTileSizeF(this->tileSize);
 		this->tileMap->saveToFile("Config/tile_map.ini");
 		this->textureSelector->saveToFile("Config/texture_selector_data_file.ini");
 		this->endState();
@@ -216,7 +218,7 @@ void Editor::updateTileMap()
 				this->tileLayers,          //Tile Layer
 				this->collision,           //Collision
 				this->tileType,            //Tile Type
-				this->tileRotationDegrees
+				this->tileRotationDegrees  //Tile Rotation
 			);
 		}
 		else if(!this->sideBar.getGlobalBounds().contains(static_cast<sf::Vector2f>(this->mousePositionWindow)))
@@ -334,6 +336,26 @@ void Editor::updateUserInput(const float& dt)
 				this->sfmlEvent->mouseWheelScroll.delta = 0;
 				std::cout << "Scroll Wheel Delta: " << this->sfmlEvent->mouseWheelScroll.delta << '\n';
 			}
+		}
+
+		/*Double & Halve Tile Size*/
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("P"))) && this->getKeyTime())
+		{
+			this->tileSize = this->tileSize * 2.f;
+			this->tileMap->doubleTileSize();
+			this->textureSelector->doubleSelectorSize();
+			this->tileMap->setTextureIntRect(this->textureSelector->getTextureIntRect());
+			this->selectorRect.setSize(sf::Vector2f(this->textureSelector->getTextureIntRect().width, this->textureSelector->getTextureIntRect().height));
+			this->selectorRect.setTextureRect(this->textureSelector->getTextureIntRect());
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("O"))) && this->getKeyTime())
+		{
+			this->tileSize = this->tileSize / 2.f;
+			this->tileMap->halveTileSize();
+			this->textureSelector->halveSelectorSize();
+			this->tileMap->setTextureIntRect(this->textureSelector->getTextureIntRect());
+			this->selectorRect.setSize(sf::Vector2f(this->textureSelector->getTextureIntRect().width, this->textureSelector->getTextureIntRect().height));
+			this->selectorRect.setTextureRect(this->textureSelector->getTextureIntRect());
 		}
 	}
 }

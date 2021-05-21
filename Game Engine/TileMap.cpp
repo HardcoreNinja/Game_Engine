@@ -1,7 +1,7 @@
 #include "Header.h"
 #include "TileMap.h"
 /*TILE=======================================================================================================================================================*/
-/*Constuctor & Destructor*/
+/*Constructor & Destructor*/
 TILEMAP::Tile::Tile(
 	float tile_size, 
 	float pos_x, float pos_y, 
@@ -11,7 +11,7 @@ TILEMAP::Tile::Tile(
 	unsigned short type,
 	unsigned short shape_rotation
 )
-	: collision(tile_collision), tileType(type), shapeRotation(shape_rotation)
+	: collision(tile_collision), tileType(type), shapeRotation(shape_rotation), tileSize(tile_size)
 {
 	this->shape.setSize(sf::Vector2f(tile_size, tile_size));
 	this->shape.setPosition(sf::Vector2f(static_cast<float>(pos_x) * tile_size, static_cast<float>(pos_y) * tile_size));
@@ -76,6 +76,10 @@ unsigned short TILEMAP::Tile::getTileType() const
 {
 	return this->tileType;
 }
+float TILEMAP::Tile::getTileSize()
+{
+	return this->tileSize;
+}
 
 /*Render Functions*/
 void TILEMAP::Tile::render(sf::RenderTarget& target)
@@ -98,20 +102,20 @@ TILEMAP::TileMap::TileMap(
 	this->mapSizeU.y = map_height;
 	this->textureIntRect = sf::IntRect(0, 0, texture_width, texture_height);
 	this->textureFilePath = tile_sheet_file_path;
-	this->tileLayers = 3;
+	this->tileLayers = 4;
 
 	if (!this->texture.loadFromFile(tile_sheet_file_path))
 	{
 		throw("ERROR::TILE_MAP::FAILED_TO_LOAD::this->texture");
 	}
 
-	this->tileMap.resize(this->mapSizeU.x);
-	for (size_t pos_x = 0; pos_x < this->mapSizeU.x; pos_x++)
+	this->tileMap.resize(this->tileLayers);
+	for (size_t tile_layers = 0; tile_layers < this->tileLayers; tile_layers++)
 	{
-		this->tileMap[pos_x].resize(this->mapSizeU.y);
-		for (size_t pos_y = 0; pos_y < this->mapSizeU.y; pos_y++)
+		this->tileMap[tile_layers].resize(this->mapSizeU.x);
+		for (size_t pos_x = 0; pos_x < this->mapSizeU.x; pos_x++)
 		{
-			this->tileMap[pos_x][pos_y].resize(this->tileLayers);
+			this->tileMap[tile_layers][pos_x].resize(this->mapSizeU.y);
 		}
 	}
 }
@@ -153,6 +157,22 @@ void TILEMAP::TileMap::setTextureIntRect(sf::IntRect texture_int_rect)
 {
 	this->textureIntRect = texture_int_rect;
 }
+void TILEMAP::TileMap::setTileSizeF(float tile_size)
+{
+	this->tileSizeF = tile_size;
+}
+
+/*Double & Halve Tile Size Functions*/
+void TILEMAP::TileMap::doubleTileSize()
+{
+	this->tileSizeF = this->tileSizeF * 2.f;
+	this->tileSizeU = this->tileSizeU * 2;
+}
+void TILEMAP::TileMap::halveTileSize()
+{
+	this->tileSizeF = this->tileSizeF / 2.f;
+	this->tileSizeU = this->tileSizeU / 2;
+}
 
 /*Add & Remove Tile Functions*/
 void TILEMAP::TileMap::addTile(
@@ -166,13 +186,13 @@ void TILEMAP::TileMap::addTile(
 		pos_y < this->mapSizeU.y && pos_y >= 0 &&
 		tile_layer < this->tileLayers && tile_layer >=0)
 	{
-		if (this->tileMap[pos_x][pos_y][tile_layer] == NULL)
+		if (this->tileMap[tile_layer][pos_x][pos_y] == NULL)
 		{
-			this->tileMap[pos_x][pos_y][tile_layer] = std::make_unique<TILEMAP::Tile>(
+			this->tileMap[tile_layer][pos_x][pos_y] = std::make_unique<TILEMAP::Tile>(
 				this->tileSizeF,
 				pos_x, pos_y,
 				this->texture,
-				this->textureIntRect,
+				sf::IntRect(this->textureIntRect.left, this->textureIntRect.top, this->tileSizeF, this->tileSizeF),
 				tile_collision,
 				tile_type,
 				rotation_degrees
@@ -186,9 +206,9 @@ void TILEMAP::TileMap::removeTile(const unsigned pos_x, const unsigned pos_y, co
 		pos_y < this->mapSizeU.y && pos_y >= 0 &&
 		tile_layer < this->tileLayers && tile_layer >= 0)
 	{
-		if (this->tileMap[pos_x][pos_y][tile_layer] != NULL)
+		if (this->tileMap[tile_layer][pos_x][pos_y] != NULL)
 		{
-			this->tileMap[pos_x][pos_y][tile_layer].reset();
+			this->tileMap[tile_layer][pos_x][pos_y].reset();
 		}
 	}
 }
@@ -196,17 +216,17 @@ void TILEMAP::TileMap::removeTile(const unsigned pos_x, const unsigned pos_y, co
 /*Clear Memory Functions*/
 void TILEMAP::TileMap::clearMemory()
 {
-	for (size_t pos_x = 0; pos_x < this->mapSizeU.x; pos_x++)
+	for (size_t tile_layer = 0; tile_layer < this->tileLayers; tile_layer++)
 	{
-		for (size_t pos_y = 0; pos_y < this->mapSizeU.y; pos_y++)
+		for (size_t pos_x = 0; pos_x < this->mapSizeU.x; pos_x++)
 		{
-			for (size_t tile = 0; tile < this->tileLayers; tile++)
+			for (size_t pos_y = 0; pos_y < this->mapSizeU.y; pos_y++)
 			{
-				this->tileMap[pos_x][pos_y][tile].reset();
+				this->tileMap[tile_layer][pos_x][pos_y].reset();
 			}
-			this->tileMap[pos_x][pos_y].clear();
+			this->tileMap[tile_layer][pos_x].clear();
 		}
-		this->tileMap[pos_x].clear();
+		this->tileMap[tile_layer].clear();
 	}
 	this->tileMap.clear();
 }
@@ -226,14 +246,17 @@ void TILEMAP::TileMap::saveToFile(std::string file_path)
 
 		this->tileMap.push_back(std::vector<std::vector<std::unique_ptr<TILEMAP::Tile>>>());
 
-		for (size_t pos_x = 0; pos_x < this->mapSizeU.x; pos_x++)
+		for (size_t tile_layer = 0; tile_layer < this->tileLayers; tile_layer++)
 		{
-			for (size_t pos_y = 0; pos_y < this->mapSizeU.y; pos_y++)
+			for (size_t pos_x = 0; pos_x < this->mapSizeU.x; pos_x++)
 			{
-				for (size_t tile = 0; tile < this->tileLayers; tile++)
+				for (size_t pos_y = 0; pos_y < this->mapSizeU.y; pos_y++)
 				{
-					if (this->tileMap[pos_x][pos_y][tile])
-						ofs << pos_x << " " << pos_y << " " << tile << " " << this->tileMap[pos_x][pos_y][tile]->getAsString() << " ";
+					if (this->tileMap[tile_layer][pos_x][pos_y])
+						ofs << tile_layer << " " 
+						<< pos_x << " " << pos_y << " " 
+						<< this->tileMap[tile_layer][pos_x][pos_y]->getTileSize() << " "
+						<< this->tileMap[tile_layer][pos_x][pos_y]->getAsString() << " ";
 				}
 			}
 		}
@@ -252,9 +275,11 @@ void TILEMAP::TileMap::loadFromFile(std::string tile_map_file_path, std::string 
 	if (ifs.is_open())
 	{
 		sf::Vector2u mapSizeU;
-		unsigned tileSize = 0;
+		unsigned mapTileSize = 0;
+		float tileSize = 0;
 		unsigned tileLayers = 0;
 		std::string textureFilePath = "";
+		unsigned tile_layer = 0;
 		unsigned pos_x = 0;
 		unsigned pos_y = 0;
 		unsigned tile = 0;
@@ -265,39 +290,39 @@ void TILEMAP::TileMap::loadFromFile(std::string tile_map_file_path, std::string 
 		unsigned short shapeRotation;
 
 		ifs >> mapSizeU.x >> mapSizeU.y;
-		ifs >> tileSize;
+		ifs >> mapTileSize;
 		ifs >> tileLayers;
 		ifs >> textureFilePath;
 
 		this->mapSizeU = sf::Vector2u(mapSizeU.x, mapSizeU.y);
-		this->tileSizeU = tileSize;
-		this->tileSizeF = static_cast<float>(tileSize);
+		this->tileSizeU = mapTileSize;
+		this->tileSizeF = static_cast<float>(mapTileSize);
 		this->tileLayers = tileLayers;
 		this->textureFilePath = textureFilePath;
 
 		this->clearMemory();
 
 		
-		this->tileMap.resize(this->mapSizeU.x);
-		for (size_t pos_x = 0; pos_x < this->mapSizeU.x; pos_x++)
+		this->tileMap.resize(this->tileLayers);
+		for (size_t tile_layer = 0; tile_layer < this->tileLayers; tile_layer++)
 		{
-			this->tileMap[pos_x].resize(this->mapSizeU.y);
-			for (size_t pos_y = 0; pos_y < this->mapSizeU.y; pos_y++)
+			this->tileMap[tile_layer].resize(this->mapSizeU.x);
+			for (size_t pos_x = 0; pos_x < this->mapSizeU.x; pos_x++)
 			{
-				this->tileMap[pos_x][pos_y].resize(this->tileLayers);
+				this->tileMap[tile_layer][pos_x].resize(this->mapSizeU.y);
 			}
 		}
 
 		if(!this->texture.loadFromFile(texture_sheet_file_path))
 			throw("ERROR::TILEMAP::TILE_MAP::FAILED_TO_SAVE::texture_sheet_file_path");
 
-		while (ifs >> pos_x >> pos_y >> tile >> intRectLeft >> intRectTop >> collision >> type >> shapeRotation)
+		while (ifs >> tile_layer >> pos_x >> pos_y >> tileSize >> intRectLeft >> intRectTop >> collision >> type >> shapeRotation)
 		{
-			this->tileMap[pos_x][pos_y][tile] = std::make_unique <TILEMAP::Tile>(
-				this->tileSizeF,
+			this->tileMap[tile_layer][pos_x][pos_y] = std::make_unique <TILEMAP::Tile>(
+				tileSize,
 				pos_x, pos_y,
 				this->texture,
-				sf::IntRect(intRectLeft, intRectTop, this->tileSizeU, this->tileSizeU),
+				sf::IntRect(intRectLeft, intRectTop, tileSize, tileSize),
 				collision,
 				type,
 				shapeRotation
@@ -329,18 +354,18 @@ void TILEMAP::TileMap::render(sf::RenderTarget& target, const sf::View& view)
 		this->tileSizeF, this->tileSizeF
 	};
 
-	for (auto& pos_x : this->tileMap)
+	for (auto& tile_layer : this->tileMap)
 	{
-		for (auto& pos_y : pos_x)
+		for (auto& pos_x : tile_layer)
 		{
-			for (auto& tile : pos_y)
+			for (auto& pos_y : pos_x)
 			{
-				if (tile != NULL)
+				if (pos_y != NULL)
 				{
-					tileRect.left = tile->getPosition().x;
-					tileRect.top = tile->getPosition().y;
+					tileRect.left = pos_y->getPosition().x;
+					tileRect.top = pos_y->getPosition().y;
 					if(tileRect.intersects(viewPort))
-					tile->render(target);
+						pos_y->render(target);
 				}
 			}
 		}
@@ -446,7 +471,7 @@ void TILEMAP::TextureSelector::update(const sf::Vector2i& mouse_position_window,
 	this->updateKeyTime(dt);
 
 	/*Hide Button*/
-	this->hideButton->update(static_cast<sf::Vector2f>( mouse_position_window));
+	this->hideButton->update(static_cast<sf::Vector2f>(mouse_position_window));
 	if (this->hideButton->isPressed() && this->getKeyTime())
 	{
 		if (this->isHidden)
@@ -524,6 +549,20 @@ void TILEMAP::TextureSelector::scrollRight()
 		static_cast<int>(this->bounds.getSize().x), static_cast<int>(this->bounds.getSize().y)
 	)
 	);
+}
+
+/*Double & Halve Texture Selector Functions*/
+void TILEMAP::TextureSelector::doubleSelectorSize()
+{
+	this->selector.setSize(sf::Vector2f(this->selector.getSize().x * 2.f, this->selector.getSize().y * 2.f));
+	this->textureIntRect.width = this->textureIntRect.width * 2;
+	this->textureIntRect.height = this->textureIntRect.height * 2;
+}
+void TILEMAP::TextureSelector::halveSelectorSize()
+{
+	this->selector.setSize(sf::Vector2f(this->selector.getSize().x / 2.f, this->selector.getSize().y / 2.f));
+	this->textureIntRect.width = this->textureIntRect.width / 2;
+	this->textureIntRect.height = this->textureIntRect.height / 2;
 }
 
 /*Save & Load Functions*/

@@ -19,6 +19,7 @@ namespace TILEMAP
 		unsigned short shapeRotation;
 		bool collision;
 		unsigned short tileType;
+		float tileSize;
 
 	public:
 		/*Constuctor & Destructor*/
@@ -39,6 +40,7 @@ namespace TILEMAP
 		sf::RectangleShape& getShape();
 		bool getCollision() const;
 		unsigned short getTileType() const;
+		float getTileSize();
 
 
 		/*Render Functions*/
@@ -75,6 +77,11 @@ namespace TILEMAP
 
 		/*Setters*/
 		void setTextureIntRect(sf::IntRect texture_int_rect);
+		void setTileSizeF(float tile_size);
+
+		/*Double & Halve Tile Size Functions*/
+		void doubleTileSize();
+		void halveTileSize();
 
 		/*Add & Remove Tile Functions*/
 		void addTile(
@@ -157,6 +164,10 @@ namespace TILEMAP
 		void scrollDown();
 		void scrollLeft();
 		void scrollRight();
+
+		/*Double & Halve Texture Selector Functions*/
+		void doubleSelectorSize();
+		void halveSelectorSize();
 
 		/*Save & Load Functions*/
 		void saveToFile(std::string file_path);
