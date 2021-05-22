@@ -40,7 +40,6 @@ private:
     void initPauseMenu();
     void initLatestTileMap();
     void initPlayer();
-    void initProjectileType();
 
 public:
     /*Constuctor & Destructor*/

@@ -142,12 +142,23 @@ void Projectile::updateAnimation()
 {
 	/*IntRect Variables*/
 	int intRectLeft_Start = 0;
-	int intRectLeft_End = 1920;
+	int intRectLeft_End = 0;
 
 	int intRectTop_Start = 0;
-	int intRectTop_End = 1440;
+	int intRectTop_End = 0;
 
 	int intRect_FrameSize = 480;
+
+	switch (this->projectileType)
+	{
+	case ProjectileTypes::Type_0:
+		 intRectLeft_Start = 0;
+		 intRectLeft_End = 1920;
+
+		 intRectTop_Start = 0;
+		 intRectTop_End = 1440;
+		 break;
+	}
 
 	/*Animation Switch Time Variables*/
 	float deltaTime = this->animationClock.getElapsedTime().asSeconds();

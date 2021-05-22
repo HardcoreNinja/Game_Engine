@@ -76,12 +76,8 @@ void GameState::initPlayer()
 {
 	this->player = std::make_unique<Player>(Actors::Actor_0, this->supportedKeys);
 }
-void GameState::initProjectileType()
-{
-	this->projectileType = ProjectileTypes::Type_0;
-}
 
-/*Constuctor & Destructor*/
+/*Constructor & Destructor*/
 GameState::GameState(GameInfo* game_info)
 	: State(game_info)
 {
@@ -93,7 +89,6 @@ GameState::GameState(GameInfo* game_info)
 	this->initPauseMenu();
 	this->initLatestTileMap();
 	this->initPlayer();
-	this->initProjectileType();
 }
 GameState::~GameState()
 {
