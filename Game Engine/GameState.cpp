@@ -4,6 +4,7 @@
 /*Initializers*/
 void GameState::initVariables()
 {
+	this->projectileType = ProjectileTypes::Black_Tornado_0;
 }
 void GameState::initKeybinds()
 {
@@ -111,10 +112,11 @@ void GameState::updateUserInput(const float& dt)
 }
 void GameState::updateInGameActions()
 {
-	float deltaTime = this->projectileClock.getElapsedTime().asSeconds();
-	float switchTime = 0.2;
+	/*Firing Projectile*/
+	float projectile_DeltaTime = this->projectileClock.getElapsedTime().asSeconds();
+	float projectile_SwitchTime = 0.2;
 
-	if (deltaTime > switchTime)
+	if (projectile_DeltaTime > projectile_SwitchTime)
 	{
 		this->projectileClock.restart();
 

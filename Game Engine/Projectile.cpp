@@ -13,22 +13,22 @@ void Projectile::initVariables()
 }
 void Projectile::initSpriteRect()
 {
-	this->spriteRect.setSize(sf::Vector2f(214.f, 326.f));
+	this->spriteRect.setSize(sf::Vector2f(111.f, 137.f));
 	this->spriteRect.setOutlineThickness(1.f);
 	this->spriteRect.setOutlineColor(sf::Color::Red);
 	this->spriteRect.setFillColor(sf::Color::Transparent);
 	this->spriteRect.setOrigin(this->spriteRect.getGlobalBounds().width / 2.f, this->spriteRect.getGlobalBounds().height / 2.f);
-	this->spriteRect.scale(sf::Vector2f(.25, .25));
+	this->spriteRect.scale(sf::Vector2f(.5, .5));
 }
 void Projectile::initSprite()
 {
-	this->spriteIntRect = sf::IntRect(480, 480, 480, 480);
-	if(!this->texture.loadFromFile("Resources/Images/Projectiles/red_tornado.png"))
-		throw("ERROR::PROJECTILE::FAILED_TO_LOAD::red_tornado.png");
+	this->spriteIntRect = sf::IntRect(0, 0, 192, 192);
+	if(!this->texture.loadFromFile("Resources/Images/Energy_Tornados/black.png"))
+		throw("ERROR::PROJECTILE::FAILED_TO_LOAD::black.png");
 	this->sprite.setTexture(this->texture);
 	this->sprite.setTextureRect(this->spriteIntRect);
 	this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
-	this->sprite.scale(sf::Vector2f(.25, .25));
+	this->sprite.scale(sf::Vector2f(.5, .5));
 }
 
 /*Constructor & Destructor*/
@@ -56,6 +56,30 @@ sf::RectangleShape Projectile::getSpriteRect()
 void Projectile::setProjectileType(ProjectileTypes projectile_type)
 {
 	this->projectileType  = projectile_type;
+
+	switch (this->projectileType)
+	{
+	case ProjectileTypes::Black_Tornado_0:
+		if (!this->texture.loadFromFile("Resources/Images/Energy_Tornados/black.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::black.png");
+		break;
+	case ProjectileTypes::Blue_Tornado_1:
+		if (!this->texture.loadFromFile("Resources/Images/Energy_Tornados/blue.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::blue.png");
+		break;
+	case ProjectileTypes::Brown_Tornado_2:
+		if (!this->texture.loadFromFile("Resources/Images/Energy_Tornados/brown.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::brown.png");
+		break;
+	case ProjectileTypes::Green_Tornado_3:
+		if (!this->texture.loadFromFile("Resources/Images/Energy_Tornados/green.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::green.png");
+		break;
+	case ProjectileTypes::Red_Tornado_4:
+		if (!this->texture.loadFromFile("Resources/Images/Energy_Tornados/red.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::red.png");
+		break;
+	}
 }
 void Projectile::setProjectileDirection(int player_direction)
 {
@@ -142,23 +166,12 @@ void Projectile::updateAnimation()
 {
 	/*IntRect Variables*/
 	int intRectLeft_Start = 0;
-	int intRectLeft_End = 0;
+	int intRectLeft_End = 768;
 
 	int intRectTop_Start = 0;
-	int intRectTop_End = 0;
+	int intRectTop_End = 576;
 
-	int intRect_FrameSize = 480;
-
-	switch (this->projectileType)
-	{
-	case ProjectileTypes::Type_0:
-		 intRectLeft_Start = 0;
-		 intRectLeft_End = 1920;
-
-		 intRectTop_Start = 0;
-		 intRectTop_End = 1440;
-		 break;
-	}
+	int intRect_FrameSize = 192;
 
 	/*Animation Switch Time Variables*/
 	float deltaTime = this->animationClock.getElapsedTime().asSeconds();
