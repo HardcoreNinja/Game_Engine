@@ -31,6 +31,8 @@ private:
 	sf::RectangleShape titleShape;
 	sf::RectangleShape textBox;
 	std::string nameString;
+	sf::Text nameWarningText;
+	bool displayNameWarning;
 
 	/*Initializers*/
 	void initVariables();

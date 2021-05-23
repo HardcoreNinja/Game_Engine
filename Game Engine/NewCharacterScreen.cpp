@@ -6,6 +6,7 @@ void NewCharacterScreen::initVariables()
 {
 	this->male1Female0 = true;
 	this->textureSwitchCounter = 1;
+	this->displayNameWarning = false;
 }
 void NewCharacterScreen::initKeybinds()
 {
@@ -59,12 +60,18 @@ void NewCharacterScreen::initText()
 	this->text.setOrigin(this->text.getGlobalBounds().width / 2.f, this->text.getGlobalBounds().height / 2.f);
 	this->text.setPosition(sf::Vector2f(this->titleShape.getPosition().x, this->titleShape.getPosition().y - static_cast<float>(this->text.getCharacterSize()) / 4.f));
 
-
 	/*Name Text*/
 	this->nameText.setFont(font);
 	this->nameText.setFillColor(sf::Color::White);
 	this->nameText.setCharacterSize(30);
 	//this->nameText.setOrigin(this->nameText.getGlobalBounds().width / 2.f, this->nameText.getGlobalBounds().height / 2.f);
+
+	/*Name Warning Text*/
+	this->nameWarningText.setFont(font);
+	this->nameWarningText.setString("You forgot to name your Hero!");
+	this->nameWarningText.setFillColor(sf::Color::Red);
+	this->nameWarningText.setCharacterSize(15);
+	this->nameWarningText.setPosition(0.f, 250.f);
 }
 void NewCharacterScreen::initButtons()
 {
@@ -1003,7 +1010,12 @@ void NewCharacterScreen::updateButtons()
 
 	/*Start Game*/
 	if (this->buttons["START_GAME"]->isPressed() && this->getKeyTime())
-		this->states->push_back(std::make_unique<GameState>(this->gameInfo,this->textureSwitchCounter,this->male1Female0));
+	{
+		if (this->nameString.size() <= 0)
+			this->displayNameWarning = true;
+		else
+			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->textureSwitchCounter, this->male1Female0));
+	}
 
 	/*Back to Main Menu*/
 	if (this->buttons["BACK"]->isPressed() && this->getKeyTime())
@@ -1130,6 +1142,13 @@ void NewCharacterScreen::update(const float& dt)
 	this->updateNameText();
 	this->updateAnimation();
 	this->updateTexture();
+
+	/*Name Warning Text Toggle*/
+	if (this->displayNameWarning == true)
+	{
+		if (this->nameString.size() > 0)
+			this->displayNameWarning = false;
+	}
 }
 
 /*Reinitialize Functions*/
@@ -1158,6 +1177,9 @@ void NewCharacterScreen::renderText(sf::RenderTarget& target)
 	target.draw(this->text);
 	//target.draw(this->nameTextShape);
 	target.draw(this->nameText);
+
+	if (this->displayNameWarning)
+		target.draw(this->nameWarningText);
 }
 void NewCharacterScreen::renderButtons(sf::RenderTarget& target)
 {
