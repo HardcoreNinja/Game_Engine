@@ -120,6 +120,9 @@
     <ClCompile Include="Projectile.cpp">
       <Filter>Source Files\Projectile</Filter>
     </ClCompile>
+    <ClCompile Include="NewCharacterScreen.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">
@@ -164,6 +167,9 @@
     <ClInclude Include="Projectile.h">
       <Filter>Source Files\Projectile</Filter>
     </ClInclude>
+    <ClInclude Include="NewCharacterScreen.h">
+      <Filter>Source Files\States</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\settings_keybinds.ini">
@@ -194,6 +200,9 @@
       <Filter>Resource Files\Config\Keybinds</Filter>
     </None>
     <None Include="Config\game_state_keybinds.ini">
+      <Filter>Resource Files\Config\Keybinds</Filter>
+    </None>
+    <None Include="Config\newcharacterscreen_keybinds.ini">
       <Filter>Resource Files\Config\Keybinds</Filter>
     </None>
   </ItemGroup>

@@ -18,7 +18,7 @@ void Projectile::initSpriteRect()
 	this->spriteRect.setOutlineColor(sf::Color::Red);
 	this->spriteRect.setFillColor(sf::Color::Transparent);
 	this->spriteRect.setOrigin(this->spriteRect.getGlobalBounds().width / 2.f, this->spriteRect.getGlobalBounds().height / 2.f);
-	this->spriteRect.scale(sf::Vector2f(.5, .5));
+	this->spriteRect.scale(sf::Vector2f(.25, .25));
 }
 void Projectile::initSprite()
 {
@@ -28,7 +28,7 @@ void Projectile::initSprite()
 	this->sprite.setTexture(this->texture);
 	this->sprite.setTextureRect(this->spriteIntRect);
 	this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
-	this->sprite.scale(sf::Vector2f(.5, .5));
+	this->sprite.scale(sf::Vector2f(.25, .25));
 }
 
 /*Constructor & Destructor*/

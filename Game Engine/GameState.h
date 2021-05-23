@@ -39,11 +39,11 @@ private:
     void initTileMap();
     void initPauseMenu();
     void initLatestTileMap();
-    void initPlayer();
+    void initPlayer(int texture_switch_counter, bool male_0_female_1);
 
 public:
     /*Constuctor & Destructor*/
-    GameState(GameInfo* game_info);
+    GameState(GameInfo* game_info, int texture_switch_counter, bool male_0_female_1);
     virtual ~GameState();
 
     /*Update Functions*/

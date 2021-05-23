@@ -76,7 +76,7 @@ void MainMenu::initMainMenuButtons()
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 }
 
-/*Constuctor & Destructor*/
+/*Constructor & Destructor*/
 MainMenu::MainMenu(GameInfo* game_info)
 	: State(game_info)
 {
@@ -107,9 +107,9 @@ void MainMenu::updateButtons()
 	if (this->buttons["EDITOR"]->isPressed() && this->getKeyTime())
 		this->states->push_back(std::make_unique<Editor>(this->gameInfo));
 
-	//Game State
+	//New Character Screen
 	if (this->buttons["GAME_STATE"]->isPressed() && this->getKeyTime())
-		this->states->push_back(std::make_unique<GameState>(this->gameInfo));
+		this->states->push_back(std::make_unique<NewCharacterScreen>(this->gameInfo));
 }
 void MainMenu::updateUserInput(const float& dt)
 {

@@ -3,7 +3,7 @@
 #include "State.h"
 #include "Settings.h"
 #include "Editor.h"
-#include "GameState.h"
+#include "NewCharacterScreen.h"
 
 /*Class Forward Declarations*/
 class Settings;

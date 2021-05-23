@@ -1,9 +1,8 @@
 #include "Header.h"
 #include "PauseMenu.h"
 
-/*Constructor & Destructor*/
-PauseMenu::PauseMenu(sf::RenderWindow& window, sf::Font& font)
-	: font(font)
+/*Initializers*/
+void PauseMenu::initBackground(sf::RenderWindow& window)
 {
 	/*Background*/
 	this->background.setSize(sf::Vector2f(
@@ -27,7 +26,9 @@ PauseMenu::PauseMenu(sf::RenderWindow& window, sf::Font& font)
 	)
 	);
 	this->buttonContainer.setFillColor(sf::Color(20, 20, 20, 200));
-	
+}
+void PauseMenu::initText(sf::RenderWindow& window, sf::Font& font)
+{
 	/*Menu Text*/
 	this->shape.setPosition(sf::Vector2f(static_cast<float>(window.getSize().x) / 2.f, 30.f));
 	this->shape.setSize(sf::Vector2f(200.f, 50.f));
@@ -39,6 +40,14 @@ PauseMenu::PauseMenu(sf::RenderWindow& window, sf::Font& font)
 	this->text.setCharacterSize(30);
 	this->text.setOrigin(this->text.getGlobalBounds().width / 2.f, this->text.getGlobalBounds().height / 2.f);
 	this->text.setPosition(sf::Vector2f(this->shape.getPosition().x, this->shape.getPosition().y - static_cast<float>(this->text.getCharacterSize()) / 4.f));
+}
+
+/*Constructor & Destructor*/
+PauseMenu::PauseMenu(sf::RenderWindow& window, sf::Font& font)
+	: font(font)
+{
+	this->initBackground(window);
+	this->initText(window, font);
 }
 PauseMenu::~PauseMenu()
 {

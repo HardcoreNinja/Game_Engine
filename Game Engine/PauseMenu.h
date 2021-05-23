@@ -23,6 +23,10 @@ private:
 
 	/*Button Map*/
 	std::map<std::string, std::unique_ptr<GUI::Button>> buttons;
+
+	/*Initializers*/
+	void initBackground(sf::RenderWindow& window);
+	void initText(sf::RenderWindow& window, sf::Font& font);
 public:
 	/*Constuctor & Destructor*/
 	PauseMenu(sf::RenderWindow& window, sf::Font& font);
