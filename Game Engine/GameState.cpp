@@ -99,7 +99,11 @@ GameState::~GameState()
 void GameState::updatePauseMenuButtons()
 {
 	if (this->pauseMenu->isButtonPressed("EXIT") && this->getKeyTime())
+	{
+		this->states->erase(this->states->begin() + 1);
+		this->states->shrink_to_fit();
 		this->endState();
+	}
 }
 void GameState::updateUserInput(const float& dt)
 {
