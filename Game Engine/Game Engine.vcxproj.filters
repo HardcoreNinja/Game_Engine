@@ -73,6 +73,9 @@
     <Filter Include="Source Files\Projectile">
       <UniqueIdentifier>{1b726ca4-a928-46c0-bdd5-e9468f8cd1b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Config\Level TileMaps">
+      <UniqueIdentifier>{32468064-35e8-4e42-bc9f-192454fea7af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Header.cpp">
@@ -204,6 +207,9 @@
     </None>
     <None Include="Config\newcharacterscreen_keybinds.ini">
       <Filter>Resource Files\Config\Keybinds</Filter>
+    </None>
+    <None Include="Config\level_1.ini">
+      <Filter>Resource Files\Config\Level TileMaps</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

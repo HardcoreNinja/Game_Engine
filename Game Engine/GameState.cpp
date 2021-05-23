@@ -71,7 +71,7 @@ void GameState::initPauseMenu()
 }
 void GameState::initLatestTileMap()
 {
-	this->tileMap->loadFromFile("Config/tile_map.ini", "Resources/Images/Tiles/PipoyaMasterLevel.png");
+	this->tileMap->loadFromFile("Config/level_1.ini", "Resources/Images/Tiles/PipoyaMasterLevel.png");
 }
 void GameState::initPlayer(int texture_switch_counter, bool male_0_female_1)
 {
