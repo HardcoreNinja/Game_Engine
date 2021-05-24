@@ -61,14 +61,14 @@ private:
     std::map<std::string, int> keybinds;
 
     /*Initializers*/
-    void initVariables(std::string name, int texture_switch_counter, bool male_0_female_1);
+    void initVariables(PlayerDetails player_details);
     void initKeybinds();
     void initSpriteRect();
     void initSprite();
 
 public:
     /*Constructor & Destructor*/
-    Player(std::map<std::string, int>* supported_keys, int texture_switch_counter, bool male_0_female_1, std::string name);
+    Player(std::map<std::string, int>* supported_keys, PlayerDetails player_details);
     virtual ~Player();
 
     /*Getters*/

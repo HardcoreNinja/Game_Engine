@@ -1014,7 +1014,14 @@ void NewCharacterScreen::updateButtons()
 		if (this->nameString.size() <= 0)
 			this->displayNameWarning = true;
 		else
-			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->textureSwitchCounter, this->male1Female0, this->nameString));
+		{
+			this->playerDetails.name = this->nameString;
+			this->playerDetails.textureSwitchCounter = this->textureSwitchCounter;
+			this->playerDetails.male1Female0 = this->male1Female0;
+			this->playerDetails.oldDirection = PlayerDirection::Down;
+
+			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails));
+		}
 	}
 
 	/*Back to Main Menu*/
@@ -1109,7 +1116,7 @@ void NewCharacterScreen::updateUserInput(const float& dt)
 		if (this->nameString.size() <= 0)
 			this->displayNameWarning = true;
 		else
-			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->textureSwitchCounter, this->male1Female0, this->nameString));
+			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails));
 	}
 
 	/*Back to Main Menu*/

@@ -43,12 +43,12 @@ private:
     void initTileMap();
     void initPauseMenu();
     void initLatestTileMap();
-    void initPlayer(int texture_switch_counter, bool male_0_female_1, std::string player_name);
+    void initPlayer(PlayerDetails player_details);
     void initHUD(PlayerDetails player_details);
 
 public:
     /*Constuctor & Destructor*/
-    GameState(GameInfo* game_info, int texture_switch_counter, bool male_0_female_1, std::string player_name);
+    GameState(GameInfo* game_info, PlayerDetails player_details);
     virtual ~GameState();
 
     /*Update Functions*/

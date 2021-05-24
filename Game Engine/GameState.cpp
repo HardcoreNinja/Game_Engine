@@ -73,9 +73,9 @@ void GameState::initLatestTileMap()
 {
 	this->tileMap->loadFromFile("Config/level_1.ini", "Resources/Images/Tiles/PipoyaMasterLevel.png");
 }
-void GameState::initPlayer(int texture_switch_counter, bool male_0_female_1, std::string player_name)
+void GameState::initPlayer(PlayerDetails player_details)
 {
-	this->player = std::make_unique<Player>(this->supportedKeys, texture_switch_counter, male_0_female_1, player_name);
+	this->player = std::make_unique<Player>(this->supportedKeys, player_details);
 }
 void GameState::initHUD(PlayerDetails player_details)
 {
@@ -83,7 +83,7 @@ void GameState::initHUD(PlayerDetails player_details)
 }
 
 /*Constructor & Destructor*/
-GameState::GameState(GameInfo* game_info, int texture_switch_counter, bool male_0_female_1, std::string player_name)
+GameState::GameState(GameInfo* game_info, PlayerDetails player_details)
 	: State(game_info)
 {
 	this->initVariables();
@@ -93,7 +93,7 @@ GameState::GameState(GameInfo* game_info, int texture_switch_counter, bool male_
 	this->initTileMap();
 	this->initPauseMenu();
 	this->initLatestTileMap();
-	this->initPlayer(texture_switch_counter, male_0_female_1, player_name);
+	this->initPlayer(player_details);
 	this->initHUD(this->player->getPlayerDetails());
 }
 GameState::~GameState()
@@ -231,7 +231,7 @@ void GameState::reinitializeState()
 	this->initTileMap();
 	this->initPauseMenu();
 	this->initLatestTileMap();
-	this->initPlayer(this->player->getPlayerDetails().textureSwitchCounter, this->player->getPlayerDetails().male1Female0, this->player->getPlayerDetails().name);
+	this->initPlayer(this->player->getPlayerDetails());
 	this->initHUD(this->player->getPlayerDetails());
 }
 

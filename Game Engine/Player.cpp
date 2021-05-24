@@ -3,13 +3,21 @@
 #include "TileMap.h"
 
 /*Initializers*/
-void Player::initVariables(std::string name, int texture_switch_counter, bool male_0_female_1)
+void Player::initVariables(PlayerDetails player_details)
 {
-	/*Player Details Variables*/
-	this->playerDetails.name = name;
-	this->playerDetails.textureSwitchCounter = texture_switch_counter;
-	this->playerDetails.male1Female0 = male_0_female_1;
-	std::cout << "Player Name: " << this->playerDetails.name << " x " << "Texture Counter:" << this->playerDetails.textureSwitchCounter << " x " << "Gender Bool: " << this->playerDetails.male1Female0 << '\n';
+	/*New Character Variables*/
+	this->playerDetails.name = player_details.name;
+	this->playerDetails.textureSwitchCounter = player_details.textureSwitchCounter;
+	this->playerDetails.male1Female0 = player_details.male1Female0;
+
+	/*Position & Direction*/
+	this->playerDetails.oldDirection = player_details.oldDirection;
+
+	this->oldDirection = player_details.oldDirection;
+	std::cout << "Player Name: " << this->playerDetails.name << 
+		" x " << "Texture Counter:" << this->playerDetails.textureSwitchCounter << 
+		" x " << "Gender Bool: " << this->playerDetails.male1Female0 << 
+		" x " << "Old Direction: " << static_cast<int>(this->playerDetails.oldDirection) << '\n';
 	
 	/*Movement Variables*/
 	this->velocity = sf::Vector2f(0.f, 0.f);
@@ -872,10 +880,10 @@ void Player::initSprite()
 }
 
 /*Constructor & Destructor*/
-Player::Player(std::map<std::string, int>* supported_keys, int texture_switch_counter, bool male_0_female_1, std::string name)
+Player::Player(std::map<std::string, int>* supported_keys, PlayerDetails player_details)
 {
 	this->supportedKeys = supported_keys;
-	this->initVariables(name, texture_switch_counter, male_0_female_1);
+	this->initVariables(player_details);
 	this->initKeybinds();
 	this->initSpriteRect();
 	this->initSprite();

@@ -3,6 +3,7 @@
 #include "State.h"
 #include "GUI.h"
 #include "GameState.h"
+#include "Player.h"
 
 /*Class Forward Declarations*/
 class sf::Clock;
@@ -11,6 +12,9 @@ class NewCharacterScreen :
     public State
 {
 private:
+	/*Player Details*/
+	PlayerDetails playerDetails;
+
 	/*Sprite Variables*/
 	sf::Sprite sprite;
 	sf::IntRect spriteIntRect;
