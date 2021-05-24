@@ -113,7 +113,7 @@ void MainMenu::updateButtons()
 }
 void MainMenu::updateUserInput(const float& dt)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("QUIT_GAME"))))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("QUIT_GAME"))) && this->getKeyTime())
 		this->endState();
 }
 void MainMenu::update(const float& dt)

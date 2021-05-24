@@ -1103,6 +1103,18 @@ void NewCharacterScreen::updateButtons()
 }
 void NewCharacterScreen::updateUserInput(const float& dt)
 {
+	/*Start Game*/
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("START_GAME"))) && this->getKeyTime())
+	{
+		if (this->nameString.size() <= 0)
+			this->displayNameWarning = true;
+		else
+			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->textureSwitchCounter, this->male1Female0, this->nameString));
+	}
+
+	/*Back to Main Menu*/
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("BACK"))) && this->getKeyTime())
+		this->endState();
 }  
 void NewCharacterScreen::updateNameText()
 {
@@ -1121,7 +1133,7 @@ void NewCharacterScreen::updateNameText()
 
 		if (this->sfmlEvent->type == sf::Event::TextEntered && this->getKeyTime())
 		{
-			if (this->sfmlEvent->text.unicode < 128 && this->sfmlEvent->text.unicode != 8 && this->nameString.size() <= 9)
+			if (this->sfmlEvent->text.unicode < 128 && this->sfmlEvent->text.unicode != 8 && this->sfmlEvent->text.unicode != 27 && this->nameString.size() <= 9)
 			{
 				this->nameString.push_back(static_cast<char>(this->sfmlEvent->text.unicode));	
 			}
@@ -1139,6 +1151,7 @@ void NewCharacterScreen::update(const float& dt)
 	this->updateKeyTime(dt);
 	this->updateMousePosition();
 	this->updateButtons();
+	this->updateUserInput(dt);
 	this->updateNameText();
 	this->updateAnimation();
 	this->updateTexture();
