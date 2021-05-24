@@ -3,6 +3,7 @@
 #include "State.h"
 #include "Player.h"
 #include "Projectile.h"
+#include "HUD.h"
 
 /*Class Forward Declarations*/
 class Tile;
@@ -24,6 +25,9 @@ private:
     /*Player*/
     std::unique_ptr<Player> player;
 
+    /*HUD*/
+    std::unique_ptr <HUD> hud;
+
     /*Projectile Variables*/
     sf::Clock projectileClock;
     ProjectileTypes projectileType;
@@ -40,6 +44,7 @@ private:
     void initPauseMenu();
     void initLatestTileMap();
     void initPlayer(int texture_switch_counter, bool male_0_female_1, std::string player_name);
+    void initHUD(PlayerDetails player_details);
 
 public:
     /*Constuctor & Destructor*/
@@ -63,6 +68,7 @@ public:
     void renderTileMap(sf::RenderTarget& target);
     void renderPlayer(sf::RenderTarget& target);
     void renderProjectiles(sf::RenderTarget& target);
+    void renderHUD(sf::RenderTarget& target);
     virtual void render(sf::RenderTarget* target);
 };
 #endif

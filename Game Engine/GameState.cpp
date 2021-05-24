@@ -4,7 +4,7 @@
 /*Initializers*/
 void GameState::initVariables()
 {
-	this->projectileType = ProjectileTypes::Black_Tornado_0;
+	this->projectileType = ProjectileTypes::Red_Tornado_4;
 }
 void GameState::initKeybinds()
 {
@@ -77,6 +77,10 @@ void GameState::initPlayer(int texture_switch_counter, bool male_0_female_1, std
 {
 	this->player = std::make_unique<Player>(this->supportedKeys, texture_switch_counter, male_0_female_1, player_name);
 }
+void GameState::initHUD(PlayerDetails player_details)
+{
+	this->hud = std::make_unique<HUD>(player_details);
+}
 
 /*Constructor & Destructor*/
 GameState::GameState(GameInfo* game_info, int texture_switch_counter, bool male_0_female_1, std::string player_name)
@@ -90,6 +94,7 @@ GameState::GameState(GameInfo* game_info, int texture_switch_counter, bool male_
 	this->initPauseMenu();
 	this->initLatestTileMap();
 	this->initPlayer(texture_switch_counter, male_0_female_1, player_name);
+	this->initHUD(this->player->getPlayerDetails());
 }
 GameState::~GameState()
 {
@@ -220,6 +225,8 @@ void GameState::reinitializeState()
 	this->initTileMap();
 	this->initPauseMenu();
 	this->initLatestTileMap();
+	this->initPlayer(this->player->getPlayerDetails().textureSwitchCounter, this->player->getPlayerDetails().male1Female0, this->player->getPlayerDetails().name);
+	this->initHUD(this->player->getPlayerDetails());
 }
 
 /*Render Functions*/
@@ -245,6 +252,10 @@ void GameState::renderProjectiles(sf::RenderTarget& target)
 		counter++;
 	}
 }
+void GameState::renderHUD(sf::RenderTarget& target)
+{
+	this->hud->render(target);
+}
 void GameState::render(sf::RenderTarget* target)
 {
 	if (!target)
@@ -262,6 +273,8 @@ void GameState::render(sf::RenderTarget* target)
 
 	/*Items Rendered with Default Window View*/
 	this->window->setView(this->defaultWindowView);
+	this->renderHUD(*target);
+
 	if (this->isPaused)
-		this->renderPauseMenu(*target);
+		this->renderPauseMenu(*target);	
 }

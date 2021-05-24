@@ -3,12 +3,14 @@
 #include "TileMap.h"
 
 /*Initializers*/
-void Player::initVariables(std::string name)
+void Player::initVariables(std::string name, int texture_switch_counter, bool male_0_female_1)
 {
 	/*Player Details Variables*/
 	this->playerDetails.name = name;
-	std::cout << "Player Name: " << this->playerDetails.name << '\n';
-
+	this->playerDetails.textureSwitchCounter = texture_switch_counter;
+	this->playerDetails.male1Female0 = male_0_female_1;
+	std::cout << "Player Name: " << this->playerDetails.name << " x " << "Texture Counter:" << this->playerDetails.textureSwitchCounter << " x " << "Gender Bool: " << this->playerDetails.male1Female0 << '\n';
+	
 	/*Movement Variables*/
 	this->velocity = sf::Vector2f(0.f, 0.f);
 	this->maxVelocity = 10.f;
@@ -48,10 +50,10 @@ void Player::initSpriteRect()
 	this->spriteRect.setOrigin(this->spriteRect.getGlobalBounds().width / 2.f, this->spriteRect.getGlobalBounds().height / 2.f);
 	this->spriteRect.setPosition(207, 176);
 }
-void Player::initSprite(int texture_switch_counter, bool male_0_female_1)
+void Player::initSprite()
 {
-	if (male_0_female_1)
-		switch (texture_switch_counter)
+	if (this->playerDetails.male1Female0)
+		switch (this->playerDetails.textureSwitchCounter)
 		{
 		case 1:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/1.png"))
@@ -401,8 +403,8 @@ void Player::initSprite(int texture_switch_counter, bool male_0_female_1)
 		default:
 			std::cout << "ERROR::NEWCHARACTERSCREEN::void updateTexture()::Invalid Switch Entry!\n";
 		}
-	else if (!male_0_female_1)
-		switch (texture_switch_counter)
+	else if (!this->playerDetails.male1Female0)
+		switch (this->playerDetails.textureSwitchCounter)
 		{
 		case 1:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/1.png"))
@@ -873,10 +875,10 @@ void Player::initSprite(int texture_switch_counter, bool male_0_female_1)
 Player::Player(std::map<std::string, int>* supported_keys, int texture_switch_counter, bool male_0_female_1, std::string name)
 {
 	this->supportedKeys = supported_keys;
-	this->initVariables(name);
+	this->initVariables(name, texture_switch_counter, male_0_female_1);
 	this->initKeybinds();
 	this->initSpriteRect();
-	this->initSprite(texture_switch_counter, male_0_female_1);
+	this->initSprite();
 }
 Player::~Player()
 {
@@ -890,6 +892,10 @@ sf::RectangleShape Player::getSpriteRect()
 int Player::getPlayerDirection()
 {
 	return static_cast<int>(this->oldDirection);
+}
+PlayerDetails Player::getPlayerDetails()
+{
+	return this->playerDetails;
 }
 
 /*Tile Collision Functions*/

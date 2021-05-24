@@ -76,6 +76,9 @@
     <Filter Include="Resource Files\Config\Level TileMaps">
       <UniqueIdentifier>{32468064-35e8-4e42-bc9f-192454fea7af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\HUD">
+      <UniqueIdentifier>{0ebde2f5-91a7-492f-b555-8c3e57854931}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Header.cpp">
@@ -126,6 +129,9 @@
     <ClCompile Include="NewCharacterScreen.cpp">
       <Filter>Source Files\States</Filter>
     </ClCompile>
+    <ClCompile Include="HUD.cpp">
+      <Filter>Source Files\HUD</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">
@@ -172,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="NewCharacterScreen.h">
       <Filter>Source Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
+      <Filter>Source Files\HUD</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

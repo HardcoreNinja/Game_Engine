@@ -7,9 +7,9 @@ void Projectile::initVariables()
 {
 	/*Movement Variables*/
 	this->velocity = sf::Vector2f(0.f, 0.f);
-	this->maxVelocity = 5.f;
-	this->acceleration = 0.2f;
-	this->deceleration = 0.15f;
+	this->maxVelocity = 8.f;
+	this->acceleration = 1.f;
+	this->deceleration = 0.1f;
 	this->stop = false;
 
 	/*Destroy Variables*/
@@ -30,7 +30,7 @@ void Projectile::initSpriteRect()
 	this->spriteRect.setOutlineColor(sf::Color::Transparent);
 	this->spriteRect.setFillColor(sf::Color::Transparent);
 	this->spriteRect.setOrigin(this->spriteRect.getGlobalBounds().width / 2.f, this->spriteRect.getGlobalBounds().height / 2.f);
-	this->spriteRect.scale(sf::Vector2f(.35, .35));
+	this->spriteRect.setScale(sf::Vector2f(.35, .35));
 }
 void Projectile::initSprite()
 {
@@ -41,7 +41,7 @@ void Projectile::initSprite()
 	this->sprite.setTexture(this->texture);
 	this->sprite.setTextureRect(this->spriteIntRect);
 	this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
-	this->sprite.scale(sf::Vector2f(.35, .35));
+	this->sprite.setScale(sf::Vector2f(.35, .35));
 
 	/*Explosion*/
 	this->explosionIntRect = sf::IntRect(0, 0, 100, 100);
@@ -127,19 +127,19 @@ void Projectile::setProjectileDirection(int player_direction)
 void Projectile::setProjectilePosition(sf::RectangleShape player)
 {
 	if(this->projectileDirection == ProjectileDirection::Up)
-	this->spriteRect.setPosition(player.getPosition().x, player.getPosition().y - 25.f);
+	this->spriteRect.setPosition(player.getPosition().x, player.getPosition().y - 50.f);
 	if (this->projectileDirection == ProjectileDirection::Down)
-		this->spriteRect.setPosition(player.getPosition().x, player.getPosition().y + 25.f);
+		this->spriteRect.setPosition(player.getPosition().x, player.getPosition().y + 50.f);
 	if (this->projectileDirection == ProjectileDirection::Left)
-		this->spriteRect.setPosition(player.getPosition().x - 25.f, player.getPosition().y);
+		this->spriteRect.setPosition(player.getPosition().x - 50.f, player.getPosition().y);
 	if (this->projectileDirection == ProjectileDirection::Right)
-		this->spriteRect.setPosition(player.getPosition().x + 25.f, player.getPosition().y);
+		this->spriteRect.setPosition(player.getPosition().x + 50.f, player.getPosition().y);
 }
 void Projectile::setExplosionTexture()
 {
-	this->sprite.scale(sf::Vector2f(1.025, 1.025));
 	this->sprite.setTextureRect(this->explosionIntRect);
 	this->sprite.setTexture(this->explosionTexture);
+	this->sprite.setScale(sf::Vector2f(1.f, 1.f));
 	this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
 	this->stop = true;
 	this->explode = true;
@@ -317,7 +317,11 @@ void Projectile::updateExplosionAnimation()
 	if (deltaTime > switchTime)
 	{
 		if (this->explosionIntRect.left == intRectLeft_End && this->explosionIntRect.top == intRectTop_End)
+		{
+			this->explosionIntRect.left = intRectLeft_Start;
+			this->explosionIntRect.top = intRectTop_Start;
 			this->destroy = true;
+		}
 
 		if (this->explosionIntRect.left == intRectLeft_End)
 		{
@@ -329,7 +333,7 @@ void Projectile::updateExplosionAnimation()
 			this->explosionIntRect.left += intRect_FrameSize;
 			this->sprite.setTextureRect(this->explosionIntRect);
 			this->explosionAnimationClock.restart();
-		}
+		}	
 	}
 }
 void Projectile::update(const float& dt)

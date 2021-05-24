@@ -13,6 +13,8 @@ enum class PlayerDirection
 struct PlayerDetails
 {
     std::string name;
+    int textureSwitchCounter;
+    bool male1Female0;
 };
 
 class Player :
@@ -40,10 +42,10 @@ private:
     std::map<std::string, int> keybinds;
 
     /*Initializers*/
-    void initVariables(std::string name);
+    void initVariables(std::string name, int texture_switch_counter, bool male_0_female_1);
     void initKeybinds();
     void initSpriteRect();
-    void initSprite(int texture_switch_counter, bool male_0_female_1);
+    void initSprite();
 
 public:
     /*Constructor & Destructor*/
@@ -53,6 +55,7 @@ public:
     /*Getters*/
     sf::RectangleShape getSpriteRect();
     int getPlayerDirection();
+    PlayerDetails getPlayerDetails();
 
     /*Tile Collisions Functions*/
     void tileCollision(std::tuple<bool, unsigned short> collision_tuple);
