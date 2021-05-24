@@ -33,8 +33,11 @@ private:
     ProjectileTypes projectileType;
     ProjectileDirection projectileDirection;
 
-    /*Velocity Variables*/
-    float maxvelocity;
+    /*Movement Variables*/
+    sf::Vector2f velocity;
+    float maxVelocity;
+    float acceleration;
+    float deceleration;
     bool stop;
 
     /*Destroy Variables*/
@@ -49,6 +52,7 @@ private:
 
     /*Collision Variables*/
     bool wallCollision;
+    sf::Vector2f oldPosition;
 
     /*Animation Variables*/
     sf::Clock projectileAnimationClock;
@@ -78,6 +82,8 @@ public:
     void tileCollision(std::tuple<bool, unsigned short> collision_tuple);
 
     /*Update Functions*/
+    void updateDirection(const float& dt);
+    void updateVelocity(float dir_x, float dir_y, const float& dt);
     void updateMovement(const float& dt);
     void updateLifeTimeCounter();
     void updateProjectileAnimation();

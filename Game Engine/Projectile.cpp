@@ -5,12 +5,22 @@
 /*Initializers*/
 void Projectile::initVariables()
 {
-	this->maxvelocity = 5.f;
+	/*Movement Variables*/
+	this->velocity = sf::Vector2f(0.f, 0.f);
+	this->maxVelocity = 5.f;
+	this->acceleration = 0.2f;
+	this->deceleration = 0.15f;
 	this->stop = false;
+
+	/*Destroy Variables*/
 	this->destroy = false;
 	this->lifeTimeCounter = 0;
-	this->maxLifeTimeCounter = 50;
+	this->maxLifeTimeCounter = 100;
+
+	/*Explosion Variables*/
 	this->explode = false;
+
+	/*Collision Variables*/
 	this->wallCollision = false;
 }
 void Projectile::initSpriteRect()
@@ -140,33 +150,114 @@ void Projectile::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
 {
 	if (std::get<0>(collision_tuple) == true && std::get<1>(collision_tuple) == TILEMAP::TileType::Wall)
 	{
-		std::cout << "Projectile/Wall Collision: " << this->wallCollision << '\n';
 		this->wallCollision = true;
+		std::cout << "Projectile/Wall Collision: " << this->wallCollision << '\n';
 		this->setExplosionTexture();
 	}
 	else
 		this->wallCollision = false;
+
+	if (this->wallCollision == true)
+	{
+		sf::Vector2f position = this->spriteRect.getPosition();
+
+		if (this->velocity.x != 0.f)
+		{
+			position.x = this->oldPosition.x;
+			this->velocity.x = 0.f;
+		}
+
+		if (this->velocity.y != 0.f)
+		{
+			position.y = this->oldPosition.y;
+			this->velocity.y = 0.f;
+		}
+
+		this->spriteRect.setPosition(position);
+	}
 }
 
 /*Update Functions*/
-void Projectile::updateMovement(const float& dt)
+void Projectile::updateDirection(const float& dt)
 {
 	if (this->projectileDirection == ProjectileDirection::Up)
 	{
-		this->spriteRect.move(0.f, -this->maxvelocity * dt * (1.f / dt));
+		this->updateVelocity(0.f, -1.f, dt);
 	}
 	else if (this->projectileDirection == ProjectileDirection::Down)
 	{
-		this->spriteRect.move(0.f, this->maxvelocity * dt * (1.f / dt));
+		this->updateVelocity(0.f, 1.f, dt);
 	}
 	else if (this->projectileDirection == ProjectileDirection::Left)
 	{
-		this->spriteRect.move(-this->maxvelocity * dt * (1.f / dt), 0.f);
+		this->updateVelocity(-1.f, 0.f, dt);
 	}
 	else if (this->projectileDirection == ProjectileDirection::Right)
 	{
-		this->spriteRect.move(this->maxvelocity * dt * (1.f / dt), 0.f);
+		this->updateVelocity(1.f, 0.f, dt);
 	}
+}
+void Projectile::updateVelocity(float dir_x, float dir_y, const float& dt)
+{
+	this->velocity.x += this->acceleration * dir_x;
+	this->velocity.y += this->acceleration * dir_y;
+
+	this->updateMovement(dt);
+}
+void Projectile::updateMovement(const float& dt)
+{
+	/*Up*/
+	if (this->velocity.y < 0.f)
+	{
+		if (this->velocity.y < -this->maxVelocity)
+			this->velocity.y = -this->maxVelocity;
+
+		this->velocity.y += this->deceleration;
+
+		if (this->velocity.y > 0.f)
+			this->velocity.y = 0.f;
+	}
+	/*Down*/
+	else if (this->velocity.y > 0.f)
+	{
+		if (this->velocity.y > this->maxVelocity)
+			this->velocity.y = this->maxVelocity;
+
+		this->velocity.y -= this->deceleration;
+
+		if (this->velocity.y < 0.f)
+			this->velocity.y = 0.f;
+	}
+
+	/*Left*/
+	if (this->velocity.x < 0.f)
+	{
+		if (this->velocity.x < -this->maxVelocity)
+			this->velocity.x = -this->maxVelocity;
+
+		this->velocity.x += this->deceleration;
+
+		if (this->velocity.x > 0.f)
+			this->velocity.x = 0.f;
+	}
+	/*Right*/
+	else if (this->velocity.x > 0.f)
+	{
+		if (this->velocity.x > this->maxVelocity)
+			this->velocity.x = this->maxVelocity;
+
+		this->velocity.x -= this->deceleration;
+
+		if (this->velocity.x < 0.f)
+			this->velocity.x = 0.f;
+	}
+
+	this->oldPosition = this->spriteRect.getPosition();
+
+	if (!this->stop)
+	this->spriteRect.move(sf::Vector2f(this->velocity.x, this->velocity.y) * dt * (1.f / dt));
+
+	this->updateProjectileAnimation();
 }
 void Projectile::updateLifeTimeCounter()
 {
@@ -243,13 +334,11 @@ void Projectile::updateExplosionAnimation()
 }
 void Projectile::update(const float& dt)
 {
-	if(!this->stop)
-	this->updateMovement(dt);
-
-	this->updateLifeTimeCounter();
-	this->updateProjectileAnimation();
+	this->updateDirection(dt);
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x, this->spriteRect.getPosition().y));
 
+	this->updateLifeTimeCounter();
+	
 	if (this->explode)
 		this->updateExplosionAnimation();
 }
