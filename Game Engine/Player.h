@@ -12,9 +12,28 @@ enum class PlayerDirection
 
 struct PlayerDetails
 {
+    /*New Character Variable*/
     std::string name;
     int textureSwitchCounter;
     bool male1Female0;
+
+    /*Position & Direction*/
+    sf::Vector2f position;
+    PlayerDirection oldDirection;
+
+    /*Movement Variables*/
+    sf::Vector2f velocity;
+    float maxVelocity;
+    float acceleration;
+    float deceleration;
+
+    /*Vitals*/
+    float currentHP;
+    float maxHP;
+    float currentStamina;
+    float maxStamina;
+    float currentMana;
+    float maxMana;
 };
 
 class Player :
@@ -66,6 +85,10 @@ public:
     void updateMovement(const float& dt);
     void updateAnimation();
     void update(const float& dt);
+
+    /*Save & Load Functions*/
+    void saveToFile();
+    void loadFromFile();
 
     /*Render Functions*/
     void render(sf::RenderTarget& target);

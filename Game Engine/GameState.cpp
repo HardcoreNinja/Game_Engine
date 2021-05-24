@@ -105,8 +105,14 @@ void GameState::updatePauseMenuButtons()
 {
 	if (this->pauseMenu->isButtonPressed("EXIT") && this->getKeyTime())
 	{
+		/*Save Player Details*/
+		this->player->saveToFile();
+
+		/*Erase the NewCharacter Screen and Shrink States Vector*/
 		this->states->erase(this->states->begin() + 1);
 		this->states->shrink_to_fit();
+
+		/*End State*/
 		this->endState();
 	}
 }

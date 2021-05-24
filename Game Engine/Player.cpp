@@ -1139,6 +1139,76 @@ void Player::update(const float& dt)
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
 }
 
+/*Save & Load Functions*/
+void Player::saveToFile()
+{
+	this->playerDetails.position = this->spriteRect.getPosition();
+	this->playerDetails.oldDirection = this->oldDirection;
+
+	std::ofstream ofs("Config/player_details.ini");
+
+	if (ofs.is_open())
+	{
+		/*New Character Variable*/
+		ofs << this->playerDetails.name << '\n';
+		ofs << this->playerDetails.textureSwitchCounter << '\n';
+		ofs << this->playerDetails.male1Female0 << '\n';
+
+		/*Position & Direction*/
+		ofs << this->playerDetails.position.x << " " << this->playerDetails.position.y << '\n';
+		ofs << static_cast<int>(this->playerDetails.oldDirection) << '\n';
+
+		/*Movement Variables*/
+		ofs << this->playerDetails.velocity.x << " " << this->playerDetails.velocity.y << '\n';
+		ofs << this->playerDetails.maxVelocity << '\n';
+		ofs << this->playerDetails.acceleration << '\n';
+		ofs << this->playerDetails.deceleration << '\n';
+
+		/*Vitals*/
+		ofs << this->playerDetails.currentHP << '\n';
+		ofs << this->playerDetails.maxHP << '\n';
+		ofs << this->playerDetails.currentStamina << '\n';
+		ofs << this->playerDetails.maxStamina << '\n';
+		ofs << this->playerDetails.currentMana << '\n';
+		ofs << this->playerDetails.maxMana << '\n';
+	}
+	ofs.close();
+}
+void Player::loadFromFile()
+{
+	int oldDirection = 0;
+	std::ifstream ifs("Config/player_details.ini");
+
+	if (ifs.is_open())
+	{
+		/*New Character Variable*/
+		std::getline(ifs, this->playerDetails.name);
+		ifs >> this->playerDetails.textureSwitchCounter;
+		ifs >> this->playerDetails.male1Female0;
+
+		/*Position & Direction*/
+		ifs >> this->playerDetails.position.x >> this->playerDetails.position.y;
+		ifs >> oldDirection;
+
+		/*Movement Variables*/
+		ifs >> this->playerDetails.velocity.x >> this->playerDetails.velocity.y;
+		ifs >> this->playerDetails.maxVelocity;
+		ifs >> this->playerDetails.acceleration;
+		ifs >> this->playerDetails.deceleration;
+
+		/*Vitals*/
+		ifs >> this->playerDetails.currentHP;
+		ifs >> this->playerDetails.maxHP;
+		ifs >> this->playerDetails.currentStamina;
+		ifs >> this->playerDetails.maxStamina;
+		ifs >> this->playerDetails.currentMana;
+		ifs >> this->playerDetails.maxMana;
+
+		this->playerDetails.oldDirection = static_cast<PlayerDirection>(oldDirection);
+	}
+	ifs.close();
+}
+
 /*Render Functions*/
 void Player::render(sf::RenderTarget& target)
 {
