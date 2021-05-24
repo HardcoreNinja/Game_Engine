@@ -35,17 +35,24 @@ private:
 
     /*Velocity Variables*/
     float maxvelocity;
+    bool stop;
 
     /*Destroy Variables*/
     bool destroy;
     int lifeTimeCounter;
     int maxLifeTimeCounter;
 
+    /*Explosion Variables*/
+    sf::Texture explosionTexture;
+    sf::IntRect explosionIntRect;
+    bool explode;
+
     /*Collision Variables*/
     bool wallCollision;
 
     /*Animation Variables*/
-    sf::Clock animationClock;
+    sf::Clock projectileAnimationClock;
+    sf::Clock explosionAnimationClock;
 
     /*Initializers*/
     void initVariables();
@@ -65,6 +72,7 @@ public:
     void setProjectileType(ProjectileTypes projectile_type);
     void setProjectileDirection(int player_direction);
     void setProjectilePosition(sf::RectangleShape player);
+    void setExplosionTexture();
 
     /*Tile Collision Functions*/
     void tileCollision(std::tuple<bool, unsigned short> collision_tuple);
@@ -72,7 +80,8 @@ public:
     /*Update Functions*/
     void updateMovement(const float& dt);
     void updateLifeTimeCounter();
-    void updateAnimation();
+    void updateProjectileAnimation();
+    void updateExplosionAnimation();
     void update(const float& dt);
 
     /*Render Functions*/

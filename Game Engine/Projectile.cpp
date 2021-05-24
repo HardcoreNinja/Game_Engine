@@ -5,30 +5,39 @@
 /*Initializers*/
 void Projectile::initVariables()
 {
-	this->maxvelocity = 10.f;
+	this->maxvelocity = 5.f;
+	this->stop = false;
 	this->destroy = false;
 	this->lifeTimeCounter = 0;
 	this->maxLifeTimeCounter = 50;
+	this->explode = false;
 	this->wallCollision = false;
 }
 void Projectile::initSpriteRect()
 {
 	this->spriteRect.setSize(sf::Vector2f(111.f, 137.f));
 	this->spriteRect.setOutlineThickness(1.f);
-	this->spriteRect.setOutlineColor(sf::Color::Red);
+	this->spriteRect.setOutlineColor(sf::Color::Transparent);
 	this->spriteRect.setFillColor(sf::Color::Transparent);
 	this->spriteRect.setOrigin(this->spriteRect.getGlobalBounds().width / 2.f, this->spriteRect.getGlobalBounds().height / 2.f);
-	this->spriteRect.scale(sf::Vector2f(.25, .25));
+	this->spriteRect.scale(sf::Vector2f(.35, .35));
 }
 void Projectile::initSprite()
 {
+	/*Projectile*/
 	this->spriteIntRect = sf::IntRect(0, 0, 192, 192);
 	if(!this->texture.loadFromFile("Resources/Images/Energy_Tornados/black.png"))
 		throw("ERROR::PROJECTILE::FAILED_TO_LOAD::black.png");
 	this->sprite.setTexture(this->texture);
 	this->sprite.setTextureRect(this->spriteIntRect);
 	this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
-	this->sprite.scale(sf::Vector2f(.25, .25));
+	this->sprite.scale(sf::Vector2f(.35, .35));
+
+	/*Explosion*/
+	this->explosionIntRect = sf::IntRect(0, 0, 100, 100);
+	if (!this->explosionTexture.loadFromFile("Resources/Images/Explosions/blue.png"))
+		throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/blue.png");
+	this->explosionTexture.setSmooth(true);
 }
 
 /*Constructor & Destructor*/
@@ -107,7 +116,23 @@ void Projectile::setProjectileDirection(int player_direction)
 }
 void Projectile::setProjectilePosition(sf::RectangleShape player)
 {
-	this->spriteRect.setPosition(player.getPosition());
+	if(this->projectileDirection == ProjectileDirection::Up)
+	this->spriteRect.setPosition(player.getPosition().x, player.getPosition().y - 25.f);
+	if (this->projectileDirection == ProjectileDirection::Down)
+		this->spriteRect.setPosition(player.getPosition().x, player.getPosition().y + 25.f);
+	if (this->projectileDirection == ProjectileDirection::Left)
+		this->spriteRect.setPosition(player.getPosition().x - 25.f, player.getPosition().y);
+	if (this->projectileDirection == ProjectileDirection::Right)
+		this->spriteRect.setPosition(player.getPosition().x + 25.f, player.getPosition().y);
+}
+void Projectile::setExplosionTexture()
+{
+	this->sprite.scale(sf::Vector2f(1.025, 1.025));
+	this->sprite.setTextureRect(this->explosionIntRect);
+	this->sprite.setTexture(this->explosionTexture);
+	this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
+	this->stop = true;
+	this->explode = true;
 }
 
 /*Tile Collision Functions*/
@@ -115,16 +140,12 @@ void Projectile::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
 {
 	if (std::get<0>(collision_tuple) == true && std::get<1>(collision_tuple) == TILEMAP::TileType::Wall)
 	{
-		this->wallCollision = true;
 		std::cout << "Projectile/Wall Collision: " << this->wallCollision << '\n';
+		this->wallCollision = true;
+		this->setExplosionTexture();
 	}
 	else
 		this->wallCollision = false;
-
-	if (this->wallCollision)
-		this->destroy = true;
-	else
-		this->destroy = false;
 }
 
 /*Update Functions*/
@@ -152,17 +173,9 @@ void Projectile::updateLifeTimeCounter()
 	++this->lifeTimeCounter;
 
 	if (this->lifeTimeCounter > this->maxLifeTimeCounter)
-	{
-		this->destroy = true;
-		this->lifeTimeCounter = 0;
-	}
-	else 
-		this->destroy = false;
-	
-
-
+		this->setExplosionTexture();
 }
-void Projectile::updateAnimation()
+void Projectile::updateProjectileAnimation()
 {
 	/*IntRect Variables*/
 	int intRectLeft_Start = 0;
@@ -195,12 +208,50 @@ void Projectile::updateAnimation()
 		}
 	}
 }
+void Projectile::updateExplosionAnimation()
+{
+	/*IntRect Variables*/
+	int intRectLeft_Start = 0;
+	int intRectLeft_End = 1300;
+
+	int intRectTop_Start = 0;
+	int intRectTop_End = 300;
+
+	int intRect_FrameSize = 100;
+
+	/*Animation Switch Time Variables*/
+	float deltaTime = this->explosionAnimationClock.getElapsedTime().asSeconds();
+	float switchTime = 0.001;
+
+	if (deltaTime > switchTime)
+	{
+		if (this->explosionIntRect.left == intRectLeft_End && this->explosionIntRect.top == intRectTop_End)
+			this->destroy = true;
+
+		if (this->explosionIntRect.left == intRectLeft_End)
+		{
+			this->explosionIntRect.left = intRectLeft_Start;
+			this->explosionIntRect.top += intRect_FrameSize;
+		}
+		else
+		{
+			this->explosionIntRect.left += intRect_FrameSize;
+			this->sprite.setTextureRect(this->explosionIntRect);
+			this->explosionAnimationClock.restart();
+		}
+	}
+}
 void Projectile::update(const float& dt)
 {
+	if(!this->stop)
 	this->updateMovement(dt);
+
 	this->updateLifeTimeCounter();
-	this->updateAnimation();
+	this->updateProjectileAnimation();
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x, this->spriteRect.getPosition().y));
+
+	if (this->explode)
+		this->updateExplosionAnimation();
 }
 
 /*Render Functions*/
