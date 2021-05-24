@@ -10,10 +10,18 @@ enum class PlayerDirection
     Right
 };
 
+struct PlayerDetails
+{
+    std::string name;
+};
+
 class Player :
     public Entity
 {
 private:
+    /*Player Details Struct*/
+    PlayerDetails playerDetails;
+
     /*Direction Enumerator*/
     PlayerDirection playerDirection;
     PlayerDirection oldDirection;
@@ -32,15 +40,14 @@ private:
     std::map<std::string, int> keybinds;
 
     /*Initializers*/
-    void initVariables();
+    void initVariables(std::string name);
     void initKeybinds();
-    void initIntRectVector();
     void initSpriteRect();
     void initSprite(int texture_switch_counter, bool male_0_female_1);
 
 public:
     /*Constructor & Destructor*/
-    Player(std::map<std::string, int>* supported_keys, int texture_switch_counter, bool male_0_female_1);
+    Player(std::map<std::string, int>* supported_keys, int texture_switch_counter, bool male_0_female_1, std::string name);
     virtual ~Player();
 
     /*Getters*/

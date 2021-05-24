@@ -3,12 +3,19 @@
 #include "TileMap.h"
 
 /*Initializers*/
-void Player::initVariables()
+void Player::initVariables(std::string name)
 {
+	/*Player Details Variables*/
+	this->playerDetails.name = name;
+	std::cout << "Player Name: " << this->playerDetails.name << '\n';
+
+	/*Movement Variables*/
 	this->velocity = sf::Vector2f(0.f, 0.f);
 	this->maxVelocity = 10.f;
 	this->acceleration = 0.2f;
 	this->deceleration = 0.15f;
+
+	/*Collision Variables*/
 	this->wallCollision = false;
 }
 void Player::initKeybinds()
@@ -31,50 +38,6 @@ void Player::initKeybinds()
 	{
 		std::cout << i.first << " " << i.second << '\n';
 	}
-}
-void Player::initIntRectVector()
-{
-	int intRectLeftX = 48;
-	int intRectTopY = 256; 
-
-	int intRectWidth = 48;
-	int intRectHeight = 64;
-
-	/*Actors 0-3*/
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 1, intRectTopY * 0, intRectWidth, intRectHeight));
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 4, intRectTopY * 0, intRectWidth, intRectHeight));
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 7, intRectTopY * 0, intRectWidth, intRectHeight));
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 10, intRectTopY * 0, intRectWidth, intRectHeight));
-
-	/*Actors 4-7*/
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 1, intRectTopY * 1, intRectWidth, intRectHeight));
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 4, intRectTopY * 1, intRectWidth, intRectHeight));
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 7, intRectTopY * 1, intRectWidth, intRectHeight));
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 10, intRectTopY * 1, intRectWidth, intRectHeight));
-
-	/*Actors 8-11*/
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 1, intRectTopY * 2, intRectWidth, intRectHeight));
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 4, intRectTopY * 2, intRectWidth, intRectHeight));
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 7, intRectTopY * 2, intRectWidth, intRectHeight));
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 10, intRectTopY * 2, intRectWidth, intRectHeight));
-
-	/*Actors 12-15*/
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 1, intRectTopY * 3, intRectWidth, intRectHeight));
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 4, intRectTopY * 3, intRectWidth, intRectHeight));
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 7, intRectTopY * 3, intRectWidth, intRectHeight));
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 10, intRectTopY * 3, intRectWidth, intRectHeight));
-
-	/*Actors 16-19*/
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 0, intRectTopY * 4, intRectWidth, intRectHeight));
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 4, intRectTopY * 4, intRectWidth, intRectHeight));
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 7, intRectTopY * 4, intRectWidth, intRectHeight));
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 10, intRectTopY * 4, intRectWidth, intRectHeight));
-
-	/*Actors 20-23*/
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 1, intRectTopY * 5, intRectWidth, intRectHeight));
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 4, intRectTopY * 5, intRectWidth, intRectHeight));
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 7, intRectTopY * 5, intRectWidth, intRectHeight));
-	this->intRectVector.push_back(sf::IntRect(intRectLeftX * 10, intRectTopY * 5, intRectWidth, intRectHeight));
 }
 void Player::initSpriteRect()
 {
@@ -907,12 +870,11 @@ void Player::initSprite(int texture_switch_counter, bool male_0_female_1)
 }
 
 /*Constructor & Destructor*/
-Player::Player(std::map<std::string, int>* supported_keys, int texture_switch_counter, bool male_0_female_1)
+Player::Player(std::map<std::string, int>* supported_keys, int texture_switch_counter, bool male_0_female_1, std::string name)
 {
 	this->supportedKeys = supported_keys;
-	this->initVariables();
+	this->initVariables(name);
 	this->initKeybinds();
-	this->initIntRectVector();
 	this->initSpriteRect();
 	this->initSprite(texture_switch_counter, male_0_female_1);
 }

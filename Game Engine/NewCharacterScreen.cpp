@@ -1014,7 +1014,7 @@ void NewCharacterScreen::updateButtons()
 		if (this->nameString.size() <= 0)
 			this->displayNameWarning = true;
 		else
-			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->textureSwitchCounter, this->male1Female0));
+			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->textureSwitchCounter, this->male1Female0, this->nameString));
 	}
 
 	/*Back to Main Menu*/
