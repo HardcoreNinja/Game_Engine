@@ -45,13 +45,6 @@ private:
 
     /*Direction Enumerator*/
     PlayerDirection playerDirection;
-    PlayerDirection oldDirection;
-
-    /*Movement Variables*/
-    sf::Vector2f velocity;
-    float maxVelocity;
-    float acceleration;
-    float deceleration;
 
     /*Collision Variables*/
     bool wallCollision;

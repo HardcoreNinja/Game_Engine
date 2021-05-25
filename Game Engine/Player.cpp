@@ -44,12 +44,6 @@ void Player::initVariables(PlayerDetails player_details)
 		" | " << "Current Mana: " << this->playerDetails.currentMana << '\n' <<
 		" | " << "Max Mana: " << this->playerDetails.maxMana << '\n' <<
 		'\n';
-	
-	/*Movement Variables*/
-	this->velocity = sf::Vector2f(0.f, 0.f);
-	this->maxVelocity = 10.f;
-	this->acceleration = 0.2f;
-	this->deceleration = 0.15f;
 
 	/*Collision Variables*/
 	this->wallCollision = false;
@@ -82,7 +76,7 @@ void Player::initSpriteRect()
 	this->spriteRect.setOutlineColor(sf::Color::Red);
 	this->spriteRect.setFillColor(sf::Color::Transparent);
 	this->spriteRect.setOrigin(this->spriteRect.getGlobalBounds().width / 2.f, this->spriteRect.getGlobalBounds().height / 2.f);
-	this->spriteRect.setPosition(207, 176);
+	this->spriteRect.setPosition(this->playerDetails.position);
 }
 void Player::initSprite()
 {
@@ -925,7 +919,7 @@ sf::RectangleShape Player::getSpriteRect()
 }
 int Player::getPlayerDirection()
 {
-	return static_cast<int>(this->oldDirection);
+	return static_cast<int>(this->playerDetails.oldDirection);
 }
 PlayerDetails Player::getPlayerDetails()
 {
@@ -947,16 +941,16 @@ void Player::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
 	{
 		sf::Vector2f position = this->spriteRect.getPosition();
 
-		if (this->velocity.x != 0.f)
+		if (this->playerDetails.velocity.x != 0.f)
 		{
 			position.x = this->oldPosition.x;
-			this->velocity.x = 0.f;
+			this->playerDetails.velocity.x = 0.f;
 		}
 
-		if (this->velocity.y != 0.f)
+		if (this->playerDetails.velocity.y != 0.f)
 		{
 			position.y = this->oldPosition.y;
-			this->velocity.y = 0.f;
+			this->playerDetails.velocity.y = 0.f;
 		}
 
 		this->spriteRect.setPosition(position);
@@ -969,25 +963,25 @@ void Player::updateUserInput(const float& dt)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("UP"))))
 	{
 		this->playerDirection = PlayerDirection::Up;
-		this->oldDirection = PlayerDirection::Up;
+		this->playerDetails.oldDirection = PlayerDirection::Up;
 		this->updateVelocity(0.f, -1.f, dt);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("DOWN"))))
 	{
 		this->playerDirection = PlayerDirection::Down;
-		this->oldDirection = PlayerDirection::Down;
+		this->playerDetails.oldDirection = PlayerDirection::Down;
 		this->updateVelocity(0.f, 1.f, dt);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT"))))
 	{
 		this->playerDirection = PlayerDirection::Left;
-		this->oldDirection = PlayerDirection::Left;
+		this->playerDetails.oldDirection = PlayerDirection::Left;
 		this->updateVelocity(-1.f, 0.f, dt);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("RIGHT"))))
 	{
 		this->playerDirection = PlayerDirection::Right;
-		this->oldDirection = PlayerDirection::Right;
+		this->playerDetails.oldDirection = PlayerDirection::Right;
 		this->updateVelocity(1.f, 0.f, dt);
 	}
 	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("UP")))
@@ -1001,61 +995,61 @@ void Player::updateUserInput(const float& dt)
 }
 void Player::updateVelocity(float dir_x, float dir_y, const float& dt)
 {
-	this->velocity.x += this->acceleration * dir_x;
-	this->velocity.y += this->acceleration * dir_y;
+	this->playerDetails.velocity.x += this->playerDetails.acceleration * dir_x;
+	this->playerDetails.velocity.y += this->playerDetails.acceleration * dir_y;
 
 	this->updateMovement(dt);
 }
 void Player::updateMovement(const float& dt)
 {
 	/*Up*/
-	if (this->velocity.y < 0.f)
+	if (this->playerDetails.velocity.y < 0.f)
 	{
-		if (this->velocity.y < -this->maxVelocity)
-			this->velocity.y = -this->maxVelocity;
+		if (this->playerDetails.velocity.y < -this->playerDetails.maxVelocity)
+			this->playerDetails.velocity.y = -this->playerDetails.maxVelocity;
 
-		this->velocity.y += this->deceleration;
+		this->playerDetails.velocity.y += this->playerDetails.deceleration;
 
-		if (this->velocity.y > 0.f)
-			this->velocity.y = 0.f;
+		if (this->playerDetails.velocity.y > 0.f)
+			this->playerDetails.velocity.y = 0.f;
 	}
 	/*Down*/
-	else if (this->velocity.y > 0.f)
+	else if (this->playerDetails.velocity.y > 0.f)
 	{
-		if (this->velocity.y > this->maxVelocity)
-			this->velocity.y = this->maxVelocity;
+		if (this->playerDetails.velocity.y > this->playerDetails.maxVelocity)
+			this->playerDetails.velocity.y = this->playerDetails.maxVelocity;
 
-		this->velocity.y -= this->deceleration;
+		this->playerDetails.velocity.y -= this->playerDetails.deceleration;
 
-		if (this->velocity.y < 0.f)
-			this->velocity.y = 0.f;
+		if (this->playerDetails.velocity.y < 0.f)
+			this->playerDetails.velocity.y = 0.f;
 	}
 
 	/*Left*/
-	if (this->velocity.x < 0.f)
+	if (this->playerDetails.velocity.x < 0.f)
 	{
-		if (this->velocity.x < -this->maxVelocity)
-			this->velocity.x = -this->maxVelocity;
+		if (this->playerDetails.velocity.x < -this->playerDetails.maxVelocity)
+			this->playerDetails.velocity.x = -this->playerDetails.maxVelocity;
 
-		this->velocity.x += this->deceleration;
+		this->playerDetails.velocity.x += this->playerDetails.deceleration;
 
-		if (this->velocity.x > 0.f)
-			this->velocity.x = 0.f;
+		if (this->playerDetails.velocity.x > 0.f)
+			this->playerDetails.velocity.x = 0.f;
 	}
 	/*Right*/
-	else if (this->velocity.x > 0.f)
+	else if (this->playerDetails.velocity.x > 0.f)
 	{
-		if (this->velocity.x > this->maxVelocity)
-			this->velocity.x = this->maxVelocity;
+		if (this->playerDetails.velocity.x > this->playerDetails.maxVelocity)
+			this->playerDetails.velocity.x = this->playerDetails.maxVelocity;
 
-		this->velocity.x -= this->deceleration;
+		this->playerDetails.velocity.x -= this->playerDetails.deceleration;
 
-		if (this->velocity.x < 0.f)
-			this->velocity.x = 0.f;
+		if (this->playerDetails.velocity.x < 0.f)
+			this->playerDetails.velocity.x = 0.f;
 	}
 
 	this->oldPosition = this->spriteRect.getPosition();
-	this->spriteRect.move(sf::Vector2f(this->velocity.x, this->velocity.y) * dt * (1.f / dt));
+	this->spriteRect.move(sf::Vector2f(this->playerDetails.velocity.x, this->playerDetails.velocity.y) * dt * (1.f / dt));
 	this->updateAnimation();
 }
 void Player::updateAnimation()
@@ -1144,22 +1138,22 @@ void Player::updateAnimation()
 			}
 			else if (this->playerDirection == PlayerDirection::Idle)
 			{
-				if (this->oldDirection == PlayerDirection::Up)
+				if (this->playerDetails.oldDirection == PlayerDirection::Up)
 				{
 				this->spriteIntRect = idleUp;
 				this->sprite.setTextureRect(this->spriteIntRect);
 				}
-				else if (this->oldDirection == PlayerDirection::Down)
+				else if (this->playerDetails.oldDirection == PlayerDirection::Down)
 				{
 				this->spriteIntRect = idleDown;
 				this->sprite.setTextureRect(this->spriteIntRect);
 				}
-				else if (this->oldDirection == PlayerDirection::Left)
+				else if (this->playerDetails.oldDirection == PlayerDirection::Left)
 				{
 				this->spriteIntRect = idleLeft;
 				this->sprite.setTextureRect(this->spriteIntRect);
 				}
-				else if (this->oldDirection == PlayerDirection::Right)
+				else if (this->playerDetails.oldDirection == PlayerDirection::Right)
 				{
 				this->spriteIntRect = idleRight;
 				this->sprite.setTextureRect(this->spriteIntRect);
@@ -1177,7 +1171,6 @@ void Player::update(const float& dt)
 void Player::saveToFile()
 {
 	this->playerDetails.position = this->spriteRect.getPosition();
-	this->playerDetails.oldDirection = this->oldDirection;
 
 	std::ofstream ofs("Config/player_details.ini");
 
