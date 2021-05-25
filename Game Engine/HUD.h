@@ -23,8 +23,14 @@ private:
 	sf::IntRect intRectYellowBar;
 	sf::IntRect intRectBlueBar;
 
+	/*Text & Fonts*/
+	sf::Text playerLevel;
+	sf::Text staminaText; 
+	sf::Font font;
+
 	/*Initializers*/
 	void initSprites();
+	void initText();
 
 public: 
 	/*Constructor & Destructor*/
@@ -32,7 +38,9 @@ public:
 	virtual ~HUD();
 
 	/*Update Functions*/
-	void updatePlayerStamina(PlayerDetails player_details);
+	void updatePlayerLevelText(PlayerDetails player_details);
+	void updateStamina(PlayerDetails player_details);
+	void updateStaminaText(PlayerDetails player_details);
 	void update(PlayerDetails player_details);
 
 	/*Render Functions*/

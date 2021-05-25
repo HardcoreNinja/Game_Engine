@@ -27,6 +27,9 @@ struct PlayerDetails
     float acceleration;
     float deceleration;
 
+    /*Level*/
+    int level;
+
     /*HP*/
     float currentHP;
     float maxHP;

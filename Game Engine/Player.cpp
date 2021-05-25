@@ -20,6 +20,9 @@ void Player::initVariables(PlayerDetails player_details)
 	this->playerDetails.acceleration = player_details.acceleration;
 	this->playerDetails.deceleration = player_details.deceleration;
 
+	/*Level*/
+	this->playerDetails.level = player_details.level;
+
 	/*HP*/
 	this->playerDetails.currentHP = player_details.currentHP;
 	this->playerDetails.maxHP = player_details.maxHP;
@@ -43,6 +46,7 @@ void Player::initVariables(PlayerDetails player_details)
 		" | " << "Max Velocity: " << this->playerDetails.maxVelocity << '\n' <<
 		" | " << "Acceleration: " << this->playerDetails.acceleration << '\n' <<
 		" | " << "Deceleration: " << this->playerDetails.deceleration << '\n' <<
+		" | " << "Level: " << this->playerDetails.level << '\n' <<
 		" | " << "Current HP: " << this->playerDetails.currentHP << '\n' <<
 		" | " << "Max HP: " << this->playerDetails.currentHP << '\n' <<
 		" | " << "Current Stamina: " << this->playerDetails.currentStamina << '\n' <<
@@ -1224,6 +1228,9 @@ void Player::saveToFile()
 		ofs << this->playerDetails.maxVelocity << '\n';
 		ofs << this->playerDetails.acceleration << '\n';
 		ofs << this->playerDetails.deceleration << '\n';
+
+		/*Level*/
+		ofs << this->playerDetails.level << '\n';
 
 		/*HP*/
 		ofs << this->playerDetails.currentHP << '\n';

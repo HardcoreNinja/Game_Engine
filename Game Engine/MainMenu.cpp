@@ -173,6 +173,9 @@ void MainMenu::loadFromFile()
 		ifs >> this->playerDetails.acceleration;
 		ifs >> this->playerDetails.deceleration;
 
+		/*Level*/
+		ifs >> this->playerDetails.level;
+
 		/*HP*/
 		ifs >> this->playerDetails.currentHP;
 		ifs >> this->playerDetails.maxHP;

@@ -1030,6 +1030,9 @@ void NewCharacterScreen::updateButtons()
 			this->playerDetails.acceleration = 0.2;
 			this->playerDetails.deceleration = 0.15;
 
+			/*Level*/
+			this->playerDetails.level = 1;
+
 			/*HP*/
 			this->playerDetails.currentHP = 100.f;
 			this->playerDetails.maxHP = 100.f;
@@ -1156,6 +1159,9 @@ void NewCharacterScreen::updateUserInput(const float& dt)
 			this->playerDetails.acceleration = 0.2;
 			this->playerDetails.deceleration = 0.15;
 
+			/*Level*/
+			this->playerDetails.level = 1;
+
 			/*HP*/
 			this->playerDetails.currentHP = 100.f;
 			this->playerDetails.maxHP = 100.f;
@@ -1204,8 +1210,6 @@ void NewCharacterScreen::updateNameText()
 		ss << "Character Name: " << this->nameString;
 
 		this->nameText.setString(ss.str());
-
-		
 }
 void NewCharacterScreen::update(const float& dt)
 {

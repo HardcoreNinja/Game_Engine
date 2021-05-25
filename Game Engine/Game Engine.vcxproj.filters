@@ -79,6 +79,9 @@
     <Filter Include="Source Files\HUD">
       <UniqueIdentifier>{0ebde2f5-91a7-492f-b555-8c3e57854931}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Config\Player Details">
+      <UniqueIdentifier>{98054e2d-b529-4a17-b7d0-5dd9a37e35e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Header.cpp">
@@ -219,6 +222,9 @@
     </None>
     <None Include="Config\level_1.ini">
       <Filter>Resource Files\Config\Level TileMaps</Filter>
+    </None>
+    <None Include="Config\player_details.ini">
+      <Filter>Resource Files\Config\Player Details</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

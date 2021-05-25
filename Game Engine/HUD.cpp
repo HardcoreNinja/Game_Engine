@@ -36,18 +36,42 @@ void HUD::initSprites()
 	this->spriteBlueBar.setTextureRect(this->intRectBlueBar);
 	this->spriteBlueBar.setPosition(148.f, 126.f);
 }
+void HUD::initText()
+{
+	if (!this->font.loadFromFile("Resources/Fonts/BreatheFire.ttf"))
+		throw ("ERROR::HUD::FAILED_TO_LOAD:BreatheFire.ttf");
+
+	this->playerLevel.setFont(font);
+	this->playerLevel.setFillColor(sf::Color::White);
+	this->playerLevel.setCharacterSize(30);
+	this->playerLevel.setPosition(65.f, 65.f);
+
+	this->staminaText.setFont(font);
+	this->staminaText.setFillColor(sf::Color::Black);
+	this->staminaText.setCharacterSize(15);
+	this->staminaText.setPosition(170.f, 79.f);
+}
 
 /*Constructor & Destructor*/
 HUD::HUD()
 {
 	this->initSprites();
+	this->initText();
 }
 HUD::~HUD()
 {
 }
 
 /*Update Functions*/
-void HUD::updatePlayerStamina(PlayerDetails player_details)
+void HUD::updatePlayerLevelText(PlayerDetails player_details)
+{
+	std::stringstream ss;
+
+	ss << "Lv: " << player_details.level;
+
+	this->playerLevel.setString(ss.str());
+}
+void HUD::updateStamina(PlayerDetails player_details)
 {
 	int intRectLeft = 157.f;
 
@@ -58,9 +82,19 @@ void HUD::updatePlayerStamina(PlayerDetails player_details)
 	this->intRectYellowBar.width = intRectLeft * percentageChange;
 	this->spriteYellowBar.setTextureRect(this->intRectYellowBar);
 }
+void HUD::updateStaminaText(PlayerDetails player_details)
+{
+	std::stringstream ss; 
+
+	ss << "Stamina: " << std::floor(player_details.currentStamina * 100.f)/ 100.f << " / " << player_details.maxStamina;
+
+	this->staminaText.setString(ss.str());
+}
 void HUD::update(PlayerDetails player_details)
 {
-	this->updatePlayerStamina(player_details);
+	this->updatePlayerLevelText(player_details);
+	this->updateStamina(player_details);
+	this->updateStaminaText(player_details);
 }
 
 /*Render Functions*/
@@ -70,4 +104,6 @@ void HUD::render(sf::RenderTarget& target)
 	target.draw(this->spriteYellowBar);
 	target.draw(this->spriteRedBar);
 	target.draw(this->spriteHUDSystem);
+	target.draw(this->staminaText);
+	target.draw(this->playerLevel);
 }
