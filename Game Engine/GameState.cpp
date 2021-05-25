@@ -2,9 +2,10 @@
 #include "GameState.h"
 
 /*Initializers*/
-void GameState::initVariables()
+void GameState::initVariables(bool came_from_main_menu)
 {
 	this->projectileType = ProjectileTypes::Red_Tornado_4;
+	this->cameFromMainMenu = came_from_main_menu;
 }
 void GameState::initKeybinds()
 {
@@ -83,10 +84,10 @@ void GameState::initHUD(PlayerDetails player_details)
 }
 
 /*Constructor & Destructor*/
-GameState::GameState(GameInfo* game_info, PlayerDetails player_details)
+GameState::GameState(GameInfo* game_info, PlayerDetails player_details, bool came_from_main_menu)
 	: State(game_info)
 {
-	this->initVariables();
+	this->initVariables(came_from_main_menu);
 	this->initKeybinds();
 	this->initFonts();
 	this->initRenderTexture();
@@ -109,8 +110,11 @@ void GameState::updatePauseMenuButtons()
 		this->player->saveToFile();
 
 		/*Erase the NewCharacter Screen and Shrink States Vector*/
-		this->states->erase(this->states->begin() + 1);
-		this->states->shrink_to_fit();
+		if (!this->cameFromMainMenu)
+		{
+			this->states->erase(this->states->begin() + 1);
+			this->states->shrink_to_fit();
+		}
 
 		/*End State*/
 		this->endState();
@@ -224,7 +228,7 @@ void GameState::update(const float& dt)
 void GameState::reinitializeState()
 {
 	std::cout << "Reinitializing Game State!\n";
-	this->initVariables();
+	this->initVariables(this->cameFromMainMenu);
 	this->initKeybinds();
 	this->initFonts();
 	this->initRenderTexture();

@@ -68,10 +68,17 @@ void MainMenu::initMainMenuButtons()
 		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 
-	this->buttons["GAME_STATE"] = std::make_unique<GUI::Button>(
+	this->buttons["NEW_GAME"] = std::make_unique<GUI::Button>(
 		100.f, 250.f,                  //Button Rect Position
 		200.f, 50.f,                   // Button Rect Size
 		&this->font, "New Game", 50,   //Button Font, Text, and Character Size
+		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
+		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
+
+	this->buttons["CONTINUE_GAME"] = std::make_unique<GUI::Button>(
+		100.f, 150.f,                  //Button Rect Position
+		200.f, 50.f,                   // Button Rect Size
+		&this->font, "Continue Game", 50,   //Button Font, Text, and Character Size
 		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 }
@@ -108,8 +115,16 @@ void MainMenu::updateButtons()
 		this->states->push_back(std::make_unique<Editor>(this->gameInfo));
 
 	//New Character Screen
-	if (this->buttons["GAME_STATE"]->isPressed() && this->getKeyTime())
+	if (this->buttons["NEW_GAME"]->isPressed() && this->getKeyTime())
 		this->states->push_back(std::make_unique<NewCharacterScreen>(this->gameInfo));
+
+	//Continue Game
+	if (this->buttons["CONTINUE_GAME"]->isPressed() && this->getKeyTime())
+	{
+		this->loadFromFile();
+		this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails, true));
+	}
+
 }
 void MainMenu::updateUserInput(const float& dt)
 {
@@ -133,6 +148,43 @@ void MainMenu::reinitializeState()
 	this->initMainMenuKeybinds();
 	this->initMainMenuFonts();
 	this->initMainMenuButtons();
+}
+
+/*Save & Load Functions*/
+void MainMenu::loadFromFile()
+{
+	int oldDirection = 0;
+	std::ifstream ifs("Config/player_details.ini");
+
+	if (ifs.is_open())
+	{
+		/*New Character Variable*/
+		std::getline(ifs, this->playerDetails.name);
+		ifs >> this->playerDetails.textureSwitchCounter;
+		ifs >> this->playerDetails.male1Female0;
+
+		/*Position & Direction*/
+		ifs >> this->playerDetails.position.x >> this->playerDetails.position.y;
+		ifs >> oldDirection;
+
+		/*Movement Variables*/
+		ifs >> this->playerDetails.velocity.x >> this->playerDetails.velocity.y;
+		ifs >> this->playerDetails.maxVelocity;
+		ifs >> this->playerDetails.acceleration;
+		ifs >> this->playerDetails.deceleration;
+
+		/*Vitals*/
+		ifs >> this->playerDetails.currentHP;
+		ifs >> this->playerDetails.maxHP;
+		ifs >> this->playerDetails.currentStamina;
+		ifs >> this->playerDetails.maxStamina;
+		ifs >> this->playerDetails.currentMana;
+		ifs >> this->playerDetails.maxMana;
+
+		this->playerDetails.oldDirection = static_cast<PlayerDirection>(oldDirection);
+	}
+
+	ifs.close();
 }
 
 /*Render Functions*/

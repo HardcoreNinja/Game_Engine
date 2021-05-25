@@ -8,6 +8,9 @@
 /*Class Forward Declarations*/
 class Tile;
 class TileMap;
+class Player;
+class HUD;
+class Projectile;
 class sf::RenderTarget;
 class sf::Clock;
 
@@ -15,6 +18,9 @@ class GameState :
     public State
 {
 private:
+    /*Came From Main Menu Bool*/
+    bool cameFromMainMenu;
+
     /*Tile Map*/
     std::unique_ptr<TILEMAP::TileMap> tileMap;
 
@@ -36,7 +42,7 @@ private:
     std::vector<std::unique_ptr<Projectile>>::const_iterator projectileItr;
 
     /*Initializers*/
-    void initVariables();
+    void initVariables(bool came_from_main_menu);
     void initKeybinds();
     void initFonts();
     void initRenderTexture();
@@ -48,7 +54,7 @@ private:
 
 public:
     /*Constuctor & Destructor*/
-    GameState(GameInfo* game_info, PlayerDetails player_details);
+    GameState(GameInfo* game_info, PlayerDetails player_details, bool came_from_main_menu);
     virtual ~GameState();
 
     /*Update Functions*/

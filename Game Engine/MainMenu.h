@@ -4,16 +4,24 @@
 #include "Settings.h"
 #include "Editor.h"
 #include "NewCharacterScreen.h"
+#include "GameState.h"
+#include "Player.h"
 
 /*Class Forward Declarations*/
 class Settings;
 class Editor;
+class NewCharacterScreen;
 class GameState;
+class Player;
+class sf::RenderTarget;
 
 class MainMenu :
     public State
 {
 private:
+    /*Player Details*/
+    PlayerDetails playerDetails;
+
     void initMainMenuBackground();
     void initMainMenuKeybinds();
     void initMainMenuFonts();
@@ -30,6 +38,9 @@ public:
 
     /*Reinitialize Functions*/
     void reinitializeState();
+
+    /*Save & Load Functions*/
+    void loadFromFile();
 
     /*Render Functions*/
     void renderButtons(sf::RenderTarget& target);

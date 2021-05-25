@@ -1038,7 +1038,7 @@ void NewCharacterScreen::updateButtons()
 			this->playerDetails.currentMana = 100.f;
 			this->playerDetails.maxMana = 100.f;
 
-			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails));
+			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails, false));
 		}
 	}
 
@@ -1158,7 +1158,7 @@ void NewCharacterScreen::updateUserInput(const float& dt)
 			this->playerDetails.currentMana = 100.f;
 			this->playerDetails.maxMana = 100.f;
 
-			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails));
+			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails, false));
 		}
 	}
 

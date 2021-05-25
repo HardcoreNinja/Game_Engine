@@ -81,7 +81,7 @@ public:
 
     /*Save & Load Functions*/
     void saveToFile();
-    void loadFromFile();
+    
 
     /*Render Functions*/
     void render(sf::RenderTarget& target);

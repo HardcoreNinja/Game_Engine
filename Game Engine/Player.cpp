@@ -1201,40 +1201,6 @@ void Player::saveToFile()
 	}
 	ofs.close();
 }
-void Player::loadFromFile()
-{
-	int oldDirection = 0;
-	std::ifstream ifs("Config/player_details.ini");
-
-	if (ifs.is_open())
-	{
-		/*New Character Variable*/
-		std::getline(ifs, this->playerDetails.name);
-		ifs >> this->playerDetails.textureSwitchCounter;
-		ifs >> this->playerDetails.male1Female0;
-
-		/*Position & Direction*/
-		ifs >> this->playerDetails.position.x >> this->playerDetails.position.y;
-		ifs >> oldDirection;
-
-		/*Movement Variables*/
-		ifs >> this->playerDetails.velocity.x >> this->playerDetails.velocity.y;
-		ifs >> this->playerDetails.maxVelocity;
-		ifs >> this->playerDetails.acceleration;
-		ifs >> this->playerDetails.deceleration;
-
-		/*Vitals*/
-		ifs >> this->playerDetails.currentHP;
-		ifs >> this->playerDetails.maxHP;
-		ifs >> this->playerDetails.currentStamina;
-		ifs >> this->playerDetails.maxStamina;
-		ifs >> this->playerDetails.currentMana;
-		ifs >> this->playerDetails.maxMana;
-
-		this->playerDetails.oldDirection = static_cast<PlayerDirection>(oldDirection);
-	}
-	ifs.close();
-}
 
 /*Render Functions*/
 void Player::render(sf::RenderTarget& target)
