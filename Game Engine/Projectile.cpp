@@ -5,16 +5,16 @@
 void Projectile::initVariables()
 {
 	/*Movement Variables*/
-	this->velocity = sf::Vector2f(0.f, 0.f);
-	this->maxVelocity = 8.f;
-	this->acceleration = 1.f;
-	this->deceleration = 0.1f;
+	this->projectileDetails.velocity = sf::Vector2f(0.f, 0.f);
+	this->projectileDetails.maxVelocity = 8.f;
+	this->projectileDetails.acceleration = 1.f;
+	this->projectileDetails.deceleration = 0.1f;
 	this->stop = false;
 
 	/*Destroy Variables*/
 	this->destroy = false;
-	this->lifeTimeCounter = 0;
-	this->maxLifeTimeCounter = 100;
+	this->projectileDetails.lifeTimeCounter = 0;
+	this->projectileDetails.maxLifeTimeCounter = 100;
 
 	/*Explosion Variables*/
 	this->explode = false;
@@ -43,10 +43,10 @@ void Projectile::initSprite()
 	this->sprite.setScale(sf::Vector2f(.35, .35));
 
 	/*Explosion*/
-	this->explosionIntRect = sf::IntRect(0, 0, 100, 100);
-	if (!this->explosionTexture.loadFromFile("Resources/Images/Explosions/blue.png"))
+	this->projectileDetails.explosionIntRect = sf::IntRect(0, 0, 100, 100);
+	if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/blue.png"))
 		throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/blue.png");
-	this->explosionTexture.setSmooth(true);
+	this->projectileDetails.explosionTexture.setSmooth(true);
 }
 
 /*Constructor & Destructor*/
@@ -73,9 +73,9 @@ sf::RectangleShape Projectile::getSpriteRect()
 /*Setters*/
 void Projectile::setProjectileType(ProjectileTypes projectile_type)
 {
-	this->projectileType  = projectile_type;
+	this->projectileDetails.projectileType  = projectile_type;
 
-	switch (this->projectileType)
+	switch (this->projectileDetails.projectileType)
 	{
 	case ProjectileTypes::Black_Tornado_0:
 		if (!this->texture.loadFromFile("Resources/Images/Energy_Tornados/black.png"))
@@ -104,19 +104,19 @@ void Projectile::setProjectileDirection(PlayerDirection player_direction)
 	switch (player_direction)
 	{
 		case PlayerDirection::Idle:
-			this->projectileDirection = ProjectileDirection::Idle;
+			this->projectileDetails.projectileDirection = ProjectileDirection::Idle;
 			break;
 		case PlayerDirection::Up:
-			this->projectileDirection = ProjectileDirection::Up;
+			this->projectileDetails.projectileDirection = ProjectileDirection::Up;
 			break;
 		case PlayerDirection::Down:
-			this->projectileDirection = ProjectileDirection::Down;
+			this->projectileDetails.projectileDirection = ProjectileDirection::Down;
 			break;
 		case PlayerDirection::Left:
-			this->projectileDirection = ProjectileDirection::Left;
+			this->projectileDetails.projectileDirection = ProjectileDirection::Left;
 			break;
 		case PlayerDirection::Right:
-			this->projectileDirection = ProjectileDirection::Right;
+			this->projectileDetails.projectileDirection = ProjectileDirection::Right;
 			break;
 	    default:
 			std::cout << "PROJECTILE:: void getPlayerDirection():: INVALID ENTRY...\n";
@@ -125,19 +125,19 @@ void Projectile::setProjectileDirection(PlayerDirection player_direction)
 }
 void Projectile::setProjectilePosition(sf::RectangleShape player)
 {
-	if(this->projectileDirection == ProjectileDirection::Up)
+	if(this->projectileDetails.projectileDirection == ProjectileDirection::Up)
 	this->spriteRect.setPosition(player.getPosition().x, player.getPosition().y - 50.f);
-	if (this->projectileDirection == ProjectileDirection::Down)
+	if (this->projectileDetails.projectileDirection == ProjectileDirection::Down)
 		this->spriteRect.setPosition(player.getPosition().x, player.getPosition().y + 50.f);
-	if (this->projectileDirection == ProjectileDirection::Left)
+	if (this->projectileDetails.projectileDirection == ProjectileDirection::Left)
 		this->spriteRect.setPosition(player.getPosition().x - 50.f, player.getPosition().y);
-	if (this->projectileDirection == ProjectileDirection::Right)
+	if (this->projectileDetails.projectileDirection == ProjectileDirection::Right)
 		this->spriteRect.setPosition(player.getPosition().x + 50.f, player.getPosition().y);
 }
 void Projectile::setExplosionTexture()
 {
-	this->sprite.setTextureRect(this->explosionIntRect);
-	this->sprite.setTexture(this->explosionTexture);
+	this->sprite.setTextureRect(this->projectileDetails.explosionIntRect);
+	this->sprite.setTexture(this->projectileDetails.explosionTexture);
 	this->sprite.setScale(sf::Vector2f(1.f, 1.f));
 	this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
 	this->stop = true;
@@ -160,16 +160,16 @@ void Projectile::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
 	{
 		sf::Vector2f position = this->spriteRect.getPosition();
 
-		if (this->velocity.x != 0.f)
+		if (this->projectileDetails.velocity.x != 0.f)
 		{
 			position.x = this->oldPosition.x;
-			this->velocity.x = 0.f;
+			this->projectileDetails.velocity.x = 0.f;
 		}
 
-		if (this->velocity.y != 0.f)
+		if (this->projectileDetails.velocity.y != 0.f)
 		{
 			position.y = this->oldPosition.y;
-			this->velocity.y = 0.f;
+			this->projectileDetails.velocity.y = 0.f;
 		}
 
 		this->spriteRect.setPosition(position);
@@ -179,90 +179,90 @@ void Projectile::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
 /*Update Functions*/
 void Projectile::updateDirection(const float& dt)
 {
-	if (this->projectileDirection == ProjectileDirection::Up)
+	if (this->projectileDetails.projectileDirection == ProjectileDirection::Up)
 	{
 		this->updateVelocity(0.f, -1.f, dt);
 	}
-	else if (this->projectileDirection == ProjectileDirection::Down)
+	else if (this->projectileDetails.projectileDirection == ProjectileDirection::Down)
 	{
 		this->updateVelocity(0.f, 1.f, dt);
 	}
-	else if (this->projectileDirection == ProjectileDirection::Left)
+	else if (this->projectileDetails.projectileDirection == ProjectileDirection::Left)
 	{
 		this->updateVelocity(-1.f, 0.f, dt);
 	}
-	else if (this->projectileDirection == ProjectileDirection::Right)
+	else if (this->projectileDetails.projectileDirection == ProjectileDirection::Right)
 	{
 		this->updateVelocity(1.f, 0.f, dt);
 	}
 }
 void Projectile::updateVelocity(float dir_x, float dir_y, const float& dt)
 {
-	this->velocity.x += this->acceleration * dir_x;
-	this->velocity.y += this->acceleration * dir_y;
+	this->projectileDetails.velocity.x += this->projectileDetails.acceleration * dir_x;
+	this->projectileDetails.velocity.y += this->projectileDetails.acceleration * dir_y;
 
 	this->updateMovement(dt);
 }
 void Projectile::updateMovement(const float& dt)
 {
 	/*Up*/
-	if (this->velocity.y < 0.f)
+	if (this->projectileDetails.velocity.y < 0.f)
 	{
-		if (this->velocity.y < -this->maxVelocity)
-			this->velocity.y = -this->maxVelocity;
+		if (this->projectileDetails.velocity.y < -this->projectileDetails.maxVelocity)
+			this->projectileDetails.velocity.y = -this->projectileDetails.maxVelocity;
 
-		this->velocity.y += this->deceleration;
+		this->projectileDetails.velocity.y += this->projectileDetails.deceleration;
 
-		if (this->velocity.y > 0.f)
-			this->velocity.y = 0.f;
+		if (this->projectileDetails.velocity.y > 0.f)
+			this->projectileDetails.velocity.y = 0.f;
 	}
 	/*Down*/
-	else if (this->velocity.y > 0.f)
+	else if (this->projectileDetails.velocity.y > 0.f)
 	{
-		if (this->velocity.y > this->maxVelocity)
-			this->velocity.y = this->maxVelocity;
+		if (this->projectileDetails.velocity.y > this->projectileDetails.maxVelocity)
+			this->projectileDetails.velocity.y = this->projectileDetails.maxVelocity;
 
-		this->velocity.y -= this->deceleration;
+		this->projectileDetails.velocity.y -= this->projectileDetails.deceleration;
 
-		if (this->velocity.y < 0.f)
-			this->velocity.y = 0.f;
+		if (this->projectileDetails.velocity.y < 0.f)
+			this->projectileDetails.velocity.y = 0.f;
 	}
 
 	/*Left*/
-	if (this->velocity.x < 0.f)
+	if (this->projectileDetails.velocity.x < 0.f)
 	{
-		if (this->velocity.x < -this->maxVelocity)
-			this->velocity.x = -this->maxVelocity;
+		if (this->projectileDetails.velocity.x < -this->projectileDetails.maxVelocity)
+			this->projectileDetails.velocity.x = -this->projectileDetails.maxVelocity;
 
-		this->velocity.x += this->deceleration;
+		this->projectileDetails.velocity.x += this->projectileDetails.deceleration;
 
-		if (this->velocity.x > 0.f)
-			this->velocity.x = 0.f;
+		if (this->projectileDetails.velocity.x > 0.f)
+			this->projectileDetails.velocity.x = 0.f;
 	}
 	/*Right*/
-	else if (this->velocity.x > 0.f)
+	else if (this->projectileDetails.velocity.x > 0.f)
 	{
-		if (this->velocity.x > this->maxVelocity)
-			this->velocity.x = this->maxVelocity;
+		if (this->projectileDetails.velocity.x > this->projectileDetails.maxVelocity)
+			this->projectileDetails.velocity.x = this->projectileDetails.maxVelocity;
 
-		this->velocity.x -= this->deceleration;
+		this->projectileDetails.velocity.x -= this->projectileDetails.deceleration;
 
-		if (this->velocity.x < 0.f)
-			this->velocity.x = 0.f;
+		if (this->projectileDetails.velocity.x < 0.f)
+			this->projectileDetails.velocity.x = 0.f;
 	}
 
 	this->oldPosition = this->spriteRect.getPosition();
 
 	if (!this->stop)
-	this->spriteRect.move(sf::Vector2f(this->velocity.x, this->velocity.y) * dt * (1.f / dt));
+	this->spriteRect.move(sf::Vector2f(this->projectileDetails.velocity.x, this->projectileDetails.velocity.y) * dt * (1.f / dt));
 
 	this->updateProjectileAnimation();
 }
 void Projectile::updateLifeTimeCounter()
 {
-	++this->lifeTimeCounter;
+	++this->projectileDetails.lifeTimeCounter;
 
-	if (this->lifeTimeCounter > this->maxLifeTimeCounter)
+	if (this->projectileDetails.lifeTimeCounter > this->projectileDetails.maxLifeTimeCounter)
 		this->setExplosionTexture();
 }
 void Projectile::updateProjectileAnimation()
@@ -315,22 +315,22 @@ void Projectile::updateExplosionAnimation()
 
 	if (deltaTime > switchTime)
 	{
-		if (this->explosionIntRect.left == intRectLeft_End && this->explosionIntRect.top == intRectTop_End)
+		if (this->projectileDetails.explosionIntRect.left == intRectLeft_End && this->projectileDetails.explosionIntRect.top == intRectTop_End)
 		{
-			this->explosionIntRect.left = intRectLeft_Start;
-			this->explosionIntRect.top = intRectTop_Start;
+			this->projectileDetails.explosionIntRect.left = intRectLeft_Start;
+			this->projectileDetails.explosionIntRect.top = intRectTop_Start;
 			this->destroy = true;
 		}
 
-		if (this->explosionIntRect.left == intRectLeft_End)
+		if (this->projectileDetails.explosionIntRect.left == intRectLeft_End)
 		{
-			this->explosionIntRect.left = intRectLeft_Start;
-			this->explosionIntRect.top += intRect_FrameSize;
+			this->projectileDetails.explosionIntRect.left = intRectLeft_Start;
+			this->projectileDetails.explosionIntRect.top += intRect_FrameSize;
 		}
 		else
 		{
-			this->explosionIntRect.left += intRect_FrameSize;
-			this->sprite.setTextureRect(this->explosionIntRect);
+			this->projectileDetails.explosionIntRect.left += intRect_FrameSize;
+			this->sprite.setTextureRect(this->projectileDetails.explosionIntRect);
 			this->explosionAnimationClock.restart();
 		}	
 	}

@@ -5,6 +5,8 @@
 #include "Player.h"
 
 /*Forward Declarations*/
+class TileMap;
+class Player;
 class sf::RectangleShape;
 class sf::RenderTarget;
 class sf::Clock;
@@ -26,12 +28,9 @@ enum class  ProjectileDirection
     Left,
     Right
 };
-
-class Projectile :
-    public Entity
+struct ProjectileDetails
 {
-private:
-    /*Object Enumerators*/
+    /*Enumerators*/
     ProjectileTypes projectileType;
     ProjectileDirection projectileDirection;
 
@@ -40,16 +39,29 @@ private:
     float maxVelocity;
     float acceleration;
     float deceleration;
-    bool stop;
 
     /*Destroy Variables*/
-    bool destroy;
     int lifeTimeCounter;
     int maxLifeTimeCounter;
 
     /*Explosion Variables*/
     sf::Texture explosionTexture;
     sf::IntRect explosionIntRect;
+};
+class Projectile :
+    public Entity
+{
+private:
+    /*Projectile Details Struct*/
+    ProjectileDetails projectileDetails;
+
+    /*Movement Variables*/
+    bool stop;
+
+    /*Destroy Variables*/
+    bool destroy;
+
+    /*Explosion Variables*/
     bool explode;
 
     /*Collision Variables*/
