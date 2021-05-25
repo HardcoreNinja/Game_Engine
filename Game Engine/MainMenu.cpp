@@ -173,11 +173,17 @@ void MainMenu::loadFromFile()
 		ifs >> this->playerDetails.acceleration;
 		ifs >> this->playerDetails.deceleration;
 
-		/*Vitals*/
+		/*HP*/
 		ifs >> this->playerDetails.currentHP;
 		ifs >> this->playerDetails.maxHP;
+
+		/*Stamina*/
 		ifs >> this->playerDetails.currentStamina;
 		ifs >> this->playerDetails.maxStamina;
+		ifs >> this->playerDetails.staminaDrainFactor;
+		ifs >> this->playerDetails.staminaFillFactor;
+
+		/*Mana*/
 		ifs >> this->playerDetails.currentMana;
 		ifs >> this->playerDetails.maxMana;
 

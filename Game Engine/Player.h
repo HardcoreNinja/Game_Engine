@@ -27,11 +27,17 @@ struct PlayerDetails
     float acceleration;
     float deceleration;
 
-    /*Vitals*/
+    /*HP*/
     float currentHP;
     float maxHP;
+
+    /*Stamina*/
     float currentStamina;
     float maxStamina;
+    float staminaDrainFactor;
+    float staminaFillFactor;
+
+    /*Mana*/
     float currentMana;
     float maxMana;
 };
@@ -40,6 +46,9 @@ class Player :
     public Entity
 {
 private:
+    /*Stamina Variables*/
+    float quarterMaxVelocity;
+
     /*Player Details Struct*/
     PlayerDetails playerDetails;
 
@@ -77,6 +86,7 @@ public:
     void updateVelocity(float dir_x, float dir_y, const float& dt);
     void updateMovement(const float& dt);
     void updateAnimation();
+    void updateStamina();
     void update(const float& dt);
 
     /*Save & Load Functions*/

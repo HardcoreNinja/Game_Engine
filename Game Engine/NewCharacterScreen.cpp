@@ -1030,11 +1030,17 @@ void NewCharacterScreen::updateButtons()
 			this->playerDetails.acceleration = 0.2;
 			this->playerDetails.deceleration = 0.15;
 
-			/*Vitals*/
+			/*HP*/
 			this->playerDetails.currentHP = 100.f;
 			this->playerDetails.maxHP = 100.f;
+
+			/*Stamina*/
 			this->playerDetails.currentStamina = 100.f;
 			this->playerDetails.maxStamina = 100.f;
+			this->playerDetails.staminaDrainFactor = 0.05;
+			this->playerDetails.staminaFillFactor = 0.05;
+
+			/*Mana*/
 			this->playerDetails.currentMana = 100.f;
 			this->playerDetails.maxMana = 100.f;
 
@@ -1150,11 +1156,17 @@ void NewCharacterScreen::updateUserInput(const float& dt)
 			this->playerDetails.acceleration = 0.2;
 			this->playerDetails.deceleration = 0.15;
 
-			/*Vitals*/
+			/*HP*/
 			this->playerDetails.currentHP = 100.f;
 			this->playerDetails.maxHP = 100.f;
+
+			/*Stamina*/
 			this->playerDetails.currentStamina = 100.f;
 			this->playerDetails.maxStamina = 100.f;
+			this->playerDetails.staminaDrainFactor = 0.05;
+			this->playerDetails.staminaFillFactor = 0.05;
+
+			/*Mana*/
 			this->playerDetails.currentMana = 100.f;
 			this->playerDetails.maxMana = 100.f;
 

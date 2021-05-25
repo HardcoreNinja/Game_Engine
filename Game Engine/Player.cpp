@@ -20,11 +20,17 @@ void Player::initVariables(PlayerDetails player_details)
 	this->playerDetails.acceleration = player_details.acceleration;
 	this->playerDetails.deceleration = player_details.deceleration;
 
-	/*Vitals*/
+	/*HP*/
 	this->playerDetails.currentHP = player_details.currentHP;
 	this->playerDetails.maxHP = player_details.maxHP;
+
+	/*Stamina*/
 	this->playerDetails.currentStamina = player_details.currentStamina;
 	this->playerDetails.maxStamina = player_details.maxStamina;
+	this->playerDetails.staminaDrainFactor = player_details.staminaDrainFactor;
+	this->playerDetails.staminaFillFactor = player_details.staminaFillFactor;
+
+	/*Mana*/
 	this->playerDetails.currentMana = player_details.currentMana;
 	this->playerDetails.maxMana = player_details.maxMana;
 	
@@ -41,9 +47,14 @@ void Player::initVariables(PlayerDetails player_details)
 		" | " << "Max HP: " << this->playerDetails.currentHP << '\n' <<
 		" | " << "Current Stamina: " << this->playerDetails.currentStamina << '\n' <<
 		" | " << "Max Stamina: " << this->playerDetails.maxStamina << '\n' <<
+		" | " << "Stamina Drain Factor: " << this->playerDetails.staminaDrainFactor << '\n' <<
+		" | " << "Stamina Fill Factor: " << this->playerDetails.staminaFillFactor << '\n' <<
 		" | " << "Current Mana: " << this->playerDetails.currentMana << '\n' <<
 		" | " << "Max Mana: " << this->playerDetails.maxMana << '\n' <<
 		'\n';
+
+	/*Stamina Variables*/
+	this->quarterMaxVelocity = this->playerDetails.maxVelocity / 4.f;
 
 	/*Collision Variables*/
 	this->wallCollision = false;
@@ -958,6 +969,28 @@ void Player::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
 }
 
 /*Update Functions*/
+void Player::updateStamina()
+{
+	if (this->playerDetails.currentStamina > 0.f && (this->playerDirection == PlayerDirection::Up
+		|| this->playerDirection == PlayerDirection::Down
+		|| this->playerDirection == PlayerDirection::Left
+		|| this->playerDirection == PlayerDirection::Right))
+		this->playerDetails.currentStamina -= this->playerDetails.staminaDrainFactor;
+
+	if (this->playerDetails.currentStamina < 0.f)
+		this->playerDetails.currentStamina = 0.f;
+
+	if (this->playerDetails.currentStamina == 0.f)
+		this->playerDetails.maxVelocity = this->quarterMaxVelocity;
+	else if (this->playerDetails.currentStamina > 0.f)
+		this->playerDetails.maxVelocity = this->quarterMaxVelocity * 4.f;
+
+	if (this->playerDetails.currentStamina < this->playerDetails.maxStamina && this->playerDirection == PlayerDirection::Idle)
+		this->playerDetails.currentStamina += this->playerDetails.staminaFillFactor;
+
+	std::cout << "Stamina: " << this->playerDetails.currentStamina << '\n';
+	std::cout << "Max Velocity: " << this->playerDetails.maxVelocity << '\n';
+}
 void Player::updateUserInput(const float& dt)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("UP"))))
@@ -1163,6 +1196,7 @@ void Player::updateAnimation()
 }
 void Player::update(const float& dt)
 {
+	this->updateStamina();
 	this->updateUserInput(dt);
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
 }
@@ -1191,11 +1225,17 @@ void Player::saveToFile()
 		ofs << this->playerDetails.acceleration << '\n';
 		ofs << this->playerDetails.deceleration << '\n';
 
-		/*Vitals*/
+		/*HP*/
 		ofs << this->playerDetails.currentHP << '\n';
 		ofs << this->playerDetails.maxHP << '\n';
+
+		/*Stamina*/
 		ofs << this->playerDetails.currentStamina << '\n';
 		ofs << this->playerDetails.maxStamina << '\n';
+		ofs << this->playerDetails.staminaDrainFactor << '\n';
+		ofs << this->playerDetails.staminaFillFactor << '\n';
+
+		/*Mana*/
 		ofs << this->playerDetails.currentMana << '\n';
 		ofs << this->playerDetails.maxMana << '\n';
 	}
