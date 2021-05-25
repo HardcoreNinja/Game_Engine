@@ -988,8 +988,8 @@ void Player::updateStamina()
 	if (this->playerDetails.currentStamina < this->playerDetails.maxStamina && this->playerDirection == PlayerDirection::Idle)
 		this->playerDetails.currentStamina += this->playerDetails.staminaFillFactor;
 
-	std::cout << "Stamina: " << this->playerDetails.currentStamina << '\n';
-	std::cout << "Max Velocity: " << this->playerDetails.maxVelocity << '\n';
+	/*std::cout << "Stamina: " << this->playerDetails.currentStamina << '\n';
+	std::cout << "Max Velocity: " << this->playerDetails.maxVelocity << '\n';*/
 }
 void Player::updateUserInput(const float& dt)
 {

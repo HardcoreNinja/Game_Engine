@@ -50,7 +50,7 @@ private:
     void initPauseMenu();
     void initLatestTileMap();
     void initPlayer(PlayerDetails player_details);
-    void initHUD(PlayerDetails player_details);
+    void initHUD();
 
 public:
     /*Constuctor & Destructor*/
@@ -58,6 +58,7 @@ public:
     virtual ~GameState();
 
     /*Update Functions*/
+    void updateHUD();
     void updatePauseMenuButtons();
     virtual void updateUserInput(const float& dt);
     void updateInGameActions();

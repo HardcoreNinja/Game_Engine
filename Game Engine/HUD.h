@@ -28,11 +28,12 @@ private:
 
 public: 
 	/*Constructor & Destructor*/
-	HUD(PlayerDetails player_details);
+	HUD();
 	virtual ~HUD();
 
 	/*Update Functions*/
-	void update(const float& dt);
+	void updatePlayerStamina(PlayerDetails player_details);
+	void update(PlayerDetails player_details);
 
 	/*Render Functions*/
 	void render(sf::RenderTarget& target);

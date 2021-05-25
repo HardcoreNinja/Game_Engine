@@ -38,7 +38,7 @@ void HUD::initSprites()
 }
 
 /*Constructor & Destructor*/
-HUD::HUD(PlayerDetails player_details)
+HUD::HUD()
 {
 	this->initSprites();
 }
@@ -47,8 +47,20 @@ HUD::~HUD()
 }
 
 /*Update Functions*/
-void HUD::update(const float& dt)
+void HUD::updatePlayerStamina(PlayerDetails player_details)
 {
+	int intRectLeft = 157.f;
+
+	float percentageChange = player_details.currentStamina / player_details.maxStamina; 
+
+	std::cout << "PercentageChange: " << percentageChange << '\n';
+
+	this->intRectYellowBar.width = intRectLeft * percentageChange;
+	this->spriteYellowBar.setTextureRect(this->intRectYellowBar);
+}
+void HUD::update(PlayerDetails player_details)
+{
+	this->updatePlayerStamina(player_details);
 }
 
 /*Render Functions*/

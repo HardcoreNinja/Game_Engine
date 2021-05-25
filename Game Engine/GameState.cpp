@@ -78,9 +78,9 @@ void GameState::initPlayer(PlayerDetails player_details)
 {
 	this->player = std::make_unique<Player>(this->supportedKeys, player_details);
 }
-void GameState::initHUD(PlayerDetails player_details)
+void GameState::initHUD()
 {
-	this->hud = std::make_unique<HUD>(player_details);
+	this->hud = std::make_unique<HUD>();
 }
 
 /*Constructor & Destructor*/
@@ -95,13 +95,17 @@ GameState::GameState(GameInfo* game_info, PlayerDetails player_details, bool cam
 	this->initPauseMenu();
 	this->initLatestTileMap();
 	this->initPlayer(player_details);
-	this->initHUD(this->player->getPlayerDetails());
+	this->initHUD();
 }
 GameState::~GameState()
 {
 }
 
 /*Update Functions*/
+void GameState::updateHUD()
+{
+	this->hud->update(this->player->getPlayerDetails());
+}
 void GameState::updatePauseMenuButtons()
 {
 	if (this->pauseMenu->isButtonPressed("EXIT") && this->getKeyTime())
@@ -213,6 +217,9 @@ void GameState::update(const float& dt)
 		/*In-Game Actions*/
 		this->updateInGameActions();
 
+		/*Update HUD*/
+		this->updateHUD();
+
 		/*Projectile Spawn*/
 		this->updateProjectileSpawnLoop(dt);
 
@@ -236,7 +243,7 @@ void GameState::reinitializeState()
 	this->initPauseMenu();
 	this->initLatestTileMap();
 	this->initPlayer(this->player->getPlayerDetails());
-	this->initHUD(this->player->getPlayerDetails());
+	this->initHUD();
 }
 
 /*Render Functions*/
