@@ -78,7 +78,7 @@ void MainMenu::initMainMenuButtons()
 	this->buttons["CONTINUE_GAME"] = std::make_unique<GUI::Button>(
 		100.f, 150.f,                  //Button Rect Position
 		200.f, 50.f,                   // Button Rect Size
-		&this->font, "Continue Game", 50,   //Button Font, Text, and Character Size
+		&this->font, "Continue", 50,   //Button Font, Text, and Character Size
 		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 }
