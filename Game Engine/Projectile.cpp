@@ -35,8 +35,8 @@ void Projectile::initSprite()
 {
 	/*Projectile*/
 	this->spriteIntRect = sf::IntRect(0, 0, 192, 192);
-	if(!this->texture.loadFromFile("Resources/Images/Energy_Tornados/black.png"))
-		throw("ERROR::PROJECTILE::FAILED_TO_LOAD::black.png");
+	if(!this->texture.loadFromFile("Resources/Images/Projectiles/black_tornado.png"))
+		throw("ERROR::PROJECTILE::FAILED_TO_LOAD::black_tornado.png");
 	this->sprite.setTexture(this->texture);
 	this->sprite.setTextureRect(this->spriteIntRect);
 	this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
@@ -63,7 +63,7 @@ Projectile::~Projectile()
 /*Getters*/
 bool Projectile::getDestroy()
 {
-		return this->destroy;
+	return this->destroy;
 }
 sf::RectangleShape Projectile::getSpriteRect()
 {
@@ -77,26 +77,88 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 
 	switch (this->projectileDetails.projectileType)
 	{
-	case ProjectileTypes::Black_Tornado_0:
-		if (!this->texture.loadFromFile("Resources/Images/Energy_Tornados/black.png"))
-			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::black.png");
+	case ProjectileTypes::Black_Tornado:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/black_tornado.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::black_tornado.png");
 		break;
-	case ProjectileTypes::Blue_Tornado_1:
-		if (!this->texture.loadFromFile("Resources/Images/Energy_Tornados/blue.png"))
-			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::blue.png");
+	case ProjectileTypes::Blue_Tornado:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/blue_tornado.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::blue_tornado.png");
 		break;
-	case ProjectileTypes::Brown_Tornado_2:
-		if (!this->texture.loadFromFile("Resources/Images/Energy_Tornados/brown.png"))
-			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::brown.png");
+	case ProjectileTypes::Brown_Tornado:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/brown_tornado.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::brown_tornado.png");
 		break;
-	case ProjectileTypes::Green_Tornado_3:
-		if (!this->texture.loadFromFile("Resources/Images/Energy_Tornados/green.png"))
-			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::green.png");
+	case ProjectileTypes::Green_Ball_1:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/green_ball_1.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::green_ball_1.png");
 		break;
-	case ProjectileTypes::Red_Tornado_4:
-		if (!this->texture.loadFromFile("Resources/Images/Energy_Tornados/red.png"))
-			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::red.png");
+	case ProjectileTypes::Green_Ball_2:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/green_ball_2.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::green_ball_2.png");
 		break;
+	case ProjectileTypes::Green_Ball_3:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/green_ball_3.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::green_ball_3.png");
+		break;
+	case ProjectileTypes::Green_Ball_4:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/green_ball_4.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::green_ball_4.png");
+		break;
+	case ProjectileTypes::Green_Ball_5:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/green_ball_5.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::green_ball_5.png");
+		break;
+	case ProjectileTypes::Green_Tornado:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/green_tornado.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::green_tornado.png");
+		break;
+	case ProjectileTypes::Pink_Ball_1:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/pink_ball_1.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::pink_ball_1.png");
+		break;
+	case ProjectileTypes::Pink_Ball_2:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/pink_ball_2.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::pink_ball_2.png");
+		break;
+	case ProjectileTypes::Pink_Ball_3:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/pink_ball_3.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::pink_ball_3.png");
+		break;
+	case ProjectileTypes::Pink_Ball_4:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/pink_ball_4.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::pink_ball_4.png");
+		break;
+	case ProjectileTypes::Pink_Ball_5:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/pink_ball_5.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::pink_ball_5.png");
+		break;
+	case ProjectileTypes::Red_Tornado:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/red_tornado.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::red_tornado.png");
+		break;
+	case ProjectileTypes::Yellow_Ball_1:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/yellow_ball_1.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::yellow_ball_1.png");
+		break;
+	case ProjectileTypes::Yellow_Ball_2:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/yellow_ball_2.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::yellow_ball_2.png");
+		break;
+	case ProjectileTypes::Yellow_Ball_3:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/yellow_ball_3.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::yellow_ball_3.png");
+		break;
+	case ProjectileTypes::Yellow_Ball_4:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/yellow_ball_4.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::yellow_ball_4.png");
+		break;
+	case ProjectileTypes::Yellow_Ball_5:
+		if (!this->texture.loadFromFile("Resources/Images/Projectiles/yellow_ball_5.png"))
+			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::yellow_ball_5.png");
+		break;
+	default:
+		std::cout << "ERROR::PROJECITLE::void Projectile::setProjectileType(ProjectileTypes projectile_type))::Invalid Switch Entry!\n";
 	}
 }
 void Projectile::setProjectileDirection(PlayerDirection player_direction)
@@ -269,12 +331,198 @@ void Projectile::updateProjectileAnimation()
 {
 	/*IntRect Variables*/
 	int intRectLeft_Start = 0;
-	int intRectLeft_End = 768;
+	int intRectLeft_End = 0;
 
 	int intRectTop_Start = 0;
-	int intRectTop_End = 576;
+	int intRectTop_End = 0;
 
-	int intRect_FrameSize = 192;
+	int intRect_FrameSize = 0;
+
+	switch (this->projectileDetails.projectileType)
+	{
+	case ProjectileTypes::Black_Tornado:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 576;
+
+		intRect_FrameSize = 192;
+		break;
+	case ProjectileTypes::Blue_Tornado:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 576;
+
+		intRect_FrameSize = 192;
+		break;
+	case ProjectileTypes::Brown_Tornado:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 576;
+
+		intRect_FrameSize = 192;
+		break;
+	case ProjectileTypes::Green_Ball_1:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 960;
+
+		intRect_FrameSize = 192;
+		break;
+	case ProjectileTypes::Green_Ball_2:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 960;
+
+		intRect_FrameSize = 192;
+		break;
+	case ProjectileTypes::Green_Ball_3:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 960;
+
+		intRect_FrameSize = 192;
+		break;
+	case ProjectileTypes::Green_Ball_4:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 960;
+
+		intRect_FrameSize = 192;
+		break;
+	case ProjectileTypes::Green_Ball_5:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 960;
+
+		intRect_FrameSize = 192;
+		break;
+	case ProjectileTypes::Green_Tornado:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 960;
+
+		intRect_FrameSize = 192;
+		break;
+	case ProjectileTypes::Pink_Ball_1:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 960;
+
+		intRect_FrameSize = 192;
+		break;
+	case ProjectileTypes::Pink_Ball_2:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 960;
+
+		intRect_FrameSize = 192;
+		break;
+	case ProjectileTypes::Pink_Ball_3:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 960;
+
+		intRect_FrameSize = 192;
+		break;
+	case ProjectileTypes::Pink_Ball_4:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 960;
+
+		intRect_FrameSize = 192;
+		break;
+	case ProjectileTypes::Pink_Ball_5:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 960;
+
+		intRect_FrameSize = 192;
+		break;
+	case ProjectileTypes::Red_Tornado:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 576;
+
+		intRect_FrameSize = 192;
+		break;
+	case ProjectileTypes::Yellow_Ball_1:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 960;
+
+		intRect_FrameSize = 192;
+		break;
+	case ProjectileTypes::Yellow_Ball_2:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 960;
+
+		intRect_FrameSize = 192;
+		break;
+	case ProjectileTypes::Yellow_Ball_3:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 960;
+
+		intRect_FrameSize = 192;
+		break;
+	case ProjectileTypes::Yellow_Ball_4:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 960;
+
+		intRect_FrameSize = 192;
+		break;
+	case ProjectileTypes::Yellow_Ball_5:
+		intRectLeft_Start = 0;
+		intRectLeft_End = 768;
+
+		intRectTop_Start = 0;
+		intRectTop_End = 960;
+
+		intRect_FrameSize = 192;
+		break;
+	default:
+		std::cout << "ERROR::PROJECITLE::void Projectile::updateProjectileAnimation()::Invalid Switch Entry!\n";
+	}
 
 	/*Animation Switch Time Variables*/
 	float deltaTime = this->animationClock.getElapsedTime().asSeconds();

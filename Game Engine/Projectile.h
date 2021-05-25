@@ -14,11 +14,27 @@ class sf::Clock;
 /*Enumerators*/
 enum class ProjectileTypes
 {
-    Black_Tornado_0 = 0,
-    Blue_Tornado_1,
-    Brown_Tornado_2,
-    Green_Tornado_3,
-    Red_Tornado_4,
+    Black_Tornado = 0,
+    Blue_Tornado,
+    Brown_Tornado,
+    Green_Ball_1,
+    Green_Ball_2,
+    Green_Ball_3,
+    Green_Ball_4,
+    Green_Ball_5,
+    Green_Tornado,
+    Pink_Ball_1,
+    Pink_Ball_2,
+    Pink_Ball_3,
+    Pink_Ball_4,
+    Pink_Ball_5,
+    Red_Tornado,
+    Yellow_Ball_1,
+    Yellow_Ball_2,
+    Yellow_Ball_3,
+    Yellow_Ball_4,
+    Yellow_Ball_5,
+    Projectile_MAX,
 };
 enum class  ProjectileDirection
 {

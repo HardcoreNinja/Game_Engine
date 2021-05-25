@@ -4,7 +4,7 @@
 /*Initializers*/
 void GameState::initVariables(bool came_from_main_menu)
 {
-	this->projectileType = ProjectileTypes::Red_Tornado_4;
+	this->projectileType = ProjectileTypes::Pink_Ball_3;
 	this->cameFromMainMenu = came_from_main_menu;
 }
 void GameState::initKeybinds()
