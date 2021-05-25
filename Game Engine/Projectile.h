@@ -1,6 +1,8 @@
 #ifndef PROJECTILE_H
 #define PROJECTILE_H
 #include "Entity.h"
+#include "TileMap.h"
+#include "Player.h"
 
 /*Forward Declarations*/
 class sf::RectangleShape;
@@ -74,7 +76,7 @@ public:
 
     /*Setters*/
     void setProjectileType(ProjectileTypes projectile_type);
-    void setProjectileDirection(int player_direction);
+    void setProjectileDirection(PlayerDirection player_direction);
     void setProjectilePosition(sf::RectangleShape player);
     void setExplosionTexture();
 

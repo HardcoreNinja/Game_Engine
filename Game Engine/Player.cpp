@@ -1,6 +1,5 @@
 #include "Header.h"
 #include "Player.h"
-#include "TileMap.h"
 
 /*Initializers*/
 void Player::initVariables(PlayerDetails player_details)
@@ -932,9 +931,9 @@ sf::RectangleShape Player::getSpriteRect()
 {
 	return this->spriteRect;
 }
-int Player::getPlayerDirection()
+PlayerDirection Player::getPlayerDirection()
 {
-	return static_cast<int>(this->playerDetails.oldDirection);
+	return this->playerDetails.oldDirection;
 }
 PlayerDetails Player::getPlayerDetails()
 {

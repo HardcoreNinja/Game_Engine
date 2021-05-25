@@ -1,6 +1,5 @@
 #include "Header.h"
 #include "Projectile.h"
-#include "TileMap.h"
 
 /*Initializers*/
 void Projectile::initVariables()
@@ -100,23 +99,23 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		break;
 	}
 }
-void Projectile::setProjectileDirection(int player_direction)
+void Projectile::setProjectileDirection(PlayerDirection player_direction)
 {
 	switch (player_direction)
 	{
-		case 0:
+		case PlayerDirection::Idle:
 			this->projectileDirection = ProjectileDirection::Idle;
 			break;
-		case 1:
+		case PlayerDirection::Up:
 			this->projectileDirection = ProjectileDirection::Up;
 			break;
-		case 2:
+		case PlayerDirection::Down:
 			this->projectileDirection = ProjectileDirection::Down;
 			break;
-		case 3:
+		case PlayerDirection::Left:
 			this->projectileDirection = ProjectileDirection::Left;
 			break;
-		case 4: 
+		case PlayerDirection::Right:
 			this->projectileDirection = ProjectileDirection::Right;
 			break;
 	    default:

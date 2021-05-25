@@ -1,6 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "Entity.h"
+#include "TileMap.h"
+
 enum class PlayerDirection
 {
     Idle = 0,
@@ -78,7 +80,7 @@ public:
 
     /*Getters*/
     sf::RectangleShape getSpriteRect();
-    int getPlayerDirection();
+    PlayerDirection getPlayerDirection();
     PlayerDetails getPlayerDetails();
 
     /*Tile Collisions Functions*/
