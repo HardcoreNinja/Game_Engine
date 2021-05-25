@@ -1015,10 +1015,28 @@ void NewCharacterScreen::updateButtons()
 			this->displayNameWarning = true;
 		else
 		{
+			/*New Character Details*/
 			this->playerDetails.name = this->nameString;
 			this->playerDetails.textureSwitchCounter = this->textureSwitchCounter;
 			this->playerDetails.male1Female0 = this->male1Female0;
+
+			/*Position & Direction*/
+			this->playerDetails.position = sf::Vector2f(207.f, 176.f);
 			this->playerDetails.oldDirection = PlayerDirection::Down;
+
+			/*Movement Variables*/
+			this->playerDetails.velocity = sf::Vector2f(0.f, 0.f);;
+			this->playerDetails.maxVelocity = 8.f;
+			this->playerDetails.acceleration = 0.2;
+			this->playerDetails.deceleration = 0.15;
+
+			/*Vitals*/
+			this->playerDetails.currentHP = 100.f;
+			this->playerDetails.maxHP = 100.f;
+			this->playerDetails.currentStamina = 100.f;
+			this->playerDetails.maxStamina = 100.f;
+			this->playerDetails.currentMana = 100.f;
+			this->playerDetails.maxMana = 100.f;
 
 			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails));
 		}
@@ -1116,7 +1134,32 @@ void NewCharacterScreen::updateUserInput(const float& dt)
 		if (this->nameString.size() <= 0)
 			this->displayNameWarning = true;
 		else
+		{
+			/*New Character Details*/
+			this->playerDetails.name = this->nameString;
+			this->playerDetails.textureSwitchCounter = this->textureSwitchCounter;
+			this->playerDetails.male1Female0 = this->male1Female0;
+
+			/*Position & Direction*/
+			this->playerDetails.position = sf::Vector2f(207.f, 176.f);
+			this->playerDetails.oldDirection = PlayerDirection::Down;
+
+			/*Movement Variables*/
+			this->playerDetails.velocity = sf::Vector2f(0.f, 0.f);;
+			this->playerDetails.maxVelocity = 8.f;
+			this->playerDetails.acceleration = 0.2;
+			this->playerDetails.deceleration = 0.15;
+
+			/*Vitals*/
+			this->playerDetails.currentHP = 100.f;
+			this->playerDetails.maxHP = 100.f;
+			this->playerDetails.currentStamina = 100.f;
+			this->playerDetails.maxStamina = 100.f;
+			this->playerDetails.currentMana = 100.f;
+			this->playerDetails.maxMana = 100.f;
+
 			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails));
+		}
 	}
 
 	/*Back to Main Menu*/

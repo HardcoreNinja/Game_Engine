@@ -11,13 +11,39 @@ void Player::initVariables(PlayerDetails player_details)
 	this->playerDetails.male1Female0 = player_details.male1Female0;
 
 	/*Position & Direction*/
+	this->playerDetails.position = player_details.position;
 	this->playerDetails.oldDirection = player_details.oldDirection;
 
-	this->oldDirection = player_details.oldDirection;
-	std::cout << "Player Name: " << this->playerDetails.name << 
-		" x " << "Texture Counter:" << this->playerDetails.textureSwitchCounter << 
-		" x " << "Gender Bool: " << this->playerDetails.male1Female0 << 
-		" x " << "Old Direction: " << static_cast<int>(this->playerDetails.oldDirection) << '\n';
+	/*Movement Variables*/
+	this->playerDetails.velocity = player_details.velocity;
+	this->playerDetails.maxVelocity = player_details.maxVelocity;
+	this->playerDetails.acceleration = player_details.acceleration;
+	this->playerDetails.deceleration = player_details.deceleration;
+
+	/*Vitals*/
+	this->playerDetails.currentHP = player_details.currentHP;
+	this->playerDetails.maxHP = player_details.maxHP;
+	this->playerDetails.currentStamina = player_details.currentStamina;
+	this->playerDetails.maxStamina = player_details.maxStamina;
+	this->playerDetails.currentMana = player_details.currentMana;
+	this->playerDetails.maxMana = player_details.maxMana;
+	
+	std::cout << "Player Name: " << this->playerDetails.name << '\n' << 
+		" | " << "Texture Counter:" << this->playerDetails.textureSwitchCounter << '\n' <<
+		" | " << "Gender Bool: " << this->playerDetails.male1Female0 << '\n' <<
+		" | " << "Position: " << this->playerDetails.position.x << " x " << this->playerDetails.position.y << '\n' <<
+		" | " << "Old Direction: " << static_cast<int>(this->playerDetails.oldDirection) << '\n' <<
+		" | " << "Velocity: " << this->playerDetails.velocity.x << " x " << this->playerDetails.velocity.y << '\n' <<
+		" | " << "Max Velocity: " << this->playerDetails.maxVelocity << '\n' <<
+		" | " << "Acceleration: " << this->playerDetails.acceleration << '\n' <<
+		" | " << "Deceleration: " << this->playerDetails.deceleration << '\n' <<
+		" | " << "Current HP: " << this->playerDetails.currentHP << '\n' <<
+		" | " << "Max HP: " << this->playerDetails.currentHP << '\n' <<
+		" | " << "Current Stamina: " << this->playerDetails.currentStamina << '\n' <<
+		" | " << "Max Stamina: " << this->playerDetails.maxStamina << '\n' <<
+		" | " << "Current Mana: " << this->playerDetails.currentMana << '\n' <<
+		" | " << "Max Mana: " << this->playerDetails.maxMana << '\n' <<
+		'\n';
 	
 	/*Movement Variables*/
 	this->velocity = sf::Vector2f(0.f, 0.f);
