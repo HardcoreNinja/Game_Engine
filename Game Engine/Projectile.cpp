@@ -481,7 +481,7 @@ void Projectile::updateProjectileAnimation()
 		intRectLeft_End = 768;
 
 		intRectTop_Start = 0;
-		intRectTop_End = 960;
+		intRectTop_End = 576;
 
 		intRect_FrameSize = 192;
 		break;
@@ -628,7 +628,7 @@ void Projectile::updateExplosionAnimation()
 	{
 		if (this->projectileDetails.explosionIntRect.left == intRectLeft_End)
 		{
-			this->projectileDetails.explosionIntRect.left = intRectLeft_Start;
+			//this->projectileDetails.explosionIntRect.left = intRectLeft_Start;
 			this->destroy = true;
 		}
 		else
