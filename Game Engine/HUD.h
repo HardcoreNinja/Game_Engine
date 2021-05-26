@@ -26,6 +26,7 @@ private:
 	/*Text & Fonts*/
 	sf::Text playerLevel;
 	sf::Text staminaText; 
+	sf::Text manaText;
 	sf::Font font;
 
 	/*Initializers*/
@@ -39,6 +40,7 @@ public:
 
 	/*Update Functions*/
 	void updateMana(float current_mana, float max_mana);
+	void updateManaText(float current_mana, float max_mana);
 	void updatePlayerLevelText(PlayerDetails player_details);
 	void updateStamina(PlayerDetails player_details);
 	void updateStaminaText(PlayerDetails player_details);

@@ -78,6 +78,9 @@ public:
     Player(std::map<std::string, int>* supported_keys, PlayerDetails player_details);
     virtual ~Player();
 
+    /*Setters*/
+    void setCurrentMana(float current_mana); 
+
     /*Getters*/
     sf::RectangleShape getSpriteRect();
     PlayerDirection getPlayerDirection();

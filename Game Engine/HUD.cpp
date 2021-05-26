@@ -50,6 +50,11 @@ void HUD::initText()
 	this->staminaText.setFillColor(sf::Color::Black);
 	this->staminaText.setCharacterSize(15);
 	this->staminaText.setPosition(170.f, 79.f);
+
+	this->manaText.setFont(font);
+	this->manaText.setFillColor(sf::Color::Black);
+	this->manaText.setCharacterSize(15);
+	this->manaText.setPosition(170.f, 123.f);
 }
 
 /*Constructor & Destructor*/
@@ -73,6 +78,14 @@ void HUD::updateMana(float current_mana, float max_mana)
 
 	this->intRectBlueBar.width = intRectLeft * percentageChange;
 	this->spriteBlueBar.setTextureRect(this->intRectBlueBar);
+}
+void HUD::updateManaText(float current_mana, float max_mana)
+{
+	std::stringstream ss;
+
+	ss << "Mana: " << static_cast<int>(current_mana) << " / " << max_mana;
+
+	this->manaText.setString(ss.str());
 }
 void HUD::updatePlayerLevelText(PlayerDetails player_details)
 {
@@ -104,6 +117,7 @@ void HUD::updateStaminaText(PlayerDetails player_details)
 void HUD::update(PlayerDetails player_details, float current_mana, float max_mana)
 {
 	this->updateMana(current_mana, max_mana);
+	this->updateManaText(current_mana, max_mana);
 	this->updatePlayerLevelText(player_details);
 	this->updateStamina(player_details);
 	this->updateStaminaText(player_details);
@@ -118,4 +132,5 @@ void HUD::render(sf::RenderTarget& target)
 	target.draw(this->spriteHUDSystem);
 	target.draw(this->staminaText);
 	target.draw(this->playerLevel);
+	target.draw(this->manaText);
 }

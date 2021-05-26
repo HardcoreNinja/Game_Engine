@@ -926,6 +926,12 @@ Player::~Player()
 {
 }
 
+/*Setters*/
+void Player::setCurrentMana(float current_mana)
+{
+	this->playerDetails.currentMana = current_mana;
+}
+
 /*Getters*/
 sf::RectangleShape Player::getSpriteRect()
 {
