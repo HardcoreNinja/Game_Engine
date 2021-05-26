@@ -56,6 +56,9 @@ struct ProjectileDetails
     float acceleration;
     float deceleration;
 
+    /*Mana*/
+    float manaDrainFactor;
+
     /*Destroy Variables*/
     int lifeTimeCounter;
     int maxLifeTimeCounter;
@@ -101,6 +104,7 @@ public:
     /*Getters*/
     bool getDestroy();
     sf::RectangleShape getSpriteRect();
+    float getManaDrainFactor();
 
     /*Setters*/
     void setProjectileType(ProjectileTypes projectile_type);

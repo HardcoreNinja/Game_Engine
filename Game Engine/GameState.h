@@ -18,6 +18,10 @@ class GameState :
     public State
 {
 private:
+    /*Mana*/
+    float currentMana;
+    float maxMana;
+
     /*Came From Main Menu Bool*/
     bool cameFromMainMenu;
 
@@ -42,7 +46,7 @@ private:
     std::vector<std::unique_ptr<Projectile>>::const_iterator projectileItr;
 
     /*Initializers*/
-    void initVariables(bool came_from_main_menu);
+    void initVariables(bool came_from_main_menu, PlayerDetails player_details);
     void initKeybinds();
     void initFonts();
     void initRenderTexture();

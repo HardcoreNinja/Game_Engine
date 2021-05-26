@@ -2,10 +2,12 @@
 #include "GameState.h"
 
 /*Initializers*/
-void GameState::initVariables(bool came_from_main_menu)
+void GameState::initVariables(bool came_from_main_menu, PlayerDetails player_details)
 {
 	this->projectileType = ProjectileTypes::Pink_Ball_3;
 	this->cameFromMainMenu = came_from_main_menu;
+	this->currentMana = player_details.currentMana;
+	this->maxMana = player_details.maxMana;
 }
 void GameState::initKeybinds()
 {
@@ -87,7 +89,7 @@ void GameState::initHUD()
 GameState::GameState(GameInfo* game_info, PlayerDetails player_details, bool came_from_main_menu)
 	: State(game_info)
 {
-	this->initVariables(came_from_main_menu);
+	this->initVariables(came_from_main_menu, player_details);
 	this->initKeybinds();
 	this->initFonts();
 	this->initRenderTexture();
@@ -104,7 +106,7 @@ GameState::~GameState()
 /*Update Functions*/
 void GameState::updateHUD()
 {
-	this->hud->update(this->player->getPlayerDetails());
+	this->hud->update(this->player->getPlayerDetails(), this->currentMana, this->maxMana);
 }
 void GameState::updatePauseMenuButtons()
 {
@@ -142,14 +144,18 @@ void GameState::updateInGameActions()
 	if (projectile_DeltaTime > projectile_SwitchTime)
 	{
 		this->projectileClock.restart();
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SHOOT"))))
+		if (this->currentMana != 0.f)
 		{
-			this->projectile = std::make_unique<Projectile>();
-			this->projectile->setProjectileType(this->projectileType);
-			this->projectile->setProjectileDirection(this->player->getPlayerDirection());
-			this->projectile->setProjectilePosition(this->player->getSpriteRect());
-			this->projectileVector.push_back(std::move(this->projectile));
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SHOOT"))))
+			{
+				
+				this->projectile = std::make_unique<Projectile>();
+				this->projectile->setProjectileType(this->projectileType);
+				this->projectile->setProjectileDirection(this->player->getPlayerDirection());
+				this->projectile->setProjectilePosition(this->player->getSpriteRect());
+				this->currentMana = this->currentMana - this->projectile->getManaDrainFactor();
+				this->projectileVector.push_back(std::move(this->projectile));
+			}
 		}
 	}
 }
@@ -235,7 +241,7 @@ void GameState::update(const float& dt)
 void GameState::reinitializeState()
 {
 	std::cout << "Reinitializing Game State!\n";
-	this->initVariables(this->cameFromMainMenu);
+	this->initVariables(this->cameFromMainMenu, this->player->getPlayerDetails());
 	this->initKeybinds();
 	this->initFonts();
 	this->initRenderTexture();

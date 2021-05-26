@@ -38,10 +38,11 @@ public:
 	virtual ~HUD();
 
 	/*Update Functions*/
+	void updateMana(float current_mana, float max_mana);
 	void updatePlayerLevelText(PlayerDetails player_details);
 	void updateStamina(PlayerDetails player_details);
 	void updateStaminaText(PlayerDetails player_details);
-	void update(PlayerDetails player_details);
+	void update(PlayerDetails player_details, float current_mana, float max_mana);
 
 	/*Render Functions*/
 	void render(sf::RenderTarget& target);

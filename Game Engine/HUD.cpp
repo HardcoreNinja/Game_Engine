@@ -63,6 +63,17 @@ HUD::~HUD()
 }
 
 /*Update Functions*/
+void HUD::updateMana(float current_mana, float max_mana)
+{
+	int intRectLeft = 157.f;
+
+	float percentageChange = current_mana / max_mana;
+
+	std::cout << "PercentageChange: " << percentageChange << '\n';
+
+	this->intRectBlueBar.width = intRectLeft * percentageChange;
+	this->spriteBlueBar.setTextureRect(this->intRectBlueBar);
+}
 void HUD::updatePlayerLevelText(PlayerDetails player_details)
 {
 	std::stringstream ss;
@@ -90,8 +101,9 @@ void HUD::updateStaminaText(PlayerDetails player_details)
 
 	this->staminaText.setString(ss.str());
 }
-void HUD::update(PlayerDetails player_details)
+void HUD::update(PlayerDetails player_details, float current_mana, float max_mana)
 {
+	this->updateMana(current_mana, max_mana);
 	this->updatePlayerLevelText(player_details);
 	this->updateStamina(player_details);
 	this->updateStaminaText(player_details);
