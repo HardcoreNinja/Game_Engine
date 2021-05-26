@@ -100,7 +100,6 @@ public:
     /*Save & Load Functions*/
     void saveToFile();
     
-
     /*Render Functions*/
     void render(sf::RenderTarget& target);
 };

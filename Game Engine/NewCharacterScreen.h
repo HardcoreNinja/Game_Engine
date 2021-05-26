@@ -4,9 +4,19 @@
 #include "GUI.h"
 #include "GameState.h"
 #include "Player.h"
+#include "Projectile.h"
 
 /*Class Forward Declarations*/
+class Button;
+class GameState;
+class Player;
+class Projectile;
+class sf::Sprite;
+class sf::Texture;
 class sf::Clock;
+class sf::RectangleShape;
+class sf::Text;
+sf::RenderTarget;
 
 class NewCharacterScreen :
     public State
@@ -14,6 +24,9 @@ class NewCharacterScreen :
 private:
 	/*Player Details*/
 	PlayerDetails playerDetails;
+
+	/*Projectile Details*/
+	ProjectileDetails projectileDetails;
 
 	/*Sprite Variables*/
 	sf::Sprite sprite;

@@ -2,20 +2,23 @@
 #include "Projectile.h"
 
 /*Initializers*/
-void Projectile::initVariables()
+void Projectile::initVariables(ProjectileDetails projectile_details)
 {
 	/*Movement Variables*/
-	this->projectileDetails.velocity = sf::Vector2f(0.f, 0.f);
-	this->projectileDetails.maxVelocity = 8.f;
-	this->projectileDetails.acceleration = 1.f;
-	this->projectileDetails.deceleration = 0.1f;
+	this->projectileDetails.velocity = projectile_details.velocity;
+	this->projectileDetails.maxVelocity = projectile_details.maxVelocity;
+	this->projectileDetails.acceleration = projectile_details.acceleration;
+	this->projectileDetails.deceleration = projectile_details.deceleration;
 	this->stop = false;
 
 	/*Destroy Variables*/
+	this->projectileDetails.lifeTimeCounter = projectile_details.lifeTimeCounter;
+	this->projectileDetails.maxLifeTimeCounter = projectile_details.maxLifeTimeCounter;
 	this->destroy = false;
-	this->projectileDetails.lifeTimeCounter = 0;
-	this->projectileDetails.maxLifeTimeCounter = 100;
 
+	/*Mana*/
+	this->projectileDetails.manaDrainFactor = projectile_details.manaDrainFactor;
+	
 	/*Explosion Variables*/
 	this->explode = false;
 
@@ -50,9 +53,9 @@ void Projectile::initSprite()
 }
 
 /*Constructor & Destructor*/
-Projectile::Projectile()
+Projectile::Projectile(ProjectileDetails projectile_details)
 {
-	this->initVariables();
+	this->initVariables(projectile_details);
 	this->initSpriteRect();
 	this->initSprite();
 }
@@ -72,6 +75,10 @@ sf::RectangleShape Projectile::getSpriteRect()
 float Projectile::getManaDrainFactor()
 {
 	return this->projectileDetails.manaDrainFactor;
+}
+ProjectileDetails Projectile::getProjectileDetails()
+{
+	return this->projectileDetails;
 }
 
 /*Setters*/
@@ -648,6 +655,34 @@ void Projectile::update(const float& dt)
 	
 	if (this->explode)
 		this->updateExplosionAnimation();
+}
+
+/*Save & Load Functions*/
+void Projectile::saveToFile()
+{
+	std::ofstream ofs("Config/projectile_details.ini");
+
+	if (ofs.is_open())
+	{
+		/*Projectile Type*/
+		ofs << static_cast<int>(this->projectileDetails.projectileType) << '\n';
+
+		/*Movement Variables*/
+		ofs << this->projectileDetails.velocity.x << " " << this->projectileDetails.velocity.y << '\n';
+		ofs << this->projectileDetails.maxVelocity << '\n';
+		ofs << this->projectileDetails.acceleration << '\n';
+		ofs << this->projectileDetails.deceleration << '\n';
+
+		/*Mana*/
+		ofs << this->projectileDetails.manaDrainFactor << '\n';
+
+		/*Destroy Variables*/
+		ofs << this->projectileDetails.lifeTimeCounter << '\n';
+		ofs << this->projectileDetails.maxLifeTimeCounter << '\n';
+	}
+	ofs.close();
+
+	std::cout << "Saved Projectile Details!\n";
 }
 
 /*Render Functions*/

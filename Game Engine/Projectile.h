@@ -92,19 +92,20 @@ private:
     sf::Clock explosionAnimationClock;
 
     /*Initializers*/
-    void initVariables();
+    void initVariables(ProjectileDetails projectile_details);
     void initSpriteRect();
     void initSprite();
 
 public:
     /*Constructor & Destructor*/
-    Projectile();
+    Projectile(ProjectileDetails projectile_details);
     virtual ~Projectile();
 
     /*Getters*/
     bool getDestroy();
     sf::RectangleShape getSpriteRect();
     float getManaDrainFactor();
+    ProjectileDetails getProjectileDetails();
 
     /*Setters*/
     void setProjectileType(ProjectileTypes projectile_type);
@@ -123,6 +124,9 @@ public:
     void updateProjectileAnimation();
     void updateExplosionAnimation();
     void update(const float& dt);
+
+    /*Save & Load Functions*/
+    void saveToFile();
 
     /*Render Functions*/
     void render(sf::RenderTarget& target);

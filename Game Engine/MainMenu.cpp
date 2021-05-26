@@ -102,27 +102,28 @@ void MainMenu::updateButtons()
 	for (auto& i : this->buttons)
 		i.second->update(this->mousePositionView);
 
-	//Quit Game
+	/*Quit Game*/
 	if (this->buttons["QUIT_GAME"]->isPressed() && this->getKeyTime())
 		this->endState();
 
-	//Settings
+	/*Settings*/
 	if (this->buttons["SETTINGS"]->isPressed() && this->getKeyTime())
 		this->states->push_back(std::make_unique<Settings>(this->gameInfo));
 
-	//Editor
+	/*Editor*/
 	if (this->buttons["EDITOR"]->isPressed() && this->getKeyTime())
 		this->states->push_back(std::make_unique<Editor>(this->gameInfo));
 
-	//New Character Screen
+	/*New Character Screen*/
 	if (this->buttons["NEW_GAME"]->isPressed() && this->getKeyTime())
 		this->states->push_back(std::make_unique<NewCharacterScreen>(this->gameInfo));
 
-	//Continue Game
+	/*Continue Game*/
 	if (this->buttons["CONTINUE_GAME"]->isPressed() && this->getKeyTime())
 	{
-		this->loadFromFile();
-		this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails, true));
+		this->loadPlayerDetailsFromFile();
+		this->loadProjectileDetailsFromFile();
+		this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails, this->projectileDetails, true));
 	}
 
 }
@@ -151,7 +152,7 @@ void MainMenu::reinitializeState()
 }
 
 /*Save & Load Functions*/
-void MainMenu::loadFromFile()
+void MainMenu::loadPlayerDetailsFromFile()
 {
 	int oldDirection = 0;
 	std::ifstream ifs("Config/player_details.ini");
@@ -194,6 +195,36 @@ void MainMenu::loadFromFile()
 	}
 
 	ifs.close();
+}
+void MainMenu::loadProjectileDetailsFromFile()
+{
+	int projectileType = 0;
+	std::ifstream ifs("Config/projectile_details.ini");
+
+	if (ifs.is_open())
+	{
+		/*Projectile Type*/
+		ifs >> projectileType;
+
+		/*Movement Variables*/
+		ifs >> this->projectileDetails.velocity.x >> this->projectileDetails.velocity.y;
+		ifs >> this->projectileDetails.maxVelocity;
+		ifs >> this->projectileDetails.acceleration;
+		ifs >> this->projectileDetails.deceleration;
+
+		/*Mana*/
+		ifs >> this->projectileDetails.manaDrainFactor;
+
+		/*Destroy Variables*/
+		ifs >> this->projectileDetails.lifeTimeCounter;
+		ifs >> this->projectileDetails.maxLifeTimeCounter;
+
+		this->projectileDetails.projectileType = static_cast<ProjectileTypes>(projectileType);
+	}
+
+	ifs.close();
+
+	std::cout << "Loaded Projectile Details from Main Menu!\n";
 }
 
 /*Render Functions*/

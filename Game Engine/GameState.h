@@ -9,6 +9,7 @@
 class Tile;
 class TileMap;
 class Player;
+class Projectile;
 class HUD;
 class Projectile;
 class sf::RenderTarget;
@@ -39,14 +40,14 @@ private:
     std::unique_ptr <HUD> hud;
 
     /*Projectile Variables*/
+    ProjectileDetails projectileDetails;
     sf::Clock projectileClock;
-    ProjectileTypes projectileType;
     std::unique_ptr<Projectile> projectile;
     std::vector<std::unique_ptr<Projectile>> projectileVector;
     std::vector<std::unique_ptr<Projectile>>::const_iterator projectileItr;
 
     /*Initializers*/
-    void initVariables(bool came_from_main_menu, PlayerDetails player_details);
+    void initVariables(bool came_from_main_menu, PlayerDetails player_details, ProjectileDetails projectile_details);
     void initKeybinds();
     void initFonts();
     void initRenderTexture();
@@ -58,7 +59,7 @@ private:
 
 public:
     /*Constuctor & Destructor*/
-    GameState(GameInfo* game_info, PlayerDetails player_details, bool came_from_main_menu);
+    GameState(GameInfo* game_info, PlayerDetails player_details, ProjectileDetails projectile_details, bool came_from_main_menu);
     virtual ~GameState();
 
     /*Update Functions*/

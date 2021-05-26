@@ -2,9 +2,9 @@
 #include "GameState.h"
 
 /*Initializers*/
-void GameState::initVariables(bool came_from_main_menu, PlayerDetails player_details)
+void GameState::initVariables(bool came_from_main_menu, PlayerDetails player_details, ProjectileDetails projectile_details)
 {
-	this->projectileType = ProjectileTypes::Pink_Ball_3;
+	this->projectileDetails = projectile_details;
 	this->cameFromMainMenu = came_from_main_menu;
 	this->currentMana = player_details.currentMana;
 	this->maxMana = player_details.maxMana;
@@ -86,10 +86,10 @@ void GameState::initHUD()
 }
 
 /*Constructor & Destructor*/
-GameState::GameState(GameInfo* game_info, PlayerDetails player_details, bool came_from_main_menu)
+GameState::GameState(GameInfo* game_info, PlayerDetails player_details, ProjectileDetails projectile_details, bool came_from_main_menu)
 	: State(game_info)
 {
-	this->initVariables(came_from_main_menu, player_details);
+	this->initVariables(came_from_main_menu, player_details, projectile_details);
 	this->initKeybinds();
 	this->initFonts();
 	this->initRenderTexture();
@@ -149,12 +149,12 @@ void GameState::updateInGameActions()
 		{
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SHOOT"))))
 			{
-				
-				this->projectile = std::make_unique<Projectile>();
-				this->projectile->setProjectileType(this->projectileType);
+				this->projectile = std::make_unique<Projectile>(this->projectileDetails);
+				this->projectile->setProjectileType(this->projectileDetails.projectileType);
 				this->projectile->setProjectileDirection(this->player->getPlayerDirection());
 				this->projectile->setProjectilePosition(this->player->getSpriteRect());
 				this->currentMana = this->currentMana - this->projectile->getManaDrainFactor();
+				this->projectile->saveToFile();
 				this->projectileVector.push_back(std::move(this->projectile));
 			}
 		}
@@ -242,7 +242,7 @@ void GameState::update(const float& dt)
 void GameState::reinitializeState()
 {
 	std::cout << "Reinitializing Game State!\n";
-	this->initVariables(this->cameFromMainMenu, this->player->getPlayerDetails());
+	this->initVariables(this->cameFromMainMenu, this->player->getPlayerDetails(), this->projectile->getProjectileDetails());
 	this->initKeybinds();
 	this->initFonts();
 	this->initRenderTexture();

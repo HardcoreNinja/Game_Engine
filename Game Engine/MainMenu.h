@@ -13,6 +13,7 @@ class Editor;
 class NewCharacterScreen;
 class GameState;
 class Player;
+class Projectile;
 class sf::RenderTarget;
 
 class MainMenu :
@@ -21,6 +22,9 @@ class MainMenu :
 private:
     /*Player Details*/
     PlayerDetails playerDetails;
+
+    /*Projectile Details*/
+    ProjectileDetails projectileDetails;
 
     void initMainMenuBackground();
     void initMainMenuKeybinds();
@@ -40,7 +44,8 @@ public:
     void reinitializeState();
 
     /*Save & Load Functions*/
-    void loadFromFile();
+    void loadPlayerDetailsFromFile();
+    void loadProjectileDetailsFromFile();
 
     /*Render Functions*/
     void renderButtons(sf::RenderTarget& target);

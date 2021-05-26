@@ -1047,7 +1047,23 @@ void NewCharacterScreen::updateButtons()
 			this->playerDetails.currentMana = 100.f;
 			this->playerDetails.maxMana = 100.f;
 
-			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails, false));
+			/*Projectile Type*/
+			this->projectileDetails.projectileType = ProjectileTypes::Black_Tornado;
+
+			/*Projectile Movement Variables*/
+			this->projectileDetails.velocity = sf::Vector2f(0.f, 0.f);
+			this->projectileDetails.maxVelocity = 8.f;
+			this->projectileDetails.acceleration = 1.f;
+			this->projectileDetails.deceleration = 0.1f;
+
+			/*Mana*/
+			this->projectileDetails.manaDrainFactor = 5.f;
+
+			/*Projectile Destroy Variables*/
+			this->projectileDetails.lifeTimeCounter = 0;
+			this->projectileDetails.maxLifeTimeCounter = 100;
+
+			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails, this->projectileDetails, false));
 		}
 	}
 
@@ -1176,7 +1192,23 @@ void NewCharacterScreen::updateUserInput(const float& dt)
 			this->playerDetails.currentMana = 100.f;
 			this->playerDetails.maxMana = 100.f;
 
-			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails, false));
+			/*Projectile Type*/
+			this->projectileDetails.projectileType = ProjectileTypes::Black_Tornado;
+
+			/*Projectile Movement Variables*/
+			this->projectileDetails.velocity = sf::Vector2f(0.f, 0.f);
+			this->projectileDetails.maxVelocity = 8.f;
+			this->projectileDetails.acceleration = 1.f;
+			this->projectileDetails.deceleration = 0.1f;
+
+			/*Mana*/
+			this->projectileDetails.manaDrainFactor = 5.f;
+
+			/*Projectile Destroy Variables*/
+			this->projectileDetails.lifeTimeCounter = 0;
+			this->projectileDetails.maxLifeTimeCounter = 100;
+
+			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails, this->projectileDetails, false));
 		}
 	}
 
