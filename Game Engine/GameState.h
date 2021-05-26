@@ -40,6 +40,7 @@ private:
     std::unique_ptr <HUD> hud;
 
     /*Projectile Variables*/
+    int projectileTypeCounter;
     ProjectileDetails projectileDetails;
     sf::Clock projectileClock;
     std::unique_ptr<Projectile> projectile;

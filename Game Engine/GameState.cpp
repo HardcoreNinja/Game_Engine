@@ -138,6 +138,27 @@ void GameState::updateUserInput(const float& dt)
 }
 void GameState::updateInGameActions()
 {
+	/*Scrolling Projectile Types*/
+	if (this->sfmlEvent->type == sf::Event::MouseWheelScrolled)
+	{
+		if (this->sfmlEvent->mouseWheelScroll.delta > 0)
+		{
+			if (this->projectileTypeCounter != 19)
+				this->projectileTypeCounter += 1;
+			//std::cout << "Projectile Counter: " << this->projectileTypeCounter << '\n';
+			this->sfmlEvent->mouseWheelScroll.delta = 0;
+			this->projectileDetails.projectileType = static_cast<ProjectileTypes>(this->projectileTypeCounter);
+		}
+		else if (this->sfmlEvent->mouseWheelScroll.delta < 0)
+		{
+			if (this->projectileTypeCounter != 0)
+				this->projectileTypeCounter -= 1;
+			//std::cout << "Projectile Counter: " << this->projectileTypeCounter << '\n';
+			this->sfmlEvent->mouseWheelScroll.delta = 0;
+			this->projectileDetails.projectileType = static_cast<ProjectileTypes>(this->projectileTypeCounter);
+		}
+	}
+
 	/*Firing Projectile*/
 	float projectile_DeltaTime = this->projectileClock.getElapsedTime().asSeconds();
 	float projectile_SwitchTime = 0.2;

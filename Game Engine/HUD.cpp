@@ -74,7 +74,7 @@ void HUD::updateMana(float current_mana, float max_mana)
 
 	float percentageChange = current_mana / max_mana;
 
-	std::cout << "PercentageChange: " << percentageChange << '\n';
+	//std::cout << "PercentageChange: " << percentageChange << '\n';
 
 	this->intRectBlueBar.width = intRectLeft * percentageChange;
 	this->spriteBlueBar.setTextureRect(this->intRectBlueBar);
@@ -101,7 +101,7 @@ void HUD::updateStamina(PlayerDetails player_details)
 
 	float percentageChange = player_details.currentStamina / player_details.maxStamina; 
 
-	std::cout << "PercentageChange: " << percentageChange << '\n';
+	//std::cout << "PercentageChange: " << percentageChange << '\n';
 
 	this->intRectYellowBar.width = intRectLeft * percentageChange;
 	this->spriteYellowBar.setTextureRect(this->intRectYellowBar);
