@@ -4,20 +4,14 @@
 /*Initializers*/
 void Projectile::initVariables(ProjectileDetails projectile_details)
 {
+	/*Projectile Details*/
+	this->projectileDetails = projectile_details;
+
 	/*Movement Variables*/
-	this->projectileDetails.velocity = projectile_details.velocity;
-	this->projectileDetails.maxVelocity = projectile_details.maxVelocity;
-	this->projectileDetails.acceleration = projectile_details.acceleration;
-	this->projectileDetails.deceleration = projectile_details.deceleration;
 	this->stop = false;
 
 	/*Destroy Variables*/
-	this->projectileDetails.lifeTimeCounter = projectile_details.lifeTimeCounter;
-	this->projectileDetails.maxLifeTimeCounter = projectile_details.maxLifeTimeCounter;
 	this->destroy = false;
-
-	/*Mana*/
-	this->projectileDetails.manaDrainFactor = projectile_details.manaDrainFactor;
 	
 	/*Explosion Variables*/
 	this->explode = false;

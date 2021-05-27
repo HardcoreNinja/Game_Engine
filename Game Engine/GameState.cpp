@@ -342,7 +342,7 @@ void GameState::update(const float& dt)
 void GameState::reinitializeState()
 {
 	std::cout << "Reinitializing Game State!\n";
-	this->initVariables(this->cameFromMainMenu, this->player->getPlayerDetails(), this->projectile->getProjectileDetails());
+	this->initVariables(this->cameFromMainMenu, this->player->getPlayerDetails(), this->projectileDetails);
 	this->initKeybinds();
 	this->initFonts();
 	this->initRenderTexture();

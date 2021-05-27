@@ -4,37 +4,8 @@
 /*Initializers*/
 void Player::initVariables(PlayerDetails player_details)
 {
-	/*New Character Variables*/
-	this->playerDetails.name = player_details.name;
-	this->playerDetails.textureSwitchCounter = player_details.textureSwitchCounter;
-	this->playerDetails.male1Female0 = player_details.male1Female0;
-
-	/*Position & Direction*/
-	this->playerDetails.position = player_details.position;
-	this->playerDetails.oldDirection = player_details.oldDirection;
-
-	/*Movement Variables*/
-	this->playerDetails.velocity = player_details.velocity;
-	this->playerDetails.maxVelocity = player_details.maxVelocity;
-	this->playerDetails.acceleration = player_details.acceleration;
-	this->playerDetails.deceleration = player_details.deceleration;
-
-	/*Level*/
-	this->playerDetails.level = player_details.level;
-
-	/*HP*/
-	this->playerDetails.currentHP = player_details.currentHP;
-	this->playerDetails.maxHP = player_details.maxHP;
-
-	/*Stamina*/
-	this->playerDetails.currentStamina = player_details.currentStamina;
-	this->playerDetails.maxStamina = player_details.maxStamina;
-	this->playerDetails.staminaDrainFactor = player_details.staminaDrainFactor;
-	this->playerDetails.staminaFillFactor = player_details.staminaFillFactor;
-
-	/*Mana*/
-	this->playerDetails.currentMana = player_details.currentMana;
-	this->playerDetails.maxMana = player_details.maxMana;
+	/*Player Details*/
+	this->playerDetails = player_details;
 	
 	std::cout << "Player Name: " << this->playerDetails.name << '\n' << 
 		" | " << "Texture Counter:" << this->playerDetails.textureSwitchCounter << '\n' <<
