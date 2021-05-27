@@ -63,6 +63,9 @@ public:
     GameState(GameInfo* game_info, PlayerDetails player_details, ProjectileDetails projectile_details, bool came_from_main_menu);
     virtual ~GameState();
 
+    /*Setters*/
+    void setManaDrainFactor();
+
     /*Update Functions*/
     void updateHUD();
     void updatePauseMenuButtons();

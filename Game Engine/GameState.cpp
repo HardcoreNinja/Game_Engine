@@ -103,6 +103,76 @@ GameState::~GameState()
 {
 }
 
+/*Setters*/
+void GameState::setManaDrainFactor()
+{
+	switch (static_cast<ProjectileTypes>(this->projectileTypeCounter))
+	{
+	case ProjectileTypes::Black_Tornado:
+		this->projectileDetails.manaDrainFactor = 5.f;
+		break;
+	case ProjectileTypes::Blue_Tornado:
+		this->projectileDetails.manaDrainFactor = 5.f;
+		break;
+	case ProjectileTypes::Brown_Tornado:
+		this->projectileDetails.manaDrainFactor = 5.f;
+		break;
+	case ProjectileTypes::Cyan_Ball_1:
+		this->projectileDetails.manaDrainFactor = 3.f;
+		break;
+	case ProjectileTypes::Cyan_Ball_2:
+		this->projectileDetails.manaDrainFactor = 3.f;
+		break;
+	case ProjectileTypes::Cyan_Ball_3:
+		this->projectileDetails.manaDrainFactor = 3.f;
+		break;
+	case ProjectileTypes::Cyan_Ball_4:
+		this->projectileDetails.manaDrainFactor = 3.f;
+		break;
+	case ProjectileTypes::Cyan_Ball_5:
+		this->projectileDetails.manaDrainFactor = 3.f;
+		break;
+	case ProjectileTypes::Green_Tornado:
+		this->projectileDetails.manaDrainFactor = 5.f;
+		break;
+	case ProjectileTypes::Pink_Ball_1:
+		this->projectileDetails.manaDrainFactor = 4.f;
+		break;
+	case ProjectileTypes::Pink_Ball_2:
+		this->projectileDetails.manaDrainFactor = 4.f;
+		break;
+	case ProjectileTypes::Pink_Ball_3:
+		this->projectileDetails.manaDrainFactor = 4.f;
+		break;
+	case ProjectileTypes::Pink_Ball_4:
+		this->projectileDetails.manaDrainFactor = 4.f;
+		break;
+	case ProjectileTypes::Pink_Ball_5:
+		this->projectileDetails.manaDrainFactor = 4.f;
+		break;
+	case ProjectileTypes::Red_Tornado:
+		this->projectileDetails.manaDrainFactor = 5.f;
+		break;
+	case ProjectileTypes::Yellow_Ball_1:
+		this->projectileDetails.manaDrainFactor = 6.f;
+		break;
+	case ProjectileTypes::Yellow_Ball_2:
+		this->projectileDetails.manaDrainFactor = 6.f;
+		break;
+	case ProjectileTypes::Yellow_Ball_3:
+		this->projectileDetails.manaDrainFactor = 6.f;
+		break;
+	case ProjectileTypes::Yellow_Ball_4:
+		this->projectileDetails.manaDrainFactor = 6.f;
+		break;
+	case ProjectileTypes::Yellow_Ball_5:
+		this->projectileDetails.manaDrainFactor = 6.f;
+		break;
+	default:
+		std::cout << "ERROR::PROJECITLE::void Projectile::setProjectileType(ProjectileTypes projectile_type))::Invalid Switch Entry!\n";
+	}
+}
+
 /*Update Functions*/
 void GameState::updateHUD()
 {
@@ -144,18 +214,24 @@ void GameState::updateInGameActions()
 		if (this->sfmlEvent->mouseWheelScroll.delta > 0)
 		{
 			if (this->projectileTypeCounter != 19)
+			{
 				this->projectileTypeCounter += 1;
-			//std::cout << "Projectile Counter: " << this->projectileTypeCounter << '\n';
-			this->sfmlEvent->mouseWheelScroll.delta = 0;
-			this->projectileDetails.projectileType = static_cast<ProjectileTypes>(this->projectileTypeCounter);
+				this->setManaDrainFactor();
+				//std::cout << "Projectile Counter: " << this->projectileTypeCounter << '\n';
+				this->sfmlEvent->mouseWheelScroll.delta = 0;
+				this->projectileDetails.projectileType = static_cast<ProjectileTypes>(this->projectileTypeCounter);
+			}
 		}
 		else if (this->sfmlEvent->mouseWheelScroll.delta < 0)
 		{
 			if (this->projectileTypeCounter != 0)
+			{
 				this->projectileTypeCounter -= 1;
-			//std::cout << "Projectile Counter: " << this->projectileTypeCounter << '\n';
-			this->sfmlEvent->mouseWheelScroll.delta = 0;
-			this->projectileDetails.projectileType = static_cast<ProjectileTypes>(this->projectileTypeCounter);
+				this->setManaDrainFactor();
+				//std::cout << "Projectile Counter: " << this->projectileTypeCounter << '\n';
+				this->sfmlEvent->mouseWheelScroll.delta = 0;
+				this->projectileDetails.projectileType = static_cast<ProjectileTypes>(this->projectileTypeCounter);
+			}
 		}
 	}
 
@@ -166,7 +242,10 @@ void GameState::updateInGameActions()
 	if (projectile_DeltaTime > projectile_SwitchTime)
 	{
 		this->projectileClock.restart();
-		if (this->currentMana != 0.f)
+
+		//std::cout << "Current Mana: " << this->currentMana << "Drain Factor: " << this->projectileDetails.manaDrainFactor << '\n';
+
+		if (this->currentMana - this->projectileDetails.manaDrainFactor >= 0.f)
 		{
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SHOOT"))))
 			{
