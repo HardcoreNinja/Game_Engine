@@ -979,13 +979,13 @@ void Player::enemyCollision(std::tuple<sf::RectangleShape, float> enemy_tuple)
 		if (this->playerDetails.velocity.x != 0.f)
 		{
 			position.x = this->oldPosition.x;
-			this->playerDetails.velocity.x = 0.f;
+			//this->playerDetails.velocity.x = 0.f;
 		}
 
 		if (this->playerDetails.velocity.y != 0.f)
 		{
 			position.y = this->oldPosition.y;
-			this->playerDetails.velocity.y = 0.f;
+			//this->playerDetails.velocity.y = 0.f;
 		}
 
 		this->spriteRect.setPosition(position);

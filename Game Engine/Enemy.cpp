@@ -299,14 +299,14 @@ void Enemy::playerCollision(sf::RectangleShape player_rect)
 
 		if (this->enemyDetails.velocity.x != 0.f)
 		{
-			position.x = this->oldPosition.x;
 			this->enemyDetails.velocity.x = 0.f;
+			position.x = this->oldPosition.x;
 		}
 
 		if (this->enemyDetails.velocity.y != 0.f)
 		{
-			position.y = this->oldPosition.y;
 			this->enemyDetails.velocity.y = 0.f;
+			position.y = this->oldPosition.y;
 		}
 
 		this->spriteRect.setPosition(position);
