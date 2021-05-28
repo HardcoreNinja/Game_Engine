@@ -19,7 +19,7 @@ void Enemy::initVariables(std::vector<sf::Vector2f> enemy_spawn_positions)
 
 	this->enemyDetails.enemySpawnPosition = enemy_spawn_positions[this->getRandomInt(0, enemy_spawn_positions.size())];
 
-	/*Direction Counter*/
+	/*Randomization Variables*/
 	this->directionCounter = 0;
 	this->randomDirectionNumber = this->getRandomInt(0, 4);
 

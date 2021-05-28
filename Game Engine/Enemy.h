@@ -47,6 +47,7 @@ private:
     bool wallCollision;
     sf::Vector2f oldPosition;
 
+    /*Randomization Variables*/
     int directionCounter;
     int randomDirectionNumber;
 
