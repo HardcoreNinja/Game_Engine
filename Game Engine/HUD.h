@@ -39,6 +39,7 @@ public:
 	virtual ~HUD();
 
 	/*Update Functions*/
+	void updateHP(PlayerDetails player_details);
 	void updateMana(float current_mana, float max_mana);
 	void updateManaText(float current_mana, float max_mana);
 	void updatePlayerLevelText(PlayerDetails player_details);

@@ -956,8 +956,14 @@ void Player::enemyCollision(std::tuple<sf::RectangleShape, float> enemy_tuple)
 
 		if (this->hpDrainClock.getElapsedTime().asSeconds() > 0.5f)
 		{
-			this->playerDetails.currentHP -= std::get<1>(enemy_tuple);
-			std::cout << "Current HP: " << this->playerDetails.currentHP << '\n';
+			if (this->playerDetails.currentHP > 0.f)
+			{
+				this->playerDetails.currentHP -= std::get<1>(enemy_tuple);
+				std::cout << "Current HP: " << this->playerDetails.currentHP << '\n';
+
+				if (this->playerDetails.currentHP < 0.f)
+					this->playerDetails.currentHP = 0.f;
+			}
 
 			this->hpDrainClock.restart();
 		}
