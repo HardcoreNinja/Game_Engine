@@ -281,6 +281,7 @@ void GameState::updateEnemyLoop(const float& dt)
 	int counter = 0;
 	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
 	{
+		this->enemyVector[counter]->playerCollision(this->player->getSpriteRect());
 		this->enemyVector[counter]->update(dt);
 		counter++;
 	}

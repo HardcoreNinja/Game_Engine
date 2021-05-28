@@ -40,6 +40,7 @@ private:
     EnemyDetails enemyDetails; 
 
     /*Collision Variables*/
+    bool playerCollisionBool; 
     bool wallCollision;
     sf::Vector2f oldPosition;
 
@@ -63,8 +64,9 @@ public:
     int getRandomInt(int min, int max);
     sf::RectangleShape getSpriteRect();
 
-    /*Tile Collisions Functions*/
+    /*Collisions Functions*/
     void tileCollision(std::tuple<bool, unsigned short> collision_tuple);
+    void playerCollision(sf::RectangleShape player_rect);
 
     /*Update Functions*/
     void updateRandomDirection(const float& dt);

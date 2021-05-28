@@ -24,6 +24,7 @@ void Enemy::initVariables(std::vector<sf::Vector2f> enemy_spawn_positions)
 	this->randomDirectionNumber = this->getRandomInt(0, 4);
 
 	/*Collision Variables*/
+	this->playerCollisionBool = false;
 	this->wallCollision = false;
 }
 void Enemy::initSpriteRect()
@@ -233,6 +234,34 @@ void Enemy::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
 		this->wallCollision = false;
 
 	if (this->wallCollision == true)
+	{
+		sf::Vector2f position = this->spriteRect.getPosition();
+
+		if (this->enemyDetails.velocity.x != 0.f)
+		{
+			position.x = this->oldPosition.x;
+			this->enemyDetails.velocity.x = 0.f;
+		}
+
+		if (this->enemyDetails.velocity.y != 0.f)
+		{
+			position.y = this->oldPosition.y;
+			this->enemyDetails.velocity.y = 0.f;
+		}
+
+		this->spriteRect.setPosition(position);
+	}
+}
+void Enemy::playerCollision(sf::RectangleShape player_rect)
+{
+	if (this->spriteRect.getGlobalBounds().intersects(player_rect.getGlobalBounds()))
+	{
+		this->playerCollisionBool = true;
+	}
+	else
+		this->playerCollisionBool = false; 
+
+	if (this->playerCollisionBool == true)
 	{
 		sf::Vector2f position = this->spriteRect.getPosition();
 
