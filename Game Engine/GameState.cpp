@@ -278,14 +278,23 @@ void GameState::updateInGameActions()
 }
 void GameState::updateEnemyLoop(const float& dt)
 {
-	int counter = 0;
+	int counter1 = 0;
 	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
 	{
-		this->enemyVector[counter]->playerCollision(this->player->getSpriteRect());
-		this->enemyVector[counter]->update(dt);
-		counter++;
+		this->enemyVector[counter1]->playerCollision(this->player->getSpriteRect());
+		this->enemyVector[counter1]->update(dt);
+		counter1++;
 	}
-	
+
+	int counter2 = 0;
+	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
+	{
+		if (this->player->getSpriteRect().getGlobalBounds().intersects(this->enemyVector[counter2]->getSpriteRect().getGlobalBounds()))
+		{
+			this->player->enemyCollision(this->enemyVector[counter2]->getEnemyDamageAndRect());
+		}
+		counter2++;
+	}
 }
 void GameState::updateEnemyWallCollision()
 {

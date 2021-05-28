@@ -28,6 +28,9 @@ struct EnemyDetails
     float acceleration; 
     float deceleration;
 
+    /*Damage*/
+    float damage;
+
     /*Spawn Position Vector*/
     sf::Vector2f enemySpawnPosition;
 };
@@ -63,6 +66,7 @@ public:
    /*Getters*/
     int getRandomInt(int min, int max);
     sf::RectangleShape getSpriteRect();
+    std::tuple<sf::RectangleShape, float> getEnemyDamageAndRect();
 
     /*Collisions Functions*/
     void tileCollision(std::tuple<bool, unsigned short> collision_tuple);

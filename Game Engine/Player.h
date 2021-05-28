@@ -61,11 +61,15 @@ private:
     PlayerDirection playerDirection;
 
     /*Collision Variables*/
+    bool enemyCollisionBool; 
     bool wallCollision;
     sf::Vector2f oldPosition;
 
     /*User Input*/
     std::map<std::string, int> keybinds;
+
+    /*Clocks*/
+    sf::Clock hpDrainClock;
 
     /*Initializers*/
     void initVariables(PlayerDetails player_details);
@@ -86,8 +90,9 @@ public:
     PlayerDirection getPlayerDirection();
     PlayerDetails getPlayerDetails();
 
-    /*Tile Collisions Functions*/
+    /*Collisions Functions*/
     void tileCollision(std::tuple<bool, unsigned short> collision_tuple);
+    void enemyCollision(std::tuple< sf::RectangleShape, float> enemy_tuple);
 
     /*Update Functions*/
     void updateUserInput(const float& dt);

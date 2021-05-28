@@ -7,7 +7,7 @@ void Player::initVariables(PlayerDetails player_details)
 	/*Player Details*/
 	this->playerDetails = player_details;
 	
-	std::cout << "Player Name: " << this->playerDetails.name << '\n' << 
+	/*std::cout << "Player Name: " << this->playerDetails.name << '\n' <<
 		" | " << "Texture Counter:" << this->playerDetails.textureSwitchCounter << '\n' <<
 		" | " << "Gender Bool: " << this->playerDetails.male1Female0 << '\n' <<
 		" | " << "Position: " << this->playerDetails.position.x << " x " << this->playerDetails.position.y << '\n' <<
@@ -25,12 +25,13 @@ void Player::initVariables(PlayerDetails player_details)
 		" | " << "Stamina Fill Factor: " << this->playerDetails.staminaFillFactor << '\n' <<
 		" | " << "Current Mana: " << this->playerDetails.currentMana << '\n' <<
 		" | " << "Max Mana: " << this->playerDetails.maxMana << '\n' <<
-		'\n';
+		'\n';*/
 
 	/*Stamina Variables*/
 	this->quarterMaxVelocity = this->playerDetails.maxVelocity / 4.f;
 
 	/*Collision Variables*/
+	this->enemyCollisionBool = false;
 	this->wallCollision = false;
 }
 void Player::initKeybinds()
@@ -917,7 +918,7 @@ PlayerDetails Player::getPlayerDetails()
 	return this->playerDetails;
 }
 
-/*Tile Collision Functions*/
+/*Collision Functions*/
 void Player::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
 {
 	if (std::get<0>(collision_tuple) == true && std::get<1>(collision_tuple) == TILEMAP::TileType::Wall)
@@ -929,6 +930,43 @@ void Player::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
 		this->wallCollision = false;
 
 	if (this->wallCollision == true)
+	{
+		sf::Vector2f position = this->spriteRect.getPosition();
+
+		if (this->playerDetails.velocity.x != 0.f)
+		{
+			position.x = this->oldPosition.x;
+			this->playerDetails.velocity.x = 0.f;
+		}
+
+		if (this->playerDetails.velocity.y != 0.f)
+		{
+			position.y = this->oldPosition.y;
+			this->playerDetails.velocity.y = 0.f;
+		}
+
+		this->spriteRect.setPosition(position);
+	}
+}
+void Player::enemyCollision(std::tuple<sf::RectangleShape, float> enemy_tuple)
+{
+	if (std::get<0>(enemy_tuple).getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
+	{
+		this->enemyCollisionBool = true;
+
+		if (this->hpDrainClock.getElapsedTime().asSeconds() > 0.5f)
+		{
+			this->playerDetails.currentHP -= std::get<1>(enemy_tuple);
+			std::cout << "Current HP: " << this->playerDetails.currentHP << '\n';
+
+			this->hpDrainClock.restart();
+		}
+		
+	}
+	else 
+		this->enemyCollisionBool = true;
+
+	if (this->enemyCollisionBool == true)
 	{
 		sf::Vector2f position = this->spriteRect.getPosition();
 
