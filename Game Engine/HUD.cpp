@@ -46,6 +46,11 @@ void HUD::initText()
 	this->playerLevel.setCharacterSize(30);
 	this->playerLevel.setPosition(65.f, 65.f);
 
+	this->hpText.setFont(font);
+	this->hpText.setFillColor(sf::Color::Black);
+	this->hpText.setCharacterSize(15);
+	this->hpText.setPosition(170.f, 35.f);
+
 	this->staminaText.setFont(font);
 	this->staminaText.setFillColor(sf::Color::Black);
 	this->staminaText.setCharacterSize(15);
@@ -68,6 +73,14 @@ HUD::~HUD()
 }
 
 /*Update Functions*/
+void HUD::updatePlayerLevelText(PlayerDetails player_details)
+{
+	std::stringstream ss;
+
+	ss << "Lv: " << player_details.level;
+
+	this->playerLevel.setString(ss.str());
+}
 void HUD::updateHP(PlayerDetails player_details)
 {
 	int intRectLeft = 157.f;
@@ -78,6 +91,33 @@ void HUD::updateHP(PlayerDetails player_details)
 
 	this->intRectRedBar.width = intRectLeft * percentageChange;
 	this->spriteRedBar.setTextureRect(this->intRectRedBar);
+}
+void HUD::updateHPText(PlayerDetails player_details)
+{
+	std::stringstream ss;
+
+	ss << "HP: " << std::floor(player_details.currentHP * 100.f) / 100.f << " / " << player_details.maxHP;
+
+	this->hpText.setString(ss.str());
+}
+void HUD::updateStamina(PlayerDetails player_details)
+{
+	int intRectLeft = 157.f;
+
+	float percentageChange = player_details.currentStamina / player_details.maxStamina;
+
+	//std::cout << "PercentageChange: " << percentageChange << '\n';
+
+	this->intRectYellowBar.width = intRectLeft * percentageChange;
+	this->spriteYellowBar.setTextureRect(this->intRectYellowBar);
+}
+void HUD::updateStaminaText(PlayerDetails player_details)
+{
+	std::stringstream ss;
+
+	ss << "Stamina: " << std::floor(player_details.currentStamina * 100.f) / 100.f << " / " << player_details.maxStamina;
+
+	this->staminaText.setString(ss.str());
 }
 void HUD::updateMana(float current_mana, float max_mana)
 {
@@ -98,51 +138,26 @@ void HUD::updateManaText(float current_mana, float max_mana)
 
 	this->manaText.setString(ss.str());
 }
-void HUD::updatePlayerLevelText(PlayerDetails player_details)
-{
-	std::stringstream ss;
-
-	ss << "Lv: " << player_details.level;
-
-	this->playerLevel.setString(ss.str());
-}
-void HUD::updateStamina(PlayerDetails player_details)
-{
-	int intRectLeft = 157.f;
-
-	float percentageChange = player_details.currentStamina / player_details.maxStamina; 
-
-	//std::cout << "PercentageChange: " << percentageChange << '\n';
-
-	this->intRectYellowBar.width = intRectLeft * percentageChange;
-	this->spriteYellowBar.setTextureRect(this->intRectYellowBar);
-}
-void HUD::updateStaminaText(PlayerDetails player_details)
-{
-	std::stringstream ss; 
-
-	ss << "Stamina: " << std::floor(player_details.currentStamina * 100.f)/ 100.f << " / " << player_details.maxStamina;
-
-	this->staminaText.setString(ss.str());
-}
 void HUD::update(PlayerDetails player_details, float current_mana, float max_mana)
 {
-	this->updateHP(player_details);
-	this->updateMana(current_mana, max_mana);
-	this->updateManaText(current_mana, max_mana);
 	this->updatePlayerLevelText(player_details);
+	this->updateHP(player_details);
+	this->updateHPText(player_details);
 	this->updateStamina(player_details);
 	this->updateStaminaText(player_details);
+	this->updateMana(current_mana, max_mana);
+	this->updateManaText(current_mana, max_mana);
 }
 
 /*Render Functions*/
 void HUD::render(sf::RenderTarget& target)
 {
-	target.draw(this->spriteBlueBar);
-	target.draw(this->spriteYellowBar);
-	target.draw(this->spriteRedBar);
 	target.draw(this->spriteHUDSystem);
-	target.draw(this->staminaText);
 	target.draw(this->playerLevel);
+	target.draw(this->spriteRedBar);
+	target.draw(this->hpText);
+	target.draw(this->spriteBlueBar);
 	target.draw(this->manaText);
+	target.draw(this->spriteYellowBar);
+	target.draw(this->staminaText);
 }

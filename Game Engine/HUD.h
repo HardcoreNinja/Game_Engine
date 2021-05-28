@@ -25,6 +25,7 @@ private:
 
 	/*Text & Fonts*/
 	sf::Text playerLevel;
+	sf::Text hpText;
 	sf::Text staminaText; 
 	sf::Text manaText;
 	sf::Font font;
@@ -39,12 +40,13 @@ public:
 	virtual ~HUD();
 
 	/*Update Functions*/
-	void updateHP(PlayerDetails player_details);
-	void updateMana(float current_mana, float max_mana);
-	void updateManaText(float current_mana, float max_mana);
 	void updatePlayerLevelText(PlayerDetails player_details);
+	void updateHP(PlayerDetails player_details);
+	void updateHPText(PlayerDetails player_details);
 	void updateStamina(PlayerDetails player_details);
 	void updateStaminaText(PlayerDetails player_details);
+	void updateMana(float current_mana, float max_mana);
+	void updateManaText(float current_mana, float max_mana);
 	void update(PlayerDetails player_details, float current_mana, float max_mana);
 
 	/*Render Functions*/
