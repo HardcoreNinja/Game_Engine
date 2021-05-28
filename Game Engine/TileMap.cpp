@@ -151,6 +151,29 @@ std::tuple<bool, unsigned short> TILEMAP::TileMap::getCollision(sf::RectangleSha
 				}
 			}
 }
+std::vector<sf::Vector2f> TILEMAP::TileMap::getEnemySpawnPositions()
+{
+	std::vector<sf::Vector2f> enemySpawnPositions; 
+	for (int tile_layer = 0; tile_layer != this->tileMap.size(); tile_layer++)
+		for (int pos_x = 0; pos_x != this->tileMap[tile_layer].size(); pos_x++)
+			for (int pos_y = 0; pos_y != this->tileMap[tile_layer][pos_x].size(); pos_y++)
+			{
+				if (this->tileMap[tile_layer][pos_x][pos_y] != NULL)
+				{
+					if (tile_layer == 0)
+					{
+						if (this->tileMap[tile_layer][pos_x][pos_y]->getTileType() == TILEMAP::TileType::Default)
+						{
+							std::cout << "Enemy Spawn Positions: " << this->tileMap[tile_layer][pos_x][pos_y]->getPosition().x << " x " << this->tileMap[tile_layer][pos_x][pos_y]->getPosition().y << '\n';
+							enemySpawnPositions.push_back(this->tileMap[tile_layer][pos_x][pos_y]->getPosition());
+						}
+
+					}
+				}
+			}
+
+	return enemySpawnPositions;
+}
 
 /*Setters*/
 void TILEMAP::TileMap::setTextureIntRect(sf::IntRect texture_int_rect)

@@ -82,6 +82,9 @@
     <Filter Include="Resource Files\Config\Player Details">
       <UniqueIdentifier>{98054e2d-b529-4a17-b7d0-5dd9a37e35e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Enemy">
+      <UniqueIdentifier>{a6c64e29-2993-4e35-b898-18a133c3dd73}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Header.cpp">
@@ -135,6 +138,9 @@
     <ClCompile Include="HUD.cpp">
       <Filter>Source Files\HUD</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">
@@ -184,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="HUD.h">
       <Filter>Source Files\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Source Files\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

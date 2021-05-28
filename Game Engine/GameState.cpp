@@ -84,6 +84,21 @@ void GameState::initHUD()
 {
 	this->hud = std::make_unique<HUD>();
 }
+void GameState::initEnemies()
+{
+	/*Enemy Spawn Positions*/
+	this->enemySpawnPositionVector = this->tileMap->getEnemySpawnPositions();
+
+	/*Create Enemies & Push Back Into Enemy Vector*/
+	int numberOfEnemies = 3;
+
+	for (int i = 0; i < numberOfEnemies; i++)
+	{
+		this->enemy = std::make_unique<Enemy>(this->enemySpawnPositionVector);
+		this->enemy->setEnemyPosition();
+		this->enemyVector.push_back(std::move(this->enemy));
+	}
+}
 
 /*Constructor & Destructor*/
 GameState::GameState(GameInfo* game_info, PlayerDetails player_details, ProjectileDetails projectile_details, bool came_from_main_menu)
@@ -98,6 +113,7 @@ GameState::GameState(GameInfo* game_info, PlayerDetails player_details, Projecti
 	this->initLatestTileMap();
 	this->initPlayer(player_details);
 	this->initHUD();
+	this->initEnemies();
 }
 GameState::~GameState()
 {
@@ -260,7 +276,17 @@ void GameState::updateInGameActions()
 		}
 	}
 }
-void GameState::updateProjectileSpawnLoop(const float& dt)
+void GameState::updateEnemyLoop(const float& dt)
+{
+	int counter = 0;
+	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
+	{
+		this->enemyVector[counter]->update(dt);
+		counter++;
+	}
+	
+}
+void GameState::updateProjectileLoop(const float& dt)
 {
 	int counter = 0;
 	for (this->projectileItr = this->projectileVector.begin(); this->projectileItr != this->projectileVector.end(); this->projectileItr++)
@@ -327,8 +353,11 @@ void GameState::update(const float& dt)
 		/*Update HUD*/
 		this->updateHUD();
 
-		/*Projectile Spawn*/
-		this->updateProjectileSpawnLoop(dt);
+		/*Enemy Update*/
+		this->updateEnemyLoop(dt);
+
+		/*Projectile Update*/
+		this->updateProjectileLoop(dt);
 
 		/*Projectile Wall Collision Loop*/
 		this->updateProjectileWallCollision();
@@ -362,6 +391,16 @@ void GameState::renderTileMap(sf::RenderTarget& target)
 {
 	this->tileMap->render(target, this->view);
 }
+void GameState::renderEnemies(sf::RenderTarget& target)
+{
+	int counter = 0;
+	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
+	{
+		this->enemyVector[counter]->render(target);
+
+		counter++;
+	}
+}
 void GameState::renderPlayer(sf::RenderTarget& target)
 {
 	this->player->render(target);
@@ -392,6 +431,7 @@ void GameState::render(sf::RenderTarget* target)
 	this->renderSprite.setTexture(this->renderTexture.getTexture());
 	this->renderProjectiles(this->renderTexture);
 	this->renderPlayer(this->renderTexture);
+	this->renderEnemies(this->renderTexture);
 	this->renderTexture.display();
 	target->draw(this->renderSprite);
 

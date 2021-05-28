@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Projectile.h"
 #include "HUD.h"
+#include "Enemy.h"
 
 /*Class Forward Declarations*/
 class Tile;
@@ -11,6 +12,7 @@ class TileMap;
 class Player;
 class Projectile;
 class HUD;
+class Enemy;
 class Projectile;
 class sf::RenderTarget;
 class sf::Clock;
@@ -47,6 +49,12 @@ private:
     std::vector<std::unique_ptr<Projectile>> projectileVector;
     std::vector<std::unique_ptr<Projectile>>::const_iterator projectileItr;
 
+    /*Enemy Variables*/
+    std::unique_ptr<Enemy> enemy;
+    std::vector<std::unique_ptr<Enemy>> enemyVector;
+    std::vector<std::unique_ptr<Enemy>>::const_iterator enemyItr;
+    std::vector<sf::Vector2f> enemySpawnPositionVector; 
+
     /*Initializers*/
     void initVariables(bool came_from_main_menu, PlayerDetails player_details, ProjectileDetails projectile_details);
     void initKeybinds();
@@ -57,6 +65,7 @@ private:
     void initLatestTileMap();
     void initPlayer(PlayerDetails player_details);
     void initHUD();
+    void initEnemies();
 
 public:
     /*Constuctor & Destructor*/
@@ -71,7 +80,8 @@ public:
     void updatePauseMenuButtons();
     virtual void updateUserInput(const float& dt);
     void updateInGameActions();
-    void updateProjectileSpawnLoop(const float& dt);
+    void updateEnemyLoop(const float& dt);
+    void updateProjectileLoop(const float& dt);
     void updateProjectileDestroyLoop();
     void updateProjectileWallCollision();
     virtual void update(const float& dt);
@@ -82,6 +92,7 @@ public:
     /*Render Functions*/
     void renderPauseMenu(sf::RenderTarget& target);
     void renderTileMap(sf::RenderTarget& target);
+    void renderEnemies(sf::RenderTarget& target);
     void renderPlayer(sf::RenderTarget& target);
     void renderProjectiles(sf::RenderTarget& target);
     void renderHUD(sf::RenderTarget& target);
