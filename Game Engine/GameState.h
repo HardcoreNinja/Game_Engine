@@ -81,6 +81,7 @@ public:
     virtual void updateUserInput(const float& dt);
     void updateInGameActions();
     void updateEnemyLoop(const float& dt);
+    void updateEnemyWallCollision();
     void updateProjectileLoop(const float& dt);
     void updateProjectileDestroyLoop();
     void updateProjectileWallCollision();

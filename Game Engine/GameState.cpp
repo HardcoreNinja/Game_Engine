@@ -286,6 +286,15 @@ void GameState::updateEnemyLoop(const float& dt)
 	}
 	
 }
+void GameState::updateEnemyWallCollision()
+{
+	int counter = 0;
+	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
+	{
+		this->enemyVector[counter]->tileCollision(this->tileMap->getCollision(this->enemyVector[counter]->getSpriteRect()));
+		counter++;
+	}
+}
 void GameState::updateProjectileLoop(const float& dt)
 {
 	int counter = 0;
@@ -355,6 +364,9 @@ void GameState::update(const float& dt)
 
 		/*Enemy Update*/
 		this->updateEnemyLoop(dt);
+
+		/*Enemy Wall Collision Loop*/
+		this->updateEnemyWallCollision();
 
 		/*Projectile Update*/
 		this->updateProjectileLoop(dt);

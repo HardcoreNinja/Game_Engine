@@ -1,6 +1,12 @@
 #ifndef ENEMNY_H
 #define ENEMY_H
 #include "Entity.h"
+#include "TileMap.h"
+
+
+/*Class Forward Declarations*/
+class TileMap; 
+class sf::RenderTarget;
 
 enum class EnemyDirection
 {
@@ -34,6 +40,7 @@ private:
     EnemyDetails enemyDetails; 
 
     /*Collision Variables*/
+    bool wallCollision;
     sf::Vector2f oldPosition;
 
     int directionCounter;
@@ -54,6 +61,10 @@ public:
 
    /*Getters*/
     int getRandomInt(int min, int max);
+    sf::RectangleShape getSpriteRect();
+
+    /*Tile Collisions Functions*/
+    void tileCollision(std::tuple<bool, unsigned short> collision_tuple);
 
     /*Update Functions*/
     void updateRandomDirection(const float& dt);

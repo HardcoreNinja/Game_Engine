@@ -22,6 +22,9 @@ void Enemy::initVariables(std::vector<sf::Vector2f> enemy_spawn_positions)
 	/*Direction Counter*/
 	this->directionCounter = 0;
 	this->randomDirectionNumber = this->getRandomInt(0, 4);
+
+	/*Collision Variables*/
+	this->wallCollision = false;
 }
 void Enemy::initSpriteRect()
 {
@@ -211,6 +214,42 @@ void Enemy::setRandomEnemy()
 int Enemy::getRandomInt(int min, int max)
 {
 	return rand() % max + min;
+}
+sf::RectangleShape Enemy::getSpriteRect()
+{
+	return this->spriteRect;
+}
+
+/*Tile Collisions Functions*/
+void Enemy::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
+{
+	if (std::get<0>(collision_tuple) == true && std::get<1>(collision_tuple) == TILEMAP::TileType::Wall)
+	{
+		this->wallCollision = true;
+		std::cout << "Enemy/Wall Collision!" << '\n';
+		this->randomDirectionNumber = 0;
+	}
+	else
+		this->wallCollision = false;
+
+	if (this->wallCollision == true)
+	{
+		sf::Vector2f position = this->spriteRect.getPosition();
+
+		if (this->enemyDetails.velocity.x != 0.f)
+		{
+			position.x = this->oldPosition.x;
+			this->enemyDetails.velocity.x = 0.f;
+		}
+
+		if (this->enemyDetails.velocity.y != 0.f)
+		{
+			position.y = this->oldPosition.y;
+			this->enemyDetails.velocity.y = 0.f;
+		}
+
+		this->spriteRect.setPosition(position);
+	}
 }
 
 /*Update Functions*/
