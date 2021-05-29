@@ -3,11 +3,18 @@
 #include "Entity.h"
 #include "TileMap.h"
 
-
 /*Class Forward Declarations*/
 class TileMap; 
+class sf::Sprite;
+class sf::Texture; 
+class sf::CircleShape;
 class sf::RenderTarget;
 
+enum class EmoteStates
+{
+    Default = 0,
+    Alert_1
+};
 enum class EnemyDirection
 {
     Idle = 0, 
@@ -18,6 +25,9 @@ enum class EnemyDirection
 };
 struct EnemyDetails
 {
+    /*EmoteState*/
+    EmoteStates emoteState;
+
     /*Enemy Direction*/
     EnemyDirection currentDirection; 
     EnemyDirection oldDirection;
@@ -43,9 +53,19 @@ private:
     EnemyDetails enemyDetails; 
 
     /*Collision Variables*/
+    bool alertCircleCollisionBool;
     bool playerCollisionBool; 
     bool wallCollision;
     sf::Vector2f oldPosition;
+
+    /*AI Variables*/
+    sf::CircleShape alertCircle;
+
+    /*Emote Variables*/
+    sf::Sprite emoteSprite;
+    sf::Texture emoteTexture; 
+    sf::IntRect emoteIntRect;
+    sf::Clock emoteAnimationClock;
 
     /*Randomization Variables*/
     int directionCounter;
@@ -63,6 +83,7 @@ public:
     /*Setters*/
     void setEnemyPosition();
     void setRandomEnemy();
+    void setEmoteState(EmoteStates emote_state);
 
    /*Getters*/
     int getRandomInt(int min, int max);
@@ -72,8 +93,10 @@ public:
     /*Collisions Functions*/
     void tileCollision(std::tuple<bool, unsigned short> collision_tuple);
     void playerCollision(sf::RectangleShape player_rect);
+    void alertCircleCollision(sf::RectangleShape player_rect);
 
     /*Update Functions*/
+    void updateEmoteAnimation();
     void updateRandomDirection(const float& dt);
     void updateVelocity(float dir_x, float dir_y, const float& dt);
     void updateMovement(const float& dt);

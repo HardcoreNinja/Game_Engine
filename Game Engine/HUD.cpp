@@ -87,7 +87,7 @@ void HUD::updateHP(PlayerDetails player_details)
 
 	float percentageChange = player_details.currentHP / player_details.maxHP;
 
-	std::cout << "PercentageChange: " << percentageChange << '\n';
+	//std::cout << "PercentageChange: " << percentageChange << '\n';
 
 	this->intRectRedBar.width = intRectLeft * percentageChange;
 	this->spriteRedBar.setTextureRect(this->intRectRedBar);

@@ -23,25 +23,45 @@ void Enemy::initVariables(std::vector<sf::Vector2f> enemy_spawn_positions)
 	this->directionCounter = 0;
 	this->randomDirectionNumber = this->getRandomInt(0, 4);
 
+	/*Emote State*/
+	this->enemyDetails.emoteState = EmoteStates::Default;
+
 	/*Collision Variables*/
+	this->alertCircleCollisionBool = false;
 	this->playerCollisionBool = false;
 	this->wallCollision = false;
 }
 void Enemy::initSpriteRect()
 {
+	/*Enemy Sprite Rect*/
 	this->spriteRect.setSize(sf::Vector2f(26.f, 32.f));
 	this->spriteRect.setOutlineThickness(1.f);
 	this->spriteRect.setOutlineColor(sf::Color::Red);
 	this->spriteRect.setFillColor(sf::Color::Transparent);
 	this->spriteRect.setOrigin(this->spriteRect.getGlobalBounds().width / 2.f, this->spriteRect.getGlobalBounds().height / 2.f);
+
+	/*Alert Circle*/
+	this->alertCircle = sf::CircleShape(80);
+	this->alertCircle.setOutlineThickness(1.f);
+	this->alertCircle.setOutlineColor(sf::Color::Magenta);
+	this->alertCircle.setFillColor(sf::Color::Transparent);
+	this->alertCircle.setOrigin(this->alertCircle.getGlobalBounds().width / 2.f, this->alertCircle.getGlobalBounds().height / 2.f);
+	this->alertCircle.setPosition(this->spriteRect.getPosition());
 }
 void Enemy::initSprite()
 {
+	/*Enemy Sprite*/
 	this->spriteIntRect = sf::IntRect(32, 0, 32, 32);
 	this->setRandomEnemy();
 	this->sprite.setTextureRect(this->spriteIntRect);
 	this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
+
+	/*Emote Sprite*/
+	this->emoteIntRect = sf::IntRect(0, 0, 32, 32);
+	this->emoteSprite.setTextureRect(this->emoteIntRect);
+	this->emoteSprite.setOrigin(this->emoteSprite.getGlobalBounds().width / 2.f, this->emoteSprite.getGlobalBounds().height / 2.f);
+	this->emoteSprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x, this->spriteRect.getPosition().y - 50.f));
 }
 
 /*Constructor & Destructor*/
@@ -238,6 +258,18 @@ void Enemy::setRandomEnemy()
 		std::cout << "ERROR::ENEMY::void Enemy::setRandomEnemy()::Invalid Switch Entry!\n";
 	}
 }
+void Enemy::setEmoteState(EmoteStates emote_state)
+{
+	switch (emote_state)
+	{
+	case EmoteStates::Default:
+		break;
+	case EmoteStates::Alert_1:
+		if (!this->emoteTexture.loadFromFile("Resources/Images/Emotes/alert.png"))
+			throw("ERROR::ENEMY::FAILED_TO_LOAD::alert.png");
+		emoteSprite.setTexture(this->emoteTexture);
+	}
+}
 
 /*Getters*/
 int Enemy::getRandomInt(int min, int max)
@@ -312,8 +344,72 @@ void Enemy::playerCollision(sf::RectangleShape player_rect)
 		this->spriteRect.setPosition(position);
 	}
 }
+void Enemy::alertCircleCollision(sf::RectangleShape player_rect)
+{
+	if (this->alertCircle.getGlobalBounds().intersects(player_rect.getGlobalBounds()))
+	{
+		this->alertCircleCollisionBool = true;
+		std::cout << "Alert Circle Player Collision Bool: " << this->alertCircleCollisionBool << '\n';
+	}
+	else 
+		this->alertCircleCollisionBool = false;
+
+	if (this->alertCircleCollisionBool)
+	{
+		this->enemyDetails.emoteState = EmoteStates::Alert_1;
+		this->setEmoteState(this->enemyDetails.emoteState);
+	}
+	else if (!this->alertCircleCollisionBool)
+	{
+		this->enemyDetails.emoteState = EmoteStates::Default;
+		this->setEmoteState(this->enemyDetails.emoteState);
+	}
+}
 
 /*Update Functions*/
+void Enemy::updateEmoteAnimation()
+{
+	int intRectLeft_Start = 0;
+	int intRectLeft_Middle = 32;
+	int intRectLeft_End = 64;
+
+	int intRectLeft_FrameSize = 32;
+
+	float deltaTime = this->emoteAnimationClock.getElapsedTime().asSeconds();
+	float switchTime = 0.1f;
+
+	int counter = 0;
+
+	if (deltaTime > switchTime)
+	{
+		if (this->emoteIntRect.left == intRectLeft_Start)
+		{
+			counter = 1;
+			this->emoteIntRect.left += intRectLeft_FrameSize;
+			this->emoteSprite.setTextureRect(this->emoteIntRect);
+			this->emoteAnimationClock.restart();
+		}
+		else if (this->emoteIntRect.left == intRectLeft_Middle & counter == 1)
+		{
+			this->emoteIntRect.left += intRectLeft_FrameSize;
+			this->emoteSprite.setTextureRect(this->emoteIntRect);
+			this->emoteAnimationClock.restart();
+		}
+		else if (this->emoteIntRect.left == intRectLeft_Middle & counter == 0)
+		{
+			this->emoteIntRect.left -= intRectLeft_FrameSize;
+			this->emoteSprite.setTextureRect(this->emoteIntRect);
+			this->emoteAnimationClock.restart();
+		}
+		else if (this->emoteIntRect.left == intRectLeft_End)
+		{
+			counter = 0;
+			this->emoteIntRect.left -= intRectLeft_FrameSize;
+			this->emoteSprite.setTextureRect(this->emoteIntRect);
+			this->emoteAnimationClock.restart();
+		}
+	}
+}
 void Enemy::updateRandomDirection(const float& dt)
 {
 		if (this->randomDirectionNumber == 0)
@@ -525,15 +621,24 @@ void Enemy::updateAnimation()
 }
 void Enemy::update(const float& dt)
 {
-	
+	/*Enemy*/
 	this->updateRandomDirection(dt);
-
-
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
+
+	/*Alert Circle*/
+	this->alertCircle.setPosition(this->spriteRect.getPosition());
+
+	/*Emotes*/
+	this->updateEmoteAnimation();
+	this->emoteSprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x, this->spriteRect.getPosition().y - 50.f));
 }
 
 /*Render Functions*/
 void Enemy::render(sf::RenderTarget& target)
 {
 	target.draw(this->sprite);
+	target.draw(this->alertCircle);
+
+	if (this->alertCircleCollisionBool)
+		target.draw(this->emoteSprite);
 }
