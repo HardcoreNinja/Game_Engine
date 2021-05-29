@@ -41,7 +41,7 @@ void Enemy::initSpriteRect()
 	this->spriteRect.setOrigin(this->spriteRect.getGlobalBounds().width / 2.f, this->spriteRect.getGlobalBounds().height / 2.f);
 
 	/*Alert Circle*/
-	this->alertCircle = sf::CircleShape(80);
+	this->alertCircle = sf::CircleShape(200);
 	this->alertCircle.setOutlineThickness(1.f);
 	this->alertCircle.setOutlineColor(sf::Color::Magenta);
 	this->alertCircle.setFillColor(sf::Color::Transparent);
