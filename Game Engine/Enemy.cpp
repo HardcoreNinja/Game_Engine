@@ -20,7 +20,7 @@ void Enemy::initVariables(std::vector<sf::Vector2f> enemy_spawn_positions)
 	this->enemyDetails.enemySpawnPosition = enemy_spawn_positions[this->getRandomInt(0, enemy_spawn_positions.size())];
 
 	/*Randomization Variables*/
-	this->directionCounter = 0;
+	this->randomDirectionCounter = 0;
 	this->randomDirectionNumber = this->getRandomInt(0, 4);
 
 	/*Emote State*/
@@ -30,6 +30,10 @@ void Enemy::initVariables(std::vector<sf::Vector2f> enemy_spawn_positions)
 	this->alertCircleCollisionBool = false;
 	this->playerCollisionBool = false;
 	this->wallCollision = false;
+
+	/*AI Variables*/
+	this->attackPlayer = false;
+	this->directionNumber = 0;
 }
 void Enemy::initSpriteRect()
 {
@@ -349,6 +353,7 @@ void Enemy::alertCircleCollision(sf::RectangleShape player_rect)
 	if (this->alertCircle.getGlobalBounds().intersects(player_rect.getGlobalBounds()))
 	{
 		this->alertCircleCollisionBool = true;
+		this->attackPlayer = true;
 		std::cout << "Alert Circle Player Collision Bool: " << this->alertCircleCollisionBool << '\n';
 	}
 	else 
@@ -367,6 +372,72 @@ void Enemy::alertCircleCollision(sf::RectangleShape player_rect)
 }
 
 /*Update Functions*/
+void Enemy::updateAIDirection(sf::RectangleShape player_rect, const float& dt)
+{
+	sf::Vector2f playerPosition; 
+
+	playerPosition = player_rect.getPosition();
+
+	sf::Vector2f enemyPosition;
+
+	enemyPosition = this->spriteRect.getPosition(); 
+
+	float remainderX = std::abs(playerPosition.x - enemyPosition.x); 
+
+	if (remainderX > 20.f)
+	{
+		if (playerPosition.x > enemyPosition.x)
+		{
+			this->directionNumber = 4; 
+			this->updateAIAttackMovement(dt);
+		}
+		else if (playerPosition.x < enemyPosition.x)
+		{
+			this->directionNumber = 3;
+			this->updateAIAttackMovement(dt);
+		}
+	}
+	else if (remainderX < 20.f)
+	{
+		if (playerPosition.y > enemyPosition.y)
+		{
+			this->directionNumber = 2;
+			this->updateAIAttackMovement(dt);
+		}
+		else if (playerPosition.y < enemyPosition.y)
+		{
+			this->directionNumber = 1;
+			this->updateAIAttackMovement(dt);
+		}
+	}
+}
+void Enemy::updateAIAttackMovement(const float& dt)
+{
+	if (this->directionNumber == 1)
+		{
+		this->enemyDetails.currentDirection = EnemyDirection::Up;
+		this->enemyDetails.oldDirection = EnemyDirection::Up;
+		this->updateVelocity(0.f, -1.f, dt);
+		}
+	else if (this->directionNumber == 2)
+		{
+		this->enemyDetails.currentDirection = EnemyDirection::Down;
+		this->enemyDetails.oldDirection = EnemyDirection::Down;
+		this->updateVelocity(0.f, 1.f, dt);
+		}
+	else if (this->directionNumber == 3)
+		{
+		this->enemyDetails.currentDirection = EnemyDirection::Left;
+		this->enemyDetails.oldDirection = EnemyDirection::Left;
+		this->updateVelocity(-1.f, 0.f, dt);
+		}
+	else if (this->directionNumber == 4)
+		{
+		this->enemyDetails.currentDirection = EnemyDirection::Right;
+		this->enemyDetails.oldDirection = EnemyDirection::Right;
+		this->updateVelocity(1.f, 0.f, dt);
+		}
+}
 void Enemy::updateEmoteAnimation()
 {
 	int intRectLeft_Start = 0;
@@ -442,13 +513,13 @@ void Enemy::updateRandomDirection(const float& dt)
 			this->updateVelocity(1.f, 0.f, dt);
 		}
 
-		this->directionCounter++;
+		this->randomDirectionCounter++;
 
-		if (this->directionCounter > 200)
+		if (this->randomDirectionCounter > 200)
 		{
 			this->randomDirectionNumber = this->getRandomInt(0, 4);
 
-			this->directionCounter = 0;
+			this->randomDirectionCounter = 0;
 		}
 }
 void Enemy::updateVelocity(float dir_x, float dir_y, const float& dt)
@@ -619,18 +690,23 @@ void Enemy::updateAnimation()
 		}
 	}
 }
-void Enemy::update(const float& dt)
+void Enemy::update(sf::RectangleShape player_rect, const float& dt)
 {
-	/*Enemy*/
-	this->updateRandomDirection(dt);
-	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
-
+	/*Attack Player or Random Direction*/
+	if (this->attackPlayer)
+		this->updateAIDirection(player_rect, dt);
+	else if (!this->attackPlayer)
+		this->updateRandomDirection(dt);
+	
 	/*Alert Circle*/
 	this->alertCircle.setPosition(this->spriteRect.getPosition());
 
 	/*Emotes*/
 	this->updateEmoteAnimation();
 	this->emoteSprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x, this->spriteRect.getPosition().y - 50.f));
+
+	/*Set Sprite Position to Sprite Rect*/
+	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
 }
 
 /*Render Functions*/

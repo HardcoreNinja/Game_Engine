@@ -59,6 +59,8 @@ private:
     sf::Vector2f oldPosition;
 
     /*AI Variables*/
+    bool attackPlayer;
+    int directionNumber;
     sf::CircleShape alertCircle;
 
     /*Emote Variables*/
@@ -68,7 +70,7 @@ private:
     sf::Clock emoteAnimationClock;
 
     /*Randomization Variables*/
-    int directionCounter;
+    int randomDirectionCounter;
     int randomDirectionNumber;
 
     /*Initializers*/
@@ -96,12 +98,14 @@ public:
     void alertCircleCollision(sf::RectangleShape player_rect);
 
     /*Update Functions*/
+    void updateAIDirection(sf::RectangleShape player_rect, const float& dt);
+    void updateAIAttackMovement(const float& dt);
     void updateEmoteAnimation();
     void updateRandomDirection(const float& dt);
     void updateVelocity(float dir_x, float dir_y, const float& dt);
     void updateMovement(const float& dt);
     void updateAnimation();
-    void update(const float& dt);
+    void update(sf::RectangleShape player_rect, const float& dt);
 
     /*Render Functions*/
     void render(sf::RenderTarget& target);

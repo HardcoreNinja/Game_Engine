@@ -283,7 +283,7 @@ void GameState::updateEnemyLoop(const float& dt)
 	{
 		this->enemyVector[counter1]->alertCircleCollision(this->player->getSpriteRect());
 		this->enemyVector[counter1]->playerCollision(this->player->getSpriteRect());
-		this->enemyVector[counter1]->update(dt);
+		this->enemyVector[counter1]->update(this->player->getSpriteRect(), dt);
 		counter1++;
 	}
 
