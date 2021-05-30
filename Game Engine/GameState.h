@@ -81,10 +81,11 @@ public:
     virtual void updateUserInput(const float& dt);
     void updateInGameActions();
     void updateEnemyLoop(const float& dt);
-    void updateEnemyWallCollision();
+    void updateEnemyCollisions();
+    void updateEnemyDestroyLoop();
     void updateProjectileLoop(const float& dt);
+    void updateProjectileCollisions();
     void updateProjectileDestroyLoop();
-    void updateProjectileWallCollision();
     virtual void update(const float& dt);
 
     /*Reinitialize Functions*/

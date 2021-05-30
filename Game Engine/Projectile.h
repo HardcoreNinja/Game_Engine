@@ -59,6 +59,9 @@ struct ProjectileDetails
     /*Mana*/
     float manaDrainFactor;
 
+    /*Damage*/
+    int damage;
+
     /*Destroy Variables*/
     int lifeTimeCounter;
     int maxLifeTimeCounter;
@@ -84,6 +87,7 @@ private:
     bool explode;
 
     /*Collision Variables*/
+    bool enemyCollisionBool;
     bool wallCollision;
     sf::Vector2f oldPosition;
 
@@ -102,6 +106,7 @@ public:
     virtual ~Projectile();
 
     /*Getters*/
+    std::tuple<sf::RectangleShape, int> getProjectileSpriteRectAndInt();
     bool getDestroy();
     sf::RectangleShape getSpriteRect();
     float getManaDrainFactor();
@@ -113,7 +118,8 @@ public:
     void setProjectilePosition(sf::RectangleShape player);
     void setExplosionTexture();
 
-    /*Tile Collision Functions*/
+    /*Collision Functions*/
+    void enemyCollision(sf::RectangleShape enemy_rect);
     void tileCollision(std::tuple<bool, unsigned short> collision_tuple);
 
     /*Update Functions*/

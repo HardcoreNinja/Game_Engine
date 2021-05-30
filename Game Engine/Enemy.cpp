@@ -8,28 +8,32 @@ void Enemy::initVariables(std::vector<sf::Vector2f> enemy_spawn_positions)
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 	srand(seed);
 
+	/*Emote State*/
+	this->enemyDetails.emoteState = EmoteStates::Default;
+
 	/*Movement Variables*/
 	this->enemyDetails.velocity = sf::Vector2f(0.f, 0.f); 
 	this->enemyDetails.maxVelocity = 3.f; 
 	this->enemyDetails.acceleration = 0.2f; 
 	this->enemyDetails.deceleration = 0.15f; 
 
-	/*Spawn Position Vector*/
-	std::cout << "Random Number: " << this->getRandomInt(0, enemy_spawn_positions.size()) << '\n';
-
+	/*Spawn Random Position Vector*/
 	this->enemyDetails.enemySpawnPosition = enemy_spawn_positions[this->getRandomInt(0, enemy_spawn_positions.size())];
+	//std::cout << "Random Number: " << this->getRandomInt(0, enemy_spawn_positions.size()) << '\n';
 
 	/*Randomization Variables*/
 	this->randomDirectionCounter = 0;
 	this->randomDirectionNumber = this->getRandomInt(0, 4);
 
-	/*Emote State*/
-	this->enemyDetails.emoteState = EmoteStates::Default;
-
 	/*Collision Variables*/
+	this->projectileCollisionBool = false;
+	this->playerCollisionBool = false;
 	this->alertCircleCollisionBool = false;
 	this->playerCollisionBool = false;
 	this->wallCollision = false;
+
+	/*Destroy Variables*/
+	this->destroy = false;
 
 	/*AI Variables*/
 	this->attackPlayer = false;
@@ -94,169 +98,225 @@ void Enemy::setRandomEnemy()
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/1.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/1.png");
 		sprite.setTexture(this->texture);
-		this->enemyDetails.damage = 1.f; 
+		this->enemyDetails.damage = 1.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 2:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/2.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/2.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 2.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 3:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/3.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/3.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 3.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 4:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/4.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/4.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 4.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 5:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/5.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/5.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 5.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 6:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/6.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/6.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 6.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 7:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/7.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/7.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 7.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 8:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/8.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/8.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 8.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 9:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/9.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/9.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 9.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 10:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/10.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/10.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 10.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 11:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/11.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/11.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 11.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 12:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/12.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/12.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 12.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 13:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/13.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/13.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 13.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 14:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/14.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/14.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 14.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 15:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/15.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/15.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 15.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 16:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/16.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/16.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 16.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 17:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/17.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/17.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 17.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 18:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/18.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/18.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 18.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 19:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/19.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/19.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 19.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 20:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/20.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/20.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 20.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 21:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/21.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/21.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 21.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 22:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/22.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/22.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 22.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 23:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/23.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/23.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 23.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 24:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/24.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/24.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 24.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 25:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/25.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/25.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 25.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 26:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/26.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/26.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 26.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 27:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/27.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/27.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 27.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	case 28:
 		if (!this->texture.loadFromFile("Resources/Images/Characters/Soldier/28.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::Soldier/28.png");
 		sprite.setTexture(this->texture);
 		this->enemyDetails.damage = 28.f;
+		this->enemyDetails.maxHP = this->getRandomInt(50, 100);
+		this->enemyDetails.currentHP = this->enemyDetails.maxHP;
 		break;
 	default:
 		std::cout << "ERROR::ENEMY::void Enemy::setRandomEnemy()::Invalid Switch Entry!\n";
@@ -276,6 +336,10 @@ void Enemy::setEmoteState(EmoteStates emote_state)
 }
 
 /*Getters*/
+bool Enemy::getDestroy()
+{
+	return this->destroy;
+}
 int Enemy::getRandomInt(int min, int max)
 {
 	return rand() % max + min;
@@ -289,7 +353,30 @@ std::tuple<sf::RectangleShape, float> Enemy::getEnemyDamageAndRect()
 	return std::make_tuple(this->spriteRect, this->enemyDetails.damage);
 }
 
-/*Tile Collisions Functions*/
+/*Collisions Functions*/
+void Enemy::projectileCollision(std::tuple<sf::RectangleShape, int> collision_tuple)
+{
+	if (std::get<0>(collision_tuple).getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
+	{
+		this->projectileCollisionBool = true;
+		std::cout << "Enemy/Wall Collison (from ENEMY!)\n";
+	}
+	else
+		this->projectileCollisionBool = false; 
+
+	if (this->projectileCollisionBool)
+	{
+		this->enemyDetails.currentHP -= std::get<1>(collision_tuple);
+
+		if (this->enemyDetails.currentHP < 0)
+			this->enemyDetails.currentHP = 0;
+
+		std::cout << "Enemy HP: " << this->enemyDetails.currentHP << '\n';
+	}
+
+	if (this->enemyDetails.currentHP == 0)
+		this->destroy = true; 
+}
 void Enemy::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
 {
 	if (std::get<0>(collision_tuple) == true && std::get<1>(collision_tuple) == TILEMAP::TileType::Wall)
@@ -354,7 +441,7 @@ void Enemy::alertCircleCollision(sf::RectangleShape player_rect)
 	{
 		this->alertCircleCollisionBool = true;
 		this->attackPlayer = true;
-		std::cout << "Alert Circle Player Collision Bool: " << this->alertCircleCollisionBool << '\n';
+		//std::cout << "Alert Circle Player Collision Bool: " << this->alertCircleCollisionBool << '\n';
 	}
 	else 
 		this->alertCircleCollisionBool = false;

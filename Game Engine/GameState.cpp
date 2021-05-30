@@ -297,12 +297,35 @@ void GameState::updateEnemyLoop(const float& dt)
 		counter2++;
 	}
 }
-void GameState::updateEnemyWallCollision()
+void GameState::updateEnemyCollisions()
 {
+	/*Enemy/Wall*/
 	int counter = 0;
 	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
 	{
 		this->enemyVector[counter]->tileCollision(this->tileMap->getCollision(this->enemyVector[counter]->getSpriteRect()));
+		counter++;
+	}
+
+	/*Enemy/Projectile*/
+	for (int i = 0; i < this->projectileVector.size(); i++)
+	{
+		for (int j = 0; j < this->enemyVector.size(); j++)
+		{
+			this->enemyVector[j]->projectileCollision(this->projectileVector[i]->getProjectileSpriteRectAndInt());
+		}
+	}
+}
+void GameState::updateEnemyDestroyLoop()
+{
+	int counter = 0; 
+	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
+	{
+		if (this->enemyVector[counter]->getDestroy())
+		{
+			this->enemyVector.erase(this->enemyItr);
+			break;
+		}
 		counter++;
 	}
 }
@@ -314,6 +337,31 @@ void GameState::updateProjectileLoop(const float& dt)
 		this->projectileVector[counter]->update(dt);
 
 		counter++;
+	}
+}
+void GameState::updateProjectileCollisions()
+{
+	/*Projectile/Wall*/
+	int counter = 0;
+	for (this->projectileItr = this->projectileVector.begin(); this->projectileItr != this->projectileVector.end(); this->projectileItr++)
+	{
+		this->projectileVector[counter]->tileCollision(this->tileMap->getCollision(this->projectileVector[counter]->getSpriteRect()));
+
+		if (this->projectileVector[counter]->getDestroy())
+		{
+			this->projectileVector.erase(projectileItr);
+			break;
+		}
+		counter++;
+	}
+
+	/*Projectile/Enemy*/
+	for (int i = 0; i < this->projectileVector.size(); i++)
+	{
+		for (int j = 0; j < this->enemyVector.size(); j++)
+		{
+			this->projectileVector[i]->enemyCollision(this->enemyVector[j]->getSpriteRect());
+		}
 	}
 }
 void GameState::updateProjectileDestroyLoop()
@@ -332,22 +380,6 @@ void GameState::updateProjectileDestroyLoop()
 	}
 	
 }
-void GameState::updateProjectileWallCollision()
-{
-	int counter = 0;
-	for (this->projectileItr = this->projectileVector.begin(); this->projectileItr != this->projectileVector.end(); this->projectileItr++)
-	{
-		this->projectileVector[counter]->tileCollision(this->tileMap->getCollision(this->projectileVector[counter]->getSpriteRect()));
-
-		if (this->projectileVector[counter]->getDestroy())
-		{
-			this->projectileVector.erase(projectileItr);
-			break;
-		}
-
-		counter++;
-	}
-}
 void GameState::update(const float& dt)
 {
 	this->updateSFMLEvents();
@@ -362,7 +394,7 @@ void GameState::update(const float& dt)
 	}
 	else               //Unpaused
 	{
-		/*Player*/
+		/*Player Functions*/
 		this->player->update(dt);
 		this->player->tileCollision(this->tileMap->getCollision(this->player->getSpriteRect()));
 		this->view.setCenter(this->player->getSpriteRect().getPosition());
@@ -370,22 +402,17 @@ void GameState::update(const float& dt)
 		/*In-Game Actions*/
 		this->updateInGameActions();
 
-		/*Update HUD*/
+		/*HUD Functions*/
 		this->updateHUD();
 
-		/*Enemy Update*/
+		/*Enemy Functions*/
 		this->updateEnemyLoop(dt);
+		this->updateEnemyDestroyLoop();
+		this->updateEnemyCollisions();
 
-		/*Enemy Wall Collision Loop*/
-		this->updateEnemyWallCollision();
-
-		/*Projectile Update*/
+		/*Projectile Functions*/
 		this->updateProjectileLoop(dt);
-
-		/*Projectile Wall Collision Loop*/
-		this->updateProjectileWallCollision();
-
-		/*Projectile Destroy*/
+		this->updateProjectileCollisions();
 		this->updateProjectileDestroyLoop();
 	}
 }

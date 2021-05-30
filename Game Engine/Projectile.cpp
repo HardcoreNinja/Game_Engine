@@ -17,6 +17,7 @@ void Projectile::initVariables(ProjectileDetails projectile_details)
 	this->explode = false;
 
 	/*Collision Variables*/
+	this->enemyCollisionBool = false;
 	this->wallCollision = false;
 }
 void Projectile::initSpriteRect()
@@ -32,8 +33,7 @@ void Projectile::initSprite()
 {
 	/*Projectile*/
 	this->spriteIntRect = sf::IntRect(0, 0, 192, 192);
-	if(!this->texture.loadFromFile("Resources/Images/Projectiles/black_tornado.png"))
-		throw("ERROR::PROJECTILE::FAILED_TO_LOAD::black_tornado.png");
+	this->setProjectileType(this->projectileDetails.projectileType);
 	this->sprite.setTexture(this->texture);
 	this->sprite.setTextureRect(this->spriteIntRect);
 	this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
@@ -41,8 +41,6 @@ void Projectile::initSprite()
 
 	/*Explosion*/
 	this->projectileDetails.explosionIntRect = sf::IntRect(0, 0, 100, 100);
-	if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/gray.png"))
-		throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/gray.png");
 	this->projectileDetails.explosionTexture.setSmooth(true);
 }
 
@@ -58,6 +56,10 @@ Projectile::~Projectile()
 }
 
 /*Getters*/
+std::tuple<sf::RectangleShape, int> Projectile::getProjectileSpriteRectAndInt()
+{
+	return std::make_tuple(this->spriteRect, this->projectileDetails.damage);
+}
 bool Projectile::getDestroy()
 {
 	return this->destroy;
@@ -88,6 +90,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/gray.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/gray.png");
 		this->projectileDetails.manaDrainFactor = 5.f;
+		this->projectileDetails.damage = 50;
 		break;
 	case ProjectileTypes::Blue_Tornado:
 		if (!this->texture.loadFromFile("Resources/Images/Projectiles/blue_tornado.png"))
@@ -95,6 +98,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/blue.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/blue.png");
 		this->projectileDetails.manaDrainFactor = 5.f;
+		this->projectileDetails.damage = 50;
 		break;
 	case ProjectileTypes::Brown_Tornado:
 		if (!this->texture.loadFromFile("Resources/Images/Projectiles/brown_tornado.png"))
@@ -102,6 +106,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/orange.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/orange.png");
 		this->projectileDetails.manaDrainFactor = 5.f;
+		this->projectileDetails.damage = 50;
 		break;
 	case ProjectileTypes::Cyan_Ball_1:
 		if (!this->texture.loadFromFile("Resources/Images/Projectiles/cyan_ball_1.png"))
@@ -109,6 +114,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/cyan.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/cyan.png");
 		this->projectileDetails.manaDrainFactor = 3.f;
+		this->projectileDetails.damage = 25;
 		break;
 	case ProjectileTypes::Cyan_Ball_2:
 		if (!this->texture.loadFromFile("Resources/Images/Projectiles/cyan_ball_2.png"))
@@ -116,6 +122,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/cyan.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/cyan.png");
 		this->projectileDetails.manaDrainFactor = 3.f;
+		this->projectileDetails.damage = 25;
 		break;
 	case ProjectileTypes::Cyan_Ball_3:
 		if (!this->texture.loadFromFile("Resources/Images/Projectiles/cyan_ball_3.png"))
@@ -123,6 +130,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/cyan.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/cyan.png");
 		this->projectileDetails.manaDrainFactor = 3.f;
+		this->projectileDetails.damage = 25;
 		break;
 	case ProjectileTypes::Cyan_Ball_4:
 		if (!this->texture.loadFromFile("Resources/Images/Projectiles/cyan_ball_4.png"))
@@ -130,6 +138,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/cyan.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/cyan.png");
 		this->projectileDetails.manaDrainFactor = 3.f;
+		this->projectileDetails.damage = 25;
 		break;
 	case ProjectileTypes::Cyan_Ball_5:
 		if (!this->texture.loadFromFile("Resources/Images/Projectiles/cyan_ball_5.png"))
@@ -137,6 +146,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/cyan.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/cyan.png");
 		this->projectileDetails.manaDrainFactor = 3.f;
+		this->projectileDetails.damage = 25;
 		break;
 	case ProjectileTypes::Green_Tornado:
 		if (!this->texture.loadFromFile("Resources/Images/Projectiles/green_tornado.png"))
@@ -144,6 +154,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/green.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/green.png");
 		this->projectileDetails.manaDrainFactor = 5.f;
+		this->projectileDetails.damage = 50;
 		break;
 	case ProjectileTypes::Pink_Ball_1:
 		if (!this->texture.loadFromFile("Resources/Images/Projectiles/pink_ball_1.png"))
@@ -151,6 +162,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/pink.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/pink.png");
 		this->projectileDetails.manaDrainFactor = 4.f;
+		this->projectileDetails.damage = 25;
 		break;
 	case ProjectileTypes::Pink_Ball_2:
 		if (!this->texture.loadFromFile("Resources/Images/Projectiles/pink_ball_2.png"))
@@ -158,6 +170,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/pink.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/pink.png");
 		this->projectileDetails.manaDrainFactor = 4.f;
+		this->projectileDetails.damage = 25;
 		break;
 	case ProjectileTypes::Pink_Ball_3:
 		if (!this->texture.loadFromFile("Resources/Images/Projectiles/pink_ball_3.png"))
@@ -165,6 +178,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/pink.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/pink.png");
 		this->projectileDetails.manaDrainFactor = 4.f;
+		this->projectileDetails.damage = 25;
 		break;
 	case ProjectileTypes::Pink_Ball_4:
 		if (!this->texture.loadFromFile("Resources/Images/Projectiles/pink_ball_4.png"))
@@ -172,6 +186,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/pink.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/pink.png");
 		this->projectileDetails.manaDrainFactor = 4.f;
+		this->projectileDetails.damage = 25;
 		break;
 	case ProjectileTypes::Pink_Ball_5:
 		if (!this->texture.loadFromFile("Resources/Images/Projectiles/pink_ball_5.png"))
@@ -179,6 +194,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/pink.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/pink.png");
 		this->projectileDetails.manaDrainFactor = 4.f;
+		this->projectileDetails.damage = 25;
 		break;
 	case ProjectileTypes::Red_Tornado:
 		if (!this->texture.loadFromFile("Resources/Images/Projectiles/red_tornado.png"))
@@ -186,6 +202,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/red.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/red.png");
 		this->projectileDetails.manaDrainFactor = 5.f;
+		this->projectileDetails.damage = 50;
 		break;
 	case ProjectileTypes::Yellow_Ball_1:
 		if (!this->texture.loadFromFile("Resources/Images/Projectiles/yellow_ball_1.png"))
@@ -193,6 +210,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/yellow.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/yellow.png");
 		this->projectileDetails.manaDrainFactor = 6.f;
+		this->projectileDetails.damage = 25;
 		break;
 	case ProjectileTypes::Yellow_Ball_2:
 		if (!this->texture.loadFromFile("Resources/Images/Projectiles/yellow_ball_2.png"))
@@ -200,6 +218,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/yellow.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/yellow.png");
 		this->projectileDetails.manaDrainFactor = 6.f;
+		this->projectileDetails.damage = 25;
 		break;
 	case ProjectileTypes::Yellow_Ball_3:
 		if (!this->texture.loadFromFile("Resources/Images/Projectiles/yellow_ball_3.png"))
@@ -207,6 +226,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/yellow.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/yellow.png");
 		this->projectileDetails.manaDrainFactor = 6.f;
+		this->projectileDetails.damage = 25;
 		break;
 	case ProjectileTypes::Yellow_Ball_4:
 		if (!this->texture.loadFromFile("Resources/Images/Projectiles/yellow_ball_4.png"))
@@ -214,6 +234,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/yellow.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/yellow.png");
 		this->projectileDetails.manaDrainFactor = 6.f;
+		this->projectileDetails.damage = 25;
 		break;
 	case ProjectileTypes::Yellow_Ball_5:
 		if (!this->texture.loadFromFile("Resources/Images/Projectiles/yellow_ball_5.png"))
@@ -221,6 +242,7 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		if (!this->projectileDetails.explosionTexture.loadFromFile("Resources/Images/Explosions/yellow.png"))
 			throw("ERROR::PROJECTILE::FAILED_TO_LOAD::Explosions/yellow.png");
 		this->projectileDetails.manaDrainFactor = 6.f;
+		this->projectileDetails.damage = 25;
 		break;
 	default:
 		std::cout << "ERROR::PROJECITLE::void Projectile::setProjectileType(ProjectileTypes projectile_type))::Invalid Switch Entry!\n";
@@ -271,7 +293,37 @@ void Projectile::setExplosionTexture()
 	this->explode = true;
 }
 
-/*Tile Collision Functions*/
+/*Collision Functions*/
+void Projectile::enemyCollision(sf::RectangleShape enemy_rect)
+{
+	if (enemy_rect.getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
+	{
+		this->enemyCollisionBool = true;
+		std::cout << "Enemy/Projectile Collision (from Projectile!)\n";
+		this->setExplosionTexture();
+	}
+	else
+		this->enemyCollisionBool = false; 
+
+	if (this->enemyCollisionBool)
+	{
+		sf::Vector2f position = this->spriteRect.getPosition();
+
+		if (this->projectileDetails.velocity.x != 0.f)
+		{
+			position.x = this->oldPosition.x;
+			this->projectileDetails.velocity.x = 0.f;
+		}
+
+		if (this->projectileDetails.velocity.y != 0.f)
+		{
+			position.y = this->oldPosition.y;
+			this->projectileDetails.velocity.y = 0.f;
+		}
+
+		this->spriteRect.setPosition(position);
+	}
+}
 void Projectile::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
 {
 	if (std::get<0>(collision_tuple) == true && std::get<1>(collision_tuple) == TILEMAP::TileType::Wall)

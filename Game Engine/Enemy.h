@@ -41,6 +41,10 @@ struct EnemyDetails
     /*Damage*/
     float damage;
 
+    /*HP*/
+    int currentHP;
+    int maxHP;
+
     /*Spawn Position Vector*/
     sf::Vector2f enemySpawnPosition;
 };
@@ -53,10 +57,14 @@ private:
     EnemyDetails enemyDetails; 
 
     /*Collision Variables*/
+    bool projectileCollisionBool;
     bool alertCircleCollisionBool;
     bool playerCollisionBool; 
     bool wallCollision;
     sf::Vector2f oldPosition;
+
+    /*Destroy Variables*/
+    bool destroy;
 
     /*AI Variables*/
     bool attackPlayer;
@@ -88,11 +96,13 @@ public:
     void setEmoteState(EmoteStates emote_state);
 
    /*Getters*/
+    bool getDestroy();
     int getRandomInt(int min, int max);
     sf::RectangleShape getSpriteRect();
     std::tuple<sf::RectangleShape, float> getEnemyDamageAndRect();
 
     /*Collisions Functions*/
+    void projectileCollision(std::tuple<sf::RectangleShape, int> collision_tuple);
     void tileCollision(std::tuple<bool, unsigned short> collision_tuple);
     void playerCollision(sf::RectangleShape player_rect);
     void alertCircleCollision(sf::RectangleShape player_rect);
