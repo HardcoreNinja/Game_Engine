@@ -276,35 +276,60 @@ void GameState::updateInGameActions()
 		}
 	}
 }
+void GameState::updatePlayer(const float& dt)
+{
+	this->player->update(dt);
+	this->view.setCenter(this->player->getSpriteRect().getPosition());
+}
+void GameState::updatePlayerCollisions()
+{
+	/*Player/Wall*/
+	this->player->tileCollision(this->tileMap->getCollision(this->player->getSpriteRect()));
+
+	/*Player/Enemy*/
+	int counter1 = 0;
+	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
+	{
+		if (this->player->getSpriteRect().getGlobalBounds().intersects(this->enemyVector[counter1]->getSpriteRect().getGlobalBounds()))
+		{
+			this->player->enemyCollision(this->enemyVector[counter1]->getEnemyDamageAndRect());
+		}
+		counter1++;
+	}
+}
 void GameState::updateEnemyLoop(const float& dt)
 {
 	int counter1 = 0;
 	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
 	{
-		this->enemyVector[counter1]->alertCircleCollision(this->player->getSpriteRect());
-		this->enemyVector[counter1]->playerCollision(this->player->getSpriteRect());
 		this->enemyVector[counter1]->update(this->player->getSpriteRect(), dt);
 		counter1++;
-	}
-
-	int counter2 = 0;
-	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
-	{
-		if (this->player->getSpriteRect().getGlobalBounds().intersects(this->enemyVector[counter2]->getSpriteRect().getGlobalBounds()))
-		{
-			this->player->enemyCollision(this->enemyVector[counter2]->getEnemyDamageAndRect());
-		}
-		counter2++;
 	}
 }
 void GameState::updateEnemyCollisions()
 {
 	/*Enemy/Wall*/
-	int counter = 0;
+	int counter1 = 0;
 	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
 	{
-		this->enemyVector[counter]->tileCollision(this->tileMap->getCollision(this->enemyVector[counter]->getSpriteRect()));
-		counter++;
+		this->enemyVector[counter1]->tileCollision(this->tileMap->getCollision(this->enemyVector[counter1]->getSpriteRect()));
+		counter1++;
+	}
+
+	/*Enemy Alert Circle/Player*/
+	int counter2 = 0;
+	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
+	{
+		this->enemyVector[counter2]->alertCircleCollision(this->player->getSpriteRect());
+		counter2++;
+	}
+
+	/*Player/Enemy*/
+	int counter3 = 0;
+	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
+	{
+		this->enemyVector[counter3]->playerCollision(this->player->getSpriteRect());
+		counter3++;
 	}
 
 	/*Enemy/Projectile*/
@@ -395,10 +420,9 @@ void GameState::update(const float& dt)
 	else               //Unpaused
 	{
 		/*Player Functions*/
-		this->player->update(dt);
-		this->player->tileCollision(this->tileMap->getCollision(this->player->getSpriteRect()));
-		this->view.setCenter(this->player->getSpriteRect().getPosition());
-
+		this->updatePlayer(dt);
+		this->updatePlayerCollisions();
+		
 		/*In-Game Actions*/
 		this->updateInGameActions();
 

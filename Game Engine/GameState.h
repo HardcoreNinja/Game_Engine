@@ -80,6 +80,8 @@ public:
     void updatePauseMenuButtons();
     virtual void updateUserInput(const float& dt);
     void updateInGameActions();
+    void updatePlayer(const float& dt);
+    void updatePlayerCollisions();
     void updateEnemyLoop(const float& dt);
     void updateEnemyCollisions();
     void updateEnemyDestroyLoop();
