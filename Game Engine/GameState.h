@@ -24,6 +24,7 @@ private:
     /*Mana*/
     float currentMana;
     float maxMana;
+    int manaFillCounter;
 
     /*Came From Main Menu Bool*/
     bool cameFromMainMenu;
@@ -76,10 +77,11 @@ public:
     void setManaDrainFactor();
 
     /*Update Functions*/
-    void updateHUD();
     void updatePauseMenuButtons();
     virtual void updateUserInput(const float& dt);
     void updateInGameActions();
+    void updateHUD();
+    void updateManaFill();
     void updatePlayer(const float& dt);
     void updatePlayerCollisions();
     void updateEnemyLoop(const float& dt);

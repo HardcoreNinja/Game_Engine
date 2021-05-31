@@ -5,7 +5,7 @@ void Editor::initVariables()
 {
 	this->collision = false;
 	this->tileType = TILEMAP::TileType::Default;
-	this->maxTileType = TILEMAP::TileType::Wall;
+	this->maxTileType = TILEMAP::TileType::Enemy_Spawn_Point;
 	this->cameraSpeed = 10.f;
 	this->tileRotationDegrees = 0;
 	this->maxTileRotationDegrees = 360;

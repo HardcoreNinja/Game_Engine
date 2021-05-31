@@ -11,7 +11,7 @@ namespace TILEMAP
 	class sf::RenderTarget;
 
 	/*Tile*/
-	enum TileType {Default = 0, Chest, Door, Wall};
+	enum TileType {Default = 0, Chest, Door, Wall, Enemy_Spawn_Point};
 	class Tile
 	{
 	private:

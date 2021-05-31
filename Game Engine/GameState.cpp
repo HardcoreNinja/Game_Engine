@@ -8,6 +8,7 @@ void GameState::initVariables(bool came_from_main_menu, PlayerDetails player_det
 	this->cameFromMainMenu = came_from_main_menu;
 	this->currentMana = player_details.currentMana;
 	this->maxMana = player_details.maxMana;
+	this->manaFillCounter = 0;
 }
 void GameState::initKeybinds()
 {
@@ -190,10 +191,6 @@ void GameState::setManaDrainFactor()
 }
 
 /*Update Functions*/
-void GameState::updateHUD()
-{
-	this->hud->update(this->player->getPlayerDetails(), this->currentMana, this->maxMana);
-}
 void GameState::updatePauseMenuButtons()
 {
 	if (this->pauseMenu->isButtonPressed("EXIT") && this->getKeyTime())
@@ -274,6 +271,25 @@ void GameState::updateInGameActions()
 				this->projectileVector.push_back(std::move(this->projectile));
 			}
 		}
+	}
+}
+void GameState::updateHUD()
+{
+	this->hud->update(this->player->getPlayerDetails(), this->currentMana, this->maxMana);
+}
+void GameState::updateManaFill()
+{
+	this->manaFillCounter++;
+
+	if (this->currentMana < this->maxMana && this->manaFillCounter > 500)
+	{
+		this->currentMana += 1.f;
+		this->manaFillCounter = 0;
+	}
+
+	if (this->currentMana == this->maxMana && this->manaFillCounter > 500)
+	{
+		this->manaFillCounter = 0;
 	}
 }
 void GameState::updatePlayer(const float& dt)
@@ -428,6 +444,9 @@ void GameState::update(const float& dt)
 
 		/*HUD Functions*/
 		this->updateHUD();
+
+		/*Mana Fill*/
+		this->updateManaFill();
 
 		/*Enemy Functions*/
 		this->updateEnemyLoop(dt);

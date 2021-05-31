@@ -26,7 +26,7 @@ void HUD::initSprites()
 	this->intRectYellowBar = sf::IntRect(0, 0, 157.f, 14.f);
 	this->spriteYellowBar.setTexture(this->textureYellowBar);
 	this->spriteYellowBar.setTextureRect(this->intRectYellowBar);
-	this->spriteYellowBar.setPosition(165.f, 82.f);
+	this->spriteYellowBar.setPosition(165.f, 81.f);
 
 	/*Blue Bar*/
 	if (!this->textureBlueBar.loadFromFile("Resources/Images/HUD/blue_bar.png"))
@@ -152,12 +152,15 @@ void HUD::update(PlayerDetails player_details, float current_mana, float max_man
 /*Render Functions*/
 void HUD::render(sf::RenderTarget& target)
 {
-	target.draw(this->spriteHUDSystem);
-	target.draw(this->playerLevel);
+	/*Sprites*/
 	target.draw(this->spriteRedBar);
-	target.draw(this->hpText);
-	target.draw(this->spriteBlueBar);
-	target.draw(this->manaText);
 	target.draw(this->spriteYellowBar);
+	target.draw(this->spriteBlueBar);
+	target.draw(this->spriteHUDSystem);
+
+	/*Text*/
+	target.draw(this->playerLevel);
+	target.draw(this->hpText);
 	target.draw(this->staminaText);
+	target.draw(this->manaText);
 }

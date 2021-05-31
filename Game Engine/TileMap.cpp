@@ -21,7 +21,7 @@ TILEMAP::Tile::Tile(
 	this->shape.setOutlineThickness(1.f);
 	this->shape.setRotation(this->shapeRotation);
 
-	/*Color Codes for Collision & Tile Types
+	/*Color Codes for Collision & Tile Types*/
 	if (this->collision)
 	{
 		this->shape.setFillColor(sf::Color::Red);
@@ -41,7 +41,10 @@ TILEMAP::Tile::Tile(
 	case TILEMAP::TileType::Wall:
 		this->shape.setOutlineColor(sf::Color::Magenta);
 		break;
-	}*/
+	case TILEMAP::TileType::Enemy_Spawn_Point:
+		this->shape.setOutlineColor(sf::Color::White);
+		break;
+	}
 }
 TILEMAP::Tile::~Tile()
 {
@@ -162,7 +165,7 @@ std::vector<sf::Vector2f> TILEMAP::TileMap::getEnemySpawnPositions()
 				{
 					if (tile_layer == 0)
 					{
-						if (this->tileMap[tile_layer][pos_x][pos_y]->getTileType() == TILEMAP::TileType::Default)
+						if (this->tileMap[tile_layer][pos_x][pos_y]->getTileType() == TILEMAP::TileType::Enemy_Spawn_Point)
 						{
 							std::cout << "Enemy Spawn Positions: " << this->tileMap[tile_layer][pos_x][pos_y]->getPosition().x << " x " << this->tileMap[tile_layer][pos_x][pos_y]->getPosition().y << '\n';
 							enemySpawnPositions.push_back(this->tileMap[tile_layer][pos_x][pos_y]->getPosition());
