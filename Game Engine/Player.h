@@ -92,7 +92,7 @@ public:
 
     /*Collisions Functions*/
     void tileCollision(std::tuple<bool, unsigned short> collision_tuple);
-    void enemyCollision(std::tuple< sf::RectangleShape, float> enemy_tuple);
+    void enemyCollision(std::tuple< sf::RectangleShape, float, bool> enemy_tuple);
 
     /*Update Functions*/
     void updateUserInput(const float& dt);

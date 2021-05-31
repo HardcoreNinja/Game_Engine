@@ -948,13 +948,27 @@ void Player::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
 		this->spriteRect.setPosition(position);
 	}
 }
-void Player::enemyCollision(std::tuple<sf::RectangleShape, float> enemy_tuple)
+void Player::enemyCollision(std::tuple<sf::RectangleShape, float, bool> enemy_tuple)
 {
 	if (std::get<0>(enemy_tuple).getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
 	{
 		this->enemyCollisionBool = true;
+	}
+	else 
+		this->enemyCollisionBool = false;
 
-		if (this->hpDrainClock.getElapsedTime().asSeconds() > 0.5f)
+	sf::Vector2f playerPosition = sf::Vector2f(this->spriteRect.getPosition()); 
+	sf::Vector2f enemyPosition = sf::Vector2f(std::get<0>(enemy_tuple).getPosition()); 
+
+	float differenceX = std::abs(playerPosition.x - enemyPosition.x); 
+	float differenceY = std::abs(playerPosition.y - enemyPosition.y); 
+
+	float deltaTime = this->hpDrainClock.getElapsedTime().asSeconds(); 
+	float switchTime = 0.5f;
+
+	if (std::get<2>(enemy_tuple) == true && (differenceX < 30.f && differenceY < 35.f))
+	{
+		if (deltaTime > switchTime)
 		{
 			if (this->playerDetails.currentHP > 0.f)
 			{
@@ -963,14 +977,11 @@ void Player::enemyCollision(std::tuple<sf::RectangleShape, float> enemy_tuple)
 
 				if (this->playerDetails.currentHP < 0.f)
 					this->playerDetails.currentHP = 0.f;
-			}
 
-			this->hpDrainClock.restart();
+				this->hpDrainClock.restart();
+			}
 		}
-		
 	}
-	else 
-		this->enemyCollisionBool = true;
 
 	if (this->enemyCollisionBool == true)
 	{
@@ -979,13 +990,13 @@ void Player::enemyCollision(std::tuple<sf::RectangleShape, float> enemy_tuple)
 		if (this->playerDetails.velocity.x != 0.f)
 		{
 			position.x = this->oldPosition.x;
-			//this->playerDetails.velocity.x = 0.f;
+			this->playerDetails.velocity.x = 0.f;
 		}
 
 		if (this->playerDetails.velocity.y != 0.f)
 		{
 			position.y = this->oldPosition.y;
-			//this->playerDetails.velocity.y = 0.f;
+			this->playerDetails.velocity.y = 0.f;
 		}
 
 		this->spriteRect.setPosition(position);

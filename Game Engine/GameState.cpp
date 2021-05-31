@@ -306,11 +306,8 @@ void GameState::updatePlayerCollisions()
 	int counter1 = 0;
 	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
 	{
-		if (this->player->getSpriteRect().getGlobalBounds().intersects(this->enemyVector[counter1]->getSpriteRect().getGlobalBounds()))
-		{
-			this->player->enemyCollision(this->enemyVector[counter1]->getEnemyDamageAndRect());
-		}
-		counter1++;
+			this->player->enemyCollision(this->enemyVector[counter1]->getSpriteRectDamageAttackPlayerBool());
+			counter1++;
 	}
 }
 void GameState::updateEnemyLoop(const float& dt)

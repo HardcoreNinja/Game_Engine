@@ -348,9 +348,9 @@ sf::RectangleShape Enemy::getSpriteRect()
 {
 	return this->spriteRect;
 }
-std::tuple<sf::RectangleShape, float> Enemy::getEnemyDamageAndRect()
+std::tuple<sf::RectangleShape, float, bool> Enemy::getSpriteRectDamageAttackPlayerBool()
 {
-	return std::make_tuple(this->spriteRect, this->enemyDetails.damage);
+	return std::make_tuple(this->spriteRect, this->enemyDetails.damage, this->attackPlayer);
 }
 
 /*Collisions Functions*/
