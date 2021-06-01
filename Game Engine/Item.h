@@ -2,7 +2,13 @@
 #define ITEM_H
 #include "Entity.h"
 
+/*Class Forward Declarations*/
+class sf::Text;
+class sf::Font; 
+class sf::RectangleShape;
+class sf::RenderTarget;
 
+/*Item Details Structure*/
 struct ItemDetails
 {
     ItemType itemType;
@@ -12,16 +18,24 @@ struct ItemDetails
     float stamina;
     float mana;
 };
+
 class Item :
     public Entity
 {
 private:
+    /*Item Details*/
     ItemDetails itemDetails;
+
+    /*Item Text & Font*/
+    sf::Text text;
+    sf::Font font;
+    sf::RectangleShape textShape;
 
     /*Initializers*/
     void initVariables();
     void initSpriteRect();
     void initSprite();
+    void initText();
 public:
     /*Constructor & Destructor*/
     Item();

@@ -27,6 +27,23 @@ void Item::initSprite()
 	this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
 }
+void Item::initText()
+{
+	if (!this->font.loadFromFile("Resources/Fonts/BreatheFire.ttf"))
+		throw ("ERROR::ITEM::FAILED_TO_LOAD:BreatheFire.ttf");
+
+	/*Text Shape*/
+	this->textShape.setSize(sf::Vector2f(100.f, 25.f));
+	this->textShape.setOrigin(this->textShape.getGlobalBounds().width / 2.f, this->textShape.getGlobalBounds().height / 2.f);
+	this->textShape.setFillColor(sf::Color(0, 0, 0, 150));
+
+	/*Text*/
+	this->text.setFont(font);
+	this->text.setFillColor(sf::Color::White);
+	this->text.setCharacterSize(15);
+	this->text.setOrigin(this->text.getGlobalBounds().width / 2.f, this->text.getGlobalBounds().height / 2.f);
+	this->text.setPosition(sf::Vector2f(this->textShape.getPosition().x, this->textShape.getPosition().y - static_cast<float>(this->text.getCharacterSize()) / 4.f));
+}
 
 /*Constructor & Destructor*/
 Item::Item()
@@ -34,6 +51,7 @@ Item::Item()
 	this->initVariables();
 	this->initSpriteRect();
 	this->initSprite();
+	this->initText();
 }
 Item::~Item()
 {
@@ -63,18 +81,21 @@ void Item::setItemType(ItemType item)
 			throw("ERROR::ITEM::FAILED_TO_LOAD::Consumables/hp.png");
 		this->sprite.setTexture(this->texture);
 		this->itemDetails.hp = 25.f;
+		this->text.setString("Health Potion");
 		break;
 	case ItemType::Stamina_Potion:
 		if (!this->texture.loadFromFile("Resources/Images/Items/Consumables/stamina.png"))
 			throw("ERROR::ITEM::FAILED_TO_LOAD::Consumables/stamina.png");
 		this->sprite.setTexture(this->texture);
 		this->itemDetails.stamina = 25.f;
+		this->text.setString("Stamina Potion");
 		break;
 	case ItemType::Mana_Potion:
 		if (!this->texture.loadFromFile("Resources/Images/Items/Consumables/mana.png"))
 			throw("ERROR::ITEM::FAILED_TO_LOAD::Consumables/mana.png");
 		this->sprite.setTexture(this->texture);
 		this->itemDetails.mana = 25.f;
+		this->text.setString("Mana Potion");
 		break;
 	default:
 		std::cout << "ERROR::ITEM::void Item::setItemType(ItemType consumable)::Invalid Switch Entry!\n";
@@ -86,6 +107,8 @@ void Item::update(const float& dt)
 {
 	/*Set Sprite Position to Sprite Rect*/
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
+	this->textShape.setPosition(sf::Vector2f(this->spriteRect.getPosition().x, this->spriteRect.getPosition().y - 50.f));
+	this->text.setPosition(sf::Vector2f(this->textShape.getPosition().x, this->textShape.getPosition().y - static_cast<float>(this->text.getCharacterSize()) / 4.f));
 }
 
 /*Render Functions*/
@@ -93,4 +116,6 @@ void Item::render(sf::RenderTarget& target)
 {
 	target.draw(this->spriteRect);
 	target.draw(this->sprite);
+	target.draw(this->textShape);
+	target.draw(this->text);
 }
