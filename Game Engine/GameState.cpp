@@ -427,7 +427,7 @@ void GameState::updateItemLoop(const float& dt)
 	int counter = 0;
 	for (this->itemItr = this->itemVector.begin(); this->itemItr != this->itemVector.end(); this->itemItr++)
 	{
-		this->itemVector[counter]->update(dt);
+		this->itemVector[counter]->update(this->mousePositionView, dt);
 		counter++;
 	}
 }

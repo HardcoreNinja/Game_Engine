@@ -37,17 +37,17 @@ void Item::initKeybinds(std::map<std::string, int>* supported_keys)
 }
 void Item::initSpriteRect()
 {
-	this->spriteRect.setSize(sf::Vector2f(32.f, 32.f)); 
-	this->spriteRect.setOutlineThickness(1.f);
-	this->spriteRect.setOutlineColor(sf::Color::Red);
-	this->spriteRect.setFillColor(sf::Color::Transparent);
-	this->spriteRect.setOrigin(this->spriteRect.getGlobalBounds().width / 2.f, this->spriteRect.getGlobalBounds().height / 2.f);
+this->spriteRect.setSize(sf::Vector2f(32.f, 32.f));
+this->spriteRect.setOutlineThickness(1.f);
+this->spriteRect.setOutlineColor(sf::Color::Red);
+this->spriteRect.setFillColor(sf::Color::Transparent);
+this->spriteRect.setOrigin(this->spriteRect.getGlobalBounds().width / 2.f, this->spriteRect.getGlobalBounds().height / 2.f);
 }
 void Item::initSprite()
 {
-	this->spriteIntRect = sf::IntRect(0, 0, 32, 32); 
+	this->spriteIntRect = sf::IntRect(0, 0, 32, 32);
 	this->setItemType(this->itemDetails.itemType);
-	this->sprite.setTextureRect(this->spriteIntRect); 
+	this->sprite.setTextureRect(this->spriteIntRect);
 	this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
 }
@@ -128,17 +128,17 @@ void Item::setItemType(ItemType item)
 }
 
 /*Update Functions*/
-void Item::updateUserInput(const float& dt)
+void Item::updateUserInput(sf::Vector2f mouse_view, const float& dt)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SHOW_ITEM_TITLES"))))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SHOW_ITEM_TITLES"))) || this->spriteRect.getGlobalBounds().contains(mouse_view))
 		this->showItemText = true;
 	else
 		this->showItemText = false;
 }
-void Item::update(const float& dt)
+void Item::update(sf::Vector2f mouse_view, const float& dt)
 {
 	/*User Input*/
-	this->updateUserInput(dt);
+	this->updateUserInput(mouse_view, dt);
 
 	/*Set Sprite Position to Sprite Rect*/
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
