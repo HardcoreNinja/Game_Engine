@@ -6,6 +6,7 @@
 #include "HUD.h"
 #include "Enemy.h"
 #include "Item.h"
+#include "Inventory.h"
 
 /*Class Forward Declarations*/
 class Tile;
@@ -15,6 +16,7 @@ class Projectile;
 class HUD;
 class Enemy;
 class Item;
+class Inventory;
 class sf::RenderTarget;
 class sf::Clock;
 
@@ -42,6 +44,9 @@ private:
 
     /*HUD*/
     std::unique_ptr <HUD> hud;
+
+    /*Inventory*/
+    std::unique_ptr<Inventory> inventory;
 
     /*Projectile Variables*/
     int projectileTypeCounter;
@@ -72,6 +77,7 @@ private:
     void initLatestTileMap();
     void initPlayer(PlayerDetails player_details);
     void initHUD();
+    void initInventory();
     void initEnemies();
 
 public:
@@ -87,6 +93,7 @@ public:
     virtual void updateUserInput(const float& dt);
     void updateInGameActions();
     void updateHUD();
+    void updateInventory(const float& dt);
     void updateManaFill();
     void updatePlayer(const float& dt);
     void updatePlayerCollisions();
@@ -109,6 +116,7 @@ public:
     void renderProjectiles(sf::RenderTarget& target);
     void renderEnemies(sf::RenderTarget& target);
     void renderHUD(sf::RenderTarget& target);
+    void renderInventory(sf::RenderTarget& target);
     void renderItems(sf::RenderTarget& target); 
     virtual void render(sf::RenderTarget* target);
 };

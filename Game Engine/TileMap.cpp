@@ -167,7 +167,7 @@ std::vector<sf::Vector2f> TILEMAP::TileMap::getEnemySpawnPositions()
 					{
 						if (this->tileMap[tile_layer][pos_x][pos_y]->getTileType() == TILEMAP::TileType::Enemy_Spawn_Point)
 						{
-							std::cout << "Enemy Spawn Positions: " << this->tileMap[tile_layer][pos_x][pos_y]->getPosition().x << " x " << this->tileMap[tile_layer][pos_x][pos_y]->getPosition().y << '\n';
+							//std::cout << "Enemy Spawn Positions: " << this->tileMap[tile_layer][pos_x][pos_y]->getPosition().x << " x " << this->tileMap[tile_layer][pos_x][pos_y]->getPosition().y << '\n';
 							enemySpawnPositions.push_back(this->tileMap[tile_layer][pos_x][pos_y]->getPosition());
 						}
 

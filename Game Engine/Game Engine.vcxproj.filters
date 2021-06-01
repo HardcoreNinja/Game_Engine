@@ -88,6 +88,12 @@
     <Filter Include="Source Files\Item">
       <UniqueIdentifier>{9ad00ddb-ee7c-450f-b3d0-5dbe4d7b905e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Inventory">
+      <UniqueIdentifier>{cab7be94-995e-4191-be2f-f6ce530de93f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Pause Menu">
+      <UniqueIdentifier>{5e13b80c-a016-4be0-8616-4860fe64386a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Header.cpp">
@@ -120,9 +126,6 @@
     <ClCompile Include="TileMap.cpp">
       <Filter>Source Files\TileMap</Filter>
     </ClCompile>
-    <ClCompile Include="PauseMenu.cpp">
-      <Filter>Source Files\States</Filter>
-    </ClCompile>
     <ClCompile Include="GameState.cpp">
       <Filter>Source Files\States</Filter>
     </ClCompile>
@@ -146,6 +149,12 @@
     </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>Source Files\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseMenu.cpp">
+      <Filter>Source Files\Pause Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -176,9 +185,6 @@
     <ClInclude Include="TileMap.h">
       <Filter>Source Files\TileMap</Filter>
     </ClInclude>
-    <ClInclude Include="PauseMenu.h">
-      <Filter>Source Files\States</Filter>
-    </ClInclude>
     <ClInclude Include="GameState.h">
       <Filter>Source Files\States</Filter>
     </ClInclude>
@@ -202,6 +208,12 @@
     </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>Source Files\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseMenu.h">
+      <Filter>Source Files\Pause Menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -245,6 +257,9 @@
       <Filter>Resource Files\Config\Player Details</Filter>
     </None>
     <None Include="Config\item_keybinds.ini">
+      <Filter>Resource Files\Config\Keybinds</Filter>
+    </None>
+    <None Include="Config\inventory_keybinds.ini">
       <Filter>Resource Files\Config\Keybinds</Filter>
     </None>
   </ItemGroup>

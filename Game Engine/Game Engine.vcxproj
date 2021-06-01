@@ -165,6 +165,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Header.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="GUI.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="NewCharacterScreen.h" />
@@ -200,6 +202,7 @@
     <None Include="Config\editor_keybinds.ini" />
     <None Include="Config\game_state_keybinds.ini" />
     <None Include="Config\graphics_settings.ini" />
+    <None Include="Config\inventory_keybinds.ini" />
     <None Include="Config\item_keybinds.ini" />
     <None Include="Config\level_1.ini" />
     <None Include="Config\mainmenu_keybinds.ini" />

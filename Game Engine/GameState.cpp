@@ -85,6 +85,10 @@ void GameState::initHUD()
 {
 	this->hud = std::make_unique<HUD>();
 }
+void GameState::initInventory()
+{
+	this->inventory = std::make_unique<Inventory>(this->supportedKeys, *this->window);
+}
 void GameState::initEnemies()
 {
 	/*Enemy Spawn Positions*/
@@ -114,6 +118,7 @@ GameState::GameState(GameInfo* game_info, PlayerDetails player_details, Projecti
 	this->initLatestTileMap();
 	this->initPlayer(player_details);
 	this->initHUD();
+	this->initInventory();
 	this->initEnemies();
 }
 GameState::~GameState()
@@ -276,6 +281,10 @@ void GameState::updateInGameActions()
 void GameState::updateHUD()
 {
 	this->hud->update(this->player->getPlayerDetails(), this->currentMana, this->maxMana);
+}
+void GameState::updateInventory(const float& dt)
+{
+	this->inventory->update(this->getKeyTime(), dt);
 }
 void GameState::updateManaFill()
 {
@@ -451,6 +460,9 @@ void GameState::update(const float& dt)
 		/*HUD Functions*/
 		this->updateHUD();
 
+		/*Inventory Functions*/
+		this->updateInventory(dt);
+
 		/*Mana Fill*/
 		this->updateManaFill();
 
@@ -525,6 +537,10 @@ void GameState::renderHUD(sf::RenderTarget& target)
 {
 	this->hud->render(target);
 }
+void GameState::renderInventory(sf::RenderTarget& target)
+{
+	this->inventory->render(target);
+}
 void GameState::renderItems(sf::RenderTarget& target)
 {
 	int counter = 0;
@@ -555,6 +571,7 @@ void GameState::render(sf::RenderTarget* target)
 	/*Items Rendered with Default Window View*/
 	this->window->setView(this->defaultWindowView);
 	this->renderHUD(*target);
+	this->renderInventory(*target);
 
 	if (this->isPaused)
 		this->renderPauseMenu(*target);	
