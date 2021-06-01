@@ -75,7 +75,10 @@ void Inventory::initCells(sf::RenderWindow& window)
 			//this->cell->setOutlineColor(sf::Color::White);
 			this->cell->setTextureRect(this->cellIntRect);
 			this->cell->setTexture(&this->inactiveCellTexture);
-			this->cell->setPosition(this->background.getPosition().x - static_cast<float>(x * cellSize) - (this->background.getGlobalBounds().width / 4.25f), this->background.getPosition().y + static_cast<float>(y * cellSize) - (this->background.getGlobalBounds().height / 22.f));
+			this->cell->setPosition(
+				this->background.getPosition().x - static_cast<float>(x * cellSize) - (this->background.getGlobalBounds().width / 4.6f), 
+				this->background.getPosition().y + static_cast<float>(y * cellSize) - (this->background.getGlobalBounds().height / 22.f)
+			);
 			this->cellVector.push_back(std::move(this->cell));
 		}
 	}

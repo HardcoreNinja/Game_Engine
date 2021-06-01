@@ -8,6 +8,14 @@ class sf::Font;
 class sf::RectangleShape;
 class sf::RenderTarget;
 
+/*Item Enums*/
+enum class ItemType
+{
+    HP_Potion = 0,
+    Stamina_Potion,
+    Mana_Potion
+};
+
 /*Item Details Structure*/
 struct ItemDetails
 {
