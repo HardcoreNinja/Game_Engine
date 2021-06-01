@@ -27,18 +27,20 @@ private:
     ItemDetails itemDetails;
 
     /*Item Text & Font*/
+    bool showItemText;
     sf::Text text;
     sf::Font font;
     sf::RectangleShape textShape;
 
     /*Initializers*/
     void initVariables();
+    void initKeybinds(std::map<std::string, int>* supported_keys);
     void initSpriteRect();
     void initSprite();
     void initText();
 public:
     /*Constructor & Destructor*/
-    Item();
+    Item(std::map<std::string, int>* supported_keys);
     virtual ~Item(); 
 
     /*Getters*/
@@ -50,6 +52,7 @@ public:
     void setItemType(ItemType item);
 
     /*Update Functions*/
+    void updateUserInput(const float& dt);
     void update(const float& dt);
 
     /*Render Functions*/

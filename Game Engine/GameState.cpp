@@ -412,7 +412,7 @@ void GameState::updateEnemyDestroyLoop()
 	{
 		if (this->enemyVector[counter]->getDestroy())
 		{
-			this->item = std::make_unique<Item>(); 
+			this->item = std::make_unique<Item>(this->supportedKeys); 
 			this->item->setPosition(this->enemyVector[counter]->getSpriteRect().getPosition());
 			this->itemVector.push_back(std::move(this->item));
 

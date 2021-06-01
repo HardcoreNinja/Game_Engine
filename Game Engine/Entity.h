@@ -29,7 +29,7 @@ protected:
 	/*Animation Clocks*/
 	sf::Clock animationClock;
 
-	/*Supported Keys*/
-	std::map<std::string, int>* supportedKeys;
+	/*User Input*/
+	std::map<std::string, int> keybinds;
 };
 #endif

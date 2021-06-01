@@ -200,6 +200,7 @@
     <None Include="Config\editor_keybinds.ini" />
     <None Include="Config\game_state_keybinds.ini" />
     <None Include="Config\graphics_settings.ini" />
+    <None Include="Config\item_keybinds.ini" />
     <None Include="Config\level_1.ini" />
     <None Include="Config\mainmenu_keybinds.ini" />
     <None Include="Config\newcharacterscreen_keybinds.ini" />

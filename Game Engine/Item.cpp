@@ -10,6 +10,30 @@ void Item::initVariables()
 
 	/*Consumable Type*/
 	this->itemDetails.itemType = static_cast<ItemType>(this->getRandomInt(0, 2));
+
+	/*Show Item Text Bool*/
+	this->showItemText = false;
+}
+void Item::initKeybinds(std::map<std::string, int>* supported_keys)
+{
+	std::ifstream ifs("Config/item_keybinds.ini");
+
+	if (ifs.is_open())
+	{
+		std::string key = "";
+		std::string keyboardKey = "";
+
+		while (ifs >> key >> keyboardKey)
+
+			this->keybinds[key] = supported_keys->at(keyboardKey);
+	}
+	ifs.close();
+
+	//Debug Tester
+	for (auto i : this->keybinds)
+	{
+		std::cout << i.first << " " << i.second << '\n';
+	}
 }
 void Item::initSpriteRect()
 {
@@ -46,9 +70,10 @@ void Item::initText()
 }
 
 /*Constructor & Destructor*/
-Item::Item()
+Item::Item(std::map<std::string, int>* supported_keys)
 {
 	this->initVariables();
+	this->initKeybinds(supported_keys);
 	this->initSpriteRect();
 	this->initSprite();
 	this->initText();
@@ -103,8 +128,18 @@ void Item::setItemType(ItemType item)
 }
 
 /*Update Functions*/
+void Item::updateUserInput(const float& dt)
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SHOW_ITEM_TITLES"))))
+		this->showItemText = true;
+	else
+		this->showItemText = false;
+}
 void Item::update(const float& dt)
 {
+	/*User Input*/
+	this->updateUserInput(dt);
+
 	/*Set Sprite Position to Sprite Rect*/
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
 	this->textShape.setPosition(sf::Vector2f(this->spriteRect.getPosition().x, this->spriteRect.getPosition().y - 50.f));
@@ -116,6 +151,10 @@ void Item::render(sf::RenderTarget& target)
 {
 	target.draw(this->spriteRect);
 	target.draw(this->sprite);
-	target.draw(this->textShape);
-	target.draw(this->text);
+
+	if (this->showItemText)
+	{
+		target.draw(this->textShape);
+		target.draw(this->text);
+	}
 }

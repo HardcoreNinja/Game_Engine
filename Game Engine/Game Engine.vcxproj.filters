@@ -244,6 +244,9 @@
     <None Include="Config\player_details.ini">
       <Filter>Resource Files\Config\Player Details</Filter>
     </None>
+    <None Include="Config\item_keybinds.ini">
+      <Filter>Resource Files\Config\Keybinds</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Fonts\Dosis.ttf">

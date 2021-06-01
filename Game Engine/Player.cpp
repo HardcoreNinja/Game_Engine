@@ -34,7 +34,7 @@ void Player::initVariables(PlayerDetails player_details)
 	this->enemyCollisionBool = false;
 	this->wallCollision = false;
 }
-void Player::initKeybinds()
+void Player::initKeybinds(std::map<std::string, int>* supported_keys)
 {
 	std::ifstream ifs("Config/player_keybinds.ini");
 
@@ -45,7 +45,7 @@ void Player::initKeybinds()
 
 		while (ifs >> key >> keyboardKey)
 
-			this->keybinds[key] = this->supportedKeys->at(keyboardKey);
+			this->keybinds[key] = supported_keys->at(keyboardKey);
 	}
 	ifs.close();
 
@@ -888,9 +888,8 @@ void Player::initSprite()
 /*Constructor & Destructor*/
 Player::Player(std::map<std::string, int>* supported_keys, PlayerDetails player_details)
 {
-	this->supportedKeys = supported_keys;
 	this->initVariables(player_details);
-	this->initKeybinds();
+	this->initKeybinds(supported_keys);
 	this->initSpriteRect();
 	this->initSprite();
 }

@@ -65,15 +65,12 @@ private:
     bool wallCollision;
     sf::Vector2f oldPosition;
 
-    /*User Input*/
-    std::map<std::string, int> keybinds;
-
     /*Clocks*/
     sf::Clock hpDrainClock;
 
     /*Initializers*/
     void initVariables(PlayerDetails player_details);
-    void initKeybinds();
+    void initKeybinds(std::map<std::string, int>* supported_keys);
     void initSpriteRect();
     void initSprite();
 
