@@ -19,8 +19,9 @@ private:
 	/*Texture Variables*/
 	sf::Texture backgroundTexture;
 	sf::IntRect backgroundIntRect;
-	sf::Texture cellTexture;
+	sf::Texture inactiveCellTexture;
 	sf::IntRect cellIntRect;
+	sf::Texture activeCellTexture;
 
 	/*Show Inventory Bool*/
 	bool showInventory;
@@ -39,8 +40,8 @@ public:
 	virtual ~Inventory();
 
 	/*Update Functions*/
-	void updateUserInput(bool key_time, const float& dt);
-	void update(bool key_time, const float& dt); 
+	void updateUserInput(sf::Vector2i mouse_window, bool key_time, const float& dt);
+	void update(sf::Vector2i mouse_window, bool key_time, const float& dt);
 
 	/*Render Functions*/
 	void render(sf::RenderTarget& target); 

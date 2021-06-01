@@ -59,8 +59,11 @@ void Inventory::initCells(sf::RenderWindow& window)
 	int cellsY = 6;
 	float cellSize = 32.f;
 	this->cellIntRect = sf::IntRect(0, 0, 32, 32);
-	if (!this->cellTexture.loadFromFile("Resources/Images/Inventory/inactive_cell_32.png"))
+	if (!this->inactiveCellTexture.loadFromFile("Resources/Images/Inventory/inactive_cell_32.png"))
 		throw("ERROR::INVENTORY::FAILED_TO_LOAD::Inventory/inactive_cell_32.png");
+
+	if (!this->activeCellTexture.loadFromFile("Resources/Images/Inventory/active_cell_32.png"))
+		throw("ERROR::INVENTORY::FAILED_TO_LOAD::Inventory/active_cell_32.png");
 
 	for (int y = 0; y < cellsY; y++)
 	{
@@ -71,7 +74,7 @@ void Inventory::initCells(sf::RenderWindow& window)
 			//this->cell->setOutlineThickness(1.f);
 			//this->cell->setOutlineColor(sf::Color::White);
 			this->cell->setTextureRect(this->cellIntRect);
-			this->cell->setTexture(&this->cellTexture);
+			this->cell->setTexture(&this->inactiveCellTexture);
 			this->cell->setPosition(this->background.getPosition().x - static_cast<float>(x * cellSize) - (this->background.getGlobalBounds().width / 4.25f), this->background.getPosition().y + static_cast<float>(y * cellSize) - (this->background.getGlobalBounds().height / 22.f));
 			this->cellVector.push_back(std::move(this->cell));
 		}
@@ -90,7 +93,7 @@ Inventory::~Inventory()
 }
 
 /*Update Functions*/
-void Inventory::updateUserInput(bool key_time, const float& dt)
+void Inventory::updateUserInput(sf::Vector2i mouse_window, bool key_time, const float& dt)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SHOW_INVENTORY"))) && key_time)
 	{
@@ -99,10 +102,21 @@ void Inventory::updateUserInput(bool key_time, const float& dt)
 		else if (this->showInventory)
 			this->showInventory = false;
 	}	
+
+	int counter = 0;
+	for (this->cellItr = this->cellVector.begin(); this->cellItr != this->cellVector.end(); this->cellItr++)
+	{
+		if (this->cellVector[counter]->getGlobalBounds().contains(static_cast<float>(mouse_window.x), static_cast<float>(mouse_window.y)))
+			this->cellVector[counter]->setTexture(&this->activeCellTexture);
+		else if (!this->cellVector[counter]->getGlobalBounds().contains(static_cast<float>(mouse_window.x), static_cast<float>(mouse_window.y)))
+			this->cellVector[counter]->setTexture(&this->inactiveCellTexture);
+
+		counter++;		
+	}
 }
-void Inventory::update(bool key_time, const float& dt)
+void Inventory::update(sf::Vector2i mouse_window, bool key_time, const float& dt)
 {
-	this->updateUserInput(key_time, dt);
+	this->updateUserInput(mouse_window, key_time, dt);
 }
 
 /*Render Functions*/

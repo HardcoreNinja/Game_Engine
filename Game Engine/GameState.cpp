@@ -284,7 +284,7 @@ void GameState::updateHUD()
 }
 void GameState::updateInventory(const float& dt)
 {
-	this->inventory->update(this->getKeyTime(), dt);
+	this->inventory->update(this->mousePositionWindow, this->getKeyTime(), dt);
 }
 void GameState::updateManaFill()
 {
@@ -498,6 +498,7 @@ void GameState::reinitializeState()
 	this->initLatestTileMap();
 	this->initPlayer(this->player->getPlayerDetails());
 	this->initHUD();
+	this->initInventory();
 }
 
 /*Render Functions*/
