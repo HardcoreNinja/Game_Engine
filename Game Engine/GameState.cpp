@@ -310,6 +310,57 @@ void GameState::updatePlayerCollisions()
 			counter1++;
 	}
 }
+void GameState::updateProjectileLoop(const float& dt)
+{
+	int counter = 0;
+	for (this->projectileItr = this->projectileVector.begin(); this->projectileItr != this->projectileVector.end(); this->projectileItr++)
+	{
+		this->projectileVector[counter]->update(dt);
+
+		counter++;
+	}
+}
+void GameState::updateProjectileCollisions()
+{
+	/*Projectile/Wall*/
+	int counter = 0;
+	for (this->projectileItr = this->projectileVector.begin(); this->projectileItr != this->projectileVector.end(); this->projectileItr++)
+	{
+		this->projectileVector[counter]->tileCollision(this->tileMap->getCollision(this->projectileVector[counter]->getSpriteRect()));
+
+		if (this->projectileVector[counter]->getDestroy())
+		{
+			this->projectileVector.erase(projectileItr);
+			break;
+		}
+		counter++;
+	}
+
+	/*Projectile/Enemy*/
+	for (int i = 0; i < this->projectileVector.size(); i++)
+	{
+		for (int j = 0; j < this->enemyVector.size(); j++)
+		{
+			this->projectileVector[i]->enemyCollision(this->enemyVector[j]->getSpriteRect());
+		}
+	}
+}
+void GameState::updateProjectileDestroyLoop()
+{
+	int counter = 0;
+	for (this->projectileItr = this->projectileVector.begin(); this->projectileItr != this->projectileVector.end(); this->projectileItr++)
+	{
+
+		if (this->projectileVector[counter]->getDestroy())
+		{
+			this->projectileVector.erase(projectileItr);
+			break;
+		}
+
+		counter++;
+	}
+
+}
 void GameState::updateEnemyLoop(const float& dt)
 {
 	int counter1 = 0;
@@ -361,62 +412,24 @@ void GameState::updateEnemyDestroyLoop()
 	{
 		if (this->enemyVector[counter]->getDestroy())
 		{
+			this->item = std::make_unique<Item>(); 
+			this->item->setPosition(this->enemyVector[counter]->getSpriteRect().getPosition());
+			this->itemVector.push_back(std::move(this->item));
+
 			this->enemyVector.erase(this->enemyItr);
 			break;
 		}
 		counter++;
 	}
 }
-void GameState::updateProjectileLoop(const float& dt)
+void GameState::updateItemLoop(const float& dt)
 {
 	int counter = 0;
-	for (this->projectileItr = this->projectileVector.begin(); this->projectileItr != this->projectileVector.end(); this->projectileItr++)
+	for (this->itemItr = this->itemVector.begin(); this->itemItr != this->itemVector.end(); this->itemItr++)
 	{
-		this->projectileVector[counter]->update(dt);
-
+		this->itemVector[counter]->update(dt);
 		counter++;
 	}
-}
-void GameState::updateProjectileCollisions()
-{
-	/*Projectile/Wall*/
-	int counter = 0;
-	for (this->projectileItr = this->projectileVector.begin(); this->projectileItr != this->projectileVector.end(); this->projectileItr++)
-	{
-		this->projectileVector[counter]->tileCollision(this->tileMap->getCollision(this->projectileVector[counter]->getSpriteRect()));
-
-		if (this->projectileVector[counter]->getDestroy())
-		{
-			this->projectileVector.erase(projectileItr);
-			break;
-		}
-		counter++;
-	}
-
-	/*Projectile/Enemy*/
-	for (int i = 0; i < this->projectileVector.size(); i++)
-	{
-		for (int j = 0; j < this->enemyVector.size(); j++)
-		{
-			this->projectileVector[i]->enemyCollision(this->enemyVector[j]->getSpriteRect());
-		}
-	}
-}
-void GameState::updateProjectileDestroyLoop()
-{
-	int counter = 0;
-	for (this->projectileItr = this->projectileVector.begin(); this->projectileItr != this->projectileVector.end(); this->projectileItr++)
-	{
-		
-		if (this->projectileVector[counter]->getDestroy())
-		{
-			this->projectileVector.erase(projectileItr);
-			break;
-		}
-
-		counter++;
-	}
-	
 }
 void GameState::update(const float& dt)
 {
@@ -432,10 +445,6 @@ void GameState::update(const float& dt)
 	}
 	else               //Unpaused
 	{
-		/*Player Functions*/
-		this->updatePlayer(dt);
-		this->updatePlayerCollisions();
-		
 		/*In-Game Actions*/
 		this->updateInGameActions();
 
@@ -445,15 +454,22 @@ void GameState::update(const float& dt)
 		/*Mana Fill*/
 		this->updateManaFill();
 
+		/*Player Functions*/
+		this->updatePlayer(dt);
+		this->updatePlayerCollisions();
+		
+		/*Projectile Functions*/
+		this->updateProjectileLoop(dt);
+		this->updateProjectileCollisions();
+		this->updateProjectileDestroyLoop();
+		
 		/*Enemy Functions*/
 		this->updateEnemyLoop(dt);
 		this->updateEnemyDestroyLoop();
 		this->updateEnemyCollisions();
 
-		/*Projectile Functions*/
-		this->updateProjectileLoop(dt);
-		this->updateProjectileCollisions();
-		this->updateProjectileDestroyLoop();
+		/*Item Functions*/
+		this->updateItemLoop(dt);	
 	}
 }
 
@@ -481,16 +497,6 @@ void GameState::renderTileMap(sf::RenderTarget& target)
 {
 	this->tileMap->render(target, this->view);
 }
-void GameState::renderEnemies(sf::RenderTarget& target)
-{
-	int counter = 0;
-	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
-	{
-		this->enemyVector[counter]->render(target);
-
-		counter++;
-	}
-}
 void GameState::renderPlayer(sf::RenderTarget& target)
 {
 	this->player->render(target);
@@ -505,9 +511,29 @@ void GameState::renderProjectiles(sf::RenderTarget& target)
 		counter++;
 	}
 }
+void GameState::renderEnemies(sf::RenderTarget& target)
+{
+	int counter = 0;
+	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
+	{
+		this->enemyVector[counter]->render(target);
+
+		counter++;
+	}
+}
 void GameState::renderHUD(sf::RenderTarget& target)
 {
 	this->hud->render(target);
+}
+void GameState::renderItems(sf::RenderTarget& target)
+{
+	int counter = 0;
+	for (this->itemItr = this->itemVector.begin(); this->itemItr != this->itemVector.end(); this->itemItr++)
+	{
+		this->itemVector[counter]->render(target);
+
+		counter++;
+	}
 }
 void GameState::render(sf::RenderTarget* target)
 {
@@ -520,8 +546,9 @@ void GameState::render(sf::RenderTarget* target)
 	this->renderTileMap(this->renderTexture);
 	this->renderSprite.setTexture(this->renderTexture.getTexture());
 	this->renderProjectiles(this->renderTexture);
-	this->renderPlayer(this->renderTexture);
 	this->renderEnemies(this->renderTexture);
+	this->renderItems(this->renderTexture);
+	this->renderPlayer(this->renderTexture);
 	this->renderTexture.display();
 	target->draw(this->renderSprite);
 

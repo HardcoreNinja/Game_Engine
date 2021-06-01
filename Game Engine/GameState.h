@@ -5,6 +5,7 @@
 #include "Projectile.h"
 #include "HUD.h"
 #include "Enemy.h"
+#include "Item.h"
 
 /*Class Forward Declarations*/
 class Tile;
@@ -13,7 +14,7 @@ class Player;
 class Projectile;
 class HUD;
 class Enemy;
-class Projectile;
+class Item;
 class sf::RenderTarget;
 class sf::Clock;
 
@@ -56,6 +57,11 @@ private:
     std::vector<std::unique_ptr<Enemy>>::const_iterator enemyItr;
     std::vector<sf::Vector2f> enemySpawnPositionVector; 
 
+    /*Item Variables*/
+    std::unique_ptr<Item> item; 
+    std::vector<std::unique_ptr<Item>>::const_iterator itemItr;
+    std::vector<std::unique_ptr<Item>> itemVector;
+
     /*Initializers*/
     void initVariables(bool came_from_main_menu, PlayerDetails player_details, ProjectileDetails projectile_details);
     void initKeybinds();
@@ -84,12 +90,13 @@ public:
     void updateManaFill();
     void updatePlayer(const float& dt);
     void updatePlayerCollisions();
-    void updateEnemyLoop(const float& dt);
-    void updateEnemyCollisions();
-    void updateEnemyDestroyLoop();
     void updateProjectileLoop(const float& dt);
     void updateProjectileCollisions();
     void updateProjectileDestroyLoop();
+    void updateEnemyLoop(const float& dt);
+    void updateEnemyCollisions();
+    void updateEnemyDestroyLoop();
+    void updateItemLoop(const float& dt);
     virtual void update(const float& dt);
 
     /*Reinitialize Functions*/
@@ -98,10 +105,11 @@ public:
     /*Render Functions*/
     void renderPauseMenu(sf::RenderTarget& target);
     void renderTileMap(sf::RenderTarget& target);
-    void renderEnemies(sf::RenderTarget& target);
     void renderPlayer(sf::RenderTarget& target);
     void renderProjectiles(sf::RenderTarget& target);
+    void renderEnemies(sf::RenderTarget& target);
     void renderHUD(sf::RenderTarget& target);
+    void renderItems(sf::RenderTarget& target); 
     virtual void render(sf::RenderTarget* target);
 };
 #endif

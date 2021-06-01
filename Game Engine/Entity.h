@@ -7,6 +7,14 @@ sf::RectangleShape;
 sf::Texture;
 sf::Clock;
 
+/*Item Enums*/
+enum class ItemType
+{
+	HP_Potion = 0,
+	Stamina_Potion,
+	Mana_Potion
+};
+
 class Entity
 {
 protected:

@@ -165,6 +165,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Header.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="NewCharacterScreen.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="GUI.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="NewCharacterScreen.h" />
     <ClInclude Include="PauseMenu.h" />
