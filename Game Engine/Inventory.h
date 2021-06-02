@@ -42,6 +42,9 @@ public:
 	Inventory(std::map<std::string, int>* supported_keys, sf::RenderWindow& window);
 	virtual ~Inventory();
 
+	/*Getters*/
+	bool getShowInventory();
+
 	/*Update Functions*/
 	void updateUserInput(sf::Vector2i mouse_window, bool key_time, const float& dt);
 	void update(sf::Vector2i mouse_window, bool key_time, const float& dt);

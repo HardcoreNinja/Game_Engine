@@ -89,6 +89,12 @@ Inventory::~Inventory()
 {
 }
 
+/*Getters*/
+bool Inventory::getShowInventory()
+{
+	return this->showInventory;
+}
+
 /*Update Functions*/
 void Inventory::updateUserInput(sf::Vector2i mouse_window, bool key_time, const float& dt)
 {

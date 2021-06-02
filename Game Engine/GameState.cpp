@@ -447,41 +447,49 @@ void GameState::update(const float& dt)
 	this->updateMousePosition(&this->view, &this->defaultWindowView);
 	this->updateUserInput(dt);
 	
-	if (this->isPaused) //Paused
+	/*Paused*/
+	if (this->isPaused) 
 	{
 		this->pauseMenu->update(static_cast<sf::Vector2f>(this->mousePositionGUI));
 		this->updatePauseMenuButtons();
 	}
-	else               //Unpaused
+	/*Unpaused*/
+	else 
 	{
-		/*In-Game Actions*/
-		this->updateInGameActions();
+		if (!this->inventory->getShowInventory())
+		{
+			/*In-Game Actions*/
+			this->updateInGameActions();
 
-		/*HUD Functions*/
-		this->updateHUD();
+			/*HUD Functions*/
+			this->updateHUD();
 
-		/*Inventory Functions*/
-		this->updateInventory(dt);
+			/*Inventory Functions*/
+			this->updateInventory(dt);
 
-		/*Mana Fill*/
-		this->updateManaFill();
+			/*Mana Fill*/
+			this->updateManaFill();
 
-		/*Player Functions*/
-		this->updatePlayer(dt);
-		this->updatePlayerCollisions();
-		
-		/*Projectile Functions*/
-		this->updateProjectileLoop(dt);
-		this->updateProjectileCollisions();
-		this->updateProjectileDestroyLoop();
-		
-		/*Enemy Functions*/
-		this->updateEnemyLoop(dt);
-		this->updateEnemyDestroyLoop();
-		this->updateEnemyCollisions();
+			/*Player Functions*/
+			this->updatePlayer(dt);
+			this->updatePlayerCollisions();
 
-		/*Item Functions*/
-		this->updateItemLoop(dt);	
+			/*Projectile Functions*/
+			this->updateProjectileLoop(dt);
+			this->updateProjectileCollisions();
+			this->updateProjectileDestroyLoop();
+
+			/*Enemy Functions*/
+			this->updateEnemyLoop(dt);
+			this->updateEnemyDestroyLoop();
+			this->updateEnemyCollisions();
+
+			/*Item Functions*/
+			this->updateItemLoop(dt);
+		}
+		else
+			/*Inventory Functions*/
+			this->updateInventory(dt);
 	}
 }
 
