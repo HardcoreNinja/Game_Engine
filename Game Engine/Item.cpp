@@ -9,7 +9,7 @@ void Item::initVariables()
 	srand(seed);
 
 	/*Consumable Type*/
-	this->itemDetails.itemType = static_cast<ItemType>(this->getRandomInt(0, 2));
+	this->itemDetails.itemType = static_cast<ItemType>(this->getRandomInt(0, 3));
 
 	/*Show Item Text Bool*/
 	this->showItemText = false;

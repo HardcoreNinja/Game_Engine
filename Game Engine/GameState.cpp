@@ -449,6 +449,7 @@ void GameState::updateItemDestroyLoop()
 			|| std::get<1>(this->itemVector[counter]->getItemRect()).getGlobalBounds().contains(this->mousePositionView)) 
 			&& this->sfmlEvent->mouseButton.button == sf::Mouse::Left)
 		{
+			this->inventory->setItemToInventory(this->itemVector[counter]->getItemDetails());
 			this->itemVector.erase(this->itemItr);
 			break;
 		}

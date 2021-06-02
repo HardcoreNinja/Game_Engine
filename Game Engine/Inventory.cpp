@@ -95,7 +95,72 @@ bool Inventory::getShowInventory()
 	return this->showInventory;
 }
 
+/*Setters*/
+void Inventory::setItemToInventory(ItemDetails item_details)
+{
+	switch (item_details.itemType)
+	{
+	case ItemType::HP_Potion:
+		if (this->inventoryDetails.numberOfHealthPotions == 0)
+			this->inventoryDetails.itemDetailsVector.push_back(item_details);
+		this->inventoryDetails.numberOfHealthPotions += 1; 
+		this->inventoryDetails.totalInventory += 1;
+		break;
+	case ItemType::Stamina_Potion:
+		if (this->inventoryDetails.numberOfStaminaPotions == 0)
+			this->inventoryDetails.itemDetailsVector.push_back(item_details);
+		this->inventoryDetails.numberOfStaminaPotions += 1;
+		this->inventoryDetails.totalInventory += 1;
+		break;
+	case ItemType::Mana_Potion:
+		if (this->inventoryDetails.numberOfManaPotions == 0)
+			this->inventoryDetails.itemDetailsVector.push_back(item_details);
+		this->inventoryDetails.numberOfManaPotions += 1;
+		this->inventoryDetails.totalInventory += 1;
+		break;
+	default:
+		std::cout << "ERROR::ITEM::void Item::setItemType(ItemType consumable)::Invalid Switch Entry!\n";
+	}
+}
+
 /*Update Functions*/
+void Inventory::updateItems()
+{
+	
+
+	
+		for (int i = 0; i < this->inventoryDetails.itemDetailsVector.size(); i++)
+		{
+			switch (this->inventoryDetails.itemDetailsVector[i].itemType)
+			{
+			case ItemType::HP_Potion:
+				if (!this->inventoryDetails.itemDetailsVector[i].itemTexture.loadFromFile("Resources/Images/Items/Consumables/hp.png"))
+					throw("ERROR::INVENTORY::FAILED_TO_LOAD::Consumables/hp.png");
+				this->inventoryDetails.itemDetailsVector[i].itemSprite.setTexture((this->inventoryDetails.itemDetailsVector[i].itemTexture));
+				break;
+			case ItemType::Stamina_Potion:
+				if (!this->inventoryDetails.itemDetailsVector[i].itemTexture.loadFromFile("Resources/Images/Items/Consumables/stamina.png"))
+					throw("ERROR::INVENTORY::FAILED_TO_LOAD::Consumables/stamina.png");
+				this->inventoryDetails.itemDetailsVector[i].itemSprite.setTexture((this->inventoryDetails.itemDetailsVector[i].itemTexture));
+				break;
+			case ItemType::Mana_Potion:
+				if (!this->inventoryDetails.itemDetailsVector[i].itemTexture.loadFromFile("Resources/Images/Items/Consumables/mana.png"))
+					throw("ERROR::INVENTORY::FAILED_TO_LOAD::Consumables/mana.png");
+				this->inventoryDetails.itemDetailsVector[i].itemSprite.setTexture((this->inventoryDetails.itemDetailsVector[i].itemTexture));
+				break;
+			default:
+				std::cout << "ERROR::ITEM::void Item::setItemType(ItemType consumable)::Invalid Switch Entry!\n";
+			}
+
+			this->inventoryDetails.itemDetailsVector[i].itemSprite.setTextureRect(this->inventoryDetails.itemDetailsVector[i].itemIntRect);
+			this->inventoryDetails.itemDetailsVector[i].itemSprite.setPosition(
+				this->cellVector[i]->getPosition().x + this->cellVector[i]->getSize().x / 2.f,
+				this->cellVector[i]->getPosition().y + this->cellVector[i]->getSize().y / 2.f
+			);
+
+		}
+	
+}
 void Inventory::updateUserInput(sf::Vector2i mouse_window, bool key_time, const float& dt)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SHOW_INVENTORY"))) && key_time)
@@ -120,6 +185,7 @@ void Inventory::updateUserInput(sf::Vector2i mouse_window, bool key_time, const 
 void Inventory::update(sf::Vector2i mouse_window, bool key_time, const float& dt)
 {
 	this->updateUserInput(mouse_window, key_time, dt);
+	this->updateItems();
 }
 
 /*Render Functions*/
@@ -130,7 +196,13 @@ void Inventory::render(sf::RenderTarget& target)
 		target.draw(this->background);
 		target.draw(this->cellContainer);
 
+
+		/*Draw Inventory Cells*/
 		for (int i = 0; i < this->cellVector.size(); i++)
 		target.draw(*this->cellVector[i]);
+
+		/*Draw Items*/
+		for (int i = 0; i < this->inventoryDetails.itemDetailsVector.size(); i++)
+			target.draw(this->inventoryDetails.itemDetailsVector[i].itemSprite);
 	}
 }

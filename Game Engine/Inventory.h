@@ -1,15 +1,31 @@
 #ifndef INVENTORY_H
 #define INVENTORY_H
+#include "Item.h"
 
 /*Class Forward Declarations*/
+class Item;
 class sf::RectangleShape;
 class sf::Texture;
 class sf::RenderWindow;
 class sf::RenderTarget;
 
+struct InventoryDetails
+{
+	int totalInventory; 
+
+	int numberOfHealthPotions; 
+	int numberOfStaminaPotions;
+	int numberOfManaPotions;
+
+	std::vector<ItemDetails> itemDetailsVector;
+};
+
 class Inventory
 {
 private:
+	/*Inventory Details*/
+	InventoryDetails inventoryDetails;
+
 	/*Shape Variables*/
 	sf::RectangleShape background; 
 	sf::RectangleShape cellContainer;
@@ -45,7 +61,11 @@ public:
 	/*Getters*/
 	bool getShowInventory();
 
+	/*Setters*/
+	void setItemToInventory(ItemDetails item_details);
+
 	/*Update Functions*/
+	void updateItems();
 	void updateUserInput(sf::Vector2i mouse_window, bool key_time, const float& dt);
 	void update(sf::Vector2i mouse_window, bool key_time, const float& dt);
 
