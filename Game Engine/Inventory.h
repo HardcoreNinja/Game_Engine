@@ -71,9 +71,10 @@ public:
 	void setItemToInventory(ItemDetails item_details);
 
 	/*Update Functions*/
+	void updateUseItem(const sf::Event& sfml_events, const sf::Vector2i& mouse_window, const bool& key_time, const float& dt);
 	void updateItems();
-	void updateUserInput(sf::Vector2i mouse_window, bool key_time, const float& dt);
-	void update(sf::Vector2i mouse_window, bool key_time, const float& dt);
+	void updateUserInput(const sf::Vector2i& mouse_window, const bool& key_time, const float& dt);
+	void update(const sf::Event& sfml_events, const sf::Vector2i& mouse_window, const bool& key_time, const float& dt);
 
 	/*Render Functions*/
 	void render(sf::RenderTarget& target); 

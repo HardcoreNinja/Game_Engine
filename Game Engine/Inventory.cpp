@@ -131,6 +131,44 @@ void Inventory::setItemToInventory(ItemDetails item_details)
 }
 
 /*Update Functions*/
+void Inventory::updateUseItem(const sf::Event& sfml_events, const sf::Vector2i& mouse_window, const bool& key_time, const float& dt)
+{
+	for (int i = 0; i < this->inventoryDetails.itemDetailsVector.size(); i++)
+	{
+		if (this->cellVector[i]->getGlobalBounds().contains(static_cast<float>(mouse_window.x), static_cast<float>(mouse_window.y)) && (sfml_events.mouseButton.button == sf::Mouse::Left && key_time))
+		{
+			switch (this->inventoryDetails.itemDetailsVector[i].itemType)
+			{
+			case ItemType::HP_Potion:
+				this->inventoryDetails.numberOfHealthPotions -= 1;
+				if (this->inventoryDetails.numberOfHealthPotions == 0)
+				{
+					this->inventoryDetails.itemDetailsVector.erase(this->inventoryDetails.itemDetailsVector.begin() + i);
+					this->inventoryDetails.itemDetailsVector.shrink_to_fit();
+				}
+				break;
+			case ItemType::Stamina_Potion:
+				this->inventoryDetails.numberOfStaminaPotions -= 1;
+				if (this->inventoryDetails.numberOfStaminaPotions == 0)
+				{
+					this->inventoryDetails.itemDetailsVector.erase(this->inventoryDetails.itemDetailsVector.begin() + i);
+					this->inventoryDetails.itemDetailsVector.shrink_to_fit();
+				}
+				break;
+			case ItemType::Mana_Potion:
+				this->inventoryDetails.numberOfManaPotions -= 1;
+				if (this->inventoryDetails.numberOfManaPotions == 0)
+				{
+					this->inventoryDetails.itemDetailsVector.erase(this->inventoryDetails.itemDetailsVector.begin() + i);
+					this->inventoryDetails.itemDetailsVector.shrink_to_fit();
+				}
+				break;
+			default:
+				std::cout << "ERROR::ITEM::void Item::setItemType(ItemType consumable)::Invalid Switch Entry!\n";
+			}
+		}
+	}
+}
 void Inventory::updateItems()
 {
 		for (int i = 0; i < this->inventoryDetails.itemDetailsVector.size(); i++)
@@ -177,7 +215,7 @@ void Inventory::updateItems()
 			);
 		}
 }
-void Inventory::updateUserInput(sf::Vector2i mouse_window, bool key_time, const float& dt)
+void Inventory::updateUserInput(const sf::Vector2i& mouse_window, const bool& key_time, const float& dt)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SHOW_INVENTORY"))) && key_time)
 	{
@@ -198,10 +236,11 @@ void Inventory::updateUserInput(sf::Vector2i mouse_window, bool key_time, const 
 		counter++;		
 	}
 }
-void Inventory::update(sf::Vector2i mouse_window, bool key_time, const float& dt)
+void Inventory::update(const sf::Event& sfml_events, const sf::Vector2i& mouse_window, const bool& key_time, const float& dt)
 {
 	this->updateUserInput(mouse_window, key_time, dt);
 	this->updateItems();
+	this->updateUseItem(sfml_events, mouse_window, key_time, dt);
 }
 
 /*Render Functions*/
