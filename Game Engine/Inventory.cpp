@@ -29,35 +29,31 @@ void Inventory::initKeybinds(std::map<std::string, int>* supported_keys)
 }
 void Inventory::initBackground(sf::RenderWindow& window)
 {
-	sf::Vector2u windowSize = window.getSize();
-	float quarterWindowX = static_cast<float>(windowSize.x) * 0.25;
-	float halfWindowY = static_cast<float>(windowSize.y) * 0.5;
-
-	std::cout << "Background Size X: " << quarterWindowX << " x " << "Background Size Y: " << halfWindowY; 
-
-	this->background.setSize(sf::Vector2f(quarterWindowX, halfWindowY));
+	this->background.setSize(sf::Vector2f(static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y)));
 	this->background.setOutlineThickness(1.f);
 	this->background.setOutlineColor(sf::Color(58, 55, 55, 255));
 
-	float xPositionOffset = 32.f;
-	this->background.setOrigin(quarterWindowX, halfWindowY / 2.f);
-	this->background.setPosition(static_cast<float>(windowSize.x) - xPositionOffset, static_cast<float>(windowSize.y) / 2.f);
-
-	this->backgroundIntRect = sf::IntRect(0, 0, quarterWindowX, halfWindowY);
+	this->backgroundIntRect = sf::IntRect(0, 0, static_cast<int>(this->background.getSize().x), static_cast<int>(this->background.getSize().y));
 	if (!this->backgroundTexture.loadFromFile("Resources/Images/Inventory/background_texture.png"))
 		throw("ERROR::INVENTORY::FAILED_TO_LOAD::Inventory/background_texture.png");
+	this->backgroundTexture.setRepeated(true);
 	this->background.setTextureRect(this->backgroundIntRect); 
 	this->background.setTexture(&this->backgroundTexture);
 }
 void Inventory::initCells(sf::RenderWindow& window)
 {
-	sf::Vector2u windowSize = window.getSize();
-	float quarterWindowX = static_cast<float>(windowSize.x) * 0.25;
-	float quarterWindowY = static_cast<float>(windowSize.y) * 0.25;
+	/*Cell Container*/
+	this->cellContainer.setSize(sf::Vector2f(640.f, 384.f));
+	this->cellContainer.setOutlineThickness(1.f);
+	this->cellContainer.setOutlineColor(sf::Color::Transparent);
+	this->cellContainer.setFillColor(sf::Color::Transparent);
+	this->cellContainer.setOrigin(this->cellContainer.getGlobalBounds().width / 2.f, this->cellContainer.getGlobalBounds().height / 2.f); 
+	this->cellContainer.setPosition(this->background.getSize().x / 2.f, this->background.getSize().y - 256.f); 
 
+	/*Cells*/
 	int cellsX = 10;
 	int cellsY = 6;
-	float cellSize = 32.f;
+	float cellSize = 64.f;
 	this->cellIntRect = sf::IntRect(0, 0, 32, 32);
 	if (!this->inactiveCellTexture.loadFromFile("Resources/Images/Inventory/inactive_cell_32.png"))
 		throw("ERROR::INVENTORY::FAILED_TO_LOAD::Inventory/inactive_cell_32.png");
@@ -71,13 +67,11 @@ void Inventory::initCells(sf::RenderWindow& window)
 		{
 			this->cell = std::make_unique<sf::RectangleShape>();
 			this->cell->setSize(sf::Vector2f(cellSize, cellSize));
-			//this->cell->setOutlineThickness(1.f);
-			//this->cell->setOutlineColor(sf::Color::White);
 			this->cell->setTextureRect(this->cellIntRect);
 			this->cell->setTexture(&this->inactiveCellTexture);
 			this->cell->setPosition(
-				this->background.getPosition().x - static_cast<float>(x * cellSize) - (this->background.getGlobalBounds().width / 4.6f), 
-				this->background.getPosition().y + static_cast<float>(y * cellSize) - (this->background.getGlobalBounds().height / 22.f)
+				this->cellContainer.getPosition().x - this->cellContainer.getSize().x / 2.f + (x * cellSize),
+				this->cellContainer.getPosition().y - this->cellContainer.getSize().y / 2.f + (y * cellSize)
 			);
 			this->cellVector.push_back(std::move(this->cell));
 		}
@@ -128,6 +122,7 @@ void Inventory::render(sf::RenderTarget& target)
 	if (this->showInventory)
 	{
 		target.draw(this->background);
+		target.draw(this->cellContainer);
 
 		for (int i = 0; i < this->cellVector.size(); i++)
 		target.draw(*this->cellVector[i]);

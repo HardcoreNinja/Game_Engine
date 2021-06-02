@@ -12,16 +12,19 @@ class Inventory
 private:
 	/*Shape Variables*/
 	sf::RectangleShape background; 
+	sf::RectangleShape cellContainer;
 	std::unique_ptr<sf::RectangleShape> cell; 
 	std::vector<std::unique_ptr<sf::RectangleShape>> cellVector;
 	std::vector<std::unique_ptr<sf::RectangleShape>>::const_iterator cellItr;
 
 	/*Texture Variables*/
 	sf::Texture backgroundTexture;
-	sf::IntRect backgroundIntRect;
 	sf::Texture inactiveCellTexture;
-	sf::IntRect cellIntRect;
 	sf::Texture activeCellTexture;
+
+	/*IntRect Variables*/
+	sf::IntRect backgroundIntRect;
+	sf::IntRect cellIntRect;
 
 	/*Show Inventory Bool*/
 	bool showInventory;
