@@ -56,6 +56,7 @@ public:
     virtual ~Item(); 
 
     /*Getters*/
+    std::tuple<sf::RectangleShape, sf::RectangleShape> getItemRect();
     ItemDetails getItemDetails();
     int getRandomInt(int min, int max);
 

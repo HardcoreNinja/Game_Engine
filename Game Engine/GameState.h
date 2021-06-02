@@ -104,6 +104,7 @@ public:
     void updateEnemyCollisions();
     void updateEnemyDestroyLoop();
     void updateItemLoop(const float& dt);
+    void updateItemDestroyLoop();
     virtual void update(const float& dt);
 
     /*Reinitialize Functions*/

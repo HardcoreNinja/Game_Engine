@@ -83,6 +83,10 @@ Item::~Item()
 }
 
 /*Getters*/
+std::tuple<sf::RectangleShape, sf::RectangleShape>  Item::getItemRect()
+{
+	return std::make_tuple(this->spriteRect, this->textShape);
+}
 ItemDetails Item::getItemDetails()
 {
 	return this->itemDetails;

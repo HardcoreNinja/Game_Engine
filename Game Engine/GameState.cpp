@@ -440,6 +440,21 @@ void GameState::updateItemLoop(const float& dt)
 		counter++;
 	}
 }
+void GameState::updateItemDestroyLoop()
+{
+	int counter = 0;
+	for (this->itemItr = this->itemVector.begin(); this->itemItr != this->itemVector.end(); this->itemItr++)
+	{
+		if ((std::get<0>(this->itemVector[counter]->getItemRect()).getGlobalBounds().contains(this->mousePositionView) 
+			|| std::get<1>(this->itemVector[counter]->getItemRect()).getGlobalBounds().contains(this->mousePositionView)) 
+			&& this->sfmlEvent->mouseButton.button == sf::Mouse::Left)
+		{
+			this->itemVector.erase(this->itemItr);
+			break;
+		}
+		counter++;
+	}
+}
 void GameState::update(const float& dt)
 {
 	this->updateSFMLEvents();
@@ -486,6 +501,7 @@ void GameState::update(const float& dt)
 
 			/*Item Functions*/
 			this->updateItemLoop(dt);
+			this->updateItemDestroyLoop();
 		}
 		else
 			/*Inventory Functions*/
