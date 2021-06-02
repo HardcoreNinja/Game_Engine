@@ -6,6 +6,11 @@ void Inventory::initVariables()
 {
 	this->showInventory = false;
 }
+void Inventory::initFont()
+{
+	if (!this->font.loadFromFile("Resources/Fonts/BreatheFire.ttf"))
+		throw ("ERROR::INVENTORY::FAILED_TO_LOAD:BreatheFire.ttf");
+}
 void Inventory::initKeybinds(std::map<std::string, int>* supported_keys)
 {
 	std::ifstream ifs("Config/inventory_keybinds.ini");
@@ -81,6 +86,8 @@ void Inventory::initCells(sf::RenderWindow& window)
 /*Constructor & Destructor*/
 Inventory::Inventory(std::map<std::string, int>* supported_keys, sf::RenderWindow& window)
 {
+	this->initVariables();
+	this->initFont();
 	this->initKeybinds(supported_keys);
 	this->initBackground(window);
 	this->initCells(window);
@@ -126,9 +133,6 @@ void Inventory::setItemToInventory(ItemDetails item_details)
 /*Update Functions*/
 void Inventory::updateItems()
 {
-	
-
-	
 		for (int i = 0; i < this->inventoryDetails.itemDetailsVector.size(); i++)
 		{
 			switch (this->inventoryDetails.itemDetailsVector[i].itemType)
@@ -137,29 +141,41 @@ void Inventory::updateItems()
 				if (!this->inventoryDetails.itemDetailsVector[i].itemTexture.loadFromFile("Resources/Images/Items/Consumables/hp.png"))
 					throw("ERROR::INVENTORY::FAILED_TO_LOAD::Consumables/hp.png");
 				this->inventoryDetails.itemDetailsVector[i].itemSprite.setTexture((this->inventoryDetails.itemDetailsVector[i].itemTexture));
+				this->inventoryDetails.itemDetailsVector[i].itemCountText.setString("x" + std::to_string(this->inventoryDetails.numberOfHealthPotions));
 				break;
 			case ItemType::Stamina_Potion:
 				if (!this->inventoryDetails.itemDetailsVector[i].itemTexture.loadFromFile("Resources/Images/Items/Consumables/stamina.png"))
 					throw("ERROR::INVENTORY::FAILED_TO_LOAD::Consumables/stamina.png");
 				this->inventoryDetails.itemDetailsVector[i].itemSprite.setTexture((this->inventoryDetails.itemDetailsVector[i].itemTexture));
+				this->inventoryDetails.itemDetailsVector[i].itemCountText.setString("x" + std::to_string(this->inventoryDetails.numberOfStaminaPotions));
 				break;
 			case ItemType::Mana_Potion:
 				if (!this->inventoryDetails.itemDetailsVector[i].itemTexture.loadFromFile("Resources/Images/Items/Consumables/mana.png"))
 					throw("ERROR::INVENTORY::FAILED_TO_LOAD::Consumables/mana.png");
 				this->inventoryDetails.itemDetailsVector[i].itemSprite.setTexture((this->inventoryDetails.itemDetailsVector[i].itemTexture));
+				this->inventoryDetails.itemDetailsVector[i].itemCountText.setString("x" + std::to_string(this->inventoryDetails.numberOfManaPotions));
 				break;
 			default:
 				std::cout << "ERROR::ITEM::void Item::setItemType(ItemType consumable)::Invalid Switch Entry!\n";
 			}
 
+			/*Item Counter Text*/
+			this->inventoryDetails.itemDetailsVector[i].itemCountText.setFont(this->font);
+			this->inventoryDetails.itemDetailsVector[i].itemCountText.setCharacterSize(16);
+			this->inventoryDetails.itemDetailsVector[i].itemCountText.setOrigin(
+				this->inventoryDetails.itemDetailsVector[i].itemCountText.getGlobalBounds().width / 2.f,
+				this->inventoryDetails.itemDetailsVector[i].itemCountText.getGlobalBounds().height / 2.f);
+			this->inventoryDetails.itemDetailsVector[i].itemCountText.setPosition(
+				this->cellVector[i]->getPosition().x + this->cellVector[i]->getSize().x - 15.f,
+				this->cellVector[i]->getPosition().y + this->cellVector[i]->getSize().y - 15.f);
+
+			/*Item Sprite*/
 			this->inventoryDetails.itemDetailsVector[i].itemSprite.setTextureRect(this->inventoryDetails.itemDetailsVector[i].itemIntRect);
 			this->inventoryDetails.itemDetailsVector[i].itemSprite.setPosition(
 				this->cellVector[i]->getPosition().x + this->cellVector[i]->getSize().x / 2.f,
 				this->cellVector[i]->getPosition().y + this->cellVector[i]->getSize().y / 2.f
 			);
-
 		}
-	
 }
 void Inventory::updateUserInput(sf::Vector2i mouse_window, bool key_time, const float& dt)
 {
@@ -203,6 +219,9 @@ void Inventory::render(sf::RenderTarget& target)
 
 		/*Draw Items*/
 		for (int i = 0; i < this->inventoryDetails.itemDetailsVector.size(); i++)
+		{
 			target.draw(this->inventoryDetails.itemDetailsVector[i].itemSprite);
+			target.draw(this->inventoryDetails.itemDetailsVector[i].itemCountText);
+		}
 	}
 }

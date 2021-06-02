@@ -29,6 +29,8 @@ struct ItemDetails
     sf::Sprite itemSprite;
     sf::IntRect itemIntRect;
     sf::Texture itemTexture;
+
+    sf::Text itemCountText;
 };
 
 class Item :

@@ -6,6 +6,8 @@
 class Item;
 class sf::RectangleShape;
 class sf::Texture;
+class sf::Font;
+class sf::Text;
 class sf::RenderWindow;
 class sf::RenderTarget;
 
@@ -42,6 +44,9 @@ private:
 	sf::IntRect backgroundIntRect;
 	sf::IntRect cellIntRect;
 
+	/*Font*/
+	sf::Font font; 
+
 	/*Show Inventory Bool*/
 	bool showInventory;
 
@@ -50,6 +55,7 @@ private:
 
 	/*Initializers*/
 	void initVariables();
+	void initFont();
 	void initKeybinds(std::map<std::string, int>* supported_keys);
 	void initBackground(sf::RenderWindow& window);
 	void initCells(sf::RenderWindow& window);
