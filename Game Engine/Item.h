@@ -25,6 +25,10 @@ struct ItemDetails
     float hp;
     float stamina;
     float mana;
+
+    sf::Sprite itemSprite;
+    sf::IntRect itemIntRect;
+    sf::Texture itemTexture;
 };
 
 class Item :

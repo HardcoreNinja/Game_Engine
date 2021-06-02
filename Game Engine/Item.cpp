@@ -45,11 +45,11 @@ this->spriteRect.setOrigin(this->spriteRect.getGlobalBounds().width / 2.f, this-
 }
 void Item::initSprite()
 {
-	this->spriteIntRect = sf::IntRect(0, 0, 32, 32);
+	this->itemDetails.itemIntRect = sf::IntRect(0, 0, 32, 32);
 	this->setItemType(this->itemDetails.itemType);
-	this->sprite.setTextureRect(this->spriteIntRect);
-	this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
-	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
+	this->itemDetails.itemSprite.setTextureRect(this->itemDetails.itemIntRect);
+	this->itemDetails.itemSprite.setOrigin(this->itemDetails.itemSprite.getGlobalBounds().width / 2.f, this->itemDetails.itemSprite.getGlobalBounds().height / 2.f);
+	this->itemDetails.itemSprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
 }
 void Item::initText()
 {
@@ -102,23 +102,23 @@ void Item::setItemType(ItemType item)
 	switch (item)
 	{
 	case ItemType::HP_Potion:
-		if (!this->texture.loadFromFile("Resources/Images/Items/Consumables/hp.png"))
+		if (!this->itemDetails.itemTexture.loadFromFile("Resources/Images/Items/Consumables/hp.png"))
 			throw("ERROR::ITEM::FAILED_TO_LOAD::Consumables/hp.png");
-		this->sprite.setTexture(this->texture);
+		this->itemDetails.itemSprite.setTexture(this->itemDetails.itemTexture);
 		this->itemDetails.hp = 25.f;
 		this->text.setString("Health Potion");
 		break;
 	case ItemType::Stamina_Potion:
-		if (!this->texture.loadFromFile("Resources/Images/Items/Consumables/stamina.png"))
+		if (!this->itemDetails.itemTexture.loadFromFile("Resources/Images/Items/Consumables/stamina.png"))
 			throw("ERROR::ITEM::FAILED_TO_LOAD::Consumables/stamina.png");
-		this->sprite.setTexture(this->texture);
+		this->itemDetails.itemSprite.setTexture(this->itemDetails.itemTexture);
 		this->itemDetails.stamina = 25.f;
 		this->text.setString("Stamina Potion");
 		break;
 	case ItemType::Mana_Potion:
-		if (!this->texture.loadFromFile("Resources/Images/Items/Consumables/mana.png"))
+		if (!this->itemDetails.itemTexture.loadFromFile("Resources/Images/Items/Consumables/mana.png"))
 			throw("ERROR::ITEM::FAILED_TO_LOAD::Consumables/mana.png");
-		this->sprite.setTexture(this->texture);
+		this->itemDetails.itemSprite.setTexture(this->itemDetails.itemTexture);
 		this->itemDetails.mana = 25.f;
 		this->text.setString("Mana Potion");
 		break;
@@ -141,7 +141,7 @@ void Item::update(sf::Vector2f mouse_view, const float& dt)
 	this->updateUserInput(mouse_view, dt);
 
 	/*Set Sprite Position to Sprite Rect*/
-	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
+	this->itemDetails.itemSprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
 	this->textShape.setPosition(sf::Vector2f(this->spriteRect.getPosition().x, this->spriteRect.getPosition().y - 50.f));
 	this->text.setPosition(sf::Vector2f(this->textShape.getPosition().x, this->textShape.getPosition().y - static_cast<float>(this->text.getCharacterSize()) / 4.f));
 }
@@ -150,7 +150,7 @@ void Item::update(sf::Vector2f mouse_view, const float& dt)
 void Item::render(sf::RenderTarget& target)
 {
 	target.draw(this->spriteRect);
-	target.draw(this->sprite);
+	target.draw(this->itemDetails.itemSprite);
 
 	if (this->showItemText)
 	{
