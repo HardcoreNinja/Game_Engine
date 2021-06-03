@@ -20,6 +20,8 @@ struct InventoryDetails
 	int numberOfManaPotions;
 
 	std::vector<ItemDetails> itemDetailsVector;
+
+	ItemDetails usedItemDetails;
 };
 
 class Inventory
@@ -50,6 +52,9 @@ private:
 	/*Show Inventory Bool*/
 	bool showInventory;
 
+	/*Used Item Bool*/
+	bool usedItem;
+
 	/*User Input*/
 	std::map<std::string, int> keybinds;
 
@@ -66,9 +71,12 @@ public:
 
 	/*Getters*/
 	bool getShowInventory();
+	bool getUsedItem();
+	ItemDetails getUsedItemDetails();
 
 	/*Setters*/
 	void setItemToInventory(ItemDetails item_details);
+	void setUsedItem(bool used_item);
 
 	/*Update Functions*/
 	void updateUseItem(const sf::Event& sfml_events, const sf::Vector2i& mouse_window, const bool& key_time, const float& dt);

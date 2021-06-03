@@ -24,9 +24,7 @@ class GameState :
     public State
 {
 private:
-    /*Mana*/
-    float currentMana;
-    float maxMana;
+    /*Mana Fill Counter*/
     int manaFillCounter;
 
     /*Came From Main Menu Bool*/

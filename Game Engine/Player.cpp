@@ -897,10 +897,38 @@ Player::~Player()
 {
 }
 
+
 /*Setters*/
-void Player::setCurrentMana(float current_mana)
+void Player::setManaFill(float mana_fill)
 {
-	this->playerDetails.currentMana = current_mana;
+	this->playerDetails.currentMana += mana_fill;
+}
+void Player::setManaDrain(float mana_drain)
+{
+	this->playerDetails.currentMana -= mana_drain;
+}
+void Player::setItemBenefits(ItemDetails item_details)
+{
+	switch (item_details.itemType)
+	{
+	case ItemType::HP_Potion:
+		this->playerDetails.currentHP += item_details.hp; 
+		if (this->playerDetails.currentHP > this->playerDetails.maxHP)
+			this->playerDetails.currentHP = this->playerDetails.maxHP;
+		break;
+	case ItemType::Stamina_Potion:
+		this->playerDetails.currentStamina += item_details.stamina;
+		if (this->playerDetails.currentStamina > this->playerDetails.maxStamina)
+			this->playerDetails.currentStamina = this->playerDetails.maxStamina;
+		break;
+	case ItemType::Mana_Potion:
+		this->playerDetails.currentMana += item_details.mana;
+		if (this->playerDetails.currentMana > this->playerDetails.maxMana)
+			this->playerDetails.currentMana = this->playerDetails.maxMana;;
+		break;
+	default:
+		std::cout << "ERROR::PLAYER::void Item::void Player::setItemBenefits(ItemDetails item_details)::Invalid Switch Entry!\n";
+	}
 }
 
 /*Getters*/
@@ -915,6 +943,10 @@ PlayerDirection Player::getPlayerDirection()
 PlayerDetails Player::getPlayerDetails()
 {
 	return this->playerDetails;
+}
+std::tuple<float, float> Player::getMana()
+{
+	return std::make_tuple(this->playerDetails.currentMana, this->playerDetails.maxMana);
 }
 
 /*Collision Functions*/

@@ -5,6 +5,7 @@
 void Inventory::initVariables()
 {
 	this->showInventory = false;
+	this->usedItem = false; 
 }
 void Inventory::initFont()
 {
@@ -101,6 +102,14 @@ bool Inventory::getShowInventory()
 {
 	return this->showInventory;
 }
+bool Inventory::getUsedItem()
+{
+	return this->usedItem;
+}
+ItemDetails Inventory::getUsedItemDetails()
+{
+	return this->inventoryDetails.usedItemDetails;
+}
 
 /*Setters*/
 void Inventory::setItemToInventory(ItemDetails item_details)
@@ -129,6 +138,10 @@ void Inventory::setItemToInventory(ItemDetails item_details)
 		std::cout << "ERROR::ITEM::void Item::setItemType(ItemType consumable)::Invalid Switch Entry!\n";
 	}
 }
+void Inventory::setUsedItem(bool used_item)
+{
+	this->usedItem = used_item;
+}
 
 /*Update Functions*/
 void Inventory::updateUseItem(const sf::Event& sfml_events, const sf::Vector2i& mouse_window, const bool& key_time, const float& dt)
@@ -140,6 +153,8 @@ void Inventory::updateUseItem(const sf::Event& sfml_events, const sf::Vector2i& 
 			switch (this->inventoryDetails.itemDetailsVector[i].itemType)
 			{
 			case ItemType::HP_Potion:
+				this->usedItem = true;
+				this->inventoryDetails.usedItemDetails = this->inventoryDetails.itemDetailsVector[i];
 				this->inventoryDetails.numberOfHealthPotions -= 1;
 				if (this->inventoryDetails.numberOfHealthPotions == 0)
 				{
@@ -148,6 +163,8 @@ void Inventory::updateUseItem(const sf::Event& sfml_events, const sf::Vector2i& 
 				}
 				break;
 			case ItemType::Stamina_Potion:
+				this->usedItem = true;
+				this->inventoryDetails.usedItemDetails = this->inventoryDetails.itemDetailsVector[i];
 				this->inventoryDetails.numberOfStaminaPotions -= 1;
 				if (this->inventoryDetails.numberOfStaminaPotions == 0)
 				{
@@ -156,6 +173,8 @@ void Inventory::updateUseItem(const sf::Event& sfml_events, const sf::Vector2i& 
 				}
 				break;
 			case ItemType::Mana_Potion:
+				this->usedItem = true;
+				this->inventoryDetails.usedItemDetails = this->inventoryDetails.itemDetailsVector[i];
 				this->inventoryDetails.numberOfManaPotions -= 1;
 				if (this->inventoryDetails.numberOfManaPotions == 0)
 				{

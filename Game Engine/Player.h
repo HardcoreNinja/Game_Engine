@@ -2,6 +2,7 @@
 #define PLAYER_H
 #include "Entity.h"
 #include "TileMap.h"
+#include "Item.h"
 
 enum class PlayerDirection
 {
@@ -80,12 +81,15 @@ public:
     virtual ~Player();
 
     /*Setters*/
-    void setCurrentMana(float current_mana); 
+    void setManaFill(float mana_fill);
+    void setManaDrain(float mana_drain);
+    void setItemBenefits(ItemDetails item_details);
 
     /*Getters*/
     sf::RectangleShape getSpriteRect();
     PlayerDirection getPlayerDirection();
     PlayerDetails getPlayerDetails();
+    std::tuple<float, float>getMana();
 
     /*Collisions Functions*/
     void tileCollision(std::tuple<bool, unsigned short> collision_tuple);

@@ -6,8 +6,6 @@ void GameState::initVariables(bool came_from_main_menu, PlayerDetails player_det
 {
 	this->projectileDetails = projectile_details;
 	this->cameFromMainMenu = came_from_main_menu;
-	this->currentMana = player_details.currentMana;
-	this->maxMana = player_details.maxMana;
 	this->manaFillCounter = 0;
 }
 void GameState::initKeybinds()
@@ -201,7 +199,6 @@ void GameState::updatePauseMenuButtons()
 	if (this->pauseMenu->isButtonPressed("EXIT") && this->getKeyTime())
 	{
 		/*Save Player Details*/
-		this->player->setCurrentMana(this->currentMana);
 		this->player->saveToFile();
 
 		/*Erase the NewCharacter Screen and Shrink States Vector*/
@@ -261,9 +258,7 @@ void GameState::updateInGameActions()
 	{
 		this->projectileClock.restart();
 
-		//std::cout << "Current Mana: " << this->currentMana << "Drain Factor: " << this->projectileDetails.manaDrainFactor << '\n';
-
-		if (this->currentMana - this->projectileDetails.manaDrainFactor >= 0.f)
+		if (this->player->getPlayerDetails().currentMana - this->projectileDetails.manaDrainFactor >= 0.f)
 		{
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SHOOT"))))
 			{
@@ -271,7 +266,7 @@ void GameState::updateInGameActions()
 				this->projectile->setProjectileType(this->projectileDetails.projectileType);
 				this->projectile->setProjectileDirection(this->player->getPlayerDirection());
 				this->projectile->setProjectilePosition(this->player->getSpriteRect());
-				this->currentMana = this->currentMana - this->projectile->getManaDrainFactor();
+				this->player->setManaDrain(this->projectile->getManaDrainFactor());
 				this->projectile->saveToFile();
 				this->projectileVector.push_back(std::move(this->projectile));
 			}
@@ -280,23 +275,31 @@ void GameState::updateInGameActions()
 }
 void GameState::updateHUD()
 {
-	this->hud->update(this->player->getPlayerDetails(), this->currentMana, this->maxMana);
+	this->hud->update(this->player->getPlayerDetails(), std::get<0>(this->player->getMana()), std::get<1>(this->player->getMana()));
 }
 void GameState::updateInventory(const float& dt)
 {
 	this->inventory->update(*this->sfmlEvent, this->mousePositionWindow, this->getKeyTime(), dt);
+
+	if (this->inventory->getUsedItem())
+	{
+		this->player->setItemBenefits(this->inventory->getUsedItemDetails());
+		this->inventory->setUsedItem(false);
+	}
 }
 void GameState::updateManaFill()
 {
 	this->manaFillCounter++;
 
-	if (this->currentMana < this->maxMana && this->manaFillCounter > 500)
+	float manaFillRate = 1.f;
+
+	if (std::get<0>(this->player->getMana()) < std::get<1>(this->player->getMana()) && this->manaFillCounter > 500)
 	{
-		this->currentMana += 1.f;
+		this->player->setManaFill(manaFillRate);
 		this->manaFillCounter = 0;
 	}
 
-	if (this->currentMana == this->maxMana && this->manaFillCounter > 500)
+	if (std::get<0>(this->player->getMana()) == std::get<1>(this->player->getMana()) && this->manaFillCounter > 500)
 	{
 		this->manaFillCounter = 0;
 	}
