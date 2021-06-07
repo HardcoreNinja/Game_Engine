@@ -1148,7 +1148,7 @@ void Player::updateMovement(const float& dt)
 	}
 
 	this->oldPosition = this->spriteRect.getPosition();
-	this->spriteRect.move(sf::Vector2f(this->playerDetails.velocity.x, this->playerDetails.velocity.y) * dt * (1.f / dt));
+	this->spriteRect.move(sf::Vector2f(this->playerDetails.velocity.x * dt, this->playerDetails.velocity.y * dt));
 	this->updateAnimation();
 }
 void Player::updateAnimation()

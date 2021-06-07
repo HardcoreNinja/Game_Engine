@@ -1026,9 +1026,9 @@ void NewCharacterScreen::updateButtons()
 
 			/*Movement Variables*/
 			this->playerDetails.velocity = sf::Vector2f(0.f, 0.f);;
-			this->playerDetails.maxVelocity = 8.f;
-			this->playerDetails.acceleration = 0.2;
-			this->playerDetails.deceleration = 0.15;
+			this->playerDetails.maxVelocity = 1024.f;
+			this->playerDetails.acceleration = 26.f;
+			this->playerDetails.deceleration = 19.f;
 
 			/*Level*/
 			this->playerDetails.level = 1;
@@ -1171,9 +1171,9 @@ void NewCharacterScreen::updateUserInput(const float& dt)
 
 			/*Movement Variables*/
 			this->playerDetails.velocity = sf::Vector2f(0.f, 0.f);;
-			this->playerDetails.maxVelocity = 8.f;
-			this->playerDetails.acceleration = 0.2;
-			this->playerDetails.deceleration = 0.15;
+			this->playerDetails.maxVelocity = 1024.f;
+			this->playerDetails.acceleration = 26.f;
+			this->playerDetails.deceleration = 19.f;
 
 			/*Level*/
 			this->playerDetails.level = 1;
