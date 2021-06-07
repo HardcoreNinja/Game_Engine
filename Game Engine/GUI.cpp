@@ -191,7 +191,7 @@ const void GUI::DropdownList::setActiveElementID(const short unsigned id) const
 void GUI::DropdownList::updateKeyTime(const float& dt)
 {
 	if (this->keyTime < this->maxKeyTime)
-		this->keyTime += static_cast<int>(2.f * dt * (1.f / dt));
+		this->keyTime += 256.f * dt;
 }
 void GUI::DropdownList::update(const sf::Vector2f& mousePos, const float& dt)
 {
