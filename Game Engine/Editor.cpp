@@ -6,7 +6,7 @@ void Editor::initVariables()
 	this->collision = false;
 	this->tileType = TILEMAP::TileType::Default;
 	this->maxTileType = TILEMAP::TileType::Enemy_Spawn_Point;
-	this->cameraSpeed = 10.f;
+	this->cameraSpeed = 1280.f;
 	this->tileRotationDegrees = 0;
 	this->maxTileRotationDegrees = 360;
 	this->tileLayers = 0;
@@ -254,16 +254,16 @@ void Editor::updateUserInput(const float& dt)
 	{
 		/*Camera Controls*/
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_UP"))))
-			this->view.move(sf::Vector2f(0.f, -this->cameraSpeed * dt * (1.f / dt)));
+			this->view.move(sf::Vector2f(0.f, -this->cameraSpeed * dt));
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_DOWN"))))
-			this->view.move(sf::Vector2f(0.f, this->cameraSpeed * dt * (1.f / dt)));
+			this->view.move(sf::Vector2f(0.f, this->cameraSpeed * dt));
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_LEFT"))))
-			this->view.move(sf::Vector2f(-this->cameraSpeed * dt * (1.f / dt), 0.f));
+			this->view.move(sf::Vector2f(-this->cameraSpeed * dt, 0.f));
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_RIGHT"))))
-			this->view.move(sf::Vector2f(this->cameraSpeed * dt * (1.f / dt), 0.f));
+			this->view.move(sf::Vector2f(this->cameraSpeed * dt, 0.f));
 
 		/*Collision Toggle*/
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("COLLISION_TOGGLE"))) && this->getKeyTime())
