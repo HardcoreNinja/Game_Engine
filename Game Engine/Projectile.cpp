@@ -433,7 +433,7 @@ void Projectile::updateMovement(const float& dt)
 	this->oldPosition = this->spriteRect.getPosition();
 
 	if (!this->stop)
-	this->spriteRect.move(sf::Vector2f(this->projectileDetails.velocity.x, this->projectileDetails.velocity.y) * dt * (1.f / dt));
+	this->spriteRect.move(sf::Vector2f(this->projectileDetails.velocity.x * dt, this->projectileDetails.velocity.y * dt));
 
 	this->updateProjectileAnimation();
 }

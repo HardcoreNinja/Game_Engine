@@ -1052,9 +1052,9 @@ void NewCharacterScreen::updateButtons()
 
 			/*Projectile Movement Variables*/
 			this->projectileDetails.velocity = sf::Vector2f(0.f, 0.f);
-			this->projectileDetails.maxVelocity = 8.f;
-			this->projectileDetails.acceleration = 1.f;
-			this->projectileDetails.deceleration = 0.1f;
+			this->projectileDetails.maxVelocity = 1024.f;
+			this->projectileDetails.acceleration = 128.f;
+			this->projectileDetails.deceleration = 13.f;
 
 			/*Mana*/
 			this->projectileDetails.manaDrainFactor = 5.f;
@@ -1197,9 +1197,9 @@ void NewCharacterScreen::updateUserInput(const float& dt)
 
 			/*Projectile Movement Variables*/
 			this->projectileDetails.velocity = sf::Vector2f(0.f, 0.f);
-			this->projectileDetails.maxVelocity = 8.f;
-			this->projectileDetails.acceleration = 1.f;
-			this->projectileDetails.deceleration = 0.1f;
+			this->projectileDetails.maxVelocity = 1024.f;
+			this->projectileDetails.acceleration = 128.f;
+			this->projectileDetails.deceleration = 13.f;
 
 			/*Mana*/
 			this->projectileDetails.manaDrainFactor = 5.f;
