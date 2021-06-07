@@ -491,7 +491,7 @@ bool TILEMAP::TextureSelector::getKeyTime()
 void TILEMAP::TextureSelector::updateKeyTime(const float& dt)
 {
 	if (this->keyTime < this->maxKeyTime)
-		this->keyTime += 2.f * dt * (1.f / dt);
+		this->keyTime += 256.f * dt;
 }
 void TILEMAP::TextureSelector::update(const sf::Vector2i& mouse_position_window, const float& dt)
 {

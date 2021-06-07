@@ -20,7 +20,7 @@ State::State(GameInfo* game_info)
 	this->sfmlEvent = game_info->sfmlEvent;
 	this->supportedKeys = game_info->supportedKeys;
 	this->keyTime = 0.f;
-	this->maxKeyTime = 25.f;
+	this->maxKeyTime = 37.5f;
 	this->isQuit = false;
 	this->mouseReleased = false;
 	this->tileSize = 32.f;
@@ -115,7 +115,7 @@ void State::updateMousePosition(sf::View* view, sf::View* default_window_view)
 void State::updateKeyTime(const float& dt)
 {
 	if (this->keyTime < this->maxKeyTime)
-		this->keyTime += 2 * dt * (1.f / dt);
+		this->keyTime += 256.f * dt;
 
 	/*Test Debug
 	std::cout << this->keyTime << '\n';
