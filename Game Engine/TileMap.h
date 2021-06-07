@@ -131,8 +131,8 @@ namespace TILEMAP
 		bool isActive;
 
 		/*Key Time Variables*/
-		int keyTime;
-		int maxKeyTime;
+		float keyTime;
+		float maxKeyTime;
 
 		/*Scroll Incrementers*/
 		int horizontalScrollIncrementer;
@@ -147,7 +147,7 @@ namespace TILEMAP
 			float bounds_width, float bounds_height,
 			const sf::Texture* texture_Sheet,
 			sf::Font& hide_button_font,
-			int key_time, int max_key_time
+			float key_time, float max_key_time
 			);
 		virtual ~TextureSelector();
 

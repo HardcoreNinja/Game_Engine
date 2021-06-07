@@ -59,8 +59,8 @@ protected:
 	float tileSize;
 
 	/*KeyTime Variables*/
-	int keyTime;
-	int maxKeyTime;
+	float keyTime;
+	float maxKeyTime;
 
 	/*User Input Variables*/
 	std::map<std::string, int>* supportedKeys;

@@ -75,8 +75,8 @@ namespace GUI
 		sf::Font& font;
 
 		/*Key Time Variables*/
-		int keyTime;
-		int maxKeyTime;
+		float keyTime;
+		float maxKeyTime;
 
 		/*Flags*/
 		bool showList;
@@ -87,7 +87,7 @@ namespace GUI
 			float pos_x, float pos_y,
 			float width, float height,
 			sf::Font& font, std::string list[], unsigned int character_size,
-			int& key_time, int& max_key_time,
+			float& key_time, float& max_key_time,
 			unsigned numofElements, unsigned default_index = 0
 		);
 

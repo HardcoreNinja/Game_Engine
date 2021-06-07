@@ -129,7 +129,7 @@ GUI::DropdownList::DropdownList(
 	float pos_x, float pos_y,
 	float width, float height,
 	sf::Font& font_reference, std::string list[], unsigned int character_size,
-	int& key_time, int& max_key_time,
+	float& key_time, float& max_key_time,
 	unsigned numofElements, unsigned default_index
 )
 	: font(font_reference), showList(false), keyTime(key_time), maxKeyTime(max_key_time)
