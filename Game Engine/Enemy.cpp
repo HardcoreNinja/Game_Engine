@@ -13,9 +13,9 @@ void Enemy::initVariables(std::vector<sf::Vector2f> enemy_spawn_positions)
 
 	/*Movement Variables*/
 	this->enemyDetails.velocity = sf::Vector2f(0.f, 0.f); 
-	this->enemyDetails.maxVelocity = 3.f; 
-	this->enemyDetails.acceleration = 0.2f; 
-	this->enemyDetails.deceleration = 0.15f; 
+	this->enemyDetails.maxVelocity = 384.f; 
+	this->enemyDetails.acceleration = 26.f; 
+	this->enemyDetails.deceleration = 19.f; 
 
 	/*Spawn Random Position Vector*/
 	this->enemyDetails.enemySpawnPosition = enemy_spawn_positions[this->getRandomInt(0, enemy_spawn_positions.size())];
@@ -665,7 +665,7 @@ void Enemy::updateMovement(const float& dt)
 	}
 
 	this->oldPosition = this->spriteRect.getPosition();
-	this->spriteRect.move(sf::Vector2f(this->enemyDetails.velocity.x, this->enemyDetails.velocity.y) * dt * (1.f / dt));
+	this->spriteRect.move(sf::Vector2f(this->enemyDetails.velocity.x * dt, this->enemyDetails.velocity.y * dt));
 	this->updateAnimation();
 }
 void Enemy::updateAnimation()
