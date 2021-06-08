@@ -50,7 +50,7 @@ void Editor::initTileMap()
 {
 	this->tileMap = std::make_unique<TILEMAP::TileMap>(
 		this->tileSize,                                //Tile Size
-		42, 42,                                        //Map Width & Height (in Squares)
+		48, 48,                                        //Map Width & Height (in Squares)
 		this->tileSize, this->tileSize,                //Texture Width & Height
 		"Resources/Images/Tiles/PipoyaMasterLevel.png" //Tile Sheet File Path
 		);
