@@ -44,6 +44,10 @@ TILEMAP::Tile::Tile(
 	case TILEMAP::TileType::Enemy_Spawn_Point:
 		this->shape.setOutlineColor(sf::Color::White);
 		break;
+	case TILEMAP::TileType::Path_Finder_Markings:
+		this->shape.setOutlineColor(sf::Color::Cyan);
+		this->shape.setFillColor(sf::Color::Cyan);
+		break;
 	}
 }
 TILEMAP::Tile::~Tile()
@@ -174,8 +178,27 @@ std::vector<sf::Vector2f> TILEMAP::TileMap::getEnemySpawnPositions()
 					}
 				}
 			}
-
 	return enemySpawnPositions;
+}
+std::vector<sf::Vector2f> TILEMAP::TileMap::getPathFinderMarkings()
+{
+	std::vector<sf::Vector2f> pathFinderMarkings;
+	for (int tile_layer = 0; tile_layer != this->tileMap.size(); tile_layer++)
+		for (int pos_x = 0; pos_x != this->tileMap[tile_layer].size(); pos_x++)
+			for (int pos_y = 0; pos_y != this->tileMap[tile_layer][pos_x].size(); pos_y++)
+			{
+				if (this->tileMap[tile_layer][pos_x][pos_y] != NULL)
+				{
+					if (tile_layer == 0)
+					{
+						if (this->tileMap[tile_layer][pos_x][pos_y]->getTileType() == TILEMAP::TileType::Path_Finder_Markings)
+						{
+							pathFinderMarkings.push_back(this->tileMap[tile_layer][pos_x][pos_y]->getPosition());
+						}
+					}
+				}
+			}
+	return pathFinderMarkings;
 }
 
 /*Setters*/

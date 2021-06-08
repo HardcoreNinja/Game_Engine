@@ -1,4 +1,4 @@
-#ifndef ENEMNY_H
+#ifndef ENEMY_H
 #define ENEMY_H
 #include "Entity.h"
 #include "TileMap.h"
@@ -47,6 +47,9 @@ struct EnemyDetails
 
     /*Spawn Position Vector*/
     sf::Vector2f enemySpawnPosition;
+
+    /*Path Finder Markings*/
+    std::vector<sf::Vector2f> pathFinderMarkings; 
 };
 
 class Enemy :
@@ -67,6 +70,8 @@ private:
     bool destroy;
 
     /*AI Variables*/
+    EnemyDirection lastDirection;
+    bool goingAroundWall; 
     bool attackPlayer;
     int directionNumber;
     sf::CircleShape alertCircle;
@@ -82,12 +87,12 @@ private:
     int randomDirectionNumber;
 
     /*Initializers*/
-    void initVariables(std::vector<sf::Vector2f> enemy_spawn_positions);
+    void initVariables(std::vector<sf::Vector2f> enemy_spawn_positions, std::vector<sf::Vector2f> path_finder_markings);
     void initSpriteRect();
     void initSprite();
 public:
     /*Constructor & Destructor*/
-    Enemy(std::vector<sf::Vector2f> enemy_spawn_positions);
+    Enemy(std::vector<sf::Vector2f> enemy_spawn_positions, std::vector<sf::Vector2f> path_finder_markings);
     virtual ~Enemy();
 
     /*Setters*/
@@ -108,6 +113,7 @@ public:
     void alertCircleCollision(sf::RectangleShape player_rect);
 
     /*Update Functions*/
+    void updatePath(sf::RectangleShape player_rect, const float& dt); 
     void updateAIDirection(sf::RectangleShape player_rect, const float& dt);
     void updateAIAttackMovement(const float& dt);
     void updateEmoteAnimation();

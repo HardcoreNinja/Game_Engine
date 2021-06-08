@@ -2,7 +2,7 @@
 #include "Enemy.h"
 
 /*Initializers*/
-void Enemy::initVariables(std::vector<sf::Vector2f> enemy_spawn_positions)
+void Enemy::initVariables(std::vector<sf::Vector2f> enemy_spawn_positions, std::vector<sf::Vector2f> path_finder_markings)
 {
 	/*Random Number Generator Seed*/
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -21,6 +21,9 @@ void Enemy::initVariables(std::vector<sf::Vector2f> enemy_spawn_positions)
 	this->enemyDetails.enemySpawnPosition = enemy_spawn_positions[this->getRandomInt(0, enemy_spawn_positions.size())];
 	//std::cout << "Random Number: " << this->getRandomInt(0, enemy_spawn_positions.size()) << '\n';
 
+	/*Path Finder Markings*/
+	this->enemyDetails.pathFinderMarkings = path_finder_markings;
+
 	/*Randomization Variables*/
 	this->randomDirectionCounter = 0;
 	this->randomDirectionNumber = this->getRandomInt(0, 4);
@@ -36,6 +39,7 @@ void Enemy::initVariables(std::vector<sf::Vector2f> enemy_spawn_positions)
 	this->destroy = false;
 
 	/*AI Variables*/
+	this->goingAroundWall = false;
 	this->attackPlayer = false;
 	this->directionNumber = 0;
 }
@@ -73,9 +77,9 @@ void Enemy::initSprite()
 }
 
 /*Constructor & Destructor*/
-Enemy::Enemy(std::vector<sf::Vector2f> enemy_spawn_positions)
+Enemy::Enemy(std::vector<sf::Vector2f> enemy_spawn_positions, std::vector<sf::Vector2f> path_finder_markings)
 {
-	this->initVariables(enemy_spawn_positions);
+	this->initVariables(enemy_spawn_positions, path_finder_markings);
 	this->initSpriteRect();
 	this->initSprite();
 }
@@ -388,6 +392,12 @@ void Enemy::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
 	else
 		this->wallCollision = false;
 
+	if (this->wallCollision && this->attackPlayer)
+	{
+		this->goingAroundWall = true;
+		this->lastDirection = enemyDetails.currentDirection;
+	}
+
 	if (this->wallCollision == true)
 	{
 		sf::Vector2f position = this->spriteRect.getPosition();
@@ -459,6 +469,118 @@ void Enemy::alertCircleCollision(sf::RectangleShape player_rect)
 }
 
 /*Update Functions*/
+void Enemy::updatePath(sf::RectangleShape player_rect, const float& dt)
+{
+	std::vector<sf::Vector2f> closestX;
+	bool swappedClosestX = false;
+	do {
+		swappedClosestX = false;
+		for (unsigned int i = 0; i < this->enemyDetails.pathFinderMarkings.size(); i++)
+		{
+			for (auto itj = this->enemyDetails.pathFinderMarkings.begin(); itj != this->enemyDetails.pathFinderMarkings.end() - 1; itj = std::next(itj))
+			{
+				if (std::abs(player_rect.getPosition().x - (*itj).x) > std::abs(player_rect.getPosition().x - (*std::next(itj)).x))
+				{
+					std::swap(*itj, *std::next(itj));
+					swappedClosestX = true;
+				}
+			}
+		}
+	} while (swappedClosestX);
+
+	closestX = this->enemyDetails.pathFinderMarkings;
+
+	std::vector<sf::Vector2f> closestY;
+	bool swappedClosestY = false;
+	do {
+		swappedClosestY = false;
+		for (unsigned int i = 0; i < this->enemyDetails.pathFinderMarkings.size(); i++)
+		{
+			for (auto itj = this->enemyDetails.pathFinderMarkings.begin(); itj != this->enemyDetails.pathFinderMarkings.end() - 1; itj = std::next(itj))
+			{
+				if (std::abs(player_rect.getPosition().y - (*itj).y) > std::abs(player_rect.getPosition().y - (*std::next(itj)).y))
+				{
+					std::swap(*itj, *std::next(itj));
+					swappedClosestY = true;
+				}
+			}
+		}
+	} while (swappedClosestY);
+
+	closestY = this->enemyDetails.pathFinderMarkings;
+
+	sf::Vector2f enemyPosition;
+
+	enemyPosition = this->spriteRect.getPosition();
+
+	float remainderX_X = std::abs(enemyPosition.x - closestX[0].x);
+	float remainderY_Y = std::abs(enemyPosition.y - closestY[0].y);
+
+	
+	if (this->lastDirection == EnemyDirection::Left || this->lastDirection == EnemyDirection::Right)
+	{
+		if (remainderY_Y > 10.f)
+		{
+			if (enemyPosition.y > closestY[0].y)
+			{
+				this->directionNumber = 1;
+				this->updateAIAttackMovement(dt);
+			}
+			else if (enemyPosition.y < closestY[0].y)
+			{
+				this->directionNumber = 2;
+				this->updateAIAttackMovement(dt);
+			}
+		}
+		else if (remainderY_Y < 10.f)
+		{
+			if (enemyPosition.x > closestY[0].x)
+			{
+				this->directionNumber = 3;
+				this->updateAIAttackMovement(dt);
+			}
+			else if (enemyPosition.x < closestY[0].x)
+			{
+				this->directionNumber = 4;
+				this->updateAIAttackMovement(dt);
+			}
+		}
+		if (std::abs(enemyPosition.x - closestY[0].x) < 10.f && std::abs(enemyPosition.y - closestY[0].y) < 10.f)
+			this->goingAroundWall = false;
+	}
+		
+	if (this->lastDirection == EnemyDirection::Up || this->lastDirection == EnemyDirection::Down)
+	{
+		if (remainderX_X > 10.f)
+		{
+			if (enemyPosition.x > closestX[0].x)
+			{
+				this->directionNumber = 3;
+				this->updateAIAttackMovement(dt);
+			}
+			else if (enemyPosition.x < closestX[0].x)
+			{
+				this->directionNumber = 4;
+				this->updateAIAttackMovement(dt);
+			}
+		}
+		else if (remainderX_X < 10.f)
+		{
+			if (enemyPosition.y > closestX[0].y)
+			{
+				this->directionNumber = 1;
+				this->updateAIAttackMovement(dt);
+			}
+			else if (enemyPosition.y < closestX[0].y)
+			{
+				this->directionNumber = 2;
+				this->updateAIAttackMovement(dt);   
+			}
+		}	
+		if(std::abs(enemyPosition.x - closestX[0].x) < 10.f && std::abs(enemyPosition.y - closestX[0].y) < 10.f)
+			this->goingAroundWall = false;
+	}
+}
 void Enemy::updateAIDirection(sf::RectangleShape player_rect, const float& dt)
 {
 	sf::Vector2f playerPosition; 
@@ -471,30 +593,38 @@ void Enemy::updateAIDirection(sf::RectangleShape player_rect, const float& dt)
 
 	float remainderX = std::abs(playerPosition.x - enemyPosition.x); 
 
-	if (remainderX > 20.f)
+	if (this->goingAroundWall)
 	{
-		if (playerPosition.x > enemyPosition.x)
-		{
-			this->directionNumber = 4; 
-			this->updateAIAttackMovement(dt);
-		}
-		else if (playerPosition.x < enemyPosition.x)
-		{
-			this->directionNumber = 3;
-			this->updateAIAttackMovement(dt);
-		}
+		this->updatePath(player_rect, dt);
+		
 	}
-	else if (remainderX < 20.f)
+	else if (!this->goingAroundWall)
 	{
-		if (playerPosition.y > enemyPosition.y)
+		if (remainderX > 20.f)
 		{
-			this->directionNumber = 2;
-			this->updateAIAttackMovement(dt);
+			if (playerPosition.x > enemyPosition.x)
+			{
+				this->directionNumber = 4;
+				this->updateAIAttackMovement(dt);
+			}
+			else if (playerPosition.x < enemyPosition.x)
+			{
+				this->directionNumber = 3;
+				this->updateAIAttackMovement(dt);
+			}
 		}
-		else if (playerPosition.y < enemyPosition.y)
+		else if (remainderX < 20.f)
 		{
-			this->directionNumber = 1;
-			this->updateAIAttackMovement(dt);
+			if (playerPosition.y > enemyPosition.y)
+			{
+				this->directionNumber = 2;
+				this->updateAIAttackMovement(dt);
+			}
+			else if (playerPosition.y < enemyPosition.y)
+			{
+				this->directionNumber = 1;
+				this->updateAIAttackMovement(dt);
+			}
 		}
 	}
 }

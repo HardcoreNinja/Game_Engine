@@ -58,7 +58,6 @@ private:
     std::unique_ptr<Enemy> enemy;
     std::vector<std::unique_ptr<Enemy>> enemyVector;
     std::vector<std::unique_ptr<Enemy>>::const_iterator enemyItr;
-    std::vector<sf::Vector2f> enemySpawnPositionVector; 
 
     /*Item Variables*/
     std::unique_ptr<Item> item; 

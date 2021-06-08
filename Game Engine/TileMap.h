@@ -11,7 +11,7 @@ namespace TILEMAP
 	class sf::RenderTarget;
 
 	/*Tile*/
-	enum TileType {Default = 0, Chest, Door, Wall, Enemy_Spawn_Point};
+	enum TileType {Default = 0, Chest, Door, Wall, Enemy_Spawn_Point, Path_Finder_Markings};
 	class Tile
 	{
 	private:
@@ -75,6 +75,7 @@ namespace TILEMAP
 		const sf::IntRect& getTextureIntRect();
 		std::tuple<bool, unsigned short> getCollision(sf::RectangleShape player_rect);
 		std::vector<sf::Vector2f> getEnemySpawnPositions();
+		std::vector<sf::Vector2f> getPathFinderMarkings();
 
 		/*Setters*/
 		void setTextureIntRect(sf::IntRect texture_int_rect);

@@ -89,15 +89,11 @@ void GameState::initInventory()
 }
 void GameState::initEnemies()
 {
-	/*Enemy Spawn Positions*/
-	this->enemySpawnPositionVector = this->tileMap->getEnemySpawnPositions();
-
-	/*Create Enemies & Push Back Into Enemy Vector*/
 	int numberOfEnemies = 3;
 
 	for (int i = 0; i < numberOfEnemies; i++)
 	{
-		this->enemy = std::make_unique<Enemy>(this->enemySpawnPositionVector);
+		this->enemy = std::make_unique<Enemy>(this->tileMap->getEnemySpawnPositions(), this->tileMap->getPathFinderMarkings());
 		this->enemy->setEnemyPosition();
 		this->enemyVector.push_back(std::move(this->enemy));
 	}
