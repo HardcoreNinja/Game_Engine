@@ -4,6 +4,7 @@
 void Editor::initVariables()
 {
 	this->collision = false;
+	this->doorName = "NULL";
 	this->tileType = TILEMAP::TileType::Default;
 	this->maxTileType = TILEMAP::TileType::Path_Finder_Markings;
 	this->cameraSpeed = 1280.f;
@@ -150,6 +151,22 @@ void Editor::updateTileLayers()
 }
 void Editor::updateCursorText()
 {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("BACKSPACE"))) && this->getKeyTime())
+	{
+		if (this->doorName.size() > 0)
+		{
+			this->doorName.pop_back();
+		}
+	}
+
+	if (this->sfmlEvent->type == sf::Event::TextEntered && sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))) && this->getKeyTime())
+	{
+		if (this->sfmlEvent->text.unicode < 128 && this->sfmlEvent->text.unicode != 8 && this->sfmlEvent->text.unicode != 27 && this->doorName.size() <= 20)
+		{
+			this->doorName.push_back(static_cast<char>(this->sfmlEvent->text.unicode));
+		}
+	}
+
 	this->text.setPosition((static_cast<float>(this->mousePositionGUI.x) + 100.f), (static_cast<float>(this->mousePositionGUI.y) - 50.f));
 
 	std::stringstream ss;
@@ -159,6 +176,7 @@ void Editor::updateCursorText()
 		<< "Mouse Position Tile: " << this->mousePositionTile.x << " x " << this->mousePositionTile.y << '\n'
 		<< "Tile Map Int Rec (left & top): " << this->tileMap->getTextureIntRect().left << " x " << this->tileMap->getTextureIntRect().top << '\n'
 		<< "Collision Bool: " << this->collision << '\n'
+		<< "Door Name: " << this->doorName << '\n'
 		<< "Tile Type: " << this->tileType << '\n'
 		<< "Rotation Degrees: " << this->tileRotationDegrees << '\n'
 		<< "Tile Layer: " << this->tileLayers << '\n';
@@ -217,6 +235,7 @@ void Editor::updateTileMap()
 				this->mousePositionTile.y, //Mouse Position Tile Y
 				this->tileLayers,          //Tile Layer
 				this->collision,           //Collision
+				this->doorName,            //Door Name
 				this->tileType,            //Tile Type
 				this->tileRotationDegrees  //Tile Rotation
 			);
@@ -253,35 +272,35 @@ void Editor::updateUserInput(const float& dt)
 	if (!this->isPaused)
 	{
 		/*Camera Controls*/
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_UP"))))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_UP"))) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))))
 			this->view.move(sf::Vector2f(0.f, -this->cameraSpeed * dt));
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_DOWN"))))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_DOWN"))) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))))
 			this->view.move(sf::Vector2f(0.f, this->cameraSpeed * dt));
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_LEFT"))))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_LEFT"))) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))))
 			this->view.move(sf::Vector2f(-this->cameraSpeed * dt, 0.f));
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_RIGHT"))))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CAMERA_RIGHT"))) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))))
 			this->view.move(sf::Vector2f(this->cameraSpeed * dt, 0.f));
 
 		/*Collision Toggle*/
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("COLLISION_TOGGLE"))) && this->getKeyTime())
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("COLLISION_TOGGLE"))) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))) && this->getKeyTime())
 			if (this->collision)
 				this->collision = false;
 			else
 				this->collision = true;
 
 		/*Tile Type*/
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("TILE_TYPE"))) && this->getKeyTime())
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("TILE_TYPE"))) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))) && this->getKeyTime())
 			this->updateTileType();
 
 		/*Rotate Tile*/
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("ROTATE_TILE"))) && this->getKeyTime())
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("ROTATE_TILE"))) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))) && this->getKeyTime())
 			this->updateTileRotation();
 
 		/*Tile Layers*/
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("TILE_LAYERS"))) && this->getKeyTime())
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("TILE_LAYERS"))) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))) && this->getKeyTime())
 			this->updateTileLayers();
 
 		/*Scroll Texture Selector Up*/
@@ -339,7 +358,7 @@ void Editor::updateUserInput(const float& dt)
 		}
 
 		/*Double & Halve Tile Size*/
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("P"))) && this->getKeyTime())
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("P"))) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))) && this->getKeyTime())
 		{
 			this->tileSize = this->tileSize * 2.f;
 			this->tileMap->doubleTileSize();
@@ -348,7 +367,7 @@ void Editor::updateUserInput(const float& dt)
 			this->selectorRect.setSize(sf::Vector2f(this->textureSelector->getTextureIntRect().width, this->textureSelector->getTextureIntRect().height));
 			this->selectorRect.setTextureRect(this->textureSelector->getTextureIntRect());
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("O"))) && this->getKeyTime())
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("O"))) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))) && this->getKeyTime())
 		{
 			this->tileSize = this->tileSize / 2.f;
 			this->tileMap->halveTileSize();

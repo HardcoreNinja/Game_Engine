@@ -14,8 +14,9 @@ private:
     /*Tile Map*/
     std::unique_ptr<TILEMAP::TileMap> tileMap;
 
-    /*Tile Map Flags*/
+    /*Tile Map Variables*/
     bool collision;
+    std::string doorName;
     unsigned short tileType;
     unsigned short maxTileType;
     unsigned short tileRotationDegrees;
@@ -43,7 +44,7 @@ private:
     void initLatestTileMap();
 
 public:
-    /*Constuctor & Destructor*/
+    /*Constructor & Destructor*/
     Editor(GameInfo* game_info);
     virtual ~Editor();
 

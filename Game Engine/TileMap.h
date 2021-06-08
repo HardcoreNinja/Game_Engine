@@ -18,6 +18,7 @@ namespace TILEMAP
 		sf::RectangleShape shape;
 		unsigned short shapeRotation;
 		bool collision;
+		std::string doorName;
 		unsigned short tileType;
 		float tileSize;
 
@@ -28,7 +29,8 @@ namespace TILEMAP
 			float pos_x, float pos_y, 
 			const sf::Texture& texture, 
 			const sf::IntRect& texture_intrect, 
-			bool tile_collision, 
+			bool tile_collision,
+			std::string door_name,
 			unsigned short type = 0,
 			unsigned short shape_rotation = 0
 		);
@@ -89,7 +91,8 @@ namespace TILEMAP
 		void addTile(
 		const unsigned pos_x, const unsigned pos_y,
 			const unsigned tile_layer,
-			const bool& collision, 
+			const bool& collision,
+			const std::string& door_name,
 			const unsigned short& tile_type,
 			unsigned short& rotation_degrees
 		);

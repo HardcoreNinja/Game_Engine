@@ -7,11 +7,12 @@ TILEMAP::Tile::Tile(
 	float pos_x, float pos_y, 
 	const sf::Texture& texture, 
 	const sf::IntRect& texture_intrect, 
-	bool tile_collision, 
+	bool tile_collision,
+	std::string door_name,
 	unsigned short type,
 	unsigned short shape_rotation
 )
-	: collision(tile_collision), tileType(type), shapeRotation(shape_rotation), tileSize(tile_size)
+	: collision(tile_collision), tileType(type), shapeRotation(shape_rotation), tileSize(tile_size), doorName(door_name)
 {
 	this->shape.setSize(sf::Vector2f(tile_size, tile_size));
 	this->shape.setPosition(sf::Vector2f(static_cast<float>(pos_x) * tile_size, static_cast<float>(pos_y) * tile_size));
@@ -66,6 +67,7 @@ const std::string TILEMAP::Tile::getAsString() const
 	ss << this->shape.getTextureRect().left << " "
 		<< this->shape.getTextureRect().top << " "
 		<< this->collision << " "
+		<< this->doorName << " "
 		<< this->tileType << " "
 		<< this->shapeRotation;
 
@@ -227,7 +229,8 @@ void TILEMAP::TileMap::halveTileSize()
 void TILEMAP::TileMap::addTile(
 	const unsigned pos_x, const unsigned pos_y, 
 	const unsigned tile_layer,
-	const bool& tile_collision, 
+	const bool& tile_collision,
+	const std::string& door_name,
 	const unsigned short& tile_type,
 	unsigned short& rotation_degrees)
 {
@@ -243,6 +246,7 @@ void TILEMAP::TileMap::addTile(
 				this->texture,
 				sf::IntRect(this->textureIntRect.left, this->textureIntRect.top, this->tileSizeF, this->tileSizeF),
 				tile_collision,
+				door_name,
 				tile_type,
 				rotation_degrees
 				);
@@ -335,6 +339,7 @@ void TILEMAP::TileMap::loadFromFile(std::string tile_map_file_path, std::string 
 		unsigned intRectLeft = 0;
 		unsigned intRectTop = 0;
 		bool collision = false;
+		std::string doorName = " ";
 		short type = 0;
 		unsigned short shapeRotation;
 
@@ -365,7 +370,7 @@ void TILEMAP::TileMap::loadFromFile(std::string tile_map_file_path, std::string 
 		if(!this->texture.loadFromFile(texture_sheet_file_path))
 			throw("ERROR::TILEMAP::TILE_MAP::FAILED_TO_SAVE::texture_sheet_file_path");
 
-		while (ifs >> tile_layer >> pos_x >> pos_y >> tileSize >> intRectLeft >> intRectTop >> collision >> type >> shapeRotation)
+		while (ifs >> tile_layer >> pos_x >> pos_y >> tileSize >> intRectLeft >> intRectTop >> collision >> doorName >> type >> shapeRotation)
 		{
 			this->tileMap[tile_layer][pos_x][pos_y] = std::make_unique <TILEMAP::Tile>(
 				tileSize,
@@ -373,6 +378,7 @@ void TILEMAP::TileMap::loadFromFile(std::string tile_map_file_path, std::string 
 				this->texture,
 				sf::IntRect(intRectLeft, intRectTop, tileSize, tileSize),
 				collision,
+				doorName,
 				type,
 				shapeRotation
 				);
