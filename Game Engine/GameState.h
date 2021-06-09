@@ -7,6 +7,7 @@
 #include "Enemy.h"
 #include "Item.h"
 #include "Inventory.h"
+#include "NPC.h"
 
 /*Class Forward Declarations*/
 class Tile;
@@ -17,6 +18,7 @@ class HUD;
 class Enemy;
 class Item;
 class Inventory;
+class NPC;
 class sf::RenderTarget;
 class sf::Clock;
 
@@ -64,6 +66,11 @@ private:
     std::vector<std::unique_ptr<Item>>::const_iterator itemItr;
     std::vector<std::unique_ptr<Item>> itemVector;
 
+    /*NPC Variables*/
+    std::unique_ptr<NPC> npc;
+    std::vector<std::unique_ptr<NPC>>::const_iterator npcItr;
+    std::vector<std::unique_ptr<NPC>> npcVector;
+
     /*Initializers*/
     void initVariables(bool came_from_main_menu, PlayerDetails player_details, ProjectileDetails projectile_details);
     void initKeybinds();
@@ -101,6 +108,8 @@ public:
     void updateEnemyLoop(const float& dt);
     void updateEnemyCollisions();
     void updateEnemyDestroyLoop();
+    void updateNPCLoop(const float& dt);
+    void updateNPCCollisions();
     void updateItemLoop(const float& dt);
     void updateItemDestroyLoop();
     virtual void update(const float& dt);
@@ -114,6 +123,7 @@ public:
     void renderPlayer(sf::RenderTarget& target);
     void renderProjectiles(sf::RenderTarget& target);
     void renderEnemies(sf::RenderTarget& target);
+    void renderNPCs(sf::RenderTarget& target);
     void renderHUD(sf::RenderTarget& target);
     void renderInventory(sf::RenderTarget& target);
     void renderItems(sf::RenderTarget& target); 

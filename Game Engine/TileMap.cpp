@@ -168,7 +168,7 @@ std::tuple<bool, unsigned short, std::string_view> TILEMAP::TileMap::getCollisio
 				}
 			}
 }
-std::vector<sf::Vector2f> TILEMAP::TileMap::getEnemySpawnPositions()
+std::vector<sf::Vector2f> TILEMAP::TileMap::getSpawnPositions()
 {
 	std::vector<sf::Vector2f> enemySpawnPositions; 
 	for (int tile_layer = 0; tile_layer != this->tileMap.size(); tile_layer++)

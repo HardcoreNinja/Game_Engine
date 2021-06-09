@@ -94,6 +94,9 @@
     <Filter Include="Source Files\Pause Menu">
       <UniqueIdentifier>{5e13b80c-a016-4be0-8616-4860fe64386a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\NPC">
+      <UniqueIdentifier>{24ef7731-5208-4cbe-8caa-af006b935d9f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Header.cpp">
@@ -156,6 +159,9 @@
     <ClCompile Include="PauseMenu.cpp">
       <Filter>Source Files\Pause Menu</Filter>
     </ClCompile>
+    <ClCompile Include="NPC.cpp">
+      <Filter>Source Files\NPC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">
@@ -214,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="PauseMenu.h">
       <Filter>Source Files\Pause Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC.h">
+      <Filter>Source Files\NPC</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -51,10 +51,21 @@ void GameState::initRenderTexture()
 }
 void GameState::initTileMap()
 {
+	sf::Vector2i mapDimensions = sf::Vector2i(0, 0);
+	int tileSize = 0;
+
+	std::ifstream ifs("Config/level_1.ini");
+	if (ifs.is_open())
+	{
+		ifs >> mapDimensions.x >> mapDimensions.y;
+		ifs >> tileSize;
+	}
+	ifs.close();
+
 	this->tileMap = std::make_unique<TILEMAP::TileMap>(
-		this->tileSize,                                //Tile Size
-		48, 48,                                        //Map Width & Height (in Squares)
-		this->tileSize, this->tileSize,                //Texture Width & Height
+		static_cast<float>(tileSize),                                //Tile Size
+		mapDimensions.x, mapDimensions.y,              //Map Width & Height (in Squares)
+		tileSize, tileSize,                            //Texture Width & Height
 		"Resources/Images/Tiles/PipoyaMasterLevel.png" //Tile Sheet File Path
 		);
 }
@@ -93,7 +104,7 @@ void GameState::initEnemies()
 
 	for (int i = 0; i < numberOfEnemies; i++)
 	{
-		this->enemy = std::make_unique<Enemy>(this->tileMap->getEnemySpawnPositions(), this->tileMap->getPathFinderMarkings());
+		this->enemy = std::make_unique<Enemy>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings());
 		this->enemy->setEnemyPosition();
 		this->enemyVector.push_back(std::move(this->enemy));
 	}
@@ -309,25 +320,45 @@ void GameState::updateDoorCollisions(const float& dt)
 {
 	if (std::get<0>(this->player->getDoorInfo()) == true && std::get<1>(this->player->getDoorInfo()) == "HOUSE_A")
 	{
-		for (auto& element : this->enemyVector)
-			this->enemyVector.pop_back();
-			
-		for (auto& element : this->itemVector)
-			this->itemVector.pop_back();
-
 		this->player->setPosition(sf::Vector2f(591.f, 751.f));
 		this->player->setOldDirection(PlayerDirection::Up);
 		
 		this->tileMap.reset();
 
+		sf::Vector2i mapDimensions = sf::Vector2i(0, 0);
+		int tileSize = 0;
+
+		std::ifstream ifs("Config/house_a.ini");
+		if (ifs.is_open())
+		{
+			ifs >> mapDimensions.x >> mapDimensions.y;
+			ifs >> tileSize;
+		}
+		ifs.close();
+
 		this->tileMap = std::make_unique<TILEMAP::TileMap>(
-			this->tileSize,                                //Tile Size
-			37, 25,                                        //Map Width & Height (in Squares)
-			this->tileSize, this->tileSize,                //Texture Width & Height
+			static_cast<float>(tileSize),                                //Tile Size
+			mapDimensions.x, mapDimensions.y,              //Map Width & Height (in Squares)
+			tileSize, tileSize,                            //Texture Width & Height
 			"Resources/Images/Tiles/PipoyaMasterLevel.png" //Tile Sheet File Path
 			);
 
 		this->tileMap->loadFromFile("Config/house_a.ini", "Resources/Images/Tiles/PipoyaMasterLevel.png");
+
+		int numberOfNPC = 3;
+
+		for (int i = 0; i < numberOfNPC; i++)
+		{
+			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings());
+			this->npc->setNPCPosition();
+			this->npcVector.push_back(std::move(this->npc));
+		}
+
+		for (auto& element : this->enemyVector)
+			this->enemyVector.pop_back();
+
+		for (auto& element : this->itemVector)
+			this->itemVector.pop_back();
 	}
 }
 void GameState::updatePlayerCollisions()
@@ -455,6 +486,42 @@ void GameState::updateEnemyDestroyLoop()
 		counter++;
 	}
 }
+void GameState::updateNPCLoop(const float& dt)
+{
+	int counter1 = 0;
+	for (this->npcItr = this->npcVector.begin(); this->npcItr != this->npcVector.end(); this->npcItr++)
+	{
+		this->npcVector[counter1]->update(this->player->getSpriteRect(), dt);
+		counter1++;
+	}
+}
+void GameState::updateNPCCollisions()
+{
+	/*NPC/Wall*/
+	int counter1 = 0;
+	for (this->npcItr = this->npcVector.begin(); this->npcItr != this->npcVector.end(); this->npcItr++)
+	{
+		this->npcVector[counter1]->tileCollision(this->tileMap->getCollision(this->npcVector[counter1]->getSpriteRect()));
+		counter1++;
+	}
+
+	/*NPC/Player*/
+	int counter2 = 0;
+	for (this->npcItr = this->npcVector.begin(); this->npcItr != this->npcVector.end(); this->npcItr++)
+	{
+		this->npcVector[counter2]->playerCollision(this->player->getSpriteRect());
+		counter2++;
+	}
+
+	/*NPC/Projectile*/
+	for (int i = 0; i < this->projectileVector.size(); i++)
+	{
+		for (int j = 0; j < this->npcVector.size(); j++)
+		{
+			this->npcVector[j]->projectileCollision(this->projectileVector[i]->getProjectileSpriteRectAndInt());
+		}
+	}
+}
 void GameState::updateItemLoop(const float& dt)
 {
 	int counter = 0;
@@ -525,6 +592,10 @@ void GameState::update(const float& dt)
 			this->updateEnemyDestroyLoop();
 			this->updateEnemyCollisions();
 
+			/*NPC Functions*/
+			this->updateNPCLoop(dt);
+			this->updateNPCCollisions();
+
 			/*Item Functions*/
 			this->updateItemLoop(dt);
 			this->updateItemDestroyLoop();
@@ -584,6 +655,16 @@ void GameState::renderEnemies(sf::RenderTarget& target)
 		counter++;
 	}
 }
+void GameState::renderNPCs(sf::RenderTarget& target)
+{
+	int counter = 0;
+	for (this->npcItr = this->npcVector.begin(); this->npcItr != this->npcVector.end(); this->npcItr++)
+	{
+		this->npcVector[counter]->render(target);
+
+		counter++;
+	}
+}
 void GameState::renderHUD(sf::RenderTarget& target)
 {
 	this->hud->render(target);
@@ -614,6 +695,7 @@ void GameState::render(sf::RenderTarget* target)
 	this->renderSprite.setTexture(this->renderTexture.getTexture());
 	this->renderProjectiles(this->renderTexture);
 	this->renderEnemies(this->renderTexture);
+	this->renderNPCs(this->renderTexture);
 	this->renderItems(this->renderTexture);
 	this->renderPlayer(this->renderTexture);
 	this->renderTexture.display();

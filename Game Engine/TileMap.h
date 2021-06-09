@@ -87,7 +87,7 @@ namespace TILEMAP
 		const sf::Texture* getTexture();
 		const sf::IntRect& getTextureIntRect();
 		std::tuple<bool, unsigned short, std::string_view> getCollision(sf::RectangleShape player_rect);
-		std::vector<sf::Vector2f> getEnemySpawnPositions();
+		std::vector<sf::Vector2f> getSpawnPositions();
 		std::vector<sf::Vector2f> getPathFinderMarkings();
 
 		/*Setters*/
