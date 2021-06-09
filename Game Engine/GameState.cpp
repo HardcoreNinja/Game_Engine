@@ -309,14 +309,10 @@ void GameState::updateDoorCollisions(const float& dt)
 {
 	if (std::get<0>(this->player->getDoorInfo()) == true && std::get<1>(this->player->getDoorInfo()) == "HOUSE_A")
 	{
-		std::cout << "Enemy Vector Size1: " << this->enemyVector.size() << '\n';
-		for (int i = 0; i < this->enemyVector.size() + 2; i++)
-		{
+		for (auto& element : this->enemyVector)
 			this->enemyVector.pop_back();
-			std::cout << "Enemy Vector Size2: " << this->enemyVector.size() << '\n';
-		}
-
-		for (int i = 0; i < this->itemVector.size(); i++)
+			
+		for (auto& element : this->itemVector)
 			this->itemVector.pop_back();
 
 		this->player->setPosition(sf::Vector2f(591.f, 751.f));
