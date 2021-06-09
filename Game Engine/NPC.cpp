@@ -26,7 +26,7 @@ void NPC::initVariables(std::vector<sf::Vector2f> npc_spawn_positions, std::vect
 
 	/*Randomization Variables*/
 	this->randomDirectionCounter = 0;
-	this->randomDirectionNumber = this->getRandomInt(0, 4);
+	this->randomDirectionNumber = this->getRandomInt(0, 5);
 
 	/*Male/Female Bool*/
 	this->male1Female0 = this->getRandomInt(0, 2);
@@ -1321,7 +1321,7 @@ void NPC::updateRandomDirection(const float& dt)
 
 	if (this->randomDirectionCounter > 200)
 	{
-		this->randomDirectionNumber = this->getRandomInt(0, 4);
+		this->randomDirectionNumber = this->getRandomInt(0, 5);
 
 		this->randomDirectionCounter = 0;
 	}

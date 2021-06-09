@@ -26,7 +26,7 @@ void Enemy::initVariables(std::vector<sf::Vector2f> enemy_spawn_positions, std::
 
 	/*Randomization Variables*/
 	this->randomDirectionCounter = 0;
-	this->randomDirectionNumber = this->getRandomInt(0, 4);
+	this->randomDirectionNumber = this->getRandomInt(0, 5);
 
 	/*Collision Variables*/
 	this->projectileCollisionBool = false;
@@ -734,7 +734,7 @@ void Enemy::updateRandomDirection(const float& dt)
 
 		if (this->randomDirectionCounter > 200)
 		{
-			this->randomDirectionNumber = this->getRandomInt(0, 4);
+			this->randomDirectionNumber = this->getRandomInt(0, 5);
 
 			this->randomDirectionCounter = 0;
 		}
