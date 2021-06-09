@@ -381,7 +381,7 @@ void Enemy::projectileCollision(std::tuple<sf::RectangleShape, int> collision_tu
 	if (this->enemyDetails.currentHP == 0)
 		this->destroy = true; 
 }
-void Enemy::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
+void Enemy::tileCollision(std::tuple<bool, unsigned short, std::string_view> collision_tuple)
 {
 	if (std::get<0>(collision_tuple) == true && std::get<1>(collision_tuple) == TILEMAP::TileType::Wall)
 	{

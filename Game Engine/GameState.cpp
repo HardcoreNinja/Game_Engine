@@ -305,6 +305,35 @@ void GameState::updatePlayer(const float& dt)
 	this->player->update(dt);
 	this->view.setCenter(this->player->getSpriteRect().getPosition());
 }
+void GameState::updateDoorCollisions(const float& dt)
+{
+	if (std::get<0>(this->player->getDoorInfo()) == true && std::get<1>(this->player->getDoorInfo()) == "HOUSE_A")
+	{
+		std::cout << "Enemy Vector Size1: " << this->enemyVector.size() << '\n';
+		for (int i = 0; i < this->enemyVector.size() + 2; i++)
+		{
+			this->enemyVector.pop_back();
+			std::cout << "Enemy Vector Size2: " << this->enemyVector.size() << '\n';
+		}
+
+		for (int i = 0; i < this->itemVector.size(); i++)
+			this->itemVector.pop_back();
+
+		this->player->setPosition(sf::Vector2f(591.f, 751.f));
+		this->player->setOldDirection(PlayerDirection::Up);
+		
+		this->tileMap.reset();
+
+		this->tileMap = std::make_unique<TILEMAP::TileMap>(
+			this->tileSize,                                //Tile Size
+			37, 25,                                        //Map Width & Height (in Squares)
+			this->tileSize, this->tileSize,                //Texture Width & Height
+			"Resources/Images/Tiles/PipoyaMasterLevel.png" //Tile Sheet File Path
+			);
+
+		this->tileMap->loadFromFile("Config/house_a.ini", "Resources/Images/Tiles/PipoyaMasterLevel.png");
+	}
+}
 void GameState::updatePlayerCollisions()
 {
 	/*Player/Wall*/
@@ -487,6 +516,7 @@ void GameState::update(const float& dt)
 
 			/*Player Functions*/
 			this->updatePlayer(dt);
+			this->updateDoorCollisions(dt);
 			this->updatePlayerCollisions();
 
 			/*Projectile Functions*/

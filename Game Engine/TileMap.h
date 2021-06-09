@@ -37,6 +37,7 @@ namespace TILEMAP
 		virtual ~Tile();
 
 		/*Getters*/
+		const std::string_view getDoorName() const;
 		const sf::Vector2f& getPosition() const;
 		const std::string getAsString() const;
 		sf::RectangleShape& getShape();
@@ -75,7 +76,7 @@ namespace TILEMAP
 		/*Getters*/
 		const sf::Texture* getTexture();
 		const sf::IntRect& getTextureIntRect();
-		std::tuple<bool, unsigned short> getCollision(sf::RectangleShape player_rect);
+		std::tuple<bool, unsigned short, std::string_view> getCollision(sf::RectangleShape player_rect);
 		std::vector<sf::Vector2f> getEnemySpawnPositions();
 		std::vector<sf::Vector2f> getPathFinderMarkings();
 

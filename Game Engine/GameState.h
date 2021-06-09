@@ -93,6 +93,7 @@ public:
     void updateInventory(const float& dt);
     void updateManaFill();
     void updatePlayer(const float& dt);
+    void updateDoorCollisions(const float& dt);
     void updatePlayerCollisions();
     void updateProjectileLoop(const float& dt);
     void updateProjectileCollisions();

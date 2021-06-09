@@ -56,6 +56,10 @@ TILEMAP::Tile::~Tile()
 }
 
 /*Getters*/
+const std::string_view TILEMAP::Tile::getDoorName() const
+{
+	return this->doorName;
+}
 const sf::Vector2f& TILEMAP::Tile::getPosition() const
 {
 	return this->shape.getPosition();
@@ -141,7 +145,7 @@ const sf::IntRect& TILEMAP::TileMap::getTextureIntRect()
 {
 	return this->textureIntRect;
 }
-std::tuple<bool, unsigned short> TILEMAP::TileMap::getCollision(sf::RectangleShape player_rect)
+std::tuple<bool, unsigned short, std::string_view> TILEMAP::TileMap::getCollision(sf::RectangleShape player_rect)
 {
 	for(int tile_layer = 0; tile_layer != this->tileMap.size(); tile_layer++)
 		for(int pos_x = 0; pos_x != this->tileMap[tile_layer].size(); pos_x++)
@@ -154,7 +158,7 @@ std::tuple<bool, unsigned short> TILEMAP::TileMap::getCollision(sf::RectangleSha
 						if (this->tileMap[tile_layer][pos_x][pos_y]->getShape().getGlobalBounds().intersects(player_rect.getGlobalBounds()))
 						{
 							//std::cout << "Collision Enabled: " << this->tileMap[x][y][tileLayer]->getCollision() << " " << "Tile Type: " << this->tileMap[x][y][tileLayer]->getTileType() << '\n';
-							return std::make_tuple(this->tileMap[tile_layer][pos_x][pos_y]->getCollision(), this->tileMap[tile_layer][pos_x][pos_y]->getTileType());
+							return std::make_tuple(this->tileMap[tile_layer][pos_x][pos_y]->getCollision(), this->tileMap[tile_layer][pos_x][pos_y]->getTileType(), this->tileMap[tile_layer][pos_x][pos_y]->getDoorName());
 						}
 					}
 				}

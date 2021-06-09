@@ -108,7 +108,7 @@ public:
 
     /*Collisions Functions*/
     void projectileCollision(std::tuple<sf::RectangleShape, int> collision_tuple);
-    void tileCollision(std::tuple<bool, unsigned short> collision_tuple);
+    void tileCollision(std::tuple<bool, unsigned short, std::string_view> collision_tuple);
     void playerCollision(sf::RectangleShape player_rect);
     void alertCircleCollision(sf::RectangleShape player_rect);
 

@@ -63,6 +63,8 @@ private:
 
     /*Collision Variables*/
     bool enemyCollisionBool; 
+    bool doorCollision;
+    std::string doorName; 
     bool wallCollision;
     sf::Vector2f oldPosition;
 
@@ -81,18 +83,21 @@ public:
     virtual ~Player();
 
     /*Setters*/
+    void setOldDirection(PlayerDirection player_direction);
+    void setPosition(sf::Vector2f player_position);
     void setManaFill(float mana_fill);
     void setManaDrain(float mana_drain);
     void setItemBenefits(ItemDetails item_details);
 
     /*Getters*/
+    std::tuple<bool, std::string> getDoorInfo();
     sf::RectangleShape getSpriteRect();
     PlayerDirection getPlayerDirection();
     PlayerDetails getPlayerDetails();
     std::tuple<float, float>getMana();
 
     /*Collisions Functions*/
-    void tileCollision(std::tuple<bool, unsigned short> collision_tuple);
+    void tileCollision(std::tuple<bool, unsigned short, std::string_view> collision_tuple);
     void enemyCollision(std::tuple< sf::RectangleShape, float, bool> enemy_tuple);
 
     /*Update Functions*/

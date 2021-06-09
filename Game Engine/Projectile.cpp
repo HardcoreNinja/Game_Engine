@@ -324,7 +324,7 @@ void Projectile::enemyCollision(sf::RectangleShape enemy_rect)
 		this->spriteRect.setPosition(position);
 	}
 }
-void Projectile::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
+void Projectile::tileCollision(std::tuple<bool, unsigned short, std::string_view> collision_tuple)
 {
 	if (std::get<0>(collision_tuple) == true && std::get<1>(collision_tuple) == TILEMAP::TileType::Wall)
 	{

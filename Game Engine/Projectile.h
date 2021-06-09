@@ -120,7 +120,7 @@ public:
 
     /*Collision Functions*/
     void enemyCollision(sf::RectangleShape enemy_rect);
-    void tileCollision(std::tuple<bool, unsigned short> collision_tuple);
+    void tileCollision(std::tuple<bool, unsigned short, std::string_view> collision_tuple);
 
     /*Update Functions*/
     void updateDirection(const float& dt);

@@ -32,6 +32,8 @@ void Player::initVariables(PlayerDetails player_details)
 
 	/*Collision Variables*/
 	this->enemyCollisionBool = false;
+	this->doorCollision = false;
+	this->doorName = " ";
 	this->wallCollision = false;
 }
 void Player::initKeybinds(std::map<std::string, int>* supported_keys)
@@ -897,8 +899,15 @@ Player::~Player()
 {
 }
 
-
 /*Setters*/
+void Player::setOldDirection(PlayerDirection old_direction)
+{
+	this->playerDetails.oldDirection = old_direction;
+}
+void Player::setPosition(sf::Vector2f player_position)
+{
+	this->spriteRect.setPosition(player_position);
+}
 void Player::setManaFill(float mana_fill)
 {
 	this->playerDetails.currentMana += mana_fill;
@@ -932,6 +941,10 @@ void Player::setItemBenefits(ItemDetails item_details)
 }
 
 /*Getters*/
+std::tuple<bool, std::string> Player::getDoorInfo()
+{
+	return std::make_tuple(this->doorCollision, this->doorName);
+}
 sf::RectangleShape Player::getSpriteRect()
 {
 	return this->spriteRect;
@@ -950,7 +963,7 @@ std::tuple<float, float> Player::getMana()
 }
 
 /*Collision Functions*/
-void Player::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
+void Player::tileCollision(std::tuple<bool, unsigned short, std::string_view> collision_tuple)
 {
 	if (std::get<0>(collision_tuple) == true && std::get<1>(collision_tuple) == TILEMAP::TileType::Wall)
 	{
@@ -959,6 +972,18 @@ void Player::tileCollision(std::tuple<bool, unsigned short> collision_tuple)
 	}
 	else
 		this->wallCollision = false;
+
+	if (std::get<0>(collision_tuple) == true && std::get<1>(collision_tuple) == TILEMAP::TileType::Door)
+	{
+		this->doorCollision = true;
+		std::cout << "Player/Door Collision!\n";
+		this->doorName = std::get<2>(collision_tuple);
+
+		std::cout << "Door Name: " << std::get<2>(collision_tuple) << '\n';
+	}
+	else
+		this->doorCollision = false;
+
 
 	if (this->wallCollision == true)
 	{
