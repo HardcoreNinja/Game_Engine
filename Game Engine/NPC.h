@@ -66,6 +66,12 @@ private:
     /*Male/Female Bool*/
     bool male1Female0;
 
+    /*Item Text & Font*/
+    bool showItemText;
+    sf::Text text;
+    sf::Font font;
+    sf::RectangleShape textShape;
+
     /*Collision Variables*/
     bool projectileCollisionBool;
     bool alertCircleCollisionBool;
@@ -79,7 +85,8 @@ private:
     /*AI Variables*/
     NPCDirection lastDirection;
     bool goingAroundWall;
-    bool attackPlayer;
+    bool interactWithPlayer;
+    bool talkingToPlayer;
     int directionNumber;
     sf::CircleShape alertCircle;
 
@@ -97,6 +104,7 @@ private:
     void initVariables(std::vector<sf::Vector2f> npc_spawn_positions, std::vector<sf::Vector2f> path_finder_markings);
     void initSpriteRect();
     void initSprite();
+    void initText();
 
 public:
     /*Constructor & Destructor*/
@@ -112,7 +120,7 @@ public:
     bool getDestroy();
     int getRandomInt(int min, int max);
     sf::RectangleShape getSpriteRect();
-    std::tuple<sf::RectangleShape, float, bool> getSpriteRectDamageAttackPlayerBool();
+    std::tuple<sf::RectangleShape, float, bool> getSpriteRectDamageInteractWithPlayerBool();
 
     /*Collisions Functions*/
     void projectileCollision(std::tuple<sf::RectangleShape, int> collision_tuple);
@@ -121,15 +129,16 @@ public:
     void alertCircleCollision(sf::RectangleShape player_rect);
 
     /*Update Functions*/
+    void updateInteractWithPlayer(sf::RectangleShape player_rect, sf::Vector2f mouse_view, const sf::Event& smfl_events, const bool& key_time);
     void updatePath(sf::RectangleShape player_rect, const float& dt);
     void updateAIDirection(sf::RectangleShape player_rect, const float& dt);
-    void updateAIAttackMovement(const float& dt);
+    void updateAIMovement(const float& dt);
     void updateEmoteAnimation();
     void updateRandomDirection(const float& dt);
     void updateVelocity(float dir_x, float dir_y, const float& dt);
     void updateMovement(const float& dt);
     void updateAnimation();
-    void update(sf::RectangleShape player_rect, const float& dt);
+    void update(sf::RectangleShape player_rect, sf::Vector2f mouse_view, const sf::Event& smfl_events, const bool& key_time, const float& dt);
 
     /*Render Functions*/
     void render(sf::RenderTarget& target);

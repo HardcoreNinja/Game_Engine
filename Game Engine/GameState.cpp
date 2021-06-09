@@ -491,7 +491,7 @@ void GameState::updateNPCLoop(const float& dt)
 	int counter1 = 0;
 	for (this->npcItr = this->npcVector.begin(); this->npcItr != this->npcVector.end(); this->npcItr++)
 	{
-		this->npcVector[counter1]->update(this->player->getSpriteRect(), dt);
+		this->npcVector[counter1]->update(this->player->getSpriteRect(), this->mousePositionView, *this->sfmlEvent, this->getKeyTime(), dt);
 		counter1++;
 	}
 }

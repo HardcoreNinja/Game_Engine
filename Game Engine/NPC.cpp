@@ -43,7 +43,8 @@ void NPC::initVariables(std::vector<sf::Vector2f> npc_spawn_positions, std::vect
 
 	/*AI Variables*/
 	this->goingAroundWall = false;
-	this->attackPlayer = false;
+	this->interactWithPlayer = false;
+	this->talkingToPlayer = false;
 	this->directionNumber = 0;
 }
 void NPC::initSpriteRect()
@@ -78,6 +79,23 @@ void NPC::initSprite()
 	this->emoteSprite.setOrigin(this->emoteSprite.getGlobalBounds().width / 2.f, this->emoteSprite.getGlobalBounds().height / 2.f);
 	this->emoteSprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x, this->spriteRect.getPosition().y - 50.f));
 }
+void NPC::initText()
+{
+	if (!this->font.loadFromFile("Resources/Fonts/BreatheFire.ttf"))
+		throw ("ERROR::NPC::FAILED_TO_LOAD:BreatheFire.ttf");
+
+	/*Text Shape*/
+	this->textShape.setSize(sf::Vector2f(100.f, 25.f));
+	this->textShape.setOrigin(this->textShape.getGlobalBounds().width / 2.f, this->textShape.getGlobalBounds().height / 2.f);
+	this->textShape.setFillColor(sf::Color(0, 0, 0, 150));
+
+	/*Text*/
+	this->text.setFont(font);
+	this->text.setFillColor(sf::Color::White);
+	this->text.setCharacterSize(15);
+	this->text.setOrigin(this->text.getGlobalBounds().width / 2.f, this->text.getGlobalBounds().height / 2.f);
+	this->text.setPosition(sf::Vector2f(this->textShape.getPosition().x, this->textShape.getPosition().y - static_cast<float>(this->text.getCharacterSize()) / 4.f));
+}
 
 /*Constructor & Destructor*/
 NPC::NPC(std::vector<sf::Vector2f> npc_spawn_positions, std::vector<sf::Vector2f> path_finder_markings)
@@ -85,6 +103,7 @@ NPC::NPC(std::vector<sf::Vector2f> npc_spawn_positions, std::vector<sf::Vector2f
 	this->initVariables(npc_spawn_positions, path_finder_markings);
 	this->initSpriteRect();
 	this->initSprite();
+	this->initText();
 }
 NPC::~NPC()
 {
@@ -939,9 +958,9 @@ sf::RectangleShape NPC::getSpriteRect()
 {
 	return this->spriteRect;
 }
-std::tuple<sf::RectangleShape, float, bool> NPC::getSpriteRectDamageAttackPlayerBool()
+std::tuple<sf::RectangleShape, float, bool> NPC::getSpriteRectDamageInteractWithPlayerBool()
 {
-	return std::make_tuple(this->spriteRect, this->npcDetails.damage, this->attackPlayer);
+	return std::make_tuple(this->spriteRect, this->npcDetails.damage, this->interactWithPlayer);
 }
 
 /*Collisions Functions*/
@@ -979,7 +998,7 @@ void NPC::tileCollision(std::tuple<bool, unsigned short, std::string_view> colli
 	else
 		this->wallCollision = false;
 
-	if (this->wallCollision && this->attackPlayer)
+	if (this->wallCollision && this->interactWithPlayer)
 	{
 		this->goingAroundWall = true;
 		this->lastDirection = npcDetails.currentDirection;
@@ -1009,6 +1028,7 @@ void NPC::playerCollision(sf::RectangleShape player_rect)
 	if (this->spriteRect.getGlobalBounds().intersects(player_rect.getGlobalBounds()))
 	{
 		this->playerCollisionBool = true;
+		this->talkingToPlayer = true;
 	}
 	else
 		this->playerCollisionBool = false;
@@ -1037,7 +1057,7 @@ void NPC::alertCircleCollision(sf::RectangleShape player_rect)
 	if (this->alertCircle.getGlobalBounds().intersects(player_rect.getGlobalBounds()))
 	{
 		this->alertCircleCollisionBool = true;
-		this->attackPlayer = true;
+		this->interactWithPlayer = true;
 		//std::cout << "Alert Circle Player Collision Bool: " << this->alertCircleCollisionBool << '\n';
 	}
 	else
@@ -1056,6 +1076,25 @@ void NPC::alertCircleCollision(sf::RectangleShape player_rect)
 }
 
 /*Update Functions*/
+void NPC::updateInteractWithPlayer(sf::RectangleShape player_rect, sf::Vector2f mouse_view, const sf::Event& smfl_events, const bool& key_time)
+{
+	if (this->spriteRect.getGlobalBounds().contains(mouse_view) && smfl_events.mouseButton.button == sf::Mouse::Left)
+	{
+		std::cout << "Clicked NPC!\n";
+		this->interactWithPlayer = true;
+	}
+
+	float remainderX = std::abs(player_rect.getPosition().x - this->spriteRect.getPosition().x);
+	float remainderY = std::abs(player_rect.getPosition().y - this->spriteRect.getPosition().y);
+
+	std::cout << remainderX << " x " << remainderY << '\n';
+
+	if (this->talkingToPlayer && (remainderX > 20.f && remainderY > 20.f))
+	{
+		this->talkingToPlayer = false;
+		this->interactWithPlayer = false;
+	}
+}
 void NPC::updatePath(sf::RectangleShape player_rect, const float& dt)
 {
 	std::vector<sf::Vector2f> closestX;
@@ -1111,12 +1150,12 @@ void NPC::updatePath(sf::RectangleShape player_rect, const float& dt)
 			if (enemyPosition.y > closestY[0].y)
 			{
 				this->directionNumber = 1;
-				this->updateAIAttackMovement(dt);
+				this->updateAIMovement(dt);
 			}
 			else if (enemyPosition.y < closestY[0].y)
 			{
 				this->directionNumber = 2;
-				this->updateAIAttackMovement(dt);
+				this->updateAIMovement(dt);
 			}
 		}
 		else if (remainderY_Y < 10.f)
@@ -1124,12 +1163,12 @@ void NPC::updatePath(sf::RectangleShape player_rect, const float& dt)
 			if (enemyPosition.x > closestY[0].x)
 			{
 				this->directionNumber = 3;
-				this->updateAIAttackMovement(dt);
+				this->updateAIMovement(dt);
 			}
 			else if (enemyPosition.x < closestY[0].x)
 			{
 				this->directionNumber = 4;
-				this->updateAIAttackMovement(dt);
+				this->updateAIMovement(dt);
 			}
 		}
 		if (std::abs(enemyPosition.x - closestY[0].x) < 10.f && std::abs(enemyPosition.y - closestY[0].y) < 10.f)
@@ -1143,12 +1182,12 @@ void NPC::updatePath(sf::RectangleShape player_rect, const float& dt)
 			if (enemyPosition.x > closestX[0].x)
 			{
 				this->directionNumber = 3;
-				this->updateAIAttackMovement(dt);
+				this->updateAIMovement(dt);
 			}
 			else if (enemyPosition.x < closestX[0].x)
 			{
 				this->directionNumber = 4;
-				this->updateAIAttackMovement(dt);
+				this->updateAIMovement(dt);
 			}
 		}
 		else if (remainderX_X < 10.f)
@@ -1156,12 +1195,12 @@ void NPC::updatePath(sf::RectangleShape player_rect, const float& dt)
 			if (enemyPosition.y > closestX[0].y)
 			{
 				this->directionNumber = 1;
-				this->updateAIAttackMovement(dt);
+				this->updateAIMovement(dt);
 			}
 			else if (enemyPosition.y < closestX[0].y)
 			{
 				this->directionNumber = 2;
-				this->updateAIAttackMovement(dt);
+				this->updateAIMovement(dt);
 			}
 		}
 		if (std::abs(enemyPosition.x - closestX[0].x) < 10.f && std::abs(enemyPosition.y - closestX[0].y) < 10.f)
@@ -1192,12 +1231,12 @@ void NPC::updateAIDirection(sf::RectangleShape player_rect, const float& dt)
 			if (playerPosition.x > enemyPosition.x)
 			{
 				this->directionNumber = 4;
-				this->updateAIAttackMovement(dt);
+				this->updateAIMovement(dt);
 			}
 			else if (playerPosition.x < enemyPosition.x)
 			{
 				this->directionNumber = 3;
-				this->updateAIAttackMovement(dt);
+				this->updateAIMovement(dt);
 			}
 		}
 		else if (remainderX < 20.f)
@@ -1205,19 +1244,24 @@ void NPC::updateAIDirection(sf::RectangleShape player_rect, const float& dt)
 			if (playerPosition.y > enemyPosition.y)
 			{
 				this->directionNumber = 2;
-				this->updateAIAttackMovement(dt);
+				this->updateAIMovement(dt);
 			}
 			else if (playerPosition.y < enemyPosition.y)
 			{
 				this->directionNumber = 1;
-				this->updateAIAttackMovement(dt);
+				this->updateAIMovement(dt);
 			}
 		}
 	}
 }
-void NPC::updateAIAttackMovement(const float& dt)
+void NPC::updateAIMovement(const float& dt)
 {
-	if (this->directionNumber == 1)
+	if (this->directionNumber == 0)
+	{
+	this->npcDetails.currentDirection = NPCDirection::Idle;
+	this->updateVelocity(0.f, 0.f, dt);
+	}
+	else if (this->directionNumber == 1)
 	{
 		this->npcDetails.currentDirection = NPCDirection::Up;
 		this->npcDetails.oldDirection = NPCDirection::Up;
@@ -1494,13 +1538,18 @@ void NPC::updateAnimation()
 		}
 	}
 }
-void NPC::update(sf::RectangleShape player_rect, const float& dt)
+void NPC::update(sf::RectangleShape player_rect, sf::Vector2f mouse_view, const sf::Event& smfl_events, const bool& key_time, const float& dt)
 {
-	/*Attack Player or Random Direction*/
-	if (this->attackPlayer)
+	/*Interact With Player*/
+	this->updateInteractWithPlayer(player_rect, mouse_view, smfl_events, key_time);
+
+	/*Interact With Player or Random Direction*/
+	if (this->interactWithPlayer && !this->talkingToPlayer)
 		this->updateAIDirection(player_rect, dt);
-	else if (!this->attackPlayer)
+	else if (!this->interactWithPlayer && !this->talkingToPlayer)
 		this->updateRandomDirection(dt);
+
+	
 
 	/*Alert Circle*/
 	this->alertCircle.setPosition(this->spriteRect.getPosition());
@@ -1517,7 +1566,8 @@ void NPC::update(sf::RectangleShape player_rect, const float& dt)
 void NPC::render(sf::RenderTarget& target)
 {
 	target.draw(this->sprite);
-	target.draw(this->alertCircle);
+	target.draw(this->spriteRect);
+	//target.draw(this->alertCircle);
 
 	if (this->alertCircleCollisionBool)
 		target.draw(this->emoteSprite);
