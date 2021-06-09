@@ -383,7 +383,7 @@ void Enemy::projectileCollision(std::tuple<sf::RectangleShape, int> collision_tu
 }
 void Enemy::tileCollision(std::tuple<bool, unsigned short, std::string_view> collision_tuple)
 {
-	if (std::get<0>(collision_tuple) == true && std::get<1>(collision_tuple) == TILEMAP::TileType::Wall)
+	if (std::get<0>(collision_tuple) == true && (std::get<1>(collision_tuple) == TILEMAP::TileType::Wall || std::get<1>(collision_tuple) == TILEMAP::TileType::Invisible_Wall))
 	{
 		this->wallCollision = true;
 		std::cout << "Enemy/Wall Collision!" << '\n';

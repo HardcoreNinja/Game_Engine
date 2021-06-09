@@ -6,7 +6,7 @@ void Editor::initVariables()
 	this->collision = false;
 	this->doorName = "NULL";
 	this->tileType = TILEMAP::TileType::Default;
-	this->maxTileType = TILEMAP::TileType::Path_Finder_Markings;
+	this->maxTileType = TILEMAP::TileType::Invisible_Wall;
 	this->cameraSpeed = 1280.f;
 	this->tileRotationDegrees = 0;
 	this->maxTileRotationDegrees = 360;
@@ -48,10 +48,21 @@ void Editor::initFonts()
 }
 void Editor::initTileMap()
 {
+	sf::Vector2i mapDimensions = sf::Vector2i(0, 0);
+	int tileSize = 0;
+
+	std::ifstream ifs("Config/tile_map.ini");
+	if (ifs.is_open())
+	{
+		ifs >> mapDimensions.x >> mapDimensions.y;
+		ifs >> tileSize; 
+	}
+	ifs.close();
+
 	this->tileMap = std::make_unique<TILEMAP::TileMap>(
-		this->tileSize,                                //Tile Size
-		37, 25,                                        //Map Width & Height (in Squares)
-		this->tileSize, this->tileSize,                //Texture Width & Height
+		static_cast<float>(tileSize),                                //Tile Size
+		mapDimensions.x, mapDimensions.y,              //Map Width & Height (in Squares)
+		tileSize, tileSize,                            //Texture Width & Height
 		"Resources/Images/Tiles/PipoyaMasterLevel.png" //Tile Sheet File Path
 		);
 }
