@@ -64,11 +64,11 @@ void NPC::initSpriteRect()
 	this->alertCircle.setOrigin(this->alertCircle.getGlobalBounds().width / 2.f, this->alertCircle.getGlobalBounds().height / 2.f);
 	this->alertCircle.setPosition(this->spriteRect.getPosition());
 }
-void NPC::initSprite()
+void NPC::initSprite(bool male_1_female_0, int texture_switch_number)
 {
 	/*Enemy Sprite*/
 	this->spriteIntRect = sf::IntRect(32, 0, 32, 32);
-	this->setRandomNPC();
+	this->setNPC(male_1_female_0, texture_switch_number);
 	this->sprite.setTextureRect(this->spriteIntRect);
 	this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
@@ -84,25 +84,44 @@ void NPC::initText()
 	if (!this->font.loadFromFile("Resources/Fonts/BreatheFire.ttf"))
 		throw ("ERROR::NPC::FAILED_TO_LOAD:BreatheFire.ttf");
 
-	/*Text Shape*/
-	this->textShape.setSize(sf::Vector2f(100.f, 25.f));
-	this->textShape.setOrigin(this->textShape.getGlobalBounds().width / 2.f, this->textShape.getGlobalBounds().height / 2.f);
-	this->textShape.setFillColor(sf::Color(0, 0, 0, 150));
+	/*Show NPC Text Bool*/
+	this->showNPCText = false; 
 
-	/*Text*/
-	this->text.setFont(font);
-	this->text.setFillColor(sf::Color::White);
-	this->text.setCharacterSize(15);
-	this->text.setOrigin(this->text.getGlobalBounds().width / 2.f, this->text.getGlobalBounds().height / 2.f);
-	this->text.setPosition(sf::Vector2f(this->textShape.getPosition().x, this->textShape.getPosition().y - static_cast<float>(this->text.getCharacterSize()) / 4.f));
+	/*Text Shape*/
+	this->textBackground.setSize(sf::Vector2f(300.f, 150.f));
+	this->textBackground.setOrigin(this->textBackground.getGlobalBounds().width / 2.f, this->textBackground.getGlobalBounds().height / 2.f);
+	this->textBackground.setFillColor(sf::Color(0, 0, 0, 225));
+	this->textBackground.setOutlineThickness(1.f);
+	this->textBackground.setOutlineColor(sf::Color::White);
+
+	/*Text Name Shape*/
+	this->textNameShape.setSize(sf::Vector2f(105.f, 30.f));
+	this->textNameShape.setOrigin(this->textNameShape.getGlobalBounds().width / 2.f, this->textNameShape.getGlobalBounds().height / 2.f);
+	this->textNameShape.setFillColor(sf::Color::Transparent);
+	this->textNameShape.setOutlineThickness(1.f);
+	this->textNameShape.setOutlineColor(sf::Color::Transparent);
+
+	/*Text Name*/
+	this->textName.setFont(font);
+	this->textName.setFillColor(sf::Color::White);
+	this->textName.setCharacterSize(20);
+	this->textName.setString(this->npcDetails.name);
+	this->textName.setOrigin(this->textName.getGlobalBounds().width / 2.f, this->textName.getGlobalBounds().height / 2.f);
+	this->textName.setPosition(sf::Vector2f(this->textNameShape.getPosition().x, this->textNameShape.getPosition().y - static_cast<float>(this->textName.getCharacterSize()) / 4.f));
+	
 }
 
 /*Constructor & Destructor*/
-NPC::NPC(std::vector<sf::Vector2f> npc_spawn_positions, std::vector<sf::Vector2f> path_finder_markings)
+NPC::NPC(
+	std::vector<sf::Vector2f> npc_spawn_positions, 
+	std::vector<sf::Vector2f> path_finder_markings, 
+	bool male_1_female_0, 
+	int texture_switch_number
+)
 {
 	this->initVariables(npc_spawn_positions, path_finder_markings);
 	this->initSpriteRect();
-	this->initSprite();
+	this->initSprite(male_1_female_0, texture_switch_number);
 	this->initText();
 }
 NPC::~NPC()
@@ -114,364 +133,362 @@ void NPC::setNPCPosition()
 {
 	this->spriteRect.setPosition(this->npcDetails.enemySpawnPosition);
 }
-void NPC::setRandomNPC()
+void NPC::setNPC(bool male_1_female_0, int texture_switch_number)
 {
-		int randomMaleSwitchNumber = this->getRandomInt(1, 70);
-		int randomFemaleSwitchNumber = this->getRandomInt(1, 92);
-
-	if (this->male1Female0)
-		switch (randomMaleSwitchNumber)
+	if (male_1_female_0)
+		switch (texture_switch_number)
 		{
 		case 1:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/1.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/1.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 2:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/2.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/2.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 3:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/3.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/3.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 4:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/4.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/4.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 5:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/5.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/5.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 6:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/6.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/6.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 7:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/7.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/7.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 8:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/8.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/8.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 9:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/9.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/9.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 10:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/10.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/10.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 11:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/11.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/11.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 12:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/12.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/12.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 13:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/13.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/13.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 14:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/14.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/14.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 15:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/15.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/15.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 16:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/16.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/16.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 17:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/17.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/17.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 18:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/18.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/18.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 19:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/19.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/19.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 20:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/20.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/20.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 21:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/21.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/21.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 22:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/22.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/22.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 23:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/23.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/23.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 24:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/24.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/24.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 25:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/25.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/25.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 26:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/26.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/26.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 27:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/27.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/27.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 28:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/28.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/28.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 29:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/29.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/9.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 30:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/30.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/30.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 31:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/31.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/31.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 32:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/32.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/32.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 33:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/33.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/33.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 34:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/34.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/34.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 35:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/35.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/35.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 36:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/36.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/36.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 37:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/37.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/37.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 38:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/38.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/38.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 39:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/39.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/39.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 40:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/40.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/40.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 41:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/41.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/41.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 42:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/42.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/42.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 43:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/43.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/43.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 44:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/44.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/44.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 45:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/45.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/45.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 46:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/46.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/46.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 47:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/47.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/47.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 48:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/48.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/48.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 49:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/49.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/49.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 50:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/50.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/50.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 51:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/51.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/51.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 52:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/52.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/52.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 53:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/53.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/53.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
+			this->npcDetails.name = "Lydian: ";
 			break;
 		case 54:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/54.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/54.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 55:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/55.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/55.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 56:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/56.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/56.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 57:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/57.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/57.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 58:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/58.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/58.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 59:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/59.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/59.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 60:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/60.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/60.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 61:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/61.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/61.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 62:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/62.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/62.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 63:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/63.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/63.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 64:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/64.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/64.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 65:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/65.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/65.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 66:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/66.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/66.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 67:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/67.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/67.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 68:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/68.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/68.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		case 69:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/69.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/69.png");
-			sprite.setTexture(this->texture);
+			this->sprite.setTexture(this->texture);
 			break;
 		default:
-			std::cout << "ERROR::NPC::void setRandomNPC() (MALE)::Invalid Switch Entry!\n";
+			std::cout << "ERROR::NPC::void setNPC() (MALE)::Invalid Switch Entry!\n";
 		}
-	else if (!this->male1Female0)
-		switch (randomFemaleSwitchNumber)
+	else if (!male_1_female_0)
+		switch (texture_switch_number)
 		{
 		case 1:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/1.png"))
@@ -517,6 +534,7 @@ void NPC::setRandomNPC()
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/9.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Female/9.png");
 			this->sprite.setTexture(this->texture);
+			this->npcDetails.name = "Aeolian: ";
 			break;
 		case 10:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/10.png"))
@@ -557,6 +575,7 @@ void NPC::setRandomNPC()
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/17.png"))
 				throw("ERROR::NPC::FAILED_TO_LOAD::Female/17.png");
 			this->sprite.setTexture(this->texture);
+			this->npcDetails.name = "Pali: ";
 			break;
 		case 18:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/18.png"))
@@ -929,7 +948,7 @@ void NPC::setRandomNPC()
 			this->sprite.setTexture(this->texture);
 			break;
 		default:
-			std::cout << "ERROR::NPC::void setRandomNPC() (FEMALE)::Invalid Switch Entry!\n";
+			std::cout << "ERROR::NPC::void setNPC() (FEMALE)::Invalid Switch Entry!\n";
 		}
 }
 void NPC::setEmoteState(NPCEmoteStates emote_state)
@@ -1028,10 +1047,13 @@ void NPC::playerCollision(sf::RectangleShape player_rect)
 	if (this->spriteRect.getGlobalBounds().intersects(player_rect.getGlobalBounds()))
 	{
 		this->playerCollisionBool = true;
-		this->talkingToPlayer = true;
+		
 	}
 	else
 		this->playerCollisionBool = false;
+
+	if (this->playerCollisionBool && this->interactWithPlayer)
+		this->talkingToPlayer = true;
 
 	if (this->playerCollisionBool == true)
 	{
@@ -1084,15 +1106,17 @@ void NPC::updateInteractWithPlayer(sf::RectangleShape player_rect, sf::Vector2f 
 		this->interactWithPlayer = true;
 	}
 
+	if(this->talkingToPlayer && this->interactWithPlayer)
+		this->showNPCText = true;
+
 	float remainderX = std::abs(player_rect.getPosition().x - this->spriteRect.getPosition().x);
 	float remainderY = std::abs(player_rect.getPosition().y - this->spriteRect.getPosition().y);
-
-	std::cout << remainderX << " x " << remainderY << '\n';
 
 	if (this->talkingToPlayer && (remainderX > 20.f && remainderY > 20.f))
 	{
 		this->talkingToPlayer = false;
 		this->interactWithPlayer = false;
+		this->showNPCText = false; 
 	}
 }
 void NPC::updatePath(sf::RectangleShape player_rect, const float& dt)
@@ -1135,24 +1159,24 @@ void NPC::updatePath(sf::RectangleShape player_rect, const float& dt)
 
 	closestY = this->npcDetails.pathFinderMarkings;
 
-	sf::Vector2f enemyPosition;
+	sf::Vector2f npcPosition;
 
-	enemyPosition = this->spriteRect.getPosition();
+	npcPosition = this->spriteRect.getPosition();
 
-	float remainderX_X = std::abs(enemyPosition.x - closestX[0].x);
-	float remainderY_Y = std::abs(enemyPosition.y - closestY[0].y);
+	float remainderX_X = std::abs(npcPosition.x - closestX[0].x);
+	float remainderY_Y = std::abs(npcPosition.y - closestY[0].y);
 
 
 	if (this->lastDirection == NPCDirection::Left || this->lastDirection == NPCDirection::Right)
 	{
 		if (remainderY_Y > 10.f)
 		{
-			if (enemyPosition.y > closestY[0].y)
+			if (npcPosition.y > closestY[0].y)
 			{
 				this->directionNumber = 1;
 				this->updateAIMovement(dt);
 			}
-			else if (enemyPosition.y < closestY[0].y)
+			else if (npcPosition.y < closestY[0].y)
 			{
 				this->directionNumber = 2;
 				this->updateAIMovement(dt);
@@ -1160,18 +1184,18 @@ void NPC::updatePath(sf::RectangleShape player_rect, const float& dt)
 		}
 		else if (remainderY_Y < 10.f)
 		{
-			if (enemyPosition.x > closestY[0].x)
+			if (npcPosition.x > closestY[0].x)
 			{
 				this->directionNumber = 3;
 				this->updateAIMovement(dt);
 			}
-			else if (enemyPosition.x < closestY[0].x)
+			else if (npcPosition.x < closestY[0].x)
 			{
 				this->directionNumber = 4;
 				this->updateAIMovement(dt);
 			}
 		}
-		if (std::abs(enemyPosition.x - closestY[0].x) < 10.f && std::abs(enemyPosition.y - closestY[0].y) < 10.f)
+		if (std::abs(npcPosition.x - closestY[0].x) < 10.f && std::abs(npcPosition.y - closestY[0].y) < 10.f)
 			this->goingAroundWall = false;
 	}
 
@@ -1179,12 +1203,12 @@ void NPC::updatePath(sf::RectangleShape player_rect, const float& dt)
 	{
 		if (remainderX_X > 10.f)
 		{
-			if (enemyPosition.x > closestX[0].x)
+			if (npcPosition.x > closestX[0].x)
 			{
 				this->directionNumber = 3;
 				this->updateAIMovement(dt);
 			}
-			else if (enemyPosition.x < closestX[0].x)
+			else if (npcPosition.x < closestX[0].x)
 			{
 				this->directionNumber = 4;
 				this->updateAIMovement(dt);
@@ -1192,18 +1216,18 @@ void NPC::updatePath(sf::RectangleShape player_rect, const float& dt)
 		}
 		else if (remainderX_X < 10.f)
 		{
-			if (enemyPosition.y > closestX[0].y)
+			if (npcPosition.y > closestX[0].y)
 			{
 				this->directionNumber = 1;
 				this->updateAIMovement(dt);
 			}
-			else if (enemyPosition.y < closestX[0].y)
+			else if (npcPosition.y < closestX[0].y)
 			{
 				this->directionNumber = 2;
 				this->updateAIMovement(dt);
 			}
 		}
-		if (std::abs(enemyPosition.x - closestX[0].x) < 10.f && std::abs(enemyPosition.y - closestX[0].y) < 10.f)
+		if (std::abs(npcPosition.x - closestX[0].x) < 10.f && std::abs(npcPosition.y - closestX[0].y) < 10.f)
 			this->goingAroundWall = false;
 	}
 }
@@ -1213,11 +1237,11 @@ void NPC::updateAIDirection(sf::RectangleShape player_rect, const float& dt)
 
 	playerPosition = player_rect.getPosition();
 
-	sf::Vector2f enemyPosition;
+	sf::Vector2f npcPosition;
 
-	enemyPosition = this->spriteRect.getPosition();
+	npcPosition = this->spriteRect.getPosition();
 
-	float remainderX = std::abs(playerPosition.x - enemyPosition.x);
+	float remainderX = std::abs(playerPosition.x - npcPosition.x);
 
 	if (this->goingAroundWall)
 	{
@@ -1228,12 +1252,12 @@ void NPC::updateAIDirection(sf::RectangleShape player_rect, const float& dt)
 	{
 		if (remainderX > 20.f)
 		{
-			if (playerPosition.x > enemyPosition.x)
+			if (playerPosition.x > npcPosition.x)
 			{
 				this->directionNumber = 4;
 				this->updateAIMovement(dt);
 			}
-			else if (playerPosition.x < enemyPosition.x)
+			else if (playerPosition.x < npcPosition.x)
 			{
 				this->directionNumber = 3;
 				this->updateAIMovement(dt);
@@ -1241,12 +1265,12 @@ void NPC::updateAIDirection(sf::RectangleShape player_rect, const float& dt)
 		}
 		else if (remainderX < 20.f)
 		{
-			if (playerPosition.y > enemyPosition.y)
+			if (playerPosition.y > npcPosition.y)
 			{
 				this->directionNumber = 2;
 				this->updateAIMovement(dt);
 			}
-			else if (playerPosition.y < enemyPosition.y)
+			else if (playerPosition.y < npcPosition.y)
 			{
 				this->directionNumber = 1;
 				this->updateAIMovement(dt);
@@ -1549,8 +1573,6 @@ void NPC::update(sf::RectangleShape player_rect, sf::Vector2f mouse_view, const 
 	else if (!this->interactWithPlayer && !this->talkingToPlayer)
 		this->updateRandomDirection(dt);
 
-	
-
 	/*Alert Circle*/
 	this->alertCircle.setPosition(this->spriteRect.getPosition());
 
@@ -1560,6 +1582,19 @@ void NPC::update(sf::RectangleShape player_rect, sf::Vector2f mouse_view, const 
 
 	/*Set Sprite Position to Sprite Rect*/
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
+
+	/*Set Text Position*/
+	this->textBackground.setPosition(sf::Vector2f(this->spriteRect.getPosition().x, this->spriteRect.getPosition().y - 200.f));
+	this->textNameShape.setPosition(sf::Vector2f(
+		this->textBackground.getPosition().x - (this->textBackground.getSize().x / 2.f) + (this->textNameShape.getSize().x /2.f), 
+		this->textBackground.getPosition().y - (this->textBackground.getSize().y / 2.f) + (this->textNameShape.getSize().y / 2.f)
+	)
+	);
+	this->textName.setPosition(sf::Vector2f(
+		this->textNameShape.getPosition().x, 
+		this->textNameShape.getPosition().y - static_cast<float>(this->textName.getCharacterSize() / 4.f)
+	)
+	);
 }
 
 /*Render Functions*/
@@ -1571,4 +1606,11 @@ void NPC::render(sf::RenderTarget& target)
 
 	if (this->alertCircleCollisionBool)
 		target.draw(this->emoteSprite);
+
+	if (this->showNPCText)
+	{
+		target.draw(this->textBackground);
+		target.draw(this->textNameShape);
+		target.draw(this->textName);
+	}
 }

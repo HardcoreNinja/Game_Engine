@@ -345,14 +345,20 @@ void GameState::updateDoorCollisions(const float& dt)
 
 		this->tileMap->loadFromFile("Config/house_a.ini", "Resources/Images/Tiles/PipoyaMasterLevel.png");
 
-		int numberOfNPC = 3;
+		/*NPC Female #9*/
+		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 9);
+		this->npc->setNPCPosition();
+		this->npcVector.push_back(std::move(this->npc));
 
-		for (int i = 0; i < numberOfNPC; i++)
-		{
-			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings());
-			this->npc->setNPCPosition();
-			this->npcVector.push_back(std::move(this->npc));
-		}
+		/*NPC Female #17*/
+		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 17);
+		this->npc->setNPCPosition();
+		this->npcVector.push_back(std::move(this->npc));
+
+		/*NPC Male #53*/
+		this->npc = std::make_unique<NPC>( this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 1, 53);
+		this->npc->setNPCPosition();
+		this->npcVector.push_back(std::move(this->npc));
 
 		for (auto& element : this->enemyVector)
 			this->enemyVector.pop_back();

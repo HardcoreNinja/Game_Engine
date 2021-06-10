@@ -67,10 +67,11 @@ private:
     bool male1Female0;
 
     /*Item Text & Font*/
-    bool showItemText;
-    sf::Text text;
+    bool showNPCText;
+    sf::Text textName;
     sf::Font font;
-    sf::RectangleShape textShape;
+    sf::RectangleShape textBackground;
+    sf::RectangleShape textNameShape;
 
     /*Collision Variables*/
     bool projectileCollisionBool;
@@ -103,17 +104,22 @@ private:
     /*Initializers*/
     void initVariables(std::vector<sf::Vector2f> npc_spawn_positions, std::vector<sf::Vector2f> path_finder_markings);
     void initSpriteRect();
-    void initSprite();
+    void initSprite(bool male_1_female_0, int texture_switch_number);
     void initText();
 
 public:
     /*Constructor & Destructor*/
-    NPC(std::vector<sf::Vector2f> npc_spawn_positions, std::vector<sf::Vector2f> path_finder_markings);
+    NPC(
+        std::vector<sf::Vector2f> npc_spawn_positions, 
+        std::vector<sf::Vector2f> path_finder_markings, 
+        bool male_1_female_0, 
+        int texture_switch_number
+    );
     virtual ~NPC();
 
     /*Setters*/
     void setNPCPosition();
-    void setRandomNPC();
+    void setNPC(bool male_1_female_0, int texture_switch_number);
     void setEmoteState(NPCEmoteStates emote_state);
 
     /*Getters*/
