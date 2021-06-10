@@ -6,7 +6,7 @@ void Editor::initVariables()
 	this->collision = false;
 	this->doorName = "NULL";
 	this->tileType = TILEMAP::TileType::Default;
-	this->maxTileType = TILEMAP::TileType::Invisible_Wall;
+	this->maxTileType = TILEMAP::TileType::Enter_Tile;
 	this->cameraSpeed = 1280.f;
 	this->tileRotationDegrees = 0;
 	this->maxTileRotationDegrees = 360;

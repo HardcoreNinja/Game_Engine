@@ -53,6 +53,10 @@ TILEMAP::Tile::Tile(
 		this->shape.setOutlineColor(sf::Color::White);
 		this->shape.setFillColor(sf::Color::Red);
 		break;
+	case TILEMAP::TileType::Enter_Tile:
+		this->shape.setOutlineColor(sf::Color::Cyan);
+		this->shape.setFillColor(sf::Color::Magenta);
+		break;
 	}
 }
 TILEMAP::Tile::~Tile()
@@ -209,6 +213,24 @@ std::vector<sf::Vector2f> TILEMAP::TileMap::getPathFinderMarkings()
 				}
 			}
 	return pathFinderMarkings;
+}
+sf::Vector2f TILEMAP::TileMap::getEnterTilePosition()
+{
+	for (int tile_layer = 0; tile_layer != this->tileMap.size(); tile_layer++)
+		for (int pos_x = 0; pos_x != this->tileMap[tile_layer].size(); pos_x++)
+			for (int pos_y = 0; pos_y != this->tileMap[tile_layer][pos_x].size(); pos_y++)
+			{
+				if (this->tileMap[tile_layer][pos_x][pos_y] != NULL)
+				{
+					if (tile_layer > 0)
+					{
+						if (this->tileMap[tile_layer][pos_x][pos_y]->getTileType() == TILEMAP::TileType::Enter_Tile)
+						{
+							return this->tileMap[tile_layer][pos_x][pos_y]->getPosition();
+						}
+					}
+				}
+			}
 }
 
 /*Setters*/

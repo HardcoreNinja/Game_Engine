@@ -973,7 +973,7 @@ void Player::tileCollision(std::tuple<bool, unsigned short, std::string_view> co
 	else
 		this->wallCollision = false;
 
-	if (std::get<0>(collision_tuple) == true && std::get<1>(collision_tuple) == TILEMAP::TileType::Door)
+	if (std::get<1>(collision_tuple) == TILEMAP::TileType::Door)
 	{
 		this->doorCollision = true;
 		std::cout << "Player/Door Collision!\n";

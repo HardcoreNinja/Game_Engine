@@ -34,6 +34,7 @@ private:
 
     /*Tile Map*/
     std::unique_ptr<TILEMAP::TileMap> tileMap;
+    sf::Vector2f enterTilePosition;
 
     /*Render Texture*/
     sf::RenderTexture renderTexture;
@@ -57,6 +58,7 @@ private:
     std::vector<std::unique_ptr<Projectile>>::const_iterator projectileItr;
 
     /*Enemy Variables*/
+    int numberOfEnemies;
     std::unique_ptr<Enemy> enemy;
     std::vector<std::unique_ptr<Enemy>> enemyVector;
     std::vector<std::unique_ptr<Enemy>>::const_iterator enemyItr;

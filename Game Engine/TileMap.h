@@ -19,7 +19,8 @@ namespace TILEMAP
 		Wall, 
 		Enemy_Spawn_Point, 
 		Path_Finder_Markings, 
-		Invisible_Wall
+		Invisible_Wall,
+		Enter_Tile
 	};
 
 	class Tile
@@ -89,6 +90,7 @@ namespace TILEMAP
 		std::tuple<bool, unsigned short, std::string_view> getCollision(sf::RectangleShape player_rect);
 		std::vector<sf::Vector2f> getSpawnPositions();
 		std::vector<sf::Vector2f> getPathFinderMarkings();
+		sf::Vector2f getEnterTilePosition();
 
 		/*Setters*/
 		void setTextureIntRect(sf::IntRect texture_int_rect);
