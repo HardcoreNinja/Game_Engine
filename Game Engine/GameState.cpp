@@ -784,7 +784,6 @@ void GameState::reinitializeState()
 		this->initTileMap(this->player->getPlayerDetails());
 	}
 	this->initHUD();
-	this->initInventory();
 }
 
 /*Render Functions*/
