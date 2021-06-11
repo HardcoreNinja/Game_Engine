@@ -31,6 +31,14 @@ void NPC::initVariables(std::vector<sf::Vector2f> npc_spawn_positions, std::vect
 	/*Male/Female Bool*/
 	this->male1Female0 = this->getRandomInt(0, 2);
 
+	/*Item Text & Font*/
+	this->character = 0;
+
+	/*Dialog Audio*/
+	if(!this->clickSoundBuffer.loadFromFile("Resources/Audio/text_click.wav"))
+		throw("ERROR::NPC::FAILED_TO_LOAD::Resources/Audio/text_click.wav");
+	this->clickSound.setBuffer(this->clickSoundBuffer);
+
 	/*Collision Variables*/
 	this->projectileCollisionBool = false;
 	this->playerCollisionBool = false;
@@ -88,7 +96,7 @@ void NPC::initText()
 	this->showNPCText = false; 
 
 	/*Text Shape*/
-	this->textBackground.setSize(sf::Vector2f(300.f, 150.f));
+	this->textBackground.setSize(sf::Vector2f(325.f, 150.f));
 	this->textBackground.setOrigin(this->textBackground.getGlobalBounds().width / 2.f, this->textBackground.getGlobalBounds().height / 2.f);
 	this->textBackground.setFillColor(sf::Color(0, 0, 0, 225));
 	this->textBackground.setOutlineThickness(1.f);
@@ -108,7 +116,18 @@ void NPC::initText()
 	this->textName.setString(this->npcDetails.name);
 	this->textName.setOrigin(this->textName.getGlobalBounds().width / 2.f, this->textName.getGlobalBounds().height / 2.f);
 	this->textName.setPosition(sf::Vector2f(this->textNameShape.getPosition().x, this->textNameShape.getPosition().y - static_cast<float>(this->textName.getCharacterSize()) / 4.f));
-	
+
+	/*Text Body Shape*/
+	this->textBodyShape.setSize(sf::Vector2f(this->textBackground.getSize().x, this->textBackground.getSize().y - this->textNameShape.getSize().y));
+	this->textBodyShape.setOrigin(this->textBodyShape.getGlobalBounds().width / 2.f, this->textBodyShape.getGlobalBounds().height / 2.f);
+	this->textBodyShape.setFillColor(sf::Color::Transparent);
+	this->textBodyShape.setOutlineThickness(1.f);
+	this->textBodyShape.setOutlineColor(sf::Color::Transparent);
+
+	/*Text Body*/
+	this->textBody.setFont(font);
+	this->textBody.setFillColor(sf::Color::White);
+	this->textBody.setCharacterSize(15);
 }
 
 /*Constructor & Destructor*/
@@ -403,6 +422,7 @@ void NPC::setNPC(bool male_1_female_0, int texture_switch_number)
 				throw("ERROR::NPC::FAILED_TO_LOAD::Male/53.png");
 			this->sprite.setTexture(this->texture);
 			this->npcDetails.name = "Lydian: ";
+			this->npcDetails.dialog1 = "The library started funding drag queen story hour.\n They said if you don't let your child\n sit on their lap, you're a bigot.\n Is that normal?\n";
 			break;
 		case 54:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/54.png"))
@@ -535,6 +555,7 @@ void NPC::setNPC(bool male_1_female_0, int texture_switch_number)
 				throw("ERROR::NPC::FAILED_TO_LOAD::Female/9.png");
 			this->sprite.setTexture(this->texture);
 			this->npcDetails.name = "Aeolian: ";
+			this->npcDetails.dialog1 = "Wow, that's something that Joe Biden won.\n I didn't think he had a chance.\n How do you when the election with no audience?\n";
 			break;
 		case 10:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/10.png"))
@@ -576,6 +597,7 @@ void NPC::setNPC(bool male_1_female_0, int texture_switch_number)
 				throw("ERROR::NPC::FAILED_TO_LOAD::Female/17.png");
 			this->sprite.setTexture(this->texture);
 			this->npcDetails.name = "Pali: ";
+			this->npcDetails.dialog1 = "I took the COVID-19 vaccine and now I feel funny.\n Once they enacted the 5G my mood has been different.\n Do you think it could have been posion?\n";
 			break;
 		case 18:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/18.png"))
@@ -1098,6 +1120,16 @@ void NPC::alertCircleCollision(sf::RectangleShape player_rect)
 }
 
 /*Update Functions*/
+void NPC::updateDialog()
+{
+	if (dialogClock.getElapsedTime().asSeconds() > 0.09 && this->character < npcDetails.dialog1.length())
+	{
+		this->dialogClock.restart();
+		character++;
+		textBody.setString(npcDetails.dialog1.substr(0, character));
+		this->clickSound.play();
+	}
+}
 void NPC::updateInteractWithPlayer(sf::RectangleShape player_rect, sf::Vector2f mouse_view, const sf::Event& smfl_events, const bool& key_time)
 {
 	if (this->spriteRect.getGlobalBounds().contains(mouse_view) && smfl_events.mouseButton.button == sf::Mouse::Left)
@@ -1106,8 +1138,11 @@ void NPC::updateInteractWithPlayer(sf::RectangleShape player_rect, sf::Vector2f 
 		this->interactWithPlayer = true;
 	}
 
-	if(this->talkingToPlayer && this->interactWithPlayer)
+	if (this->talkingToPlayer && this->interactWithPlayer)
+	{
 		this->showNPCText = true;
+		this->updateDialog();
+	}
 
 	float remainderX = std::abs(player_rect.getPosition().x - this->spriteRect.getPosition().x);
 	float remainderY = std::abs(player_rect.getPosition().y - this->spriteRect.getPosition().y);
@@ -1117,6 +1152,9 @@ void NPC::updateInteractWithPlayer(sf::RectangleShape player_rect, sf::Vector2f 
 		this->talkingToPlayer = false;
 		this->interactWithPlayer = false;
 		this->showNPCText = false; 
+		
+	if (this->character == this->npcDetails.dialog1.length())
+		this->character = 0;
 	}
 }
 void NPC::updatePath(sf::RectangleShape player_rect, const float& dt)
@@ -1595,6 +1633,15 @@ void NPC::update(sf::RectangleShape player_rect, sf::Vector2f mouse_view, const 
 		this->textNameShape.getPosition().y - static_cast<float>(this->textName.getCharacterSize() / 4.f)
 	)
 	);
+	this->textBodyShape.setPosition(sf::Vector2f(
+		this->textBackground.getPosition().x,
+		this->textBackground.getPosition().y)
+	);
+	this->textBody.setOrigin(this->textBody.getGlobalBounds().width / 2.f, this->textBody.getGlobalBounds().height / 2.f);
+	this->textBody.setPosition(sf::Vector2f(
+		this->textBodyShape.getPosition().x - (this->textBodyShape.getSize().x / 2.f) + (this->textBodyShape.getSize().x / 2.f),
+		this->textBodyShape.getPosition().y - static_cast<float>(this->textBody.getCharacterSize()) / 4.f)
+	);
 }
 
 /*Render Functions*/
@@ -1612,5 +1659,7 @@ void NPC::render(sf::RenderTarget& target)
 		target.draw(this->textBackground);
 		target.draw(this->textNameShape);
 		target.draw(this->textName);
+		target.draw(this->textBodyShape);
+		target.draw(this->textBody);
 	}
 }

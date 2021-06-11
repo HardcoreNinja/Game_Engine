@@ -54,6 +54,9 @@ struct NPCDetails
 
     /*Path Finder Markings*/
     std::vector<sf::Vector2f> pathFinderMarkings;
+
+    /*Dialog Strings*/
+    std::string dialog1;
 };
 
 class NPC :
@@ -66,12 +69,20 @@ private:
     /*Male/Female Bool*/
     bool male1Female0;
 
-    /*Item Text & Font*/
+    /*Text & Font Variables*/
     bool showNPCText;
     sf::Text textName;
+    sf::Text textBody;
     sf::Font font;
+    sf::Clock dialogClock; 
+    int character;
     sf::RectangleShape textBackground;
     sf::RectangleShape textNameShape;
+    sf::RectangleShape textBodyShape;
+
+    /*Dialog Audio*/
+    sf::SoundBuffer clickSoundBuffer;
+    sf::Sound clickSound; 
 
     /*Collision Variables*/
     bool projectileCollisionBool;
@@ -135,6 +146,7 @@ public:
     void alertCircleCollision(sf::RectangleShape player_rect);
 
     /*Update Functions*/
+    void updateDialog();
     void updateInteractWithPlayer(sf::RectangleShape player_rect, sf::Vector2f mouse_view, const sf::Event& smfl_events, const bool& key_time);
     void updatePath(sf::RectangleShape player_rect, const float& dt);
     void updateAIDirection(sf::RectangleShape player_rect, const float& dt);
