@@ -458,6 +458,8 @@ void GameState::updateDoorCollisions(const float& dt)
 
 		this->player->setPosition(this->enterTilePosition);
 		this->player->setOldDirection(PlayerDirection::Down);
+		this->player->setCurrentDirection(PlayerDirection::Idle);
+		this->player->setVelocity(sf::Vector2f(0.f, 0.f));
 		this->player->setCurrentTileMap(CurrentTileMap::LEVEL_A);
 
 		for (auto& element : this->npcVector)
@@ -499,6 +501,8 @@ void GameState::updateDoorCollisions(const float& dt)
 
 		this->player->setPosition(this->enterTilePosition);
 		this->player->setOldDirection(PlayerDirection::Up);
+		this->player->setCurrentDirection(PlayerDirection::Idle);
+		this->player->setVelocity(sf::Vector2f(0.f, 0.f));
 		this->player->setCurrentTileMap(CurrentTileMap::HOUSE_A);
 
 		/*NPC Female #9*/
@@ -535,6 +539,14 @@ void GameState::updatePlayerCollisions()
 	{
 			this->player->enemyCollision(this->enemyVector[counter1]->getSpriteRectDamageAttackPlayerBool());
 			counter1++;
+	}
+
+	/*Player/NPC*/
+	int counter2 = 0;
+	for (this->npcItr = this->npcVector.begin(); this->npcItr != this->npcVector.end(); this->npcItr++)
+	{
+		this->player->npcCollision(this->npcVector[counter2]->getSpriteRect());
+		counter2++;
 	}
 }
 void GameState::updateProjectileLoop(const float& dt)

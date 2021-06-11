@@ -30,6 +30,7 @@ struct PlayerDetails
 
     /*Position & Direction*/
     sf::Vector2f position;
+    PlayerDirection currentDirection;
     PlayerDirection oldDirection;
 
     /*Movement Variables*/
@@ -66,11 +67,9 @@ private:
     /*Player Details Struct*/
     PlayerDetails playerDetails;
 
-    /*Direction Enumerator*/
-    PlayerDirection playerDirection;
-
     /*Collision Variables*/
     bool enemyCollisionBool; 
+    bool npcCollisionBool;
     bool doorCollision;
     std::string doorName; 
     bool wallCollision;
@@ -93,7 +92,9 @@ public:
     /*Setters*/
     void setHealthToFull();
     void setCurrentTileMap(CurrentTileMap current_tile_map);
-    void setOldDirection(PlayerDirection player_direction);
+    void setOldDirection(PlayerDirection old_direction);
+    void setCurrentDirection(PlayerDirection current_direction);
+    void setVelocity(sf::Vector2f velocity);
     void setPosition(sf::Vector2f player_position);
     void setManaFill(float mana_fill);
     void setManaDrain(float mana_drain);
@@ -109,6 +110,7 @@ public:
     /*Collisions Functions*/
     void tileCollision(std::tuple<bool, unsigned short, std::string_view> collision_tuple);
     void enemyCollision(std::tuple< sf::RectangleShape, float, bool> enemy_tuple);
+    void npcCollision(sf::RectangleShape npc_rect);
 
     /*Update Functions*/
     void updateUserInput(const float& dt);
