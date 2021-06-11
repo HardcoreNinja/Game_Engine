@@ -35,8 +35,8 @@ void NPC::initVariables(std::vector<sf::Vector2f> npc_spawn_positions, std::vect
 	this->character = 0;
 
 	/*Dialog Audio*/
-	if(!this->clickSoundBuffer.loadFromFile("Resources/Audio/text_click.wav"))
-		throw("ERROR::NPC::FAILED_TO_LOAD::Resources/Audio/text_click.wav");
+	if(!this->clickSoundBuffer.loadFromFile("Resources/Audio/SFX/NPC/text_click.wav"))
+		throw("ERROR::NPC::FAILED_TO_LOAD::Resources/Audio/SFX/NPC/text_click.wav");
 	this->clickSound.setBuffer(this->clickSoundBuffer);
 
 	/*Collision Variables*/
