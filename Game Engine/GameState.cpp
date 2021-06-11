@@ -805,6 +805,10 @@ void GameState::reinitializeState()
 		this->initTileMap(this->player->getPlayerDetails());
 	}
 	this->initHUD();
+
+	this->inventory->saveToFile();
+	this->inventory = std::make_unique<Inventory>(this->supportedKeys, *this->window);
+	this->inventory->loadToFile();
 }
 
 /*Render Functions*/
