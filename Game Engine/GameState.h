@@ -10,6 +10,7 @@
 #include "NPC.h"
 
 /*Class Forward Declarations*/
+class State;
 class Tile;
 class TileMap;
 class Player;
@@ -19,6 +20,7 @@ class Enemy;
 class Item;
 class Inventory;
 class NPC;
+class GameOver;
 class sf::RenderTarget;
 class sf::Clock;
 
@@ -59,6 +61,7 @@ private:
 
     /*Enemy Variables*/
     int numberOfEnemies;
+    int maxNumberOfEnemies; 
     std::unique_ptr<Enemy> enemy;
     std::vector<std::unique_ptr<Enemy>> enemyVector;
     std::vector<std::unique_ptr<Enemy>>::const_iterator enemyItr;
@@ -79,6 +82,7 @@ private:
     void initFonts();
     void initRenderTexture();
     void initPauseMenu();
+    void initGameOver();
     void initPlayer(PlayerDetails player_details);
     void initTileMap(PlayerDetails player_details);
     void initHUD();
@@ -95,6 +99,7 @@ public:
 
     /*Update Functions*/
     void updatePauseMenuButtons();
+    void updateGameOverButtons();
     virtual void updateUserInput(const float& dt);
     void updateInGameActions();
     void updateHUD();
@@ -120,6 +125,7 @@ public:
 
     /*Render Functions*/
     void renderPauseMenu(sf::RenderTarget& target);
+    void renderGameOver(sf::RenderTarget& target);
     void renderTileMap(sf::RenderTarget& target);
     void renderPlayer(sf::RenderTarget& target);
     void renderProjectiles(sf::RenderTarget& target);

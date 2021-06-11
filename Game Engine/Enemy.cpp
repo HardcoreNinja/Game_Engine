@@ -88,6 +88,10 @@ Enemy::~Enemy()
 }
 
 /*Setters*/
+void Enemy::setDestroy(bool destroy)
+{
+	this->destroy = destroy;
+}
 void Enemy::setEnemyPosition()
 {
 	this->spriteRect.setPosition(this->enemyDetails.enemySpawnPosition);

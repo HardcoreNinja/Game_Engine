@@ -155,6 +155,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GraphicsSettings.cpp" />
     <ClCompile Include="GUI.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameOver.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GraphicsSettings.h" />
     <ClInclude Include="GUI.h" />

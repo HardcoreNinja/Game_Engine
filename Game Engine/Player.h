@@ -91,6 +91,7 @@ public:
     virtual ~Player();
 
     /*Setters*/
+    void setHealthToFull();
     void setCurrentTileMap(CurrentTileMap current_tile_map);
     void setOldDirection(PlayerDirection player_direction);
     void setPosition(sf::Vector2f player_position);

@@ -97,6 +97,9 @@
     <Filter Include="Source Files\NPC">
       <UniqueIdentifier>{24ef7731-5208-4cbe-8caa-af006b935d9f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game Over">
+      <UniqueIdentifier>{04c7bbf1-8ea5-400d-b42d-4b0c1f8afb68}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Header.cpp">
@@ -162,6 +165,9 @@
     <ClCompile Include="NPC.cpp">
       <Filter>Source Files\NPC</Filter>
     </ClCompile>
+    <ClCompile Include="GameOver.cpp">
+      <Filter>Source Files\Game Over</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">
@@ -223,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="NPC.h">
       <Filter>Source Files\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOver.h">
+      <Filter>Source Files\Game Over</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

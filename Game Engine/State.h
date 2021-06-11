@@ -3,6 +3,7 @@
 #include "GraphicsSettings.h"
 #include "GUI.h"
 #include "PauseMenu.h"
+#include "GameOver.h"
 #include "TileMap.h"
 
 /*Class Forward Declarations*/
@@ -10,6 +11,10 @@ class State;
 class Button;
 class GraphicsSettings;
 class PauseMenu;
+class GameOver;
+class Tile;
+class TileMap;
+class TextureSelector;
 class sf::RenderWindow;
 class sf::RectangleShape;
 class sf::Texture;
@@ -78,6 +83,9 @@ protected:
 	/*Pause Menu*/
 	std::unique_ptr<PauseMenu> pauseMenu;
 
+	/*Game Over*/
+	std::unique_ptr<GameOver> gameOver;
+	
 	/*End StateFlags*/
 	bool isQuit;
 
@@ -86,6 +94,9 @@ protected:
 
 	/*Pause Menu Flags*/
 	bool isPaused;
+
+	/*Game Over Flag*/
+	bool isGameOver;
 
 	/*Initializers*/
 	void initView();

@@ -96,6 +96,7 @@ public:
     virtual ~Enemy();
 
     /*Setters*/
+    void setDestroy(bool destroy);
     void setEnemyPosition();
     void setRandomEnemy();
     void setEmoteState(EmoteStates emote_state);

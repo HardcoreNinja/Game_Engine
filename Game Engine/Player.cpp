@@ -900,6 +900,10 @@ Player::~Player()
 }
 
 /*Setters*/
+void Player::setHealthToFull()
+{
+	this->playerDetails.currentHP = this->playerDetails.maxHP;
+}
 void Player::setCurrentTileMap(CurrentTileMap current_tile_map)
 {
 	this->playerDetails.currentTileMap = current_tile_map;

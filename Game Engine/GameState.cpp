@@ -4,10 +4,12 @@
 /*Initializers*/
 void GameState::initVariables(bool came_from_main_menu, PlayerDetails player_details, ProjectileDetails projectile_details)
 {
+	this->isGameOver = false;
 	this->projectileDetails = projectile_details;
 	this->cameFromMainMenu = came_from_main_menu;
 	this->manaFillCounter = 0;
-	this->numberOfEnemies = 4;
+	this->maxNumberOfEnemies = 4;
+	this->numberOfEnemies = this->maxNumberOfEnemies;
 }
 void GameState::initKeybinds()
 {
@@ -58,6 +60,25 @@ void GameState::initPauseMenu()
 		);
 
 	this->pauseMenu->addButton(
+		"EXIT",                                                 //Key
+		static_cast<float>(this->window->getSize().y) - 100.f,  // Pos_Y
+		"Exit"                                                  // Button Text
+	);
+}
+void GameState::initGameOver()
+{
+	this->gameOver = std::make_unique<GameOver>(
+		*this->window, //Pause Menu Render Window
+		this->font    //Pause Menu Font;
+		);
+
+	this->gameOver->addButton(
+		"RETRY",                                                //Key
+		static_cast<float>(this->window->getSize().y) / 2.f,  // Pos_Y
+		"Retry"                                                 // Button Text
+	);
+
+	this->gameOver->addButton(
 		"EXIT",                                                 //Key
 		static_cast<float>(this->window->getSize().y) - 100.f,  // Pos_Y
 		"Exit"                                                  // Button Text
@@ -170,6 +191,7 @@ GameState::GameState(GameInfo* game_info, PlayerDetails player_details, Projecti
 	this->initFonts();
 	this->initRenderTexture();
 	this->initPauseMenu();
+	this->initGameOver();
 	this->initPlayer(player_details);
 	this->initTileMap(player_details);
 	this->initHUD();
@@ -255,6 +277,35 @@ void GameState::updatePauseMenuButtons()
 	if (this->pauseMenu->isButtonPressed("EXIT") && this->getKeyTime())
 	{
 		/*Save Player Details*/
+		this->player->saveToFile();
+
+		/*Erase the NewCharacter Screen and Shrink States Vector*/
+		if (!this->cameFromMainMenu)
+		{
+			this->states->erase(this->states->begin() + 1);
+			this->states->shrink_to_fit();
+		}
+
+		/*End State*/
+		this->endState();
+	}
+}
+void GameState::updateGameOverButtons()
+{
+	if (this->gameOver->isButtonPressed("RETRY") && this->getKeyTime())
+	{
+		/*Save Player Details*/
+		this->player->setHealthToFull();
+		this->player->saveToFile();
+
+		this->reinitializeState();
+	} 
+
+
+	if (this->gameOver->isButtonPressed("EXIT") && this->getKeyTime())
+	{
+		/*Save Player Details*/
+		this->player->setHealthToFull();
 		this->player->saveToFile();
 
 		/*Erase the NewCharacter Screen and Shrink States Vector*/
@@ -364,6 +415,9 @@ void GameState::updatePlayer(const float& dt)
 {
 	this->player->update(dt);
 	this->view.setCenter(this->player->getSpriteRect().getPosition());
+
+	if (this->player->getPlayerDetails().currentHP <= 0.f)
+		this->isGameOver = true;
 }
 void GameState::updateDoorCollisions(const float& dt)
 {
@@ -662,9 +716,9 @@ void GameState::update(const float& dt)
 		this->updatePauseMenuButtons();
 	}
 	/*Unpaused*/
-	else 
+	else
 	{
-		if (!this->inventory->getShowInventory())
+		if (!this->inventory->getShowInventory() && !this->isGameOver)
 		{
 			/*In-Game Actions*/
 			this->updateInGameActions();
@@ -701,9 +755,14 @@ void GameState::update(const float& dt)
 			this->updateItemLoop(dt);
 			this->updateItemDestroyLoop();
 		}
-		else
+		else if(this->inventory->getShowInventory() && !this->isGameOver)
 			/*Inventory Functions*/
 			this->updateInventory(dt);
+		else if (!this->inventory->getShowInventory() && this->isGameOver)
+		{
+			this->gameOver->update(static_cast<sf::Vector2f>(this->mousePositionGUI));
+			this->updateGameOverButtons();
+		}
 	}
 }
 
@@ -711,14 +770,19 @@ void GameState::update(const float& dt)
 void GameState::reinitializeState()
 {
 	std::cout << "Reinitializing Game State!\n";
-	//this->initVariables(this->cameFromMainMenu, this->player->getPlayerDetails(), this->projectileDetails);
 	this->initKeybinds();
 	this->initFonts();
 	this->initRenderTexture();
-	//this->initTileMap();
 	this->initPauseMenu();
-	//this->initLatestTileMap();
-	//this->initPlayer(this->player->getPlayerDetails());
+	if (this->isGameOver)
+	{
+		for (auto& element : this->enemyVector)
+			element->setDestroy(true);
+
+		this->initVariables(this->cameFromMainMenu, this->player->getPlayerDetails(), this->projectileDetails);
+		this->initPlayer(this->player->getPlayerDetails());
+		this->initTileMap(this->player->getPlayerDetails());
+	}
 	this->initHUD();
 	this->initInventory();
 }
@@ -727,6 +791,10 @@ void GameState::reinitializeState()
 void GameState::renderPauseMenu(sf::RenderTarget& target)
 {
 	this->pauseMenu->render(target);
+}
+void GameState::renderGameOver(sf::RenderTarget& target)
+{
+	this->gameOver->render(target);
 }
 void GameState::renderTileMap(sf::RenderTarget& target)
 {
@@ -809,4 +877,7 @@ void GameState::render(sf::RenderTarget* target)
 
 	if (this->isPaused)
 		this->renderPauseMenu(*target);	
+
+	if (this->isGameOver)
+		this->renderGameOver(*target);
 }
