@@ -965,7 +965,7 @@ std::tuple<float, float> Player::getMana()
 /*Collision Functions*/
 void Player::tileCollision(std::tuple<bool, unsigned short, std::string_view> collision_tuple)
 {
-	if (std::get<0>(collision_tuple) == true && std::get<1>(collision_tuple) == TILEMAP::TileType::Wall)
+	if (std::get<1>(collision_tuple) == TILEMAP::TileType::Wall)
 	{
 		this->wallCollision = true;
 		std::cout << "Wall Collision: " << this->wallCollision << '\n';
