@@ -154,7 +154,9 @@ void MainMenu::reinitializeState()
 /*Save & Load Functions*/
 void MainMenu::loadPlayerDetailsFromFile()
 {
+	int currenmtTileMap = 0;
 	int oldDirection = 0;
+	
 	std::ifstream ifs("Config/player_details.ini");
 
 	if (ifs.is_open())
@@ -163,6 +165,9 @@ void MainMenu::loadPlayerDetailsFromFile()
 		std::getline(ifs, this->playerDetails.name);
 		ifs >> this->playerDetails.textureSwitchCounter;
 		ifs >> this->playerDetails.male1Female0;
+
+		/*Current Tile Map*/
+		ifs >> currenmtTileMap;
 
 		/*Position & Direction*/
 		ifs >> this->playerDetails.position.x >> this->playerDetails.position.y;
@@ -191,6 +196,7 @@ void MainMenu::loadPlayerDetailsFromFile()
 		ifs >> this->playerDetails.currentMana;
 		ifs >> this->playerDetails.maxMana;
 
+		this->playerDetails.currentTileMap = static_cast<CurrentTileMap>(currenmtTileMap);
 		this->playerDetails.oldDirection = static_cast<PlayerDirection>(oldDirection);
 	}
 

@@ -50,26 +50,6 @@ void GameState::initRenderTexture()
 	this->renderSprite.setTexture(this->renderTexture.getTexture());
 	this->renderSprite.setTextureRect(sf::IntRect(0, 0, this->window->getSize().x, this->window->getSize().y));
 }
-void GameState::initTileMap()
-{
-	sf::Vector2i mapDimensions = sf::Vector2i(0, 0);
-	int tileSize = 0;
-
-	std::ifstream ifs("Config/level_1.ini");
-	if (ifs.is_open())
-	{
-		ifs >> mapDimensions.x >> mapDimensions.y;
-		ifs >> tileSize;
-	}
-	ifs.close();
-
-	this->tileMap = std::make_unique<TILEMAP::TileMap>(
-		static_cast<float>(tileSize),                                //Tile Size
-		mapDimensions.x, mapDimensions.y,              //Map Width & Height (in Squares)
-		tileSize, tileSize,                            //Texture Width & Height
-		"Resources/Images/Tiles/PipoyaMasterLevel.png" //Tile Sheet File Path
-		);
-}
 void GameState::initPauseMenu()
 {
 	this->pauseMenu = std::make_unique<PauseMenu>(
@@ -83,13 +63,85 @@ void GameState::initPauseMenu()
 		"Exit"                                                  // Button Text
 	);
 }
-void GameState::initLatestTileMap()
-{
-	this->tileMap->loadFromFile("Config/level_1.ini", "Resources/Images/Tiles/PipoyaMasterLevel.png");
-}
 void GameState::initPlayer(PlayerDetails player_details)
 {
 	this->player = std::make_unique<Player>(this->supportedKeys, player_details);
+}
+void GameState::initTileMap(PlayerDetails player_details)
+{
+	/*Level_A*/
+	if (player_details.currentTileMap == CurrentTileMap::LEVEL_A)
+	{
+		sf::Vector2i mapDimensions = sf::Vector2i(0, 0);
+		int tileSize = 0;
+
+		std::ifstream ifs("Config/level_1.ini");
+		if (ifs.is_open())
+		{
+			ifs >> mapDimensions.x >> mapDimensions.y;
+			ifs >> tileSize;
+		}
+		ifs.close();
+
+		this->tileMap = std::make_unique<TILEMAP::TileMap>(
+			static_cast<float>(tileSize),                  //Tile Size
+			mapDimensions.x, mapDimensions.y,              //Map Width & Height (in Squares)
+			tileSize, tileSize,                            //Texture Width & Height
+			"Resources/Images/Tiles/PipoyaMasterLevel.png" //Tile Sheet File Path
+			);
+
+		this->tileMap->loadFromFile("Config/level_1.ini", "Resources/Images/Tiles/PipoyaMasterLevel.png");
+		//this->enterTilePosition = this->tileMap->getEnterTilePosition();
+
+		this->player->setPosition(player_details.position);
+		this->player->setOldDirection(player_details.oldDirection);
+
+		this->initEnemies();
+	}
+
+	/*House_A*/
+	if (player_details.currentTileMap == CurrentTileMap::HOUSE_A)
+	{
+		
+			sf::Vector2i mapDimensions = sf::Vector2i(0, 0);
+			int tileSize = 0;
+
+			std::ifstream ifs("Config/house_a.ini");
+			if (ifs.is_open())
+			{
+				ifs >> mapDimensions.x >> mapDimensions.y;
+				ifs >> tileSize;
+			}
+			ifs.close();
+
+			this->tileMap = std::make_unique<TILEMAP::TileMap>(
+				static_cast<float>(tileSize),                                //Tile Size
+				mapDimensions.x, mapDimensions.y,              //Map Width & Height (in Squares)
+				tileSize, tileSize,                            //Texture Width & Height
+				"Resources/Images/Tiles/PipoyaMasterLevel.png" //Tile Sheet File Path
+				);
+
+			this->tileMap->loadFromFile("Config/house_a.ini", "Resources/Images/Tiles/PipoyaMasterLevel.png");
+			//this->enterTilePosition = this->tileMap->getEnterTilePosition();
+
+			this->player->setPosition(player_details.position);
+			this->player->setOldDirection(player_details.oldDirection);
+
+			/*NPC Female #9*/
+			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 9);
+			this->npc->setNPCPosition();
+			this->npcVector.push_back(std::move(this->npc));
+
+			/*NPC Female #17*/
+			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 17);
+			this->npc->setNPCPosition();
+			this->npcVector.push_back(std::move(this->npc));
+
+			/*NPC Male #53*/
+			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 1, 53);
+			this->npc->setNPCPosition();
+			this->npcVector.push_back(std::move(this->npc));
+	}
 }
 void GameState::initHUD()
 {
@@ -117,13 +169,11 @@ GameState::GameState(GameInfo* game_info, PlayerDetails player_details, Projecti
 	this->initKeybinds();
 	this->initFonts();
 	this->initRenderTexture();
-	this->initTileMap();
 	this->initPauseMenu();
-	this->initLatestTileMap();
 	this->initPlayer(player_details);
+	this->initTileMap(player_details);
 	this->initHUD();
 	this->initInventory();
-	this->initEnemies();
 }
 GameState::~GameState()
 {
@@ -317,55 +367,7 @@ void GameState::updatePlayer(const float& dt)
 }
 void GameState::updateDoorCollisions(const float& dt)
 {
-	if (std::get<0>(this->player->getDoorInfo()) == true && std::get<1>(this->player->getDoorInfo()) == "HOUSE_A")
-	{
-		this->tileMap.reset();
-
-		sf::Vector2i mapDimensions = sf::Vector2i(0, 0);
-		int tileSize = 0;
-
-		std::ifstream ifs("Config/house_a.ini");
-		if (ifs.is_open())
-		{
-			ifs >> mapDimensions.x >> mapDimensions.y;
-			ifs >> tileSize;
-		}
-		ifs.close();
-
-		this->tileMap = std::make_unique<TILEMAP::TileMap>(
-			static_cast<float>(tileSize),                                //Tile Size
-			mapDimensions.x, mapDimensions.y,              //Map Width & Height (in Squares)
-			tileSize, tileSize,                            //Texture Width & Height
-			"Resources/Images/Tiles/PipoyaMasterLevel.png" //Tile Sheet File Path
-			);
-
-		this->tileMap->loadFromFile("Config/house_a.ini", "Resources/Images/Tiles/PipoyaMasterLevel.png");
-		this->enterTilePosition = this->tileMap->getEnterTilePosition();
-
-		this->player->setPosition(this->enterTilePosition);
-		this->player->setOldDirection(PlayerDirection::Up);
-
-		/*NPC Female #9*/
-		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 9);
-		this->npc->setNPCPosition();
-		this->npcVector.push_back(std::move(this->npc));
-
-		/*NPC Female #17*/
-		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 17);
-		this->npc->setNPCPosition();
-		this->npcVector.push_back(std::move(this->npc));
-
-		/*NPC Male #53*/
-		this->npc = std::make_unique<NPC>( this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 1, 53);
-		this->npc->setNPCPosition();
-		this->npcVector.push_back(std::move(this->npc));
-
-		for (auto& element : this->enemyVector)
-			this->enemyVector.pop_back();
-
-		for (auto& element : this->itemVector)
-			this->itemVector.pop_back();
-	}
+	/*Level_A*/
 	if (std::get<0>(this->player->getDoorInfo()) == true && std::get<1>(this->player->getDoorInfo()) == "LEVEL_A")
 	{
 		this->tileMap.reset();
@@ -393,6 +395,7 @@ void GameState::updateDoorCollisions(const float& dt)
 
 		this->player->setPosition(this->enterTilePosition);
 		this->player->setOldDirection(PlayerDirection::Down);
+		this->player->setCurrentTileMap(CurrentTileMap::LEVEL_A);
 
 		for (auto& element : this->npcVector)
 			this->npcVector.pop_back();
@@ -404,6 +407,59 @@ void GameState::updateDoorCollisions(const float& dt)
 			this->enemyVector.push_back(std::move(this->enemy));
 		}
 	}
+
+	/*House_A*/
+	if (std::get<0>(this->player->getDoorInfo()) == true && std::get<1>(this->player->getDoorInfo()) == "HOUSE_A")
+	{
+		this->tileMap.reset();
+
+		sf::Vector2i mapDimensions = sf::Vector2i(0, 0);
+		int tileSize = 0;
+
+		std::ifstream ifs("Config/house_a.ini");
+		if (ifs.is_open())
+		{
+			ifs >> mapDimensions.x >> mapDimensions.y;
+			ifs >> tileSize;
+		}
+		ifs.close();
+
+		this->tileMap = std::make_unique<TILEMAP::TileMap>(
+			static_cast<float>(tileSize),                                //Tile Size
+			mapDimensions.x, mapDimensions.y,              //Map Width & Height (in Squares)
+			tileSize, tileSize,                            //Texture Width & Height
+			"Resources/Images/Tiles/PipoyaMasterLevel.png" //Tile Sheet File Path
+			);
+
+		this->tileMap->loadFromFile("Config/house_a.ini", "Resources/Images/Tiles/PipoyaMasterLevel.png");
+		this->enterTilePosition = this->tileMap->getEnterTilePosition();
+
+		this->player->setPosition(this->enterTilePosition);
+		this->player->setOldDirection(PlayerDirection::Up);
+		this->player->setCurrentTileMap(CurrentTileMap::HOUSE_A);
+
+		/*NPC Female #9*/
+		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 9);
+		this->npc->setNPCPosition();
+		this->npcVector.push_back(std::move(this->npc));
+
+		/*NPC Female #17*/
+		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 17);
+		this->npc->setNPCPosition();
+		this->npcVector.push_back(std::move(this->npc));
+
+		/*NPC Male #53*/
+		this->npc = std::make_unique<NPC>( this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 1, 53);
+		this->npc->setNPCPosition();
+		this->npcVector.push_back(std::move(this->npc));
+
+		for (auto& element : this->enemyVector)
+			this->enemyVector.pop_back();
+
+		for (auto& element : this->itemVector)
+			this->itemVector.pop_back();
+	}
+	
 }
 void GameState::updatePlayerCollisions()
 {

@@ -4,6 +4,11 @@
 #include "TileMap.h"
 #include "Item.h"
 
+enum class CurrentTileMap
+{
+    LEVEL_A, 
+    HOUSE_A
+};
 enum class PlayerDirection
 {
     Idle = 0,
@@ -19,6 +24,9 @@ struct PlayerDetails
     std::string name;
     int textureSwitchCounter;
     bool male1Female0;
+
+    /*Current Tile Map*/
+    CurrentTileMap currentTileMap;
 
     /*Position & Direction*/
     sf::Vector2f position;
@@ -83,6 +91,7 @@ public:
     virtual ~Player();
 
     /*Setters*/
+    void setCurrentTileMap(CurrentTileMap current_tile_map);
     void setOldDirection(PlayerDirection player_direction);
     void setPosition(sf::Vector2f player_position);
     void setManaFill(float mana_fill);

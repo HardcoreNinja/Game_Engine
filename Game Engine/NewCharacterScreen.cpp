@@ -1020,6 +1020,9 @@ void NewCharacterScreen::updateButtons()
 			this->playerDetails.textureSwitchCounter = this->textureSwitchCounter;
 			this->playerDetails.male1Female0 = this->male1Female0;
 
+			/*Current Tile Map*/
+			this->playerDetails.currentTileMap = CurrentTileMap::LEVEL_A;
+
 			/*Position & Direction*/
 			this->playerDetails.position = sf::Vector2f(207.f, 176.f);
 			this->playerDetails.oldDirection = PlayerDirection::Down;
@@ -1164,6 +1167,9 @@ void NewCharacterScreen::updateUserInput(const float& dt)
 			this->playerDetails.name = this->nameString;
 			this->playerDetails.textureSwitchCounter = this->textureSwitchCounter;
 			this->playerDetails.male1Female0 = this->male1Female0;
+
+			/*Current Tile Map*/
+			this->playerDetails.currentTileMap = CurrentTileMap::LEVEL_A;
 
 			/*Position & Direction*/
 			this->playerDetails.position = sf::Vector2f(207.f, 176.f);

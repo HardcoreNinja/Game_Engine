@@ -900,6 +900,10 @@ Player::~Player()
 }
 
 /*Setters*/
+void Player::setCurrentTileMap(CurrentTileMap current_tile_map)
+{
+	this->playerDetails.currentTileMap = current_tile_map;
+}
 void Player::setOldDirection(PlayerDirection old_direction)
 {
 	this->playerDetails.oldDirection = old_direction;
@@ -1305,6 +1309,9 @@ void Player::saveToFile()
 		ofs << this->playerDetails.name << '\n';
 		ofs << this->playerDetails.textureSwitchCounter << '\n';
 		ofs << this->playerDetails.male1Female0 << '\n';
+
+		/*Current Tile Map*/
+		ofs << static_cast<int>(playerDetails.currentTileMap) << '\n';
 
 		/*Position & Direction*/
 		ofs << this->playerDetails.position.x << " " << this->playerDetails.position.y << '\n';

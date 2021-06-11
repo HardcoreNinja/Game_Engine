@@ -78,10 +78,9 @@ private:
     void initKeybinds();
     void initFonts();
     void initRenderTexture();
-    void initTileMap();
     void initPauseMenu();
-    void initLatestTileMap();
     void initPlayer(PlayerDetails player_details);
+    void initTileMap(PlayerDetails player_details);
     void initHUD();
     void initInventory();
     void initEnemies();
