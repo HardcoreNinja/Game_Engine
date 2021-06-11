@@ -6,6 +6,9 @@ void Inventory::initVariables()
 {
 	this->showInventory = false;
 	this->usedItem = false; 
+	this->inventoryDetails.hpTextureFilePath = "Resources/Images/Items/Consumables/hp.png";
+	this->inventoryDetails.staminaTextureFilePath = "Resources/Images/Items/Consumables/stamina.png";
+	this->inventoryDetails.manaTextureFilePath = "Resources/Images/Items/Consumables/mana.png";
 }
 void Inventory::initFont()
 {
@@ -195,19 +198,19 @@ void Inventory::updateItems()
 			switch (this->inventoryDetails.itemDetailsVector[i].itemType)
 			{
 			case ItemType::HP_Potion:
-				if (!this->inventoryDetails.itemDetailsVector[i].itemTexture.loadFromFile("Resources/Images/Items/Consumables/hp.png"))
+				if (!this->inventoryDetails.itemDetailsVector[i].itemTexture.loadFromFile(this->inventoryDetails.hpTextureFilePath))
 					throw("ERROR::INVENTORY::FAILED_TO_LOAD::Consumables/hp.png");
 				this->inventoryDetails.itemDetailsVector[i].itemSprite.setTexture((this->inventoryDetails.itemDetailsVector[i].itemTexture));
 				this->inventoryDetails.itemDetailsVector[i].itemCountText.setString("x" + std::to_string(this->inventoryDetails.numberOfHealthPotions));
 				break;
 			case ItemType::Stamina_Potion:
-				if (!this->inventoryDetails.itemDetailsVector[i].itemTexture.loadFromFile("Resources/Images/Items/Consumables/stamina.png"))
+				if (!this->inventoryDetails.itemDetailsVector[i].itemTexture.loadFromFile(this->inventoryDetails.staminaTextureFilePath))
 					throw("ERROR::INVENTORY::FAILED_TO_LOAD::Consumables/stamina.png");
 				this->inventoryDetails.itemDetailsVector[i].itemSprite.setTexture((this->inventoryDetails.itemDetailsVector[i].itemTexture));
 				this->inventoryDetails.itemDetailsVector[i].itemCountText.setString("x" + std::to_string(this->inventoryDetails.numberOfStaminaPotions));
 				break;
 			case ItemType::Mana_Potion:
-				if (!this->inventoryDetails.itemDetailsVector[i].itemTexture.loadFromFile("Resources/Images/Items/Consumables/mana.png"))
+				if (!this->inventoryDetails.itemDetailsVector[i].itemTexture.loadFromFile(this->inventoryDetails.manaTextureFilePath))
 					throw("ERROR::INVENTORY::FAILED_TO_LOAD::Consumables/mana.png");
 				this->inventoryDetails.itemDetailsVector[i].itemSprite.setTexture((this->inventoryDetails.itemDetailsVector[i].itemTexture));
 				this->inventoryDetails.itemDetailsVector[i].itemCountText.setString("x" + std::to_string(this->inventoryDetails.numberOfManaPotions));
@@ -260,6 +263,99 @@ void Inventory::update(const sf::Event& sfml_events, const sf::Vector2i& mouse_w
 	this->updateUserInput(mouse_window, key_time, dt);
 	this->updateItems();
 	this->updateUseItem(sfml_events, mouse_window, key_time, dt);
+}
+
+/*Save & Load Functions*/
+void Inventory::saveToFile()
+{
+	std::ofstream ofs("Config/inventory_details.ini");
+	if (ofs.is_open())
+	{
+		ofs << this->inventoryDetails.totalInventory << '\n';
+
+		ofs << this->inventoryDetails.numberOfHealthPotions << '\n';
+		ofs << this->inventoryDetails.numberOfStaminaPotions << '\n';
+		ofs << this->inventoryDetails.numberOfManaPotions << '\n';
+
+		for (auto& element : this->inventoryDetails.itemDetailsVector)
+		{
+			ofs << static_cast<int>(element.itemType) << " " 
+				<< element.itemIntRect.left << " "
+				<< element.itemIntRect.top << " "
+				<< element.itemIntRect.width << " "
+				<< element.itemIntRect.height << " "
+				<< element.hp << " " 
+				<< element.stamina << " " 
+				<< element.mana << '\n';
+		}
+	}
+
+	ofs.close();
+}
+void Inventory::loadToFile()
+{
+	int itemType = 0;
+	int intRect_Left; 
+	int intRect_Top; 
+	int intRect_Width; 
+	int intRect_Height;
+	float hp = 0.f;
+	float stamina = 0.f;
+	float mana = 0.f;
+	ItemDetails itemDetails; 
+
+	std::ifstream ifs("Config/inventory_details.ini");
+
+	if (ifs.is_open())
+	{
+		ifs >> this->inventoryDetails.totalInventory;
+
+		ifs >> this->inventoryDetails.numberOfHealthPotions;
+		ifs >> this->inventoryDetails.numberOfStaminaPotions;
+		ifs >> this->inventoryDetails.numberOfManaPotions;
+
+		while (ifs >> itemType >> intRect_Left  >> intRect_Top >> intRect_Width >> intRect_Height >> hp >> stamina >> mana)
+		{
+				itemDetails.itemType = static_cast<ItemType>(itemType); 
+				itemDetails.itemIntRect = sf::IntRect(intRect_Left, intRect_Top, intRect_Width, intRect_Height);
+				itemDetails.hp = hp; 
+				itemDetails.stamina = stamina; 
+				itemDetails.mana = mana; 
+
+				this->inventoryDetails.itemDetailsVector.push_back(itemDetails);
+		}
+	}
+	ifs.close();
+
+	for (auto& element : this->inventoryDetails.itemDetailsVector)
+	{
+		switch (element.itemType)
+		{
+		case ItemType::HP_Potion:
+			if (!element.itemTexture.loadFromFile(this->inventoryDetails.hpTextureFilePath))
+				throw("ERROR::INVENTORY::FAILED_TO_LOAD::Consumables/hp.png");
+			element.itemSprite.setTexture(element.itemTexture);
+			element.itemSprite.setTextureRect(element.itemIntRect);
+			element.itemSprite.setOrigin(element.itemSprite.getGlobalBounds().width / 2.f, element.itemSprite.getGlobalBounds().height / 2.f);
+			break;
+		case ItemType::Stamina_Potion:
+			if (!element.itemTexture.loadFromFile(this->inventoryDetails.staminaTextureFilePath))
+				throw("ERROR::INVENTORY::FAILED_TO_LOAD::Consumables/stamina.png");
+			element.itemSprite.setTexture(element.itemTexture);
+			element.itemSprite.setTextureRect(element.itemIntRect);
+			element.itemSprite.setOrigin(element.itemSprite.getGlobalBounds().width / 2.f, element.itemSprite.getGlobalBounds().height / 2.f);
+			break;
+		case ItemType::Mana_Potion:
+			if (!element.itemTexture.loadFromFile(this->inventoryDetails.manaTextureFilePath))
+				throw("ERROR::INVENTORY::FAILED_TO_LOAD::Consumables/mana.png");
+			element.itemSprite.setTexture(element.itemTexture);
+			element.itemSprite.setTextureRect(element.itemIntRect);
+			element.itemSprite.setOrigin(element.itemSprite.getGlobalBounds().width / 2.f, element.itemSprite.getGlobalBounds().height / 2.f);
+			break;
+		default:
+			std::cout << "ERROR::ITEM::void Item::setItemType(ItemType consumable)::Invalid Switch Entry!\n";
+		}
+	}
 }
 
 /*Render Functions*/

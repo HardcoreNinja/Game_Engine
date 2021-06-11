@@ -19,6 +19,10 @@ struct InventoryDetails
 	int numberOfStaminaPotions;
 	int numberOfManaPotions;
 
+	std::string hpTextureFilePath;
+	std::string staminaTextureFilePath;
+	std::string manaTextureFilePath;
+
 	std::vector<ItemDetails> itemDetailsVector;
 
 	ItemDetails usedItemDetails;
@@ -83,6 +87,10 @@ public:
 	void updateItems();
 	void updateUserInput(const sf::Vector2i& mouse_window, const bool& key_time, const float& dt);
 	void update(const sf::Event& sfml_events, const sf::Vector2i& mouse_window, const bool& key_time, const float& dt);
+
+	/*Save & Load Functions*/
+	void saveToFile();
+	void loadToFile();
 
 	/*Render Functions*/
 	void render(sf::RenderTarget& target); 

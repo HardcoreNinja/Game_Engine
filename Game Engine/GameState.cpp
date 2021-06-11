@@ -171,6 +171,9 @@ void GameState::initHUD()
 void GameState::initInventory()
 {
 	this->inventory = std::make_unique<Inventory>(this->supportedKeys, *this->window);
+
+	if (this->cameFromMainMenu)
+		this->inventory->loadToFile();
 }
 void GameState::initEnemies()
 {
@@ -279,6 +282,9 @@ void GameState::updatePauseMenuButtons()
 		/*Save Player Details*/
 		this->player->saveToFile();
 
+		/*Save Invetory Details*/
+		this->inventory->saveToFile();
+
 		/*Erase the NewCharacter Screen and Shrink States Vector*/
 		if (!this->cameFromMainMenu)
 		{
@@ -307,6 +313,9 @@ void GameState::updateGameOverButtons()
 		/*Save Player Details*/
 		this->player->setHealthToFull();
 		this->player->saveToFile();
+
+		/*Save Invetory Details*/
+		this->inventory->saveToFile();
 
 		/*Erase the NewCharacter Screen and Shrink States Vector*/
 		if (!this->cameFromMainMenu)
