@@ -34,11 +34,6 @@ void NPC::initVariables(std::vector<sf::Vector2f> npc_spawn_positions, std::vect
 	/*Item Text & Font*/
 	this->character = 0;
 
-	/*Dialog Audio*/
-	if(!this->clickSoundBuffer.loadFromFile("Resources/Audio/SFX/NPC/text_click.wav"))
-		throw("ERROR::NPC::FAILED_TO_LOAD::Resources/Audio/SFX/NPC/text_click.wav");
-	this->clickSound.setBuffer(this->clickSoundBuffer);
-
 	/*Collision Variables*/
 	this->projectileCollisionBool = false;
 	this->playerCollisionBool = false;
@@ -129,6 +124,30 @@ void NPC::initText()
 	this->textBody.setFillColor(sf::Color::White);
 	this->textBody.setCharacterSize(15);
 }
+void NPC::initAudio()
+{
+	std::ifstream ifs_sfx("Config/sfx.ini");
+
+	if (ifs_sfx.is_open())
+	{
+		std::string key = "";
+		std::string file_path = "";
+
+		while (ifs_sfx >> key >> file_path)
+		{
+			std::cout << file_path << '\n';
+			this->audio = std::make_unique<Audio>(true, file_path);
+			this->audioMap[key] = std::move(this->audio);
+		}
+	}
+	ifs_sfx.close();
+
+	//Debug Tester
+	for (auto& i : this->audioMap)
+	{
+		std::cout << i.first << " " << i.second << '\n';
+	}
+}
 
 /*Constructor & Destructor*/
 NPC::NPC(
@@ -142,6 +161,7 @@ NPC::NPC(
 	this->initSpriteRect();
 	this->initSprite(male_1_female_0, texture_switch_number);
 	this->initText();
+	this->initAudio();
 }
 NPC::~NPC()
 {
@@ -1004,6 +1024,8 @@ std::tuple<sf::RectangleShape, float, bool> NPC::getSpriteRectDamageInteractWith
 	return std::make_tuple(this->spriteRect, this->npcDetails.damage, this->interactWithPlayer);
 }
 
+
+
 /*Collisions Functions*/
 void NPC::projectileCollision(std::tuple<sf::RectangleShape, int> collision_tuple)
 {
@@ -1127,7 +1149,7 @@ void NPC::updateDialog()
 		this->dialogClock.restart();
 		character++;
 		textBody.setString(npcDetails.dialog1.substr(0, character));
-		this->clickSound.play();
+		this->audioMap["NPC_TEXT_CLICK"]->play();
 	}
 }
 void NPC::updateInteractWithPlayer(sf::RectangleShape player_rect, sf::Vector2f mouse_view, const sf::Event& smfl_events, const bool& key_time)

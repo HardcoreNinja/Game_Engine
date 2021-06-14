@@ -11,6 +11,46 @@ void GameState::initVariables(bool came_from_main_menu, PlayerDetails player_det
 	this->maxNumberOfEnemies = 4;
 	this->numberOfEnemies = this->maxNumberOfEnemies;
 }
+void GameState::initAudio()
+{
+	std::ifstream ifs_sfx("Config/sfx.ini");
+
+	if (ifs_sfx.is_open())
+	{
+		std::string key = "";
+		std::string file_path = "";
+
+		while (ifs_sfx >> key >> file_path)
+		{
+			std::cout << file_path << '\n';
+			this->audio = std::make_unique<Audio>(true, file_path);
+			this->audioMap[key] = std::move(this->audio);
+		}
+	}
+	ifs_sfx.close();
+
+	std::ifstream ifs_music("Config/music.ini");
+
+	if (ifs_music.is_open())
+	{
+		std::string key = "";
+		std::string file_path = "";
+
+		while (ifs_music >> key >> file_path)
+		{
+			std::cout << file_path << '\n';
+			this->audio = std::make_unique<Audio>(false, file_path);
+			this->audioMap[key] = std::move(this->audio);
+		}
+	}
+	ifs_music.close();
+
+	//Debug Tester
+	for (auto& i : this->audioMap)
+	{
+		std::cout << i.first << " " << i.second << '\n';
+	}
+}
 void GameState::initKeybinds()
 {
 	std::ifstream ifs("Config/game_state_keybinds.ini");
@@ -93,6 +133,7 @@ void GameState::initTileMap(PlayerDetails player_details)
 	/*Level_A*/
 	if (player_details.currentTileMap == CurrentTileMap::LEVEL_A)
 	{
+		/*Tile Map*/
 		sf::Vector2i mapDimensions = sf::Vector2i(0, 0);
 		int tileSize = 0;
 
@@ -117,13 +158,19 @@ void GameState::initTileMap(PlayerDetails player_details)
 		this->player->setPosition(player_details.position);
 		this->player->setOldDirection(player_details.oldDirection);
 
+		/*Initialize Enemies*/
 		this->initEnemies();
+
+		/*Audio*/
+		this->audioMap["LEVEL_A"]->setVolume(0.f);
+		this->audioMap["LEVEL_A"]->play();
+		this->audioMap["LEVEL_A"]->setFadeIn(true);
 	}
 
 	/*House_A*/
 	if (player_details.currentTileMap == CurrentTileMap::HOUSE_A)
 	{
-		
+		/*Tile Map*/
 			sf::Vector2i mapDimensions = sf::Vector2i(0, 0);
 			int tileSize = 0;
 
@@ -162,6 +209,11 @@ void GameState::initTileMap(PlayerDetails player_details)
 			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 1, 53);
 			this->npc->setNPCPosition();
 			this->npcVector.push_back(std::move(this->npc));
+
+			/*Audio*/
+			this->audioMap["HOUSE_A"]->setVolume(0.f);
+			this->audioMap["HOUSE_A"]->play();
+			this->audioMap["HOUSE_A"]->setFadeIn(true);
 	}
 }
 void GameState::initHUD()
@@ -190,6 +242,7 @@ GameState::GameState(GameInfo* game_info, PlayerDetails player_details, Projecti
 	: State(game_info)
 {
 	this->initVariables(came_from_main_menu, player_details, projectile_details);
+	this->initAudio();
 	this->initKeybinds();
 	this->initFonts();
 	this->initRenderTexture();
@@ -433,6 +486,7 @@ void GameState::updateDoorCollisions(const float& dt)
 	/*Level_A*/
 	if (std::get<0>(this->player->getDoorInfo()) == true && std::get<1>(this->player->getDoorInfo()) == "LEVEL_A")
 	{
+		/*Tile Map*/
 		this->tileMap.reset();
 
 		sf::Vector2i mapDimensions = sf::Vector2i(0, 0);
@@ -456,26 +510,35 @@ void GameState::updateDoorCollisions(const float& dt)
 		this->tileMap->loadFromFile("Config/level_1.ini", "Resources/Images/Tiles/PipoyaMasterLevel.png");
 		this->enterTilePosition = this->tileMap->getEnterTilePosition();
 
+		/*Player*/
 		this->player->setPosition(this->enterTilePosition);
 		this->player->setOldDirection(PlayerDirection::Down);
 		this->player->setCurrentDirection(PlayerDirection::Idle);
 		this->player->setVelocity(sf::Vector2f(0.f, 0.f));
 		this->player->setCurrentTileMap(CurrentTileMap::LEVEL_A);
 
+		/*Destroy NPCs*/
 		for (auto& element : this->npcVector)
 			this->npcVector.pop_back();
 
+		/*Remake Enemies*/
 		for (int i = 0; i < this->numberOfEnemies; i++)
 		{
 			this->enemy = std::make_unique<Enemy>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings());
 			this->enemy->setEnemyPosition();
 			this->enemyVector.push_back(std::move(this->enemy));
 		}
+
+		/*Play Music*/
+		this->audioMap["HOUSE_A"]->setFadeOut(true);
+		this->audioMap["LEVEL_A"]->play();
+		this->audioMap["LEVEL_A"]->setFadeIn(true);
 	}
 
 	/*House_A*/
 	if (std::get<0>(this->player->getDoorInfo()) == true && std::get<1>(this->player->getDoorInfo()) == "HOUSE_A")
 	{
+		/*Tile Map*/
 		this->tileMap.reset();
 
 		sf::Vector2i mapDimensions = sf::Vector2i(0, 0);
@@ -490,7 +553,7 @@ void GameState::updateDoorCollisions(const float& dt)
 		ifs.close();
 
 		this->tileMap = std::make_unique<TILEMAP::TileMap>(
-			static_cast<float>(tileSize),                                //Tile Size
+			static_cast<float>(tileSize),                  //Tile Size
 			mapDimensions.x, mapDimensions.y,              //Map Width & Height (in Squares)
 			tileSize, tileSize,                            //Texture Width & Height
 			"Resources/Images/Tiles/PipoyaMasterLevel.png" //Tile Sheet File Path
@@ -499,6 +562,7 @@ void GameState::updateDoorCollisions(const float& dt)
 		this->tileMap->loadFromFile("Config/house_a.ini", "Resources/Images/Tiles/PipoyaMasterLevel.png");
 		this->enterTilePosition = this->tileMap->getEnterTilePosition();
 
+		/*PLayer*/
 		this->player->setPosition(this->enterTilePosition);
 		this->player->setOldDirection(PlayerDirection::Up);
 		this->player->setCurrentDirection(PlayerDirection::Idle);
@@ -520,13 +584,24 @@ void GameState::updateDoorCollisions(const float& dt)
 		this->npc->setNPCPosition();
 		this->npcVector.push_back(std::move(this->npc));
 
+		/*Destroy Enemies*/
 		for (auto& element : this->enemyVector)
 			this->enemyVector.pop_back();
 
+		/*Destroy Items*/
 		for (auto& element : this->itemVector)
 			this->itemVector.pop_back();
-	}
-	
+
+		/*Play Music*/
+		this->audioMap["LEVEL_A"]->setFadeOut(true);
+		this->audioMap["HOUSE_A"]->play();
+		this->audioMap["HOUSE_A"]->setFadeIn(true);
+	}	
+}
+void GameState::updateAudio()
+{
+	this->audioMap["LEVEL_A"]->update();
+	this->audioMap["HOUSE_A"]->update();
 }
 void GameState::updatePlayerCollisions()
 {
@@ -757,6 +832,9 @@ void GameState::update(const float& dt)
 			this->updatePlayer(dt);
 			this->updateDoorCollisions(dt);
 			this->updatePlayerCollisions();
+
+			/*Audio*/
+			this->updateAudio();
 
 			/*Projectile Functions*/
 			this->updateProjectileLoop(dt);

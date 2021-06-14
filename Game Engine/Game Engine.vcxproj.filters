@@ -100,6 +100,12 @@
     <Filter Include="Source Files\Game Over">
       <UniqueIdentifier>{04c7bbf1-8ea5-400d-b42d-4b0c1f8afb68}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Audio">
+      <UniqueIdentifier>{f3745428-6613-495f-b213-856c20ed9899}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Config\Audio">
+      <UniqueIdentifier>{899022a1-b648-4a3d-8784-51f810d073fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Header.cpp">
@@ -168,6 +174,9 @@
     <ClCompile Include="GameOver.cpp">
       <Filter>Source Files\Game Over</Filter>
     </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Source Files\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">
@@ -233,6 +242,9 @@
     <ClInclude Include="GameOver.h">
       <Filter>Source Files\Game Over</Filter>
     </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Source Files\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\settings_keybinds.ini">
@@ -279,6 +291,12 @@
     </None>
     <None Include="Config\inventory_keybinds.ini">
       <Filter>Resource Files\Config\Keybinds</Filter>
+    </None>
+    <None Include="Config\music.ini">
+      <Filter>Resource Files\Config\Audio</Filter>
+    </None>
+    <None Include="Config\sfx.ini">
+      <Filter>Resource Files\Config\Audio</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

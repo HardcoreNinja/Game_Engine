@@ -2,9 +2,11 @@
 #define NPC_H
 #include "Entity.h"
 #include "TileMap.h"
+#include "Audio.h"
 
 /*Class Forward Declarations*/
 class TileMap;
+class Audio;
 class sf::Sprite;
 class sf::Texture;
 class sf::CircleShape;
@@ -80,9 +82,9 @@ private:
     sf::RectangleShape textNameShape;
     sf::RectangleShape textBodyShape;
 
-    /*Dialog Audio*/
-    sf::SoundBuffer clickSoundBuffer;
-    sf::Sound clickSound; 
+    /*Audio*/
+    std::unique_ptr<Audio> audio;
+    std::map<std::string, std::unique_ptr<Audio>> audioMap;
 
     /*Collision Variables*/
     bool projectileCollisionBool;
@@ -117,6 +119,7 @@ private:
     void initSpriteRect();
     void initSprite(bool male_1_female_0, int texture_switch_number);
     void initText();
+    void initAudio();
 
 public:
     /*Constructor & Destructor*/

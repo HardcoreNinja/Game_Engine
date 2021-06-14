@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Audio.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Audio.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
@@ -210,11 +212,13 @@
     <None Include="Config\item_keybinds.ini" />
     <None Include="Config\level_1.ini" />
     <None Include="Config\mainmenu_keybinds.ini" />
+    <None Include="Config\music.ini" />
     <None Include="Config\newcharacterscreen_keybinds.ini" />
     <None Include="Config\player_details.ini" />
     <None Include="Config\player_keybinds.ini" />
     <None Include="Config\settings_active_element_ID.ini" />
     <None Include="Config\settings_keybinds.ini" />
+    <None Include="Config\sfx.ini" />
     <None Include="Config\supported_keys.ini" />
     <None Include="Config\texture_selector_data_file.ini" />
     <None Include="Config\tile_map.ini" />

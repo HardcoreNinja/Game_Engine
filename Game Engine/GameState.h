@@ -8,6 +8,7 @@
 #include "Item.h"
 #include "Inventory.h"
 #include "NPC.h"
+#include "Audio.h"
 
 /*Class Forward Declarations*/
 class State;
@@ -21,6 +22,7 @@ class Item;
 class Inventory;
 class NPC;
 class GameOver;
+class Audio;
 class sf::RenderTarget;
 class sf::Clock;
 
@@ -41,6 +43,10 @@ private:
     /*Render Texture*/
     sf::RenderTexture renderTexture;
     sf::Sprite renderSprite;
+
+    /*Audio*/ 
+    std::unique_ptr<Audio> audio;
+    std::map<std::string, std::unique_ptr<Audio>> audioMap; 
 
     /*Player*/
     std::unique_ptr<Player> player;
@@ -78,6 +84,7 @@ private:
 
     /*Initializers*/
     void initVariables(bool came_from_main_menu, PlayerDetails player_details, ProjectileDetails projectile_details);
+    void initAudio();
     void initKeybinds();
     void initFonts();
     void initRenderTexture();
@@ -107,6 +114,7 @@ public:
     void updateManaFill();
     void updatePlayer(const float& dt);
     void updateDoorCollisions(const float& dt);
+    void updateAudio();
     void updatePlayerCollisions();
     void updateProjectileLoop(const float& dt);
     void updateProjectileCollisions();
