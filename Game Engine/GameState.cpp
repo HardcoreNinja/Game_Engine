@@ -163,6 +163,7 @@ void GameState::initTileMap(PlayerDetails player_details)
 
 		/*Audio*/
 		this->audioMap["LEVEL_A"]->setVolume(0.f);
+		this->audioMap["LEVEL_A"]->setLoop(true);
 		this->audioMap["LEVEL_A"]->play();
 		this->audioMap["LEVEL_A"]->setFadeIn(true);
 	}
@@ -212,6 +213,7 @@ void GameState::initTileMap(PlayerDetails player_details)
 
 			/*Audio*/
 			this->audioMap["HOUSE_A"]->setVolume(0.f);
+			this->audioMap["HOUSE_A"]->setLoop(true);
 			this->audioMap["HOUSE_A"]->play();
 			this->audioMap["HOUSE_A"]->setFadeIn(true);
 	}
@@ -531,6 +533,7 @@ void GameState::updateDoorCollisions(const float& dt)
 
 		/*Play Music*/
 		this->audioMap["HOUSE_A"]->setFadeOut(true);
+		this->audioMap["LEVEL_A"]->setLoop(true);
 		this->audioMap["LEVEL_A"]->play();
 		this->audioMap["LEVEL_A"]->setFadeIn(true);
 	}
@@ -594,6 +597,7 @@ void GameState::updateDoorCollisions(const float& dt)
 
 		/*Play Music*/
 		this->audioMap["LEVEL_A"]->setFadeOut(true);
+		this->audioMap["HOUSE_A"]->setLoop(true);
 		this->audioMap["HOUSE_A"]->play();
 		this->audioMap["HOUSE_A"]->setFadeIn(true);
 	}	
@@ -879,11 +883,13 @@ void GameState::reinitializeState()
 			element->setDestroy(true);
 
 		this->initVariables(this->cameFromMainMenu, this->player->getPlayerDetails(), this->projectileDetails);
+		this->initAudio();
 		this->initPlayer(this->player->getPlayerDetails());
 		this->initTileMap(this->player->getPlayerDetails());
 	}
 	this->initHUD();
 
+	/*Inventory*/
 	this->inventory->saveToFile();
 	this->inventory = std::make_unique<Inventory>(this->supportedKeys, *this->window);
 	this->inventory->loadToFile();

@@ -36,6 +36,7 @@ void Player::initVariables(PlayerDetails player_details)
 	this->doorCollision = false;
 	this->doorName = " ";
 	this->wallCollision = false;
+	this->footStepCounter = 0;
 }
 void Player::initKeybinds(std::map<std::string, int>* supported_keys)
 {
@@ -74,818 +75,842 @@ void Player::initSprite()
 		{
 		case 1:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/1.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/1.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/1.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 2:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/2.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/2.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/2.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 3:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/3.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/3.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/3.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 4:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/4.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/4.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/4.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 5:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/5.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/5.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/5.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 6:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/6.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/6.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/6.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 7:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/7.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/7.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/7.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 8:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/8.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/8.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/8.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 9:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/9.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/9.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/9.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 10:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/10.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/10.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/10.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 11:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/11.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/11.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/11.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 12:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/12.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/12.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/12.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 13:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/13.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/13.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/13.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 14:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/14.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/14.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/14.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 15:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/15.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/15.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/15.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 16:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/16.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/16.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/16.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 17:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/17.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/17.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/17.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 18:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/18.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/18.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/18.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 19:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/19.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/19.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/19.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 20:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/20.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/20.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/20.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 21:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/21.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/21.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/21.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 22:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/22.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/22.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/22.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 23:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/23.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/23.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/23.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 24:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/24.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/24.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/24.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 25:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/25.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/25.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/25.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 26:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/26.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/26.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/26.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 27:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/27.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/27.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/27.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 28:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/28.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/28.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/28.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 29:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/29.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/9.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/9.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 30:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/30.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/30.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/30.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 31:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/31.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/31.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/31.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 32:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/32.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/32.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/32.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 33:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/33.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/33.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/33.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 34:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/34.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/34.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/34.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 35:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/35.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/35.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/35.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 36:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/36.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/36.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/36.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 37:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/37.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/37.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/37.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 38:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/38.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/38.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/38.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 39:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/39.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/39.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/39.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 40:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/40.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/40.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/40.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 41:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/41.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/41.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/41.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 42:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/42.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/42.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/42.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 43:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/43.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/43.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/43.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 44:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/44.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/44.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/44.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 45:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/45.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/45.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/45.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 46:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/46.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/46.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/46.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 47:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/47.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/47.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/47.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 48:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/48.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/48.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/48.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 49:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/49.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/49.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/49.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 50:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/50.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/50.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/50.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 51:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/51.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/51.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/51.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 52:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/52.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/52.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/52.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 53:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/53.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/53.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/53.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 54:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/54.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/54.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/54.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 55:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/55.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/55.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/55.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 56:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/56.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/56.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/56.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 57:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/57.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/57.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/57.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 58:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/58.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/58.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/58.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 59:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/59.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/59.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/59.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 60:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/60.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/60.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/60.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 61:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/61.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/61.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/61.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 62:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/62.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/62.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/62.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 63:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/63.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/63.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/63.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 64:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/64.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/64.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/64.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 65:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/65.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/65.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/65.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 66:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/66.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/66.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/66.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 67:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/67.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/67.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/67.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 68:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/68.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/68.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/68.png");
 			sprite.setTexture(this->texture);
 			break;
 		case 69:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/69.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Male/69.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Male/69.png");
 			sprite.setTexture(this->texture);
 			break;
 		default:
-			std::cout << "ERROR::NEWCHARACTERSCREEN::void updateTexture()::Invalid Switch Entry!\n";
+			std::cout << "ERROR::PLAYER::void initSprite()::Invalid Switch Entry!\n";
 		}
 	else if (!this->playerDetails.male1Female0)
 		switch (this->playerDetails.textureSwitchCounter)
 		{
 		case 1:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/1.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/1.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/1.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 2:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/2.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/2.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/2.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 3:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/3.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/3.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/3.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 4:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/4.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/4.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/4.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 5:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/5.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/5.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/5.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 6:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/6.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/6.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/6.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 7:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/7.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/7.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/7.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 8:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/8.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/8.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/8.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 9:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/9.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/9.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/9.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 10:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/10.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/10.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/10.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 11:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/11.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/11.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/11.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 12:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/12.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/12.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/12.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 13:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/13.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/13.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/13.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 14:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/14.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/14.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/14.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 15:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/15.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/15.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/15.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 16:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/16.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/16.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/16.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 17:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/17.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/17.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/17.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 18:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/18.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/18.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/18.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 19:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/19.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/19.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/19.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 20:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/20.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/20.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/20.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 21:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/21.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/21.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/21.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 22:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/22.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/22.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/22.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 23:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/23.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/23.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/23.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 24:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/24.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/24.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/24.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 25:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/25.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/25.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/25.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 26:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/26.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/26.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/26.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 27:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/27.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/27.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/27.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 28:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/28.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/28.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/28.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 29:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/29.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/9.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/9.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 30:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/30.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/30.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/30.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 31:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/31.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/31.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/31.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 32:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/32.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/32.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/32.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 33:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/33.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/33.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/33.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 34:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/34.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/34.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/34.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 35:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/35.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/35.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/35.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 36:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/36.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/36.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/36.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 37:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/37.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/37.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/37.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 38:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/38.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/38.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/38.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 39:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/39.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/39.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/39.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 40:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/40.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/40.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/40.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 41:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/41.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/41.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/41.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 42:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/42.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/42.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/42.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 43:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/43.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/43.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/43.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 44:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/44.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/44.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/44.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 45:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/45.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/45.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/45.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 46:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/46.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/46.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/46.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 47:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/47.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/47.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/47.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 48:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/48.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/48.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/48.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 49:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/49.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/49.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/49.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 50:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/50.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/50.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/50.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 51:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/51.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/51.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/51.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 52:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/52.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/52.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/52.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 53:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/53.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/53.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/53.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 54:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/54.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/54.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/54.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 55:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/55.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/55.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/55.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 56:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/56.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/56.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/56.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 57:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/57.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/57.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/57.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 58:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/58.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/58.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/58.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 59:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/59.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/59.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/59.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 60:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/60.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/60.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/60.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 61:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/61.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/61.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/61.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 62:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/62.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/62.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/62.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 63:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/63.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/63.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/63.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 64:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/64.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/64.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/64.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 65:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/65.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/65.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/65.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 66:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/66.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/66.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/66.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 67:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/67.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/67.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/67.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 68:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/68.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/68.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/68.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 69:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/69.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/69.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/69.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 70:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/70.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/70.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/70.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 71:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/71.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/71.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/71.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 72:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/72.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/72.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/72.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 73:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/73.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/73.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/73.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 74:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/74.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/74.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/74.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 75:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/75.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/75.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/75.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 76:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/76.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/76.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/76.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 77:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/77.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/77.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/77.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 78:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/78.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/78.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/78.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 79:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/79.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/79.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/79.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 80:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/80.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/80.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/80.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 81:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/81.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/81.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/81.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 82:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/82.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/82.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/82.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 83:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/83.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/83.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/83.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 84:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/84.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/84.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/84.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 85:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/85.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/85.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/85.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 86:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/86.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/86.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/86.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 87:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/87.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/87.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/87.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 88:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/88.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/88.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/88.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 89:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/89.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/9.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/9.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 90:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/90.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/10.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/10.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		case 91:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/91.png"))
-				throw("ERROR::NEWCHARACTERSCREEN::FAILED_TO_LOAD::Female/91.png");
+				throw("ERROR::PLAYER::FAILED_TO_LOAD::Female/91.png");
 			this->sprite.setTexture(this->texture);
 			break;
 		default:
-			std::cout << "ERROR::NEWCHARACTERSCREEN::void updateTexture()::Invalid Switch Entry!\n";
+			std::cout << "ERROR::PLAYER::void initSprite()::Invalid Switch Entry!\n";
 		}
 	this->spriteIntRect = sf::IntRect(32, 0, 32, 32);
 	this->sprite.setTexture(this->texture);
 	this->sprite.setTextureRect(this->spriteIntRect);
 	this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
+}
+void Player::initAudio()
+{
+	std::ifstream ifs_sfx("Config/sfx.ini");
+
+	if (ifs_sfx.is_open())
+	{
+		std::string key = "";
+		std::string file_path = "";
+
+		while (ifs_sfx >> key >> file_path)
+		{
+			std::cout << file_path << '\n';
+			this->audio = std::make_unique<Audio>(true, file_path);
+			this->audioMap[key] = std::move(this->audio);
+		}
+	}
+	ifs_sfx.close();
+
+	//Debug Tester
+	for (auto& i : this->audioMap)
+	{
+		std::cout << i.first << " " << i.second << '\n';
+	}
 }
 
 /*Constructor & Destructor*/
@@ -895,6 +920,7 @@ Player::Player(std::map<std::string, int>* supported_keys, PlayerDetails player_
 	this->initKeybinds(supported_keys);
 	this->initSpriteRect();
 	this->initSprite();
+	this->initAudio();
 }
 Player::~Player()
 {
@@ -1105,28 +1131,6 @@ void Player::npcCollision(sf::RectangleShape npc_rect)
 }
 
 /*Update Functions*/
-void Player::updateStamina()
-{
-	if (this->playerDetails.currentStamina > 0.f && (this->playerDetails.currentDirection == PlayerDirection::Up
-		|| this->playerDetails.currentDirection == PlayerDirection::Down
-		|| this->playerDetails.currentDirection == PlayerDirection::Left
-		|| this->playerDetails.currentDirection == PlayerDirection::Right))
-		this->playerDetails.currentStamina -= this->playerDetails.staminaDrainFactor;
-
-	if (this->playerDetails.currentStamina < 0.f)
-		this->playerDetails.currentStamina = 0.f;
-
-	if (this->playerDetails.currentStamina == 0.f)
-		this->playerDetails.maxVelocity = this->quarterMaxVelocity;
-	else if (this->playerDetails.currentStamina > 0.f)
-		this->playerDetails.maxVelocity = this->quarterMaxVelocity * 4.f;
-
-	if (this->playerDetails.currentStamina < this->playerDetails.maxStamina && this->playerDetails.currentDirection == PlayerDirection::Idle)
-		this->playerDetails.currentStamina += this->playerDetails.staminaFillFactor;
-
-	/*std::cout << "Stamina: " << this->playerDetails.currentStamina << '\n';
-	std::cout << "Max Velocity: " << this->playerDetails.maxVelocity << '\n';*/
-}
 void Player::updateUserInput(const float& dt)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("UP"))))
@@ -1330,11 +1334,104 @@ void Player::updateAnimation()
 			}
 	}
 }
+void Player::updateStamina()
+{
+	if (this->playerDetails.currentStamina > 0.f && (this->playerDetails.currentDirection == PlayerDirection::Up
+		|| this->playerDetails.currentDirection == PlayerDirection::Down
+		|| this->playerDetails.currentDirection == PlayerDirection::Left
+		|| this->playerDetails.currentDirection == PlayerDirection::Right))
+		this->playerDetails.currentStamina -= this->playerDetails.staminaDrainFactor;
+
+	if (this->playerDetails.currentStamina < 0.f)
+		this->playerDetails.currentStamina = 0.f;
+
+	if (this->playerDetails.currentStamina == 0.f)
+		this->playerDetails.maxVelocity = this->quarterMaxVelocity;
+	else if (this->playerDetails.currentStamina > 0.f)
+		this->playerDetails.maxVelocity = this->quarterMaxVelocity * 4.f;
+
+	if (this->playerDetails.currentStamina < this->playerDetails.maxStamina && this->playerDetails.currentDirection == PlayerDirection::Idle)
+		this->playerDetails.currentStamina += this->playerDetails.staminaFillFactor;
+
+	/*std::cout << "Stamina: " << this->playerDetails.currentStamina << '\n';
+	std::cout << "Max Velocity: " << this->playerDetails.maxVelocity << '\n';*/
+}
+void Player::updateAudio()
+{
+	float deltaTime = this->footStepsClock.getElapsedTime().asSeconds();
+	float switchTime = 0.f;
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("UP")))
+		|| sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("DOWN")))
+		|| sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT")))
+		|| sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("RIGHT"))))
+	{
+		switch (this->playerDetails.currentTileMap)
+		{
+		case CurrentTileMap::LEVEL_A:
+
+			switchTime = 0.1f;
+
+			if (deltaTime > switchTime)
+			{
+				if (this->footStepCounter == 0)
+				{
+					this->audioMap["PLAYER_CARPET_FOOTSTEPS_1"]->setVolume(50.f);
+					this->audioMap["PLAYER_CARPET_FOOTSTEPS_1"]->play();
+					std::cout << "PLAYED CARPET FS 1!" << '\n';
+					this->footStepCounter = 1;
+					this->footStepsClock.restart();
+				}
+				else if (this->footStepCounter == 1)
+				{
+					this->audioMap["PLAYER_CARPET_FOOTSTEPS_2"]->setVolume(50.f);
+					this->audioMap["PLAYER_CARPET_FOOTSTEPS_2"]->play();
+					std::cout << "PLAYED CARPET FS 2!" << '\n';
+					this->footStepCounter = 0;
+					this->footStepsClock.restart();
+				}
+			}
+			break;
+		case CurrentTileMap::HOUSE_A:
+
+			 switchTime = 0.2f;
+
+			if (deltaTime > switchTime)
+			{
+				if (this->footStepCounter == 0)
+				{
+					this->audioMap["PLAYER_TILE_FOOTSTEPS_1"]->play();
+					std::cout << "PLAYED TILE FS 1!" << '\n';
+					this->footStepCounter = 1;
+					this->footStepsClock.restart();
+				}
+				else if (this->footStepCounter == 1)
+				{
+					this->audioMap["PLAYER_TILE_FOOTSTEPS_2"]->play();
+					std::cout << "PLAYED TILE FS 2!" << '\n';
+					this->footStepCounter = 0;
+					this->footStepsClock.restart();
+				}
+			}
+			break;
+		default:
+			std::cout << "ERROR::PLAYER::void Player::updateAudio()::Invalid Switch Entry!\n";
+		}
+	}
+}
 void Player::update(const float& dt)
 {
+	/*Stamina*/
 	this->updateStamina();
+
+	/*User Input*/
 	this->updateUserInput(dt);
+
+	/*Sprite Position*/
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
+
+	/*Audio*/
+	this->updateAudio();
 }
 
 /*Save & Load Functions*/

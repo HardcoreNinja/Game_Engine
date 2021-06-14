@@ -3,6 +3,18 @@
 #include "Entity.h"
 #include "TileMap.h"
 #include "Item.h"
+#include "Audio.h"
+
+/*Class Forward Declarations*/
+class Entity;
+class TileMap;
+class Audio;
+class Item;
+class Audio;
+class sf::Sprite;
+class sf::Texture;
+class sf::CircleShape;
+class sf::RenderTarget;
 
 enum class CurrentTileMap
 {
@@ -67,6 +79,12 @@ private:
     /*Player Details Struct*/
     PlayerDetails playerDetails;
 
+    /*Audio*/
+    std::unique_ptr<Audio> audio;
+    std::map<std::string, std::unique_ptr<Audio>> audioMap;
+    sf::Clock footStepsClock;
+    int footStepCounter;
+
     /*Collision Variables*/
     bool enemyCollisionBool; 
     bool npcCollisionBool;
@@ -83,6 +101,7 @@ private:
     void initKeybinds(std::map<std::string, int>* supported_keys);
     void initSpriteRect();
     void initSprite();
+    void initAudio();
 
 public:
     /*Constructor & Destructor*/
@@ -118,6 +137,7 @@ public:
     void updateMovement(const float& dt);
     void updateAnimation();
     void updateStamina();
+    void updateAudio();
     void update(const float& dt);
 
     /*Save & Load Functions*/
