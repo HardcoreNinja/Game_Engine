@@ -2,9 +2,11 @@
 #define ENEMY_H
 #include "Entity.h"
 #include "TileMap.h"
+#include "Audio.h"
 
 /*Class Forward Declarations*/
 class TileMap; 
+class Audio;
 class sf::Sprite;
 class sf::Texture; 
 class sf::CircleShape;
@@ -59,6 +61,12 @@ private:
     /*Enemy Details*/
     EnemyDetails enemyDetails; 
 
+    /*Audio*/
+    std::unique_ptr<Audio> audio;
+    std::map<std::string, std::unique_ptr<Audio>> audioMap;
+    bool playEmoteSFX;
+    sf::Clock emoteSFXClock;
+
     /*Collision Variables*/
     bool projectileCollisionBool;
     bool alertCircleCollisionBool;
@@ -90,6 +98,7 @@ private:
     void initVariables(std::vector<sf::Vector2f> enemy_spawn_positions, std::vector<sf::Vector2f> path_finder_markings);
     void initSpriteRect();
     void initSprite();
+    void initAudio();
 public:
     /*Constructor & Destructor*/
     Enemy(std::vector<sf::Vector2f> enemy_spawn_positions, std::vector<sf::Vector2f> path_finder_markings);
@@ -122,6 +131,7 @@ public:
     void updateVelocity(float dir_x, float dir_y, const float& dt);
     void updateMovement(const float& dt);
     void updateAnimation();
+    void updateAudio();
     void update(sf::RectangleShape player_rect, const float& dt);
 
     /*Render Functions*/
