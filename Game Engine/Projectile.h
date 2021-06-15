@@ -3,7 +3,6 @@
 #include "Entity.h"
 #include "TileMap.h"
 #include "Player.h"
-#include "Audio.h"
 
 /*Forward Declarations*/
 class TileMap;
@@ -93,10 +92,6 @@ private:
     bool wallCollision;
     sf::Vector2f oldPosition;
 
-    /*Audio*/
-    std::unique_ptr<Audio> audio;
-    std::map<std::string, std::unique_ptr<Audio>> audioMap;
-
     /*Animation Variables*/
     sf::Clock projectileAnimationClock;
     sf::Clock explosionAnimationClock;
@@ -106,10 +101,9 @@ private:
     void initSpriteRect();
     void initSprite();
     void initAudio();
-
 public:
     /*Constructor & Destructor*/
-    Projectile(ProjectileDetails projectile_details);
+    Projectile(ProjectileDetails projectile_details, std::map<std::string, std::unique_ptr<Audio>>& audio_map);
     virtual ~Projectile();
 
     /*Getters*/

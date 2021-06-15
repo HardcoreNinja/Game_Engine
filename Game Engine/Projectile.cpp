@@ -45,29 +45,6 @@ void Projectile::initSprite()
 }
 void Projectile::initAudio()
 {
-	std::ifstream ifs_sfx("Config/sfx.ini");
-
-	if (ifs_sfx.is_open())
-	{
-		std::string key = "";
-		std::string file_path = "";
-
-		while (ifs_sfx >> key >> file_path)
-		{
-			std::cout << file_path << '\n';
-			this->audio = std::make_unique<Audio>(true, file_path);
-			this->audioMap[key] = std::move(this->audio);
-		}
-	}
-	ifs_sfx.close();
-
-	//Debug Tester
-	for (auto& i : this->audioMap)
-	{
-		std::cout << i.first << " " << i.second << '\n';
-	}
-
-
 	switch (this->projectileDetails.projectileType)
 	{
 	case ProjectileTypes::Black_Tornado:
@@ -137,7 +114,8 @@ void Projectile::initAudio()
 }
 
 /*Constructor & Destructor*/
-Projectile::Projectile(ProjectileDetails projectile_details)
+Projectile::Projectile(ProjectileDetails projectile_details, std::map<std::string, std::unique_ptr<Audio>>& audio_map)
+	:Entity(audio_map)
 {
 	this->initVariables(projectile_details);
 	this->initSpriteRect();

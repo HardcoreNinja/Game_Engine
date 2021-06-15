@@ -888,39 +888,15 @@ void Player::initSprite()
 	this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
 }
-void Player::initAudio()
-{
-	std::ifstream ifs_sfx("Config/sfx.ini");
-
-	if (ifs_sfx.is_open())
-	{
-		std::string key = "";
-		std::string file_path = "";
-
-		while (ifs_sfx >> key >> file_path)
-		{
-			std::cout << file_path << '\n';
-			this->audio = std::make_unique<Audio>(true, file_path);
-			this->audioMap[key] = std::move(this->audio);
-		}
-	}
-	ifs_sfx.close();
-
-	//Debug Tester
-	for (auto& i : this->audioMap)
-	{
-		std::cout << i.first << " " << i.second << '\n';
-	}
-}
 
 /*Constructor & Destructor*/
-Player::Player(std::map<std::string, int>* supported_keys, PlayerDetails player_details)
+Player::Player(std::map<std::string, int>* supported_keys, PlayerDetails player_details, std::map<std::string, std::unique_ptr<Audio>>& audio_map)
+	:Entity(audio_map)
 {
 	this->initVariables(player_details);
 	this->initKeybinds(supported_keys);
 	this->initSpriteRect();
 	this->initSprite();
-	this->initAudio();
 }
 Player::~Player()
 {

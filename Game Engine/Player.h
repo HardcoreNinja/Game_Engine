@@ -3,7 +3,6 @@
 #include "Entity.h"
 #include "TileMap.h"
 #include "Item.h"
-#include "Audio.h"
 
 /*Class Forward Declarations*/
 class Entity;
@@ -80,8 +79,6 @@ private:
     PlayerDetails playerDetails;
 
     /*Audio*/
-    std::unique_ptr<Audio> audio;
-    std::map<std::string, std::unique_ptr<Audio>> audioMap;
     sf::Clock footStepsClock;
     int footStepCounter;
 
@@ -101,11 +98,9 @@ private:
     void initKeybinds(std::map<std::string, int>* supported_keys);
     void initSpriteRect();
     void initSprite();
-    void initAudio();
-
 public:
     /*Constructor & Destructor*/
-    Player(std::map<std::string, int>* supported_keys, PlayerDetails player_details);
+    Player(std::map<std::string, int>* supported_keys, PlayerDetails player_details, std::map<std::string, std::unique_ptr<Audio>>& audio_map);
     virtual ~Player();
 
     /*Setters*/

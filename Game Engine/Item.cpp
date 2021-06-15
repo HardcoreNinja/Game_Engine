@@ -70,44 +70,6 @@ void Item::initText()
 }
 void Item::initAudio()
 {
-	std::ifstream ifs_sfx("Config/sfx.ini");
-
-	if (ifs_sfx.is_open())
-	{
-		std::string key = "";
-		std::string file_path = "";
-
-		while (ifs_sfx >> key >> file_path)
-		{
-			std::cout << file_path << '\n';
-			this->audio = std::make_unique<Audio>(true, file_path);
-			this->audioMap[key] = std::move(this->audio);
-		}
-	}
-	ifs_sfx.close();
-
-	std::ifstream ifs_music("Config/music.ini");
-
-	if (ifs_music.is_open())
-	{
-		std::string key = "";
-		std::string file_path = "";
-
-		while (ifs_music >> key >> file_path)
-		{
-			std::cout << file_path << '\n';
-			this->audio = std::make_unique<Audio>(false, file_path);
-			this->audioMap[key] = std::move(this->audio);
-		}
-	}
-	ifs_music.close();
-
-	//Debug Tester
-	for (auto& i : this->audioMap)
-	{
-		std::cout << i.first << " " << i.second << '\n';
-	}
-
 	switch (this->itemDetails.itemType)
 	{
 	case ItemType::HP_Potion:
@@ -125,7 +87,8 @@ void Item::initAudio()
 }
 
 /*Constructor & Destructor*/
-Item::Item(std::map<std::string, int>* supported_keys)
+Item::Item(std::map<std::string, int>* supported_keys, std::map<std::string, std::unique_ptr<Audio>>& audio_map)
+	:Entity(audio_map)
 {
 	this->initVariables();
 	this->initKeybinds(supported_keys);

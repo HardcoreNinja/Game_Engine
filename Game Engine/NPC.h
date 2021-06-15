@@ -2,7 +2,6 @@
 #define NPC_H
 #include "Entity.h"
 #include "TileMap.h"
-#include "Audio.h"
 
 /*Class Forward Declarations*/
 class TileMap;
@@ -82,10 +81,6 @@ private:
     sf::RectangleShape textNameShape;
     sf::RectangleShape textBodyShape;
 
-    /*Audio*/
-    std::unique_ptr<Audio> audio;
-    std::map<std::string, std::unique_ptr<Audio>> audioMap;
-
     /*Collision Variables*/
     bool projectileCollisionBool;
     bool alertCircleCollisionBool;
@@ -119,15 +114,14 @@ private:
     void initSpriteRect();
     void initSprite(bool male_1_female_0, int texture_switch_number);
     void initText();
-    void initAudio();
-
 public:
     /*Constructor & Destructor*/
     NPC(
         std::vector<sf::Vector2f> npc_spawn_positions, 
         std::vector<sf::Vector2f> path_finder_markings, 
         bool male_1_female_0, 
-        int texture_switch_number
+        int texture_switch_number,
+        std::map<std::string, std::unique_ptr<Audio>>& audio_map
     );
     virtual ~NPC();
 

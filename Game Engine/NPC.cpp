@@ -124,44 +124,21 @@ void NPC::initText()
 	this->textBody.setFillColor(sf::Color::White);
 	this->textBody.setCharacterSize(15);
 }
-void NPC::initAudio()
-{
-	std::ifstream ifs_sfx("Config/sfx.ini");
-
-	if (ifs_sfx.is_open())
-	{
-		std::string key = "";
-		std::string file_path = "";
-
-		while (ifs_sfx >> key >> file_path)
-		{
-			std::cout << file_path << '\n';
-			this->audio = std::make_unique<Audio>(true, file_path);
-			this->audioMap[key] = std::move(this->audio);
-		}
-	}
-	ifs_sfx.close();
-
-	//Debug Tester
-	for (auto& i : this->audioMap)
-	{
-		std::cout << i.first << " " << i.second << '\n';
-	}
-}
 
 /*Constructor & Destructor*/
 NPC::NPC(
 	std::vector<sf::Vector2f> npc_spawn_positions, 
 	std::vector<sf::Vector2f> path_finder_markings, 
 	bool male_1_female_0, 
-	int texture_switch_number
+	int texture_switch_number, 
+	std::map<std::string, std::unique_ptr<Audio>>& audio_map
 )
+	:Entity(audio_map)
 {
 	this->initVariables(npc_spawn_positions, path_finder_markings);
 	this->initSpriteRect();
 	this->initSprite(male_1_female_0, texture_switch_number);
 	this->initText();
-	this->initAudio();
 }
 NPC::~NPC()
 {

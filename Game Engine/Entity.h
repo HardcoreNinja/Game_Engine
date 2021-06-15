@@ -1,11 +1,13 @@
 #ifndef ENTITY_H
 #define ENTITY_H
+#include "Audio.h"
 
 /*Class Forward Declarations*/
-sf::Sprite;
-sf::RectangleShape;
-sf::Texture;
-sf::Clock;
+class Audio;
+class sf::Sprite;
+class sf::RectangleShape;
+class sf::Texture;
+class sf::Clock;
 
 class Entity
 {
@@ -23,5 +25,13 @@ protected:
 
 	/*User Input*/
 	std::map<std::string, int> keybinds;
+
+	/*Audio*/
+	std::map<std::string, std::unique_ptr<Audio>>& audioMap;
+
+public:
+	/*Constructor & Destructor*/
+	Entity(std::map<std::string, std::unique_ptr<Audio>>& audio_map);
+	virtual ~Entity();
 };
 #endif

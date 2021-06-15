@@ -126,7 +126,7 @@ void GameState::initGameOver()
 }
 void GameState::initPlayer(PlayerDetails player_details)
 {
-	this->player = std::make_unique<Player>(this->supportedKeys, player_details);
+	this->player = std::make_unique<Player>(this->supportedKeys, player_details, this->audioMap);
 }
 void GameState::initTileMap(PlayerDetails player_details)
 {
@@ -197,17 +197,17 @@ void GameState::initTileMap(PlayerDetails player_details)
 			this->player->setOldDirection(player_details.oldDirection);
 
 			/*NPC Female #9*/
-			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 9);
+			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 9, this->audioMap);
 			this->npc->setNPCPosition();
 			this->npcVector.push_back(std::move(this->npc));
 
 			/*NPC Female #17*/
-			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 17);
+			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 17, this->audioMap);
 			this->npc->setNPCPosition();
 			this->npcVector.push_back(std::move(this->npc));
 
 			/*NPC Male #53*/
-			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 1, 53);
+			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 1, 53, this->audioMap);
 			this->npc->setNPCPosition();
 			this->npcVector.push_back(std::move(this->npc));
 
@@ -233,7 +233,7 @@ void GameState::initEnemies()
 {
 	for (int i = 0; i < this->numberOfEnemies; i++)
 	{
-		this->enemy = std::make_unique<Enemy>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings());
+		this->enemy = std::make_unique<Enemy>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), this->audioMap);
 		this->enemy->setEnemyPosition();
 		this->enemyVector.push_back(std::move(this->enemy));
 	}
@@ -433,7 +433,7 @@ void GameState::updateInGameActions()
 		{
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SHOOT"))))
 			{
-				this->projectile = std::make_unique<Projectile>(this->projectileDetails);
+				this->projectile = std::make_unique<Projectile>(this->projectileDetails, this->audioMap);
 				this->projectile->setProjectileType(this->projectileDetails.projectileType);
 				this->projectile->setProjectileDirection(this->player->getPlayerDirection());
 				this->projectile->setProjectilePosition(this->player->getSpriteRect());
@@ -526,7 +526,7 @@ void GameState::updateDoorCollisions(const float& dt)
 		/*Remake Enemies*/
 		for (int i = 0; i < this->numberOfEnemies; i++)
 		{
-			this->enemy = std::make_unique<Enemy>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings());
+			this->enemy = std::make_unique<Enemy>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), this->audioMap);
 			this->enemy->setEnemyPosition();
 			this->enemyVector.push_back(std::move(this->enemy));
 		}
@@ -573,17 +573,17 @@ void GameState::updateDoorCollisions(const float& dt)
 		this->player->setCurrentTileMap(CurrentTileMap::HOUSE_A);
 
 		/*NPC Female #9*/
-		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 9);
+		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 9, this->audioMap);
 		this->npc->setNPCPosition();
 		this->npcVector.push_back(std::move(this->npc));
 
 		/*NPC Female #17*/
-		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 17);
+		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 17, this->audioMap);
 		this->npc->setNPCPosition();
 		this->npcVector.push_back(std::move(this->npc));
 
 		/*NPC Male #53*/
-		this->npc = std::make_unique<NPC>( this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 1, 53);
+		this->npc = std::make_unique<NPC>( this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 1, 53, this->audioMap);
 		this->npc->setNPCPosition();
 		this->npcVector.push_back(std::move(this->npc));
 
@@ -730,7 +730,7 @@ void GameState::updateEnemyDestroyLoop()
 	{
 		if (this->enemyVector[counter]->getDestroy())
 		{
-			this->item = std::make_unique<Item>(this->supportedKeys); 
+			this->item = std::make_unique<Item>(this->supportedKeys, this->audioMap);
 			this->item->setPosition(this->enemyVector[counter]->getSpriteRect().getPosition());
 			this->itemVector.push_back(std::move(this->item));
 

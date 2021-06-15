@@ -2,7 +2,6 @@
 #define ENEMY_H
 #include "Entity.h"
 #include "TileMap.h"
-#include "Audio.h"
 
 /*Class Forward Declarations*/
 class TileMap; 
@@ -62,8 +61,6 @@ private:
     EnemyDetails enemyDetails; 
 
     /*Audio*/
-    std::unique_ptr<Audio> audio;
-    std::map<std::string, std::unique_ptr<Audio>> audioMap;
     bool playEmoteSFX;
     sf::Clock emoteSFXClock;
 
@@ -99,10 +96,9 @@ private:
     void initVariables(std::vector<sf::Vector2f> enemy_spawn_positions, std::vector<sf::Vector2f> path_finder_markings);
     void initSpriteRect();
     void initSprite();
-    void initAudio();
 public:
     /*Constructor & Destructor*/
-    Enemy(std::vector<sf::Vector2f> enemy_spawn_positions, std::vector<sf::Vector2f> path_finder_markings);
+    Enemy(std::vector<sf::Vector2f> enemy_spawn_positions, std::vector<sf::Vector2f> path_finder_markings, std::map<std::string, std::unique_ptr<Audio>>& audio_map);
     virtual ~Enemy();
 
     /*Setters*/

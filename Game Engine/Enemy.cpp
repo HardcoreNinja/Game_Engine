@@ -81,38 +81,14 @@ void Enemy::initSprite()
 	this->emoteSprite.setOrigin(this->emoteSprite.getGlobalBounds().width / 2.f, this->emoteSprite.getGlobalBounds().height / 2.f);
 	this->emoteSprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x, this->spriteRect.getPosition().y - 50.f));
 }
-void Enemy::initAudio()
-{
-	std::ifstream ifs_sfx("Config/sfx.ini");
-
-	if (ifs_sfx.is_open())
-	{
-		std::string key = "";
-		std::string file_path = "";
-
-		while (ifs_sfx >> key >> file_path)
-		{
-			std::cout << file_path << '\n';
-			this->audio = std::make_unique<Audio>(true, file_path);
-			this->audioMap[key] = std::move(this->audio);
-		}
-	}
-	ifs_sfx.close();
-
-	//Debug Tester
-	for (auto& i : this->audioMap)
-	{
-		std::cout << i.first << " " << i.second << '\n';
-	}
-}
 
 /*Constructor & Destructor*/
-Enemy::Enemy(std::vector<sf::Vector2f> enemy_spawn_positions, std::vector<sf::Vector2f> path_finder_markings)
+Enemy::Enemy(std::vector<sf::Vector2f> enemy_spawn_positions, std::vector<sf::Vector2f> path_finder_markings, std::map<std::string, std::unique_ptr<Audio>>& audio_map)
+	:Entity(audio_map)
 {
 	this->initVariables(enemy_spawn_positions, path_finder_markings);
 	this->initSpriteRect();
 	this->initSprite();
-	this->initAudio();
 }
 Enemy::~Enemy()
 {

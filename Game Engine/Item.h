@@ -1,7 +1,6 @@
 #ifndef ITEM_H
 #define ITEM_H
 #include "Entity.h"
-#include "Audio.h"
 
 /*Class Forward Declarations*/
 class Audio;
@@ -48,10 +47,6 @@ private:
     sf::Font font;
     sf::RectangleShape textShape;
 
-    /*Audio*/
-    std::unique_ptr<Audio> audio;
-    std::map<std::string, std::unique_ptr<Audio>> audioMap;
-
     /*Initializers*/
     void initVariables();
     void initKeybinds(std::map<std::string, int>* supported_keys);
@@ -61,7 +56,7 @@ private:
     void initAudio();
 public:
     /*Constructor & Destructor*/
-    Item(std::map<std::string, int>* supported_keys);
+    Item(std::map<std::string, int>* supported_keys, std::map<std::string, std::unique_ptr<Audio>>& audio_map);
     virtual ~Item(); 
 
     /*Getters*/
