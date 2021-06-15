@@ -45,6 +45,9 @@ void Enemy::initVariables(std::vector<sf::Vector2f> enemy_spawn_positions, std::
 	this->goingAroundWall = false;
 	this->attackPlayer = false;
 	this->directionNumber = 0;
+
+	/*Emote Variables*/
+	this->emoteCounter = 0;
 }
 void Enemy::initSpriteRect()
 {
@@ -709,9 +712,11 @@ void Enemy::updateEmoteAnimation()
 	{
 		if (this->enemyDetails.emoteState == EmoteStates::Alert_1)
 		{
+
 			if (this->emoteIntRect.left == intRectLeft_Start)
 			{
 				counter = 1;
+				this->emoteCounter += 1;
 				this->emoteIntRect.left += intRectLeft_FrameSize;
 				this->emoteSprite.setTextureRect(this->emoteIntRect);
 				this->emoteAnimationClock.restart();
@@ -952,7 +957,7 @@ void Enemy::updateAudio()
 	int deltaTime = this->emoteSFXClock.getElapsedTime().asSeconds();
 	int switchTime = 0.1f;
 
-	if (this->playEmoteSFX)
+	if (this->playEmoteSFX && this->emoteCounter < 5)
 	{
 		if (deltaTime > switchTime)
 		{
@@ -987,6 +992,6 @@ void Enemy::render(sf::RenderTarget& target)
 	target.draw(this->sprite);
 	target.draw(this->alertCircle);
 
-	if (this->alertCircleCollisionBool)
+	if (this->alertCircleCollisionBool && this->emoteCounter < 5)
 		target.draw(this->emoteSprite);
 }

@@ -89,6 +89,7 @@ private:
     sf::Texture emoteTexture; 
     sf::IntRect emoteIntRect;
     sf::Clock emoteAnimationClock;
+    int emoteCounter;
 
     /*Randomization Variables*/
     int randomDirectionCounter;
