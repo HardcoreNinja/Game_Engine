@@ -1,9 +1,11 @@
 #ifndef INVENTORY_H
 #define INVENTORY_H
 #include "Item.h"
+#include "Audio.h"
 
 /*Class Forward Declarations*/
 class Item;
+class Audio;
 class sf::RectangleShape;
 class sf::Texture;
 class sf::Font;
@@ -59,6 +61,9 @@ private:
 	/*Used Item Bool*/
 	bool usedItem;
 
+	/*Audio*/
+	std::map<std::string, std::unique_ptr<Audio>>& audioMap;
+
 	/*User Input*/
 	std::map<std::string, int> keybinds;
 
@@ -70,7 +75,7 @@ private:
 	void initCells(sf::RenderWindow& window);
 public: 
 	/*Constructor & Destructor*/
-	Inventory(std::map<std::string, int>* supported_keys, sf::RenderWindow& window);
+	Inventory(std::map<std::string, int>* supported_keys, sf::RenderWindow& window, std::map<std::string, std::unique_ptr<Audio>>& audio_map);
 	virtual ~Inventory();
 
 	/*Getters*/

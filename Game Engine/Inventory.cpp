@@ -88,7 +88,8 @@ void Inventory::initCells(sf::RenderWindow& window)
 }
 
 /*Constructor & Destructor*/
-Inventory::Inventory(std::map<std::string, int>* supported_keys, sf::RenderWindow& window)
+Inventory::Inventory(std::map<std::string, int>* supported_keys, sf::RenderWindow& window, std::map<std::string, std::unique_ptr<Audio>>& audio_map)
+	: audioMap(audio_map)
 {
 	this->initVariables();
 	this->initFont();
@@ -164,6 +165,7 @@ void Inventory::updateUseItem(const sf::Event& sfml_events, const sf::Vector2i& 
 					this->inventoryDetails.itemDetailsVector.erase(this->inventoryDetails.itemDetailsVector.begin() + i);
 					this->inventoryDetails.itemDetailsVector.shrink_to_fit();
 				}
+				this->audioMap["INVENTORY_USE_POTION"]->play();
 				break;
 			case ItemType::Stamina_Potion:
 				this->usedItem = true;
@@ -174,6 +176,7 @@ void Inventory::updateUseItem(const sf::Event& sfml_events, const sf::Vector2i& 
 					this->inventoryDetails.itemDetailsVector.erase(this->inventoryDetails.itemDetailsVector.begin() + i);
 					this->inventoryDetails.itemDetailsVector.shrink_to_fit();
 				}
+				this->audioMap["INVENTORY_USE_POTION"]->play();
 				break;
 			case ItemType::Mana_Potion:
 				this->usedItem = true;
@@ -184,6 +187,7 @@ void Inventory::updateUseItem(const sf::Event& sfml_events, const sf::Vector2i& 
 					this->inventoryDetails.itemDetailsVector.erase(this->inventoryDetails.itemDetailsVector.begin() + i);
 					this->inventoryDetails.itemDetailsVector.shrink_to_fit();
 				}
+				this->audioMap["INVENTORY_USE_POTION"]->play();
 				break;
 			default:
 				std::cout << "ERROR::ITEM::void Item::setItemType(ItemType consumable)::Invalid Switch Entry!\n";

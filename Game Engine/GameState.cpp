@@ -224,7 +224,7 @@ void GameState::initHUD()
 }
 void GameState::initInventory()
 {
-	this->inventory = std::make_unique<Inventory>(this->supportedKeys, *this->window);
+	this->inventory = std::make_unique<Inventory>(this->supportedKeys, *this->window, this->audioMap);
 
 	if (this->cameFromMainMenu)
 		this->inventory->loadToFile();
@@ -891,7 +891,7 @@ void GameState::reinitializeState()
 
 	/*Inventory*/
 	this->inventory->saveToFile();
-	this->inventory = std::make_unique<Inventory>(this->supportedKeys, *this->window);
+	this->inventory = std::make_unique<Inventory>(this->supportedKeys, *this->window, this->audioMap);
 	this->inventory->loadToFile();
 }
 
