@@ -3,10 +3,12 @@
 #include "Entity.h"
 #include "TileMap.h"
 #include "Player.h"
+#include "Audio.h"
 
 /*Forward Declarations*/
 class TileMap;
 class Player;
+class Audio;
 class sf::RectangleShape;
 class sf::RenderTarget;
 class sf::Clock;
@@ -91,6 +93,10 @@ private:
     bool wallCollision;
     sf::Vector2f oldPosition;
 
+    /*Audio*/
+    std::unique_ptr<Audio> audio;
+    std::map<std::string, std::unique_ptr<Audio>> audioMap;
+
     /*Animation Variables*/
     sf::Clock projectileAnimationClock;
     sf::Clock explosionAnimationClock;
@@ -99,6 +105,7 @@ private:
     void initVariables(ProjectileDetails projectile_details);
     void initSpriteRect();
     void initSprite();
+    void initAudio();
 
 public:
     /*Constructor & Destructor*/
@@ -123,6 +130,7 @@ public:
     void tileCollision(std::tuple<bool, unsigned short, std::string_view> collision_tuple);
 
     /*Update Functions*/
+    void updateAudio();
     void updateDirection(const float& dt);
     void updateVelocity(float dir_x, float dir_y, const float& dt);
     void updateMovement(const float& dt);

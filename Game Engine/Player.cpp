@@ -1376,7 +1376,7 @@ void Player::updateAudio()
 			{
 				if (this->footStepCounter == 0)
 				{
-					this->audioMap["PLAYER_CARPET_FOOTSTEPS_1"]->setVolume(50.f);
+					this->audioMap["PLAYER_CARPET_FOOTSTEPS_1"]->setVolume(20.f);
 					this->audioMap["PLAYER_CARPET_FOOTSTEPS_1"]->play();
 					std::cout << "PLAYED CARPET FS 1!" << '\n';
 					this->footStepCounter = 1;
@@ -1384,7 +1384,7 @@ void Player::updateAudio()
 				}
 				else if (this->footStepCounter == 1)
 				{
-					this->audioMap["PLAYER_CARPET_FOOTSTEPS_2"]->setVolume(50.f);
+					this->audioMap["PLAYER_CARPET_FOOTSTEPS_2"]->setVolume(20.f);
 					this->audioMap["PLAYER_CARPET_FOOTSTEPS_2"]->play();
 					std::cout << "PLAYED CARPET FS 2!" << '\n';
 					this->footStepCounter = 0;

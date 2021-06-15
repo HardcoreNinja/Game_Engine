@@ -43,6 +43,98 @@ void Projectile::initSprite()
 	this->projectileDetails.explosionIntRect = sf::IntRect(0, 0, 100, 100);
 	this->projectileDetails.explosionTexture.setSmooth(true);
 }
+void Projectile::initAudio()
+{
+	std::ifstream ifs_sfx("Config/sfx.ini");
+
+	if (ifs_sfx.is_open())
+	{
+		std::string key = "";
+		std::string file_path = "";
+
+		while (ifs_sfx >> key >> file_path)
+		{
+			std::cout << file_path << '\n';
+			this->audio = std::make_unique<Audio>(true, file_path);
+			this->audioMap[key] = std::move(this->audio);
+		}
+	}
+	ifs_sfx.close();
+
+	//Debug Tester
+	for (auto& i : this->audioMap)
+	{
+		std::cout << i.first << " " << i.second << '\n';
+	}
+
+
+	switch (this->projectileDetails.projectileType)
+	{
+	case ProjectileTypes::Black_Tornado:
+		this->audioMap["PROJECTILE_ENERGY_TORNADO"]->play();
+		break;
+	case ProjectileTypes::Blue_Tornado:
+		this->audioMap["PROJECTILE_ENERGY_TORNADO"]->play();
+		break;
+	case ProjectileTypes::Brown_Tornado:
+		this->audioMap["PROJECTILE_ENERGY_TORNADO"]->play();
+		this->projectileDetails.damage = 50;
+		break;
+	case ProjectileTypes::Cyan_Ball_1:
+		this->audioMap["PROJECTILE_ENERGY_BALL"]->play();
+		break;
+	case ProjectileTypes::Cyan_Ball_2:
+		this->audioMap["PROJECTILE_ENERGY_BALL"]->play();
+		break;
+	case ProjectileTypes::Cyan_Ball_3:
+		this->audioMap["PROJECTILE_ENERGY_BALL"]->play();
+		break;
+	case ProjectileTypes::Cyan_Ball_4:
+		this->audioMap["PROJECTILE_ENERGY_BALL"]->play();
+		break;
+	case ProjectileTypes::Cyan_Ball_5:
+		this->audioMap["PROJECTILE_ENERGY_BALL"]->play();
+		break;
+	case ProjectileTypes::Green_Tornado:
+		this->audioMap["PROJECTILE_ENERGY_TORNADO"]->play();
+		break;
+	case ProjectileTypes::Pink_Ball_1:
+		this->audioMap["PROJECTILE_ENERGY_BALL"]->play();
+		break;
+	case ProjectileTypes::Pink_Ball_2:
+		this->audioMap["PROJECTILE_ENERGY_BALL"]->play();
+		break;
+	case ProjectileTypes::Pink_Ball_3:
+		this->audioMap["PROJECTILE_ENERGY_BALL"]->play();
+		break;
+	case ProjectileTypes::Pink_Ball_4:
+		this->audioMap["PROJECTILE_ENERGY_BALL"]->play();
+		break;
+	case ProjectileTypes::Pink_Ball_5:
+		this->audioMap["PROJECTILE_ENERGY_BALL"]->play();
+		break;
+	case ProjectileTypes::Red_Tornado:
+		this->audioMap["PROJECTILE_ENERGY_TORNADO"]->play();
+		break;
+	case ProjectileTypes::Yellow_Ball_1:
+		this->audioMap["PROJECTILE_ENERGY_BALL"]->play();
+		break;
+	case ProjectileTypes::Yellow_Ball_2:
+		this->audioMap["PROJECTILE_ENERGY_BALL"]->play();
+		break;
+	case ProjectileTypes::Yellow_Ball_3:
+		this->audioMap["PROJECTILE_ENERGY_BALL"]->play();
+		break;
+	case ProjectileTypes::Yellow_Ball_4:
+		this->audioMap["PROJECTILE_ENERGY_BALL"]->play();
+		break;
+	case ProjectileTypes::Yellow_Ball_5:
+		this->audioMap["PROJECTILE_ENERGY_BALL"]->play();
+		break;
+	default:
+		std::cout << "ERROR::PROJECITLE::void Projectile::setProjectileType(ProjectileTypes projectile_type))::Invalid Switch Entry!\n";
+	}
+}
 
 /*Constructor & Destructor*/
 Projectile::Projectile(ProjectileDetails projectile_details)
@@ -50,6 +142,7 @@ Projectile::Projectile(ProjectileDetails projectile_details)
 	this->initVariables(projectile_details);
 	this->initSpriteRect();
 	this->initSprite();
+	this->initAudio();
 }
 Projectile::~Projectile()
 {
@@ -356,6 +449,11 @@ void Projectile::tileCollision(std::tuple<bool, unsigned short, std::string_view
 }
 
 /*Update Functions*/
+void Projectile::updateAudio()
+{
+	if (this->wallCollision || this->enemyCollisionBool || this->projectileDetails.lifeTimeCounter == this->projectileDetails.maxLifeTimeCounter)
+		this->audioMap["PROJECTILE_EXPLOSION"]->play();
+}
 void Projectile::updateDirection(const float& dt)
 {
 	if (this->projectileDetails.projectileDirection == ProjectileDirection::Up)
@@ -699,6 +797,9 @@ void Projectile::update(const float& dt)
 
 	this->updateLifeTimeCounter();
 	
+	/*Audio*/
+	this->updateAudio();
+
 	if (this->explode)
 		this->updateExplosionAnimation();
 }
