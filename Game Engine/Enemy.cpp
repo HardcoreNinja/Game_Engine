@@ -58,7 +58,7 @@ void Enemy::initSpriteRect()
 	/*Alert Circle*/
 	this->alertCircle = sf::CircleShape(200);
 	this->alertCircle.setOutlineThickness(1.f);
-	this->alertCircle.setOutlineColor(sf::Color::Magenta);
+	this->alertCircle.setOutlineColor(sf::Color::Transparent);
 	this->alertCircle.setFillColor(sf::Color::Transparent);
 	this->alertCircle.setOrigin(this->alertCircle.getGlobalBounds().width / 2.f, this->alertCircle.getGlobalBounds().height / 2.f);
 	this->alertCircle.setPosition(this->spriteRect.getPosition());

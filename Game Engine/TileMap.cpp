@@ -22,7 +22,7 @@ TILEMAP::Tile::Tile(
 	this->shape.setOutlineThickness(1.f);
 	this->shape.setRotation(this->shapeRotation);
 
-	/*Color Codes for Collision & Tile Types*/
+	/*Color Codes for Collision & Tile Types
 	if (this->collision)
 	{
 		this->shape.setFillColor(sf::Color::Red);
@@ -57,7 +57,7 @@ TILEMAP::Tile::Tile(
 		this->shape.setOutlineColor(sf::Color::Cyan);
 		this->shape.setFillColor(sf::Color::Magenta);
 		break;
-	}
+	}*/
 }
 TILEMAP::Tile::~Tile()
 {

@@ -39,7 +39,7 @@ void Item::initSpriteRect()
 {
 this->spriteRect.setSize(sf::Vector2f(32.f, 32.f));
 this->spriteRect.setOutlineThickness(1.f);
-this->spriteRect.setOutlineColor(sf::Color::Red);
+this->spriteRect.setOutlineColor(sf::Color::Transparent);
 this->spriteRect.setFillColor(sf::Color::Transparent);
 this->spriteRect.setOrigin(this->spriteRect.getGlobalBounds().width / 2.f, this->spriteRect.getGlobalBounds().height / 2.f);
 }
