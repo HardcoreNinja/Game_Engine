@@ -68,6 +68,61 @@ void Item::initText()
 	this->text.setOrigin(this->text.getGlobalBounds().width / 2.f, this->text.getGlobalBounds().height / 2.f);
 	this->text.setPosition(sf::Vector2f(this->textShape.getPosition().x, this->textShape.getPosition().y - static_cast<float>(this->text.getCharacterSize()) / 4.f));
 }
+void Item::initAudio()
+{
+	std::ifstream ifs_sfx("Config/sfx.ini");
+
+	if (ifs_sfx.is_open())
+	{
+		std::string key = "";
+		std::string file_path = "";
+
+		while (ifs_sfx >> key >> file_path)
+		{
+			std::cout << file_path << '\n';
+			this->audio = std::make_unique<Audio>(true, file_path);
+			this->audioMap[key] = std::move(this->audio);
+		}
+	}
+	ifs_sfx.close();
+
+	std::ifstream ifs_music("Config/music.ini");
+
+	if (ifs_music.is_open())
+	{
+		std::string key = "";
+		std::string file_path = "";
+
+		while (ifs_music >> key >> file_path)
+		{
+			std::cout << file_path << '\n';
+			this->audio = std::make_unique<Audio>(false, file_path);
+			this->audioMap[key] = std::move(this->audio);
+		}
+	}
+	ifs_music.close();
+
+	//Debug Tester
+	for (auto& i : this->audioMap)
+	{
+		std::cout << i.first << " " << i.second << '\n';
+	}
+
+	switch (this->itemDetails.itemType)
+	{
+	case ItemType::HP_Potion:
+		this->audioMap["ITEM_POTION"]->play();
+		break;
+	case ItemType::Stamina_Potion:
+		this->audioMap["ITEM_POTION"]->play();
+		break;
+	case ItemType::Mana_Potion:
+		this->audioMap["ITEM_POTION"]->play();
+		break;
+	default:
+		std::cout << "ERROR::ITEM::void Item::setItemType(ItemType consumable)::Invalid Switch Entry!\n";
+	}
+}
 
 /*Constructor & Destructor*/
 Item::Item(std::map<std::string, int>* supported_keys)
@@ -77,6 +132,7 @@ Item::Item(std::map<std::string, int>* supported_keys)
 	this->initSpriteRect();
 	this->initSprite();
 	this->initText();
+	this->initAudio();
 }
 Item::~Item()
 {
