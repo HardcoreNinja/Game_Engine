@@ -478,7 +478,7 @@ void GameState::updateManaFill()
 void GameState::updatePlayer(const float& dt)
 {
 	this->player->update(dt);
-	this->view.setCenter(this->player->getSpriteRect().getPosition());
+	this->view.setCenter(std::floor(this->player->getSpriteRect().getPosition().x), std::floor(this->player->getSpriteRect().getPosition().y));
 
 	if (this->player->getPlayerDetails().currentHP <= 0.f)
 		this->isGameOver = true;

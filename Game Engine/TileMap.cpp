@@ -14,8 +14,8 @@ TILEMAP::Tile::Tile(
 )
 	: collision(tile_collision), tileType(type), shapeRotation(shape_rotation), tileSize(tile_size), doorName(door_name)
 {
-	this->shape.setSize(sf::Vector2f(tile_size, tile_size));
-	this->shape.setPosition(sf::Vector2f(static_cast<float>(pos_x) * tile_size, static_cast<float>(pos_y) * tile_size));
+	this->shape.setSize(sf::Vector2f(std::floor(tile_size), std::floor(tile_size)));
+	this->shape.setPosition(sf::Vector2f(std::floor(static_cast<float>(pos_x) * tile_size), std::floor(static_cast<float>(pos_y) * tile_size)));
 	this->shape.setTexture(&texture);
 	this->shape.setTextureRect(texture_intrect);
 	this->shape.setOutlineColor(sf::Color::Transparent);

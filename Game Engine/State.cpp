@@ -6,8 +6,8 @@ void State::initView()
 	this->defaultWindowView = this->window->getDefaultView();
 	this->defaultWindowView.setCenter(this->window->getDefaultView().getCenter());
 
-	this->view.setSize(static_cast<float>(this->window->getSize().x), static_cast<float>(this->window->getSize().y));
-	this->view.setCenter(static_cast<float>(this->window->getSize().x) / 2.f, static_cast<float>(this->window->getSize().y) / 2.f);
+	this->view.setSize(std::floor(static_cast<float>(this->window->getSize().x)), std::floor(static_cast<float>(this->window->getSize().y)));
+	this->view.setCenter(std::floor(static_cast<float>(this->window->getSize().x) / 2.f), std::floor(static_cast<float>(this->window->getSize().y) / 2.f));
 }
 
 /*Constuctor & Destructor*/
@@ -156,8 +156,8 @@ void State::resizeView()
 
 	//this->defaultWindowView.setSize(static_cast<float>(this->window->getSize().x) * aspectRatio, static_cast<float>(this->window->getSize().y) * aspectRatio);
 
-	this->view.setSize(static_cast<float>(this->window->getSize().x) * aspectRatio, static_cast<float>(this->window->getSize().y) * aspectRatio);
-	this->view.setCenter((static_cast<float>(this->window->getSize().x) * aspectRatio) / 2.f, (static_cast<float>(this->window->getSize().y) * aspectRatio) / 2.f);
+	this->view.setSize(std::floor(static_cast<float>(this->window->getSize().x) * aspectRatio), std::floor(static_cast<float>(this->window->getSize().y) * aspectRatio));
+	this->view.setCenter((std::floor(static_cast<float>(this->window->getSize().x) * aspectRatio) / 2.f), std::floor((static_cast<float>(this->window->getSize().y) * aspectRatio) / 2.f));
 }
 
 /*Pause Menu Functions*/
