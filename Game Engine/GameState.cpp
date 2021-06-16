@@ -383,6 +383,32 @@ void GameState::updateGameOverButtons()
 		this->endState();
 	}
 }
+void GameState::updateParticle(const float& dt)
+{
+	this->particle = std::make_unique<Particle>(*this->window); 
+	this->particleVector.push_back(std::move(this->particle));
+
+	int counter1 = 0;
+	for (this->particleItr = this->particleVector.begin(); this->particleItr != this->particleVector.end(); this->particleItr++)
+	{
+		this->particleVector[counter1]->update(dt);
+		counter1++;
+	}
+}
+void GameState::updateParticleDestroyLoop()
+{
+	int counter = 0;
+	for (this->particleItr = this->particleVector.begin(); this->particleItr != this->particleVector.end(); this->particleItr++)
+	{
+		if (this->particleVector[counter]->getPosition().y > this->window->getSize().y)
+		{
+			this->particleVector.erase(this->particleItr);
+			//std::cout << "Destroyed Rain!\n";
+			break;
+		}
+		counter++;
+	}
+}
 void GameState::updateUserInput(const float& dt)
 {
 	/*Pause Game*/
@@ -824,6 +850,10 @@ void GameState::update(const float& dt)
 			/*In-Game Actions*/
 			this->updateInGameActions();
 
+			/*Particle Functions*/
+			this->updateParticle(dt);
+			this->updateParticleDestroyLoop();
+
 			/*HUD Functions*/
 			this->updateHUD();
 
@@ -905,6 +935,16 @@ void GameState::renderGameOver(sf::RenderTarget& target)
 {
 	this->gameOver->render(target);
 }
+void GameState::renderParticles(sf::RenderTarget& target)
+{
+	int counter = 0;
+	for (this->particleItr = this->particleVector.begin(); this->particleItr != this->particleVector.end(); this->particleItr++)
+	{
+		this->particleVector[counter]->render(target, *this->window, this->player->getPlayerDetails().currentTileMap);
+
+		counter++;
+	}
+}
 void GameState::renderTileMap(sf::RenderTarget& target)
 {
 	this->tileMap->render(target, this->view);
@@ -982,6 +1022,7 @@ void GameState::render(sf::RenderTarget* target)
 	/*Items Rendered with Default Window View*/
 	this->window->setView(this->defaultWindowView);
 	this->renderHUD(*target);
+	this->renderParticles(*target);
 	this->renderInventory(*target);
 
 	if (this->isPaused)

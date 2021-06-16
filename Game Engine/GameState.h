@@ -9,6 +9,7 @@
 #include "Inventory.h"
 #include "NPC.h"
 #include "Audio.h"
+#include "Particle.h"
 
 /*Class Forward Declarations*/
 class State;
@@ -23,6 +24,7 @@ class Inventory;
 class NPC;
 class GameOver;
 class Audio;
+class Particle;
 class sf::RenderTarget;
 class sf::Clock;
 
@@ -82,6 +84,11 @@ private:
     std::vector<std::unique_ptr<NPC>>::const_iterator npcItr;
     std::vector<std::unique_ptr<NPC>> npcVector;
 
+    /*Particle Variables*/
+    std::unique_ptr<Particle> particle;
+    std::vector<std::unique_ptr<Particle>>::const_iterator particleItr;
+    std::vector< std::unique_ptr<Particle>> particleVector;
+
     /*Initializers*/
     void initVariables(bool came_from_main_menu, PlayerDetails player_details, ProjectileDetails projectile_details);
     void initAudio();
@@ -107,6 +114,8 @@ public:
     /*Update Functions*/
     void updatePauseMenuButtons();
     void updateGameOverButtons();
+    void updateParticle(const float& dt);
+    void updateParticleDestroyLoop();
     virtual void updateUserInput(const float& dt);
     void updateInGameActions();
     void updateHUD();
@@ -134,6 +143,7 @@ public:
     /*Render Functions*/
     void renderPauseMenu(sf::RenderTarget& target);
     void renderGameOver(sf::RenderTarget& target);
+    void renderParticles(sf::RenderTarget& target);
     void renderTileMap(sf::RenderTarget& target);
     void renderPlayer(sf::RenderTarget& target);
     void renderProjectiles(sf::RenderTarget& target);

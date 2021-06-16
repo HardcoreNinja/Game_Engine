@@ -106,6 +106,9 @@
     <Filter Include="Resource Files\Config\Audio">
       <UniqueIdentifier>{899022a1-b648-4a3d-8784-51f810d073fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Particle">
+      <UniqueIdentifier>{c7f3715a-11b9-40f8-a298-6c0578040f75}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Header.cpp">
@@ -177,6 +180,9 @@
     <ClCompile Include="Audio.cpp">
       <Filter>Source Files\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Source Files\Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">
@@ -244,6 +250,9 @@
     </ClInclude>
     <ClInclude Include="Audio.h">
       <Filter>Source Files\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Source Files\Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
