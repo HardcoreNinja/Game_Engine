@@ -463,13 +463,13 @@ void Enemy::alertCircleCollision(sf::RectangleShape player_rect)
 		this->alertCircleCollisionBool = true;
 		this->attackPlayer = true;
 		this->playEmoteSFX = true;
-		std::cout << "Alert Circle Player Collision Bool: " << this->alertCircleCollisionBool << '\n';
+		//std::cout << "Alert Circle Player Collision Bool: " << this->alertCircleCollisionBool << '\n';
 	}
 	else if (!this->alertCircle.getGlobalBounds().intersects(player_rect.getGlobalBounds()))
 	{
 		this->alertCircleCollisionBool = false;
 		this->playEmoteSFX = false;
-		std::cout << "Alert Circle Player Collision Bool: " << this->alertCircleCollisionBool << '\n';
+		//std::cout << "Alert Circle Player Collision Bool: " << this->alertCircleCollisionBool << '\n';
 	}
 
 	if (this->alertCircleCollisionBool)
