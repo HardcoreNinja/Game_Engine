@@ -15,8 +15,13 @@ private:
 	sf::Texture texture;
 	sf::IntRect intRect;
 
+	/*Shader*/
+	sf::Shader shader;
+	sf::Clock shaderClock;
+
 	/*Initializers*/
 	void initVariables(sf::RenderWindow& window);
+	void initShader();
 public:
 	/*Constructor & Destructor*/
 	Particle(sf::RenderWindow& window);
