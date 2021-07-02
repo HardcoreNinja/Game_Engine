@@ -14,12 +14,12 @@ TILEMAP::Tile::Tile(
 )
 	: collision(tile_collision), tileType(type), shapeRotation(shape_rotation), tileSize(tile_size), doorName(door_name)
 {
-	this->shape.setSize(sf::Vector2f(std::floor(tile_size), std::floor(tile_size)));
+	//this->shape.setSize(sf::Vector2f(std::floor(tile_size), std::floor(tile_size)));
 	this->shape.setPosition(sf::Vector2f(std::floor(static_cast<float>(pos_x) * tile_size), std::floor(static_cast<float>(pos_y) * tile_size)));
-	this->shape.setTexture(&texture);
+	this->shape.setTexture(texture);
 	this->shape.setTextureRect(texture_intrect);
-	this->shape.setOutlineColor(sf::Color::Transparent);
-	this->shape.setOutlineThickness(1.f);
+	//this->shape.setOutlineColor(sf::Color::Transparent);
+	//this->shape.setOutlineThickness(1.f);
 	this->shape.setRotation(this->shapeRotation);
 
 	/*Color Codes for Collision & Tile Types
@@ -85,7 +85,7 @@ const std::string TILEMAP::Tile::getAsString() const
 
 	return ss.str();
 }
-sf::RectangleShape& TILEMAP::Tile::getShape()
+sf::Sprite& TILEMAP::Tile::getShape()
 {
 	return this->shape;
 }
@@ -103,9 +103,17 @@ float TILEMAP::Tile::getTileSize()
 }
 
 /*Render Functions*/
-void TILEMAP::Tile::render(sf::RenderTarget& target)
+void TILEMAP::Tile::render(sf::RenderTarget& target, sf::Vector2f player_center, sf::Shader* shader)
 {
-	target.draw(this->shape);
+	if (shader)
+	{
+		shader->setUniform("hasTexture", true);
+		shader->setUniform("lightPosition", player_center);
+		
+		target.draw(this->shape, shader);
+	}
+	else 
+		target.draw(this->shape);
 }
 
 /*TILE_MAP=======================================================================================================================================================*/
@@ -422,7 +430,7 @@ void TILEMAP::TileMap::loadFromFile(std::string tile_map_file_path, std::string 
 }
 
 /*Render Functions*/
-void TILEMAP::TileMap::render(sf::RenderTarget& target, const sf::View& view)
+void TILEMAP::TileMap::render(sf::RenderTarget& target, const sf::View& view, sf::Vector2f player_center, sf::Shader* shader)
 {
 	float viewSizeOffset = 256.f;
 
@@ -452,7 +460,7 @@ void TILEMAP::TileMap::render(sf::RenderTarget& target, const sf::View& view)
 					tileRect.left = pos_y->getPosition().x;
 					tileRect.top = pos_y->getPosition().y;
 					if(tileRect.intersects(viewPort))
-						pos_y->render(target);
+						pos_y->render(target, player_center, shader);
 				}
 			}
 		}

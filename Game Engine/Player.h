@@ -120,6 +120,7 @@ public:
     PlayerDirection getPlayerDirection();
     PlayerDetails getPlayerDetails();
     std::tuple<float, float>getMana();
+    const sf::Vector2f getCenter();
 
     /*Collisions Functions*/
     void tileCollision(std::tuple<bool, unsigned short, std::string_view> collision_tuple);
@@ -139,6 +140,6 @@ public:
     void saveToFile();
     
     /*Render Functions*/
-    void render(sf::RenderTarget& target);
+    void render(sf::RenderTarget& target, sf::Shader* shader);
 };
 #endif

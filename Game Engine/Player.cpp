@@ -981,6 +981,14 @@ std::tuple<float, float> Player::getMana()
 	return std::make_tuple(this->playerDetails.currentMana, this->playerDetails.maxMana);
 }
 
+const sf::Vector2f Player::getCenter()
+{
+	return this->spriteRect.getPosition() + sf::Vector2f(
+			this->spriteRect.getGlobalBounds().width / 2.f,
+			this->spriteRect.getGlobalBounds().height / 2.f
+		);	
+}
+
 /*Collision Functions*/
 void Player::tileCollision(std::tuple<bool, unsigned short, std::string_view> collision_tuple)
 {
@@ -1458,8 +1466,12 @@ void Player::saveToFile()
 }
 
 /*Render Functions*/
-void Player::render(sf::RenderTarget& target)
+void Player::render(sf::RenderTarget& target, sf::Shader* shader)
 {
 	target.draw(this->spriteRect);
-	target.draw(this->sprite);
+
+	shader->setUniform("lightPosition", this->getCenter());
+	shader->setUniform("hasTexture", true);
+
+	target.draw(this->sprite, shader);
 }

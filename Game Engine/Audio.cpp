@@ -131,13 +131,13 @@ void Audio::updateFadeIn()
 		if (this->volumeCounter <= 100.f)
 		{
 			this->volumeCounter += 0.5f;
-			std::cout << "Volume Counter FADE IN: " << this->volumeCounter << '\n';
+			//std::cout << "Volume Counter FADE IN: " << this->volumeCounter << '\n';
 			this->setVolume(this->volumeCounter);
 		}
 		else if (this->volumeCounter >= 100.f)
 		{
 			std::cout << "DONE Fading In!" << '\n';
-			this->volumeCounter == 100.f;
+			//this->volumeCounter == 100.f;
 			this->fadeIn = false;
 		}
 	}
@@ -149,7 +149,7 @@ void Audio::updateFadeOut()
 		if (this->volumeCounter > 0.f)
 		{
 			this->volumeCounter -= 0.5f;
-			std::cout << "Volume Counter FADE OUT: " << this->volumeCounter << '\n';
+			//std::cout << "Volume Counter FADE OUT: " << this->volumeCounter << '\n';
 			this->setVolume(this->volumeCounter);
 		}
 		else if (this->volumeCounter <= 0.f)
@@ -160,14 +160,14 @@ void Audio::updateFadeOut()
 			{
 				this->sound.stop();
 				std::cout << "DONE Fading Out!" << '\n';
-				std::cout << "Volume Counter: " << this->volumeCounter << '\n';
+				//std::cout << "Volume Counter: " << this->volumeCounter << '\n';
 				this->fadeOut = false;
 			}
 			else if (!this->sound_1_music_0)
 			{
 				this->music.stop();
 				std::cout << "DONE Fading Out!" << '\n';
-				std::cout << "Volume Counter: " << this->volumeCounter << '\n';
+				//std::cout << "Volume Counter: " << this->volumeCounter << '\n';
 				this->fadeOut = false;
 			}
 		}

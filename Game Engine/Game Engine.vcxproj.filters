@@ -109,6 +109,9 @@
     <Filter Include="Source Files\Particle">
       <UniqueIdentifier>{c7f3715a-11b9-40f8-a298-6c0578040f75}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders">
+      <UniqueIdentifier>{9101a4ee-2fc9-4f3c-8468-2bb558993c79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Header.cpp">
@@ -306,6 +309,12 @@
     </None>
     <None Include="Config\sfx.ini">
       <Filter>Resource Files\Config\Audio</Filter>
+    </None>
+    <None Include="Shaders\Player\fragment.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Shaders\Player\vertex.vert">
+      <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

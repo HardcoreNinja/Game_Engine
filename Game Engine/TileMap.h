@@ -26,7 +26,7 @@ namespace TILEMAP
 	class Tile
 	{
 	private:
-		sf::RectangleShape shape;
+		sf::Sprite shape;
 		unsigned short shapeRotation;
 		bool collision;
 		std::string doorName;
@@ -51,14 +51,14 @@ namespace TILEMAP
 		const std::string_view getDoorName() const;
 		const sf::Vector2f& getPosition() const;
 		const std::string getAsString() const;
-		sf::RectangleShape& getShape();
+		sf::Sprite& getShape();
 		bool getCollision() const;
 		unsigned short getTileType() const;
 		float getTileSize();
 
 
 		/*Render Functions*/
-		void render(sf::RenderTarget& target);
+		void render(sf::RenderTarget& target, sf::Vector2f player_center = sf::Vector2f(0.f, 0.f), sf::Shader* shader = NULL);
 	};
 
 	/*Tile Map*/
@@ -123,7 +123,7 @@ namespace TILEMAP
 		void loadFromFile(std::string file_path, std::string texture_sheet_file_path);
 
 		/*Render Functions*/
-		void render(sf::RenderTarget& target, const sf::View& view);
+		void render(sf::RenderTarget& target, const sf::View& view, sf::Vector2f player_center = sf::Vector2f(0.f, 0.f), sf::Shader* shader = NULL);
 	};
 
 	/*Texture Selector*/

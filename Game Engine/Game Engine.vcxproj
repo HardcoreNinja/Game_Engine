@@ -224,6 +224,8 @@
     <None Include="Config\supported_keys.ini" />
     <None Include="Config\texture_selector_data_file.ini" />
     <None Include="Config\tile_map.ini" />
+    <None Include="Shaders\Player\fragment.frag" />
+    <None Include="Shaders\Player\vertex.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Images\mainmenu_background.jpg" />

@@ -59,6 +59,9 @@ private:
     /*Inventory*/
     std::unique_ptr<Inventory> inventory;
 
+    /*Shader*/
+    sf::Shader shader;
+
     /*Projectile Variables*/
     int projectileTypeCounter;
     ProjectileDetails projectileDetails;
@@ -94,6 +97,7 @@ private:
     void initAudio();
     void initKeybinds();
     void initFonts();
+    void initShader();
     void initRenderTexture();
     void initPauseMenu();
     void initGameOver();

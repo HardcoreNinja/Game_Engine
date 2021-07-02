@@ -84,6 +84,11 @@ void GameState::initFonts()
 	this->text.setCharacterSize(12);
 	this->text.setPosition(sf::Vector2f(static_cast<float>(this->mousePositionWindow.x), static_cast<float>(this->mousePositionWindow.y)));
 }
+void GameState::initShader()
+{
+	if (!this->shader.loadFromFile("Shaders/Player/vertex.vert", "Shaders/Player/fragment.frag"))
+	std::cout << "Error Loading Shader!\n";
+}
 void GameState::initRenderTexture()
 {
 	//std::cout << "Window Size: " << this->window->getSize().x << " x " << this->window->getSize().y << '\n';
@@ -247,6 +252,7 @@ GameState::GameState(GameInfo* game_info, PlayerDetails player_details, Projecti
 	this->initAudio();
 	this->initKeybinds();
 	this->initFonts();
+	this->initShader();
 	this->initRenderTexture();
 	this->initPauseMenu();
 	this->initGameOver();
@@ -947,11 +953,11 @@ void GameState::renderParticles(sf::RenderTarget& target)
 }
 void GameState::renderTileMap(sf::RenderTarget& target)
 {
-	this->tileMap->render(target, this->view);
+	this->tileMap->render(target, this->view, this->player->getCenter(), &this->shader);
 }
 void GameState::renderPlayer(sf::RenderTarget& target)
 {
-	this->player->render(target);
+	this->player->render(target, &this->shader);
 }
 void GameState::renderProjectiles(sf::RenderTarget& target)
 {
