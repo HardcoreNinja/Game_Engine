@@ -19,7 +19,7 @@ void NewCharacterScreen::initKeybinds()
 
 		while (ifs >> key >> keyboardKey)
 
-			this->keybinds[key] = this->supportedKeys->at(keyboardKey);
+			this->keybinds[key] = this->gameInfo->supportedKeys->at(keyboardKey);
 	}
 	ifs.close();
 
@@ -33,8 +33,8 @@ void NewCharacterScreen::initBackground()
 {
 	/*Background*/
 	this->background.setSize(sf::Vector2f(
-		static_cast<float>(this->window->getSize().x),
-		static_cast<float>(this->window->getSize().y)
+		static_cast<float>(this->gameInfo->window->getSize().x),
+		static_cast<float>(this->gameInfo->window->getSize().y)
 	)
 	);
 
@@ -49,7 +49,7 @@ void NewCharacterScreen::initText()
 	}
 
 	/*Title Text*/
-	this->titleShape.setPosition(sf::Vector2f(static_cast<float>(window->getSize().x) / 2.f, 30.f));
+	this->titleShape.setPosition(sf::Vector2f(static_cast<float>(this->gameInfo->window->getSize().x) / 2.f, 30.f));
 	this->titleShape.setSize(sf::Vector2f(200.f, 50.f));
 	this->titleShape.setOrigin(this->titleShape.getGlobalBounds().width / 2.f, this->titleShape.getGlobalBounds().height / 2.f);
 
@@ -90,21 +90,21 @@ void NewCharacterScreen::initButtons()
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 
 	this->buttons["<"] = std::make_unique<GUI::Button>(
-		static_cast<float>(this->window->getSize().x) / 2.f - 25.f, static_cast<float>(this->window->getSize().y) / 2 + 25.f,                  //Button Rect Position
+		static_cast<float>(this->gameInfo->window->getSize().x) / 2.f - 25.f, static_cast<float>(this->gameInfo->window->getSize().y) / 2 + 25.f,                  //Button Rect Position
 		50.f, 50.f,                   // Button Rect Size
 		&this->font, "<", 50,       //Button Font, Text, and Character Size
 		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 
 	this->buttons[">"] = std::make_unique<GUI::Button>(
-		static_cast<float>(this->window->getSize().x) / 2.f + 25.f, static_cast<float>(this->window->getSize().y) / 2 + 25.f,                  //Button Rect Position
+		static_cast<float>(this->gameInfo->window->getSize().x) / 2.f + 25.f, static_cast<float>(this->gameInfo->window->getSize().y) / 2 + 25.f,                  //Button Rect Position
 		50.f, 50.f,                   // Button Rect Size
 		&this->font, ">", 50,       //Button Font, Text, and Character Size
 		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 
 	this->buttons["M/F"] = std::make_unique<GUI::Button>(
-		static_cast<float>(this->window->getSize().x) / 2.f, static_cast<float>(this->window->getSize().y) / 2 + 100.f,                  //Button Rect Position
+		static_cast<float>(this->gameInfo->window->getSize().x) / 2.f, static_cast<float>(this->gameInfo->window->getSize().y) / 2 + 100.f,                  //Button Rect Position
 		50.f, 50.f,                   // Button Rect Size
 		&this->font, "M/F", 50,       //Button Font, Text, and Character Size
 		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
@@ -124,7 +124,7 @@ void NewCharacterScreen::initSprite()
 	sprite.setTexture(this->texture);
 	sprite.setTextureRect(this->spriteIntRect);
 	sprite.setOrigin(sprite.getGlobalBounds().width / 2.f, sprite.getGlobalBounds().height / 2.f);
-	sprite.setPosition(static_cast<float>(this->window->getSize().x) / 2.f, static_cast<float>(this->window->getSize().y) / 2.f);
+	sprite.setPosition(static_cast<float>(this->gameInfo->window->getSize().x) / 2.f, static_cast<float>(this->gameInfo->window->getSize().y) / 2.f);
 }
 
 /*Constructor & Destructor*/
@@ -1066,7 +1066,7 @@ void NewCharacterScreen::updateButtons()
 			this->projectileDetails.lifeTimeCounter = 0;
 			this->projectileDetails.maxLifeTimeCounter = 100;
 
-			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails, this->projectileDetails, false));
+			this->gameInfo->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails, this->projectileDetails, false));
 		}
 	}
 
@@ -1214,7 +1214,7 @@ void NewCharacterScreen::updateUserInput(const float& dt)
 			this->projectileDetails.lifeTimeCounter = 0;
 			this->projectileDetails.maxLifeTimeCounter = 100;
 
-			this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails, this->projectileDetails, false));
+			this->gameInfo->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails, this->projectileDetails, false));
 		}
 	}
 
@@ -1237,11 +1237,11 @@ void NewCharacterScreen::updateNameText()
 			}
 		}
 
-		if (this->sfmlEvent->type == sf::Event::TextEntered && this->getKeyTime())
+		if (this->gameInfo->sfmlEvent->type == sf::Event::TextEntered && this->getKeyTime())
 		{
-			if (this->sfmlEvent->text.unicode < 128 && this->sfmlEvent->text.unicode != 8 && this->sfmlEvent->text.unicode != 27 && this->nameString.size() <= 9)
+			if (this->gameInfo->sfmlEvent->text.unicode < 128 && this->gameInfo->sfmlEvent->text.unicode != 8 && this->gameInfo->sfmlEvent->text.unicode != 27 && this->nameString.size() <= 9)
 			{
-				this->nameString.push_back(static_cast<char>(this->sfmlEvent->text.unicode));	
+				this->nameString.push_back(static_cast<char>(this->gameInfo->sfmlEvent->text.unicode));	
 			}
 		}
 
@@ -1306,7 +1306,7 @@ void NewCharacterScreen::renderButtons(sf::RenderTarget& target)
 void NewCharacterScreen::render(sf::RenderTarget* target)
 {
 	if (!target)
-		target = this->window;
+		target = this->gameInfo->window;
 
 	this->renderSprite(*target);
 	this->renderBackground(*target);

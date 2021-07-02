@@ -14,8 +14,8 @@ void Settings::initBackground()
 {
 	this->backgroundRect.setSize(
 		sf::Vector2f(
-			static_cast<float>(this->graphicsSettings->resolution.width),
-			static_cast<float>(this->graphicsSettings->resolution.height)
+			static_cast<float>(this->gameInfo->graphicsSettings->resolution.width),
+			static_cast<float>(this->gameInfo->graphicsSettings->resolution.height)
 		)
 	);
 
@@ -35,7 +35,7 @@ void Settings::initKeybinds()
 
 		while (ifs >> key >> keyboardKey)
 
-			this->keybinds[key] = this->supportedKeys->at(keyboardKey);
+			this->keybinds[key] = this->gameInfo->supportedKeys->at(keyboardKey);
 	}
 	ifs.close();
 
@@ -340,15 +340,15 @@ void Settings::recreateWindow()
 {
 	auto style = this->gameInfo->graphicsSettings->isFullscreen ? sf::Style::Fullscreen : sf::Style::Default;
 	{
-		this->window->create(
+		this->gameInfo->window->create(
 			this->gameInfo->graphicsSettings->resolution,     //Window Resolution
 			this->gameInfo->graphicsSettings->title,          //Window Title
 			style,                                            //Fullscreen Style or not
 			this->gameInfo->graphicsSettings->contextSettings //Anti Aliasing Level
 		);
 	}
-	this->window->setFramerateLimit(this->gameInfo->graphicsSettings->frameRateLimit); //Framerate Limit
-	this->window->setVerticalSyncEnabled(this->gameInfo->graphicsSettings->isVSync);   //VSync Enabled
+	this->gameInfo->window->setFramerateLimit(this->gameInfo->graphicsSettings->frameRateLimit); //Framerate Limit
+	this->gameInfo->window->setVerticalSyncEnabled(this->gameInfo->graphicsSettings->isVSync);   //VSync Enabled
 
 	this->reinitializeStates();
 }
@@ -379,7 +379,7 @@ void Settings::saveToFile()
 	}
 	ofs.close();
 
-	this->graphicsSettings->saveToFile();
+	this->gameInfo->graphicsSettings->saveToFile();
 	this->recreateWindow();
 }
 void Settings::loadFromFile()
@@ -412,7 +412,7 @@ void Settings::renderDropdownLists(sf::RenderTarget& target)
 void Settings::render(sf::RenderTarget* target)
 {
 	if (!target)
-		target = this->window;
+		target = this->gameInfo->window;
 	target->draw(this->backgroundRect);
 	target->draw(this->text);
 	this->renderButtons(*target);

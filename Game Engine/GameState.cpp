@@ -62,7 +62,7 @@ void GameState::initKeybinds()
 
 		while (ifs >> key >> keyboardKey)
 
-			this->keybinds[key] = this->supportedKeys->at(keyboardKey);
+			this->keybinds[key] = this->gameInfo->supportedKeys->at(keyboardKey);
 	}
 	ifs.close();
 
@@ -91,47 +91,47 @@ void GameState::initShader()
 }
 void GameState::initRenderTexture()
 {
-	//std::cout << "Window Size: " << this->window->getSize().x << " x " << this->window->getSize().y << '\n';
-	this->renderTexture.create(this->window->getSize().x, this->window->getSize().y);
+	//std::cout << "Window Size: " << this->gameInfo->window->getSize().x << " x " << this->gameInfo->window->getSize().y << '\n';
+	this->renderTexture.create(this->gameInfo->window->getSize().x, this->gameInfo->window->getSize().y);
 	this->renderTexture.setSmooth(true);
 	this->renderSprite.setTexture(this->renderTexture.getTexture());
-	this->renderSprite.setTextureRect(sf::IntRect(0, 0, this->window->getSize().x, this->window->getSize().y));
+	this->renderSprite.setTextureRect(sf::IntRect(0, 0, this->gameInfo->window->getSize().x, this->gameInfo->window->getSize().y));
 }
 void GameState::initPauseMenu()
 {
 	this->pauseMenu = std::make_unique<PauseMenu>(
-		*this->window, //Pause Menu Render Window
+		*this->gameInfo->window, //Pause Menu Render Window
 		this->font    //Pause Menu Font;
 		);
 
 	this->pauseMenu->addButton(
 		"EXIT",                                                 //Key
-		static_cast<float>(this->window->getSize().y) - 100.f,  // Pos_Y
+		static_cast<float>(this->gameInfo->window->getSize().y) - 100.f,  // Pos_Y
 		"Exit"                                                  // Button Text
 	);
 }
 void GameState::initGameOver()
 {
 	this->gameOver = std::make_unique<GameOver>(
-		*this->window, //Pause Menu Render Window
+		*this->gameInfo->window, //Pause Menu Render Window
 		this->font    //Pause Menu Font;
 		);
 
 	this->gameOver->addButton(
 		"RETRY",                                                //Key
-		static_cast<float>(this->window->getSize().y) / 2.f,  // Pos_Y
+		static_cast<float>(this->gameInfo->window->getSize().y) / 2.f,  // Pos_Y
 		"Retry"                                                 // Button Text
 	);
 
 	this->gameOver->addButton(
 		"EXIT",                                                 //Key
-		static_cast<float>(this->window->getSize().y) - 100.f,  // Pos_Y
+		static_cast<float>(this->gameInfo->window->getSize().y) - 100.f,  // Pos_Y
 		"Exit"                                                  // Button Text
 	);
 }
 void GameState::initPlayer(PlayerDetails player_details)
 {
-	this->player = std::make_unique<Player>(this->supportedKeys, player_details, this->audioMap);
+	this->player = std::make_unique<Player>(this->gameInfo->supportedKeys, player_details, this->audioMap);
 }
 void GameState::initTileMap(PlayerDetails player_details)
 {
@@ -229,7 +229,7 @@ void GameState::initHUD()
 }
 void GameState::initInventory()
 {
-	this->inventory = std::make_unique<Inventory>(this->supportedKeys, *this->window, this->audioMap);
+	this->inventory = std::make_unique<Inventory>(this->gameInfo->supportedKeys, *this->gameInfo->window, this->audioMap);
 
 	if (this->cameFromMainMenu)
 		this->inventory->loadToFile();
@@ -349,8 +349,8 @@ void GameState::updatePauseMenuButtons()
 		/*Erase the NewCharacter Screen and Shrink States Vector*/
 		if (!this->cameFromMainMenu)
 		{
-			this->states->erase(this->states->begin() + 1);
-			this->states->shrink_to_fit();
+			this->gameInfo->states->erase(this->gameInfo->states->begin() + 1);
+			this->gameInfo->states->shrink_to_fit();
 		}
 
 		/*End State*/
@@ -381,8 +381,8 @@ void GameState::updateGameOverButtons()
 		/*Erase the NewCharacter Screen and Shrink States Vector*/
 		if (!this->cameFromMainMenu)
 		{
-			this->states->erase(this->states->begin() + 1);
-			this->states->shrink_to_fit();
+			this->gameInfo->states->erase(this->gameInfo->states->begin() + 1);
+			this->gameInfo->states->shrink_to_fit();
 		}
 
 		/*End State*/
@@ -391,7 +391,7 @@ void GameState::updateGameOverButtons()
 }
 void GameState::updateParticle(const float& dt)
 {
-	this->particle = std::make_unique<Particle>(*this->window); 
+	this->particle = std::make_unique<Particle>(*this->gameInfo->window); 
 	this->particleVector.push_back(std::move(this->particle));
 
 	int counter1 = 0;
@@ -406,7 +406,7 @@ void GameState::updateParticleDestroyLoop()
 	int counter = 0;
 	for (this->particleItr = this->particleVector.begin(); this->particleItr != this->particleVector.end(); this->particleItr++)
 	{
-		if (this->particleVector[counter]->getPosition().y > this->window->getSize().y)
+		if (this->particleVector[counter]->getPosition().y > this->gameInfo->window->getSize().y)
 		{
 			this->particleVector.erase(this->particleItr);
 			//std::cout << "Destroyed Rain!\n";
@@ -427,27 +427,27 @@ void GameState::updateUserInput(const float& dt)
 void GameState::updateInGameActions()
 {
 	/*Scrolling Projectile Types*/
-	if (this->sfmlEvent->type == sf::Event::MouseWheelScrolled)
+	if (this->gameInfo->sfmlEvent->type == sf::Event::MouseWheelScrolled)
 	{
-		if (this->sfmlEvent->mouseWheelScroll.delta > 0)
+		if (this->gameInfo->sfmlEvent->mouseWheelScroll.delta > 0)
 		{
 			if (this->projectileTypeCounter != 19)
 			{
 				this->projectileTypeCounter += 1;
 				this->setManaDrainFactor();
 				//std::cout << "Projectile Counter: " << this->projectileTypeCounter << '\n';
-				this->sfmlEvent->mouseWheelScroll.delta = 0;
+				this->gameInfo->sfmlEvent->mouseWheelScroll.delta = 0;
 				this->projectileDetails.projectileType = static_cast<ProjectileTypes>(this->projectileTypeCounter);
 			}
 		}
-		else if (this->sfmlEvent->mouseWheelScroll.delta < 0)
+		else if (this->gameInfo->sfmlEvent->mouseWheelScroll.delta < 0)
 		{
 			if (this->projectileTypeCounter != 0)
 			{
 				this->projectileTypeCounter -= 1;
 				this->setManaDrainFactor();
 				//std::cout << "Projectile Counter: " << this->projectileTypeCounter << '\n';
-				this->sfmlEvent->mouseWheelScroll.delta = 0;
+				this->gameInfo->sfmlEvent->mouseWheelScroll.delta = 0;
 				this->projectileDetails.projectileType = static_cast<ProjectileTypes>(this->projectileTypeCounter);
 			}
 		}
@@ -482,7 +482,7 @@ void GameState::updateHUD()
 }
 void GameState::updateInventory(const float& dt)
 {
-	this->inventory->update(*this->sfmlEvent, this->mousePositionWindow, this->getKeyTime(), dt);
+	this->inventory->update(*this->gameInfo->sfmlEvent, this->mousePositionWindow, this->getKeyTime(), dt);
 
 	if (this->inventory->getUsedItem())
 	{
@@ -762,7 +762,7 @@ void GameState::updateEnemyDestroyLoop()
 	{
 		if (this->enemyVector[counter]->getDestroy())
 		{
-			this->item = std::make_unique<Item>(this->supportedKeys, this->audioMap);
+			this->item = std::make_unique<Item>(this->gameInfo->supportedKeys, this->audioMap);
 			this->item->setPosition(this->enemyVector[counter]->getSpriteRect().getPosition());
 			this->itemVector.push_back(std::move(this->item));
 
@@ -778,7 +778,7 @@ void GameState::updateNPCLoop(const float& dt)
 	int counter1 = 0;
 	for (this->npcItr = this->npcVector.begin(); this->npcItr != this->npcVector.end(); this->npcItr++)
 	{
-		this->npcVector[counter1]->update(this->player->getSpriteRect(), this->mousePositionView, *this->sfmlEvent, this->getKeyTime(), dt);
+		this->npcVector[counter1]->update(this->player->getSpriteRect(), this->mousePositionView, *this->gameInfo->sfmlEvent, this->getKeyTime(), dt);
 		counter1++;
 	}
 }
@@ -825,7 +825,7 @@ void GameState::updateItemDestroyLoop()
 	{
 		if ((std::get<0>(this->itemVector[counter]->getItemRect()).getGlobalBounds().contains(this->mousePositionView) 
 			|| std::get<1>(this->itemVector[counter]->getItemRect()).getGlobalBounds().contains(this->mousePositionView)) 
-			&& this->sfmlEvent->mouseButton.button == sf::Mouse::Left)
+			&& this->gameInfo->sfmlEvent->mouseButton.button == sf::Mouse::Left)
 		{
 			this->audioMap["GAMESTATE_PICKUP_ITEM"]->play();
 			this->inventory->setItemToInventory(this->itemVector[counter]->getItemDetails());
@@ -928,7 +928,7 @@ void GameState::reinitializeState()
 
 	/*Inventory*/
 	this->inventory->saveToFile();
-	this->inventory = std::make_unique<Inventory>(this->supportedKeys, *this->window, this->audioMap);
+	this->inventory = std::make_unique<Inventory>(this->gameInfo->supportedKeys, *this->gameInfo->window, this->audioMap);
 	this->inventory->loadToFile();
 }
 
@@ -946,7 +946,7 @@ void GameState::renderParticles(sf::RenderTarget& target)
 	int counter = 0;
 	for (this->particleItr = this->particleVector.begin(); this->particleItr != this->particleVector.end(); this->particleItr++)
 	{
-		this->particleVector[counter]->render(target, *this->window, this->player->getPlayerDetails().currentTileMap);
+		this->particleVector[counter]->render(target, *this->gameInfo->window, this->player->getPlayerDetails().currentTileMap);
 
 		counter++;
 	}
@@ -1010,7 +1010,7 @@ void GameState::renderItems(sf::RenderTarget& target)
 void GameState::render(sf::RenderTarget* target)
 {
 	if (!target)
-		target = this->window;
+		target = this->gameInfo->window;
 
 	/*Items Rendered to Render Texture*/
 	this->renderTexture.clear();
@@ -1026,7 +1026,7 @@ void GameState::render(sf::RenderTarget* target)
 	target->draw(this->renderSprite);
 
 	/*Items Rendered with Default Window View*/
-	this->window->setView(this->defaultWindowView);
+	this->gameInfo->window->setView(this->defaultWindowView);
 	this->renderHUD(*target);
 	this->renderParticles(*target);
 	this->renderInventory(*target);

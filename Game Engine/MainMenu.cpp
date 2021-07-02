@@ -5,8 +5,8 @@ void MainMenu::initMainMenuBackground()
 {
 	this->backgroundRect.setSize(
 		sf::Vector2f(
-			static_cast<float>(this->graphicsSettings->resolution.width),
-			static_cast<float>(this->graphicsSettings->resolution.height)
+			static_cast<float>(this->gameInfo->graphicsSettings->resolution.width),
+			static_cast<float>(this->gameInfo->graphicsSettings->resolution.height)
 		)
 	);
 
@@ -26,7 +26,7 @@ void MainMenu::initMainMenuKeybinds()
 
 		while (ifs >> key >> keyboardKey)
 
-			this->keybinds[key] = this->supportedKeys->at(keyboardKey);
+			this->keybinds[key] = this->gameInfo->supportedKeys->at(keyboardKey);
 	}
 	ifs.close();
 
@@ -108,22 +108,22 @@ void MainMenu::updateButtons()
 
 	/*Settings*/
 	if (this->buttons["SETTINGS"]->isPressed() && this->getKeyTime())
-		this->states->push_back(std::make_unique<Settings>(this->gameInfo));
+		this->gameInfo->states->push_back(std::make_unique<Settings>(this->gameInfo));
 
 	/*Editor*/
 	if (this->buttons["EDITOR"]->isPressed() && this->getKeyTime())
-		this->states->push_back(std::make_unique<Editor>(this->gameInfo));
+		this->gameInfo->states->push_back(std::make_unique<Editor>(this->gameInfo));
 
 	/*New Character Screen*/
 	if (this->buttons["NEW_GAME"]->isPressed() && this->getKeyTime())
-		this->states->push_back(std::make_unique<NewCharacterScreen>(this->gameInfo));
+		this->gameInfo->states->push_back(std::make_unique<NewCharacterScreen>(this->gameInfo));
 
 	/*Continue Game*/
 	if (this->buttons["CONTINUE_GAME"]->isPressed() && this->getKeyTime())
 	{
 		this->loadPlayerDetailsFromFile();
 		this->loadProjectileDetailsFromFile();
-		this->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails, this->projectileDetails, true));
+		this->gameInfo->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails, this->projectileDetails, true));
 	}
 
 }
@@ -242,7 +242,7 @@ void MainMenu::renderButtons(sf::RenderTarget& target)
 void MainMenu::render(sf::RenderTarget* target)
 {
 	if (!target)
-		target = this->window;
+		target = this->gameInfo->window;
 	target->draw(this->backgroundRect);
 	this->renderButtons(*target);
 }

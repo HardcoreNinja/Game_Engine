@@ -24,7 +24,7 @@ void Editor::initKeybinds()
 
 		while (ifs >> key >> keyboardKey)
 
-			this->keybinds[key] = this->supportedKeys->at(keyboardKey);
+			this->keybinds[key] = this->gameInfo->supportedKeys->at(keyboardKey);
 	}
 	ifs.close();
 
@@ -87,7 +87,7 @@ void Editor::initTextureSelector()
 	this->selectorRect.setTexture(this->tileMap->getTexture());
 
 	/*Gray Side Bar*/
-	this->sideBar.setSize(sf::Vector2f(40.f, static_cast<float>(this->window->getSize().y)));
+	this->sideBar.setSize(sf::Vector2f(40.f, static_cast<float>(this->gameInfo->window->getSize().y)));
 	this->sideBar.setFillColor(sf::Color(50, 50, 50, 255));
 	this->sideBar.setOutlineColor(sf::Color::White);
 	this->sideBar.setOutlineThickness(1.f);
@@ -95,25 +95,25 @@ void Editor::initTextureSelector()
 void Editor::initPauseMenu()
 {
 	this->pauseMenu = std::make_unique<PauseMenu>(
-		*this->window, //Pause Menu Render Window
+		*this->gameInfo->window, //Pause Menu Render Window
 		this->font    //Pause Menu Font;
 		);
 
 	this->pauseMenu->addButton(
 		"EXIT",                                                 //Key
-		static_cast<float>(this->window->getSize().y) - 100.f,  // Pos_Y
+		static_cast<float>(this->gameInfo->window->getSize().y) - 100.f,  // Pos_Y
 		"Exit"                                                  // Button Text
 	);
 
 	this->pauseMenu->addButton(
 		"SAVE",                                              //Key
-		static_cast<float>(this->window->getSize().y)/ 2.f,  // Pos_Y
+		static_cast<float>(this->gameInfo->window->getSize().y)/ 2.f,  // Pos_Y
 		"Save"                                               // Button Text
 	);
 
 	this->pauseMenu->addButton(
 		"LOAD",                                                         //Key
-		(static_cast<float>(this->window->getSize().y) / 2.f) + 100.f,  // Pos_Y
+		(static_cast<float>(this->gameInfo->window->getSize().y) / 2.f) + 100.f,  // Pos_Y
 		"Load"                                                          // Button Text
 	);
 }
@@ -170,11 +170,11 @@ void Editor::updateCursorText()
 		}
 	}
 
-	if (this->sfmlEvent->type == sf::Event::TextEntered && sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))) && this->getKeyTime())
+	if (this->gameInfo->sfmlEvent->type == sf::Event::TextEntered && sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))) && this->getKeyTime())
 	{
-		if (this->sfmlEvent->text.unicode < 128 && this->sfmlEvent->text.unicode != 8 && this->sfmlEvent->text.unicode != 27 && this->doorName.size() <= 20)
+		if (this->gameInfo->sfmlEvent->text.unicode < 128 && this->gameInfo->sfmlEvent->text.unicode != 8 && this->gameInfo->sfmlEvent->text.unicode != 27 && this->doorName.size() <= 20)
 		{
-			this->doorName.push_back(static_cast<char>(this->sfmlEvent->text.unicode));
+			this->doorName.push_back(static_cast<char>(this->gameInfo->sfmlEvent->text.unicode));
 		}
 	}
 
@@ -317,54 +317,54 @@ void Editor::updateUserInput(const float& dt)
 		/*Scroll Texture Selector Up*/
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SCROLL_UP"))))
 			this->textureSelector->scrollUp();
-		else if (this->sfmlEvent->type == sf::Event::MouseWheelScrolled && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))))
+		else if (this->gameInfo->sfmlEvent->type == sf::Event::MouseWheelScrolled && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))))
 		{
-			if (this->sfmlEvent->mouseWheelScroll.delta > 0)
+			if (this->gameInfo->sfmlEvent->mouseWheelScroll.delta > 0)
 			{
-				std::cout << "Scroll Wheel Delta: " << this->sfmlEvent->mouseWheelScroll.delta << '\n';
+				std::cout << "Scroll Wheel Delta: " << this->gameInfo->sfmlEvent->mouseWheelScroll.delta << '\n';
 				this->textureSelector->scrollUp();
-				this->sfmlEvent->mouseWheelScroll.delta = 0;
-				std::cout << "Scroll Wheel Delta: " << this->sfmlEvent->mouseWheelScroll.delta << '\n';
+				this->gameInfo->sfmlEvent->mouseWheelScroll.delta = 0;
+				std::cout << "Scroll Wheel Delta: " << this->gameInfo->sfmlEvent->mouseWheelScroll.delta << '\n';
 			}
 		}
 
 		/*Scroll Texture Selector Down*/
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SCROLL_DOWN"))))
 			this->textureSelector->scrollDown();
-		else if (this->sfmlEvent->type == sf::Event::MouseWheelScrolled && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))))
+		else if (this->gameInfo->sfmlEvent->type == sf::Event::MouseWheelScrolled && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))))
 		{
-			std::cout << "Scroll Wheel Delta: " << this->sfmlEvent->mouseWheelScroll.delta << '\n';
-			if (sfmlEvent->mouseWheelScroll.delta < 0)
+			std::cout << "Scroll Wheel Delta: " << this->gameInfo->sfmlEvent->mouseWheelScroll.delta << '\n';
+			if (this->gameInfo->sfmlEvent->mouseWheelScroll.delta < 0)
 				this->textureSelector->scrollDown();
-			this->sfmlEvent->mouseWheelScroll.delta = 0;
-			std::cout << "Scroll Wheel Delta: " << this->sfmlEvent->mouseWheelScroll.delta << '\n';
+			this->gameInfo->sfmlEvent->mouseWheelScroll.delta = 0;
+			std::cout << "Scroll Wheel Delta: " << this->gameInfo->sfmlEvent->mouseWheelScroll.delta << '\n';
 		}
 
 		/*Scroll Texture Selector Left*/
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SCROLL_LEFT"))))
 			this->textureSelector->scrollLeft();
-		else if (this->sfmlEvent->type == sf::Event::MouseWheelScrolled && sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))))
+		else if (this->gameInfo->sfmlEvent->type == sf::Event::MouseWheelScrolled && sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))))
 		{
-			if (this->sfmlEvent->mouseWheelScroll.delta < 0)
+			if (this->gameInfo->sfmlEvent->mouseWheelScroll.delta < 0)
 			{
-				std::cout << "Scroll Wheel Delta: " << this->sfmlEvent->mouseWheelScroll.delta << '\n';
+				std::cout << "Scroll Wheel Delta: " << this->gameInfo->sfmlEvent->mouseWheelScroll.delta << '\n';
 				this->textureSelector->scrollLeft();
-				this->sfmlEvent->mouseWheelScroll.delta = 0;
-				std::cout << "Scroll Wheel Delta: " << this->sfmlEvent->mouseWheelScroll.delta << '\n';
+				this->gameInfo->sfmlEvent->mouseWheelScroll.delta = 0;
+				std::cout << "Scroll Wheel Delta: " << this->gameInfo->sfmlEvent->mouseWheelScroll.delta << '\n';
 			}
 		}
 
 		/*Scroll Texture Selector Right*/
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SCROLL_RIGHT"))))
 			this->textureSelector->scrollRight();
-		else if (this->sfmlEvent->type == sf::Event::MouseWheelScrolled && sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))))
+		else if (this->gameInfo->sfmlEvent->type == sf::Event::MouseWheelScrolled && sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT_SHIFT"))))
 		{
-			if (this->sfmlEvent->mouseWheelScroll.delta > 0)
+			if (this->gameInfo->sfmlEvent->mouseWheelScroll.delta > 0)
 			{
-				std::cout << "Scroll Wheel Delta: " << this->sfmlEvent->mouseWheelScroll.delta << '\n';
+				std::cout << "Scroll Wheel Delta: " << this->gameInfo->sfmlEvent->mouseWheelScroll.delta << '\n';
 				this->textureSelector->scrollRight();
-				this->sfmlEvent->mouseWheelScroll.delta = 0;
-				std::cout << "Scroll Wheel Delta: " << this->sfmlEvent->mouseWheelScroll.delta << '\n';
+				this->gameInfo->sfmlEvent->mouseWheelScroll.delta = 0;
+				std::cout << "Scroll Wheel Delta: " << this->gameInfo->sfmlEvent->mouseWheelScroll.delta << '\n';
 			}
 		}
 
@@ -432,7 +432,7 @@ void Editor::renderCursorText(sf::RenderTarget& target)
 void Editor::renderSelectorRect(sf::RenderTarget& target)
 {
 	/*View*/
-	this->window->setView(this->view);
+	this->gameInfo->window->setView(this->view);
 
 	if (!this->textureSelector->getIsActive())
 		target.draw(this->selectorRect);
@@ -452,14 +452,14 @@ void Editor::renderTileMap(sf::RenderTarget& target)
 void Editor::render(sf::RenderTarget* target)
 {
 	if (!target)
-		target = this->window;
+		target = this->gameInfo->window;
 
 	/*Items Rendered with Camera View*/
 	target->setView(this->view);
 	this->renderTileMap(*target);
 
 	/*Items Rendered with Default Window View*/
-	this->window->setView(this->defaultWindowView);
+	this->gameInfo->window->setView(this->defaultWindowView);
 	target->draw(this->sideBar);
 
 	/*Items Rendered with Camera View*/
@@ -468,7 +468,7 @@ void Editor::render(sf::RenderTarget* target)
 	this->renderSelectorRect(*target);
 
 	/*Items Rendered with Default Window View*/
-	this->window->setView(this->defaultWindowView);
+	this->gameInfo->window->setView(this->defaultWindowView);
 	this->renderCursorText(*target);
 	if(this->isPaused)
 	this->renderPauseMenu(*target);

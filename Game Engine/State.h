@@ -39,18 +39,8 @@ struct GameInfo
 class State
 {
 protected:
-	/*State Vector*/
-	std::vector<std::unique_ptr<State>>*states;
-
 	/*Game Info*/
 	GameInfo* gameInfo;
-
-	/*Window Variables*/
-	GraphicsSettings* graphicsSettings;
-	sf::RenderWindow* window;
-
-	/*Polling Events*/
-	sf::Event* sfmlEvent;
 
 	/*GUI*/
 	sf::RectangleShape backgroundRect;
@@ -99,8 +89,8 @@ protected:
 	bool isGameOver;
 
 	/*Initializers*/
+	void initVariables(GameInfo* game_info);
 	void initView();
-
 public:
 	/*Constuctor & Destructor*/
 	State(GameInfo* game_info);
