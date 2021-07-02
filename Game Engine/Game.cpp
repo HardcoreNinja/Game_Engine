@@ -13,7 +13,7 @@ void Game::initGraphicsSettings()
 }
 void Game::initWindow()
 {
-	auto style = graphicsSettings.isFullscreen ? sf::Style::Fullscreen : sf::Style::Default;
+	auto style = graphicsSettings.isFullscreen ? sf::Style::Fullscreen : sf::Style::Close | sf::Style::Titlebar;
 	{
 		this->window = std::make_unique<sf::RenderWindow>(
 			this->graphicsSettings.resolution, 
