@@ -35,6 +35,13 @@ struct GameInfo
 
 	/*User Input*/
 	std::map<std::string, int>* supportedKeys;
+
+	/*Cursor*/
+	sf::Cursor* cursor;
+	sf::Cursor* cursorDown;
+	sf::Image* cursorImage;
+	sf::Image* cursorImageDown;
+
 };
 class State
 {

@@ -71,11 +71,14 @@ void State::updateSFMLEvents()
 		{
 			std::cout << "Mouse Pressed!\n";
 			this->mouseReleased = false;
+
+			this->gameInfo->window->setMouseCursor(*this->gameInfo->cursorDown);
 		}
 		else if (this->gameInfo->sfmlEvent->type == sf::Event::MouseButtonReleased)
 		{
 			std::cout << "Mouse Released!\n";
 			this->mouseReleased = true;
+			this->gameInfo->window->setMouseCursor(*this->gameInfo->cursor);
 		}
 		else if (this->gameInfo->sfmlEvent->type == sf::Event::Resized)
 		{

@@ -25,6 +25,35 @@ void Game::initWindow()
 	this->window->setFramerateLimit(this->graphicsSettings.frameRateLimit);
 	this->window->setVerticalSyncEnabled(this->graphicsSettings.isVSync);
 }
+void Game::initCursor()
+{
+	/*Cursor*/
+	if (!this->cursorImage.loadFromFile("Resources/Images/Cursor/cursor.gif"))
+		throw ("ERROR::GAME::COULD_NOT_LOAD_CURSOR_IMAGE");
+	if (
+		!this->cursor.loadFromPixels(
+			this->cursorImage.getPixelsPtr(),
+			sf::Vector2u(this->cursorImage.getSize().x, this->cursorImage.getSize().y),
+			sf::Vector2u(0, 0)
+		)
+		)
+		throw ("ERROR::GAME::COULD_NOT_LOAD_CURSOR_PIXELS");
+
+	/*Cursor Down*/
+	if (!this->cursorImageDown.loadFromFile("Resources/Images/Cursor/cursor_down.gif"))
+		throw ("ERROR::GAME::COULD_NOT_LOAD_CURSOR_IMAGE");
+	if (
+		!this->cursorDown.loadFromPixels(
+			this->cursorImageDown.getPixelsPtr(),
+			sf::Vector2u(this->cursorImageDown.getSize().x, this->cursorImageDown.getSize().y),
+			sf::Vector2u(0, 0)
+		)
+		)
+		throw ("ERROR::GAME::COULD_NOT_LOAD_CURSOR_PIXELS");
+
+	this->window->setMouseCursor(this->cursor);
+}
+
 void Game::initGameInfo()
 {
 	this->gameInfo.states = &this->states;
@@ -32,6 +61,10 @@ void Game::initGameInfo()
 	this->gameInfo.window = this->window.get();
 	this->gameInfo.sfmlEvent = &this->sfmlEvent;
 	this->gameInfo.supportedKeys = &this->supportedKeys;
+	this->gameInfo.cursorImage = &this->cursorImage;
+	this->gameInfo.cursor = &this->cursor;
+	this->gameInfo.cursorImageDown = &this->cursorImageDown;
+	this->gameInfo.cursorDown = &this->cursorDown;
 }
 void Game::initSupportedKeys()
 {
@@ -67,6 +100,7 @@ Game::Game()
 	this->initVariables();
 	this->initGraphicsSettings();
 	this->initWindow();
+	this->initCursor();
 	this->initGameInfo();
 	this->initSupportedKeys();
 	this->initStates();

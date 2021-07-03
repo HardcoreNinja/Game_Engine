@@ -28,10 +28,17 @@ private:
 	/*Input Variables*/
 	std::map<std::string, int> supportedKeys;
 
+	/*Cursor*/
+	sf::Image cursorImage;
+	sf::Cursor cursor;
+	sf::Image cursorImageDown;
+	sf::Cursor cursorDown;
+
 	/*Initializers*/
 	void initVariables();
 	void initGraphicsSettings();
 	void initWindow();
+	void initCursor();
 	void initGameInfo();
 	void initSupportedKeys();
 	void initStates();
