@@ -1000,7 +1000,10 @@ std::tuple<sf::RectangleShape, float, bool> NPC::getSpriteRectDamageInteractWith
 {
 	return std::make_tuple(this->spriteRect, this->npcDetails.damage, this->interactWithPlayer);
 }
-
+const bool NPC::getShowNPCText()
+{
+	return this->showNPCText;
+}
 
 
 /*Collisions Functions*/
@@ -1621,7 +1624,7 @@ void NPC::update(sf::RectangleShape player_rect, sf::Vector2f mouse_view, const 
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
 
 	/*Set Text Position*/
-	this->textBackground.setPosition(sf::Vector2f(this->spriteRect.getPosition().x, this->spriteRect.getPosition().y - 200.f));
+	this->textBackground.setPosition(sf::Vector2f(player_rect.getPosition().x, player_rect.getPosition().y - 200.f));
 	this->textNameShape.setPosition(sf::Vector2f(
 		this->textBackground.getPosition().x - (this->textBackground.getSize().x / 2.f) + (this->textNameShape.getSize().x /2.f), 
 		this->textBackground.getPosition().y - (this->textBackground.getSize().y / 2.f) + (this->textNameShape.getSize().y / 2.f)

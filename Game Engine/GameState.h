@@ -153,7 +153,7 @@ public:
     void renderProjectiles(sf::RenderTarget& target);
     void renderEnemies(sf::RenderTarget& target);
     void renderNPCs(sf::RenderTarget& target);
-    void renderHUD(sf::RenderTarget& target);
+    bool renderHUD();
     void renderInventory(sf::RenderTarget& target);
     void renderItems(sf::RenderTarget& target); 
     virtual void render(sf::RenderTarget* target);

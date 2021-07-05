@@ -989,9 +989,17 @@ void GameState::renderNPCs(sf::RenderTarget& target)
 		counter++;
 	}
 }
-void GameState::renderHUD(sf::RenderTarget& target)
+bool GameState::renderHUD()
 {
-	this->hud->render(target);
+	int counter = 0;
+	
+		for (this->npcItr = this->npcVector.begin(); this->npcItr != this->npcVector.end(); this->npcItr++)
+		{
+			if (this->npcVector[counter]->getShowNPCText())
+				return false;
+			counter++;
+		}
+		return true;
 }
 void GameState::renderInventory(sf::RenderTarget& target)
 {
@@ -1027,7 +1035,8 @@ void GameState::render(sf::RenderTarget* target)
 
 	/*Items Rendered with Default Window View*/
 	this->gameInfo->window->setView(this->defaultWindowView);
-	this->renderHUD(*target);
+	if(this->renderHUD())
+		this->hud->render(*target);
 	this->renderParticles(*target);
 	this->renderInventory(*target);
 

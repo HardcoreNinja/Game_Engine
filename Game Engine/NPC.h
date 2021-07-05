@@ -135,6 +135,7 @@ public:
     int getRandomInt(int min, int max);
     sf::RectangleShape getSpriteRect();
     std::tuple<sf::RectangleShape, float, bool> getSpriteRectDamageInteractWithPlayerBool();
+    const bool getShowNPCText();
 
     /*Collisions Functions*/
     void projectileCollision(std::tuple<sf::RectangleShape, int> collision_tuple);
