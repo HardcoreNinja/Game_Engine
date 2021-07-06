@@ -42,6 +42,14 @@ this->spriteRect.setOutlineThickness(1.f);
 this->spriteRect.setOutlineColor(sf::Color::Transparent);
 this->spriteRect.setFillColor(sf::Color::Transparent);
 this->spriteRect.setOrigin(this->spriteRect.getGlobalBounds().width / 2.f, this->spriteRect.getGlobalBounds().height / 2.f);
+
+/*Alert Circle*/
+this->alertCircle = sf::CircleShape(50);
+this->alertCircle.setOutlineThickness(1.f);
+this->alertCircle.setOutlineColor(sf::Color::Magenta);
+this->alertCircle.setFillColor(sf::Color::Transparent);
+this->alertCircle.setOrigin(this->alertCircle.getGlobalBounds().width / 2.f, this->alertCircle.getGlobalBounds().height / 2.f);
+this->alertCircle.setPosition(this->spriteRect.getPosition());
 }
 void Item::initSprite()
 {
@@ -102,9 +110,13 @@ Item::~Item()
 }
 
 /*Getters*/
-std::tuple<sf::RectangleShape, sf::RectangleShape>  Item::getItemRect()
+sf::RectangleShape Item::getSpriteRect()
 {
-	return std::make_tuple(this->spriteRect, this->textShape);
+	return this->spriteRect;
+}
+sf::CircleShape Item::getAlertCircle()
+{
+	return this->alertCircle;
 }
 ItemDetails Item::getItemDetails()
 {
@@ -151,17 +163,20 @@ void Item::setItemType(ItemType item)
 }
 
 /*Update Functions*/
-void Item::updateUserInput(sf::Vector2f player, const float& dt)
+void Item::updateUserInput(sf::RectangleShape player_rect, const float& dt)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SHOW_ITEM_TITLES"))) || this->spriteRect.getGlobalBounds().contains(player))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SHOW_ITEM_TITLES"))) || this->alertCircle.getGlobalBounds().intersects(player_rect.getGlobalBounds()))
 		this->showItemText = true;
 	else
 		this->showItemText = false;
 }
-void Item::update(sf::Vector2f player, const float& dt)
+void Item::update(sf::RectangleShape player_rect, const float& dt)
 {
 	/*User Input*/
-	this->updateUserInput(player, dt);
+	this->updateUserInput(player_rect, dt);
+
+	/*Alert Circle*/
+	this->alertCircle.setPosition(this->spriteRect.getPosition());
 
 	/*Set Sprite Position to Sprite Rect*/
 	this->itemDetails.itemSprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
@@ -174,6 +189,7 @@ void Item::render(sf::RenderTarget& target)
 {
 	target.draw(this->spriteRect);
 	target.draw(this->itemDetails.itemSprite);
+	//target.draw(this->alertCircle);
 
 	if (this->showItemText)
 	{

@@ -123,7 +123,7 @@ public:
     const sf::Vector2f getCenter();
 
     /*Collisions Functions*/
-    bool itemCollision(std::tuple<sf::RectangleShape, sf::RectangleShape> tuple);
+    bool itemCollision(sf::RectangleShape item_sprite_rect, sf::CircleShape item_alert_circle);
     void tileCollision(std::tuple<bool, unsigned short, std::string_view> collision_tuple);
     void enemyCollision(std::tuple< sf::RectangleShape, float, bool> enemy_tuple);
     bool npcCollision(sf::RectangleShape npc_rectangle, sf::CircleShape npc_circle);

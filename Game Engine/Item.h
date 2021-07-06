@@ -60,7 +60,8 @@ public:
     virtual ~Item(); 
 
     /*Getters*/
-    std::tuple<sf::RectangleShape, sf::RectangleShape> getItemRect();
+    sf::RectangleShape getSpriteRect();
+    sf::CircleShape getAlertCircle();
     ItemDetails getItemDetails();
     int getRandomInt(int min, int max);
 
@@ -69,8 +70,8 @@ public:
     void setItemType(ItemType item);
 
     /*Update Functions*/
-    void updateUserInput(sf::Vector2f player, const float& dt);
-    void update(sf::Vector2f player, const float& dt);
+    void updateUserInput(sf::RectangleShape player_rect, const float& dt);
+    void update(sf::RectangleShape player_rect, const float& dt);
 
     /*Render Functions*/
     void render(sf::RenderTarget& target);

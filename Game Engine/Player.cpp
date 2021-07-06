@@ -1020,14 +1020,14 @@ void Player::setPlayerNPCCollisionBool(bool player_npc_collision)
 		this->npcCollisionBool = true;
 		this->playerDetails.emoteState = EmoteStates::Talk_3;
 		this->setEmoteState(this->playerDetails.emoteState);
-		std::cout << "Player/NPC Collision\n";
+		//std::cout << "Player/NPC Collision\n";
 	}
 	else if (!player_npc_collision)
 	{
 		this->npcCollisionBool = false;
 		this->playerDetails.emoteState = EmoteStates::Default;
 		this->setEmoteState(this->playerDetails.emoteState);
-		std::cout << "NO Player/NPC Collision\n";
+		//std::cout << "NO Player/NPC Collision\n";
 	}
 }
 
@@ -1061,15 +1061,41 @@ const sf::Vector2f Player::getCenter()
 }
 
 /*Collision Functions*/
-bool Player::itemCollision(std::tuple<sf::RectangleShape, sf::RectangleShape> tuple)
+bool Player::itemCollision(sf::RectangleShape item_sprite_rect, sf::CircleShape item_alert_circle)
 {
-	if (std::get<0>(tuple).getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
+	bool itemRectCollision = false;
+
+	if (item_sprite_rect.getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
+		itemRectCollision = true;
+	else if (!item_sprite_rect.getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
+		itemRectCollision = false;
+
+	if (itemRectCollision == true)
+	{
+		sf::Vector2f position = this->spriteRect.getPosition();
+
+		if (this->playerDetails.velocity.x != 0.f)
+		{
+			position.x = this->oldPosition.x;
+			this->playerDetails.velocity.x = 0.f;
+		}
+
+		if (this->playerDetails.velocity.y != 0.f)
+		{
+			position.y = this->oldPosition.y;
+			this->playerDetails.velocity.y = 0.f;
+		}
+
+		this->spriteRect.setPosition(position);
+	}
+
+	if (item_alert_circle.getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
 	{
 		std::cout << "Item/Player Collision!\n";
 		
 		return true;
 	}
-	else if(!std::get<0>(tuple).getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
+	else if(!item_alert_circle.getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
 	{
 		std::cout << "Item/Player NO Collision!\n"; 
 		//this->itemCollisionBool = false;

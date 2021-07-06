@@ -521,7 +521,7 @@ bool GameState::updatePlayerItemCollision()
 
 	for (this->itemItr = this->itemVector.begin(); this->itemItr != this->itemVector.end(); this->itemItr++)
 	{
-		if (this->player->itemCollision(this->itemVector[counter]->getItemRect()))
+		if (this->player->itemCollision(this->itemVector[counter]->getSpriteRect(), this->itemVector[counter]->getAlertCircle()))
 			return true;
 		counter++;
 	}
@@ -842,7 +842,7 @@ void GameState::updateItemLoop(const float& dt)
 	int counter = 0;
 	for (this->itemItr = this->itemVector.begin(); this->itemItr != this->itemVector.end(); this->itemItr++)
 	{
-		this->itemVector[counter]->update(this->player->getSpriteRect().getPosition(), dt);
+		this->itemVector[counter]->update(this->player->getSpriteRect(), dt);
 		counter++;
 	}
 }
@@ -851,9 +851,10 @@ void GameState::updateItemDestroyLoop()
 	int counter = 0;
 	for (this->itemItr = this->itemVector.begin(); this->itemItr != this->itemVector.end(); this->itemItr++)
 	{
-		if ((std::get<0>(this->itemVector[counter]->getItemRect()).getGlobalBounds().contains(this->player->getSpriteRect().getPosition()) 
-			|| std::get<1>(this->itemVector[counter]->getItemRect()).getGlobalBounds().contains(this->player->getSpriteRect().getPosition()))
-			&& sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("PICK_UP_ITEM"))))
+		if (
+			this->itemVector[counter]->getAlertCircle().getGlobalBounds().intersects(this->player->getSpriteRect().getGlobalBounds()) 
+			&& sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("PICK_UP_ITEM")))
+			)
 		{
 			this->audioMap["GAMESTATE_PICKUP_ITEM"]->play();
 			this->inventory->setItemToInventory(this->itemVector[counter]->getItemDetails());
@@ -1056,8 +1057,8 @@ void GameState::render(sf::RenderTarget* target)
 	this->renderProjectiles(this->renderTexture);
 	this->renderEnemies(this->renderTexture);
 	this->renderNPCs(this->renderTexture);
-	this->renderItems(this->renderTexture);
 	this->renderPlayer(this->renderTexture);
+	this->renderItems(this->renderTexture);
 	this->renderTexture.display();
 	target->draw(this->renderSprite);
 
