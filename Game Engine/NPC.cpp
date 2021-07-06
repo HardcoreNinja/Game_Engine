@@ -9,7 +9,7 @@ void NPC::initVariables(std::vector<sf::Vector2f> npc_spawn_positions, std::vect
 	srand(seed);
 
 	/*Emote State*/
-	this->npcDetails.emoteState = NPCEmoteStates::Default;
+	this->npcDetails.emoteState = EmoteStates::Default;
 
 	/*Movement Variables*/
 	this->npcDetails.velocity = sf::Vector2f(0.f, 0.f);
@@ -970,13 +970,13 @@ void NPC::setNPC(bool male_1_female_0, int texture_switch_number)
 			std::cout << "ERROR::NPC::void setNPC() (FEMALE)::Invalid Switch Entry!\n";
 		}
 }
-void NPC::setEmoteState(NPCEmoteStates emote_state)
+void NPC::setEmoteState(EmoteStates emote_state)
 {
 	switch (emote_state)
 	{
-	case NPCEmoteStates::Default:
+	case EmoteStates::Default:
 		break;
-	case NPCEmoteStates::Alert_1:
+	case EmoteStates::Alert_1:
 		if (!this->emoteTexture.loadFromFile("Resources/Images/Emotes/alert.png"))
 			throw("ERROR::NPC::FAILED_TO_LOAD::alert.png");
 		emoteSprite.setTexture(this->emoteTexture);
@@ -1111,12 +1111,12 @@ void NPC::alertCircleCollision(sf::RectangleShape player_rect)
 
 	if (this->alertCircleCollisionBool)
 	{
-		this->npcDetails.emoteState = NPCEmoteStates::Alert_1;
+		this->npcDetails.emoteState = EmoteStates::Alert_1;
 		this->setEmoteState(this->npcDetails.emoteState);
 	}
 	else if (!this->alertCircleCollisionBool)
 	{
-		this->npcDetails.emoteState = NPCEmoteStates::Default;
+		this->npcDetails.emoteState = EmoteStates::Default;
 		this->setEmoteState(this->npcDetails.emoteState);
 	}
 }

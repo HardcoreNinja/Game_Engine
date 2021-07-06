@@ -126,9 +126,10 @@ public:
     void updateInventory(const float& dt);
     void updateManaFill();
     void updatePlayer(const float& dt);
+    bool updatePlayerItemCollision();
+    void updatePlayerCollisions();
     void updateDoorCollisions(const float& dt);
     void updateAudio();
-    void updatePlayerCollisions();
     void updateProjectileLoop(const float& dt);
     void updateProjectileCollisions();
     void updateProjectileDestroyLoop();

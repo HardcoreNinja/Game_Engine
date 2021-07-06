@@ -69,8 +69,8 @@ public:
     void setItemType(ItemType item);
 
     /*Update Functions*/
-    void updateUserInput(sf::Vector2f mouse_view, const float& dt);
-    void update(sf::Vector2f mouse_view, const float& dt);
+    void updateUserInput(sf::Vector2f player, const float& dt);
+    void update(sf::Vector2f player, const float& dt);
 
     /*Render Functions*/
     void render(sf::RenderTarget& target);

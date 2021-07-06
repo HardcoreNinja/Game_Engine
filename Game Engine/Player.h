@@ -31,6 +31,9 @@ enum class PlayerDirection
 
 struct PlayerDetails
 {
+    /*Emote State*/
+    EmoteStates emoteState;
+
     /*New Character Variable*/
     std::string name;
     int textureSwitchCounter;
@@ -83,6 +86,7 @@ private:
     int footStepCounter;
 
     /*Collision Variables*/
+    bool itemCollisionBool;
     bool enemyCollisionBool; 
     bool npcCollisionBool;
     bool doorCollision;
@@ -98,6 +102,7 @@ private:
     void initKeybinds(std::map<std::string, int>* supported_keys);
     void initSpriteRect();
     void initSprite();
+    void initEmotes();
 public:
     /*Constructor & Destructor*/
     Player(std::map<std::string, int>* supported_keys, PlayerDetails player_details, std::map<std::string, std::unique_ptr<Audio>>& audio_map);
@@ -113,6 +118,8 @@ public:
     void setManaFill(float mana_fill);
     void setManaDrain(float mana_drain);
     void setItemBenefits(ItemDetails item_details);
+    void setEmoteState(EmoteStates emote_state);
+    void setPlayerItemCollisionBool(bool player_item_collision);
 
     /*Getters*/
     std::tuple<bool, std::string> getDoorInfo();
@@ -123,6 +130,7 @@ public:
     const sf::Vector2f getCenter();
 
     /*Collisions Functions*/
+    bool itemCollision(std::tuple<sf::RectangleShape, sf::RectangleShape> tuple);
     void tileCollision(std::tuple<bool, unsigned short, std::string_view> collision_tuple);
     void enemyCollision(std::tuple< sf::RectangleShape, float, bool> enemy_tuple);
     void npcCollision(sf::RectangleShape npc_rect);
@@ -132,6 +140,7 @@ public:
     void updateVelocity(float dir_x, float dir_y, const float& dt);
     void updateMovement(const float& dt);
     void updateAnimation();
+    void updateEmoteAnimation();
     void updateStamina();
     void updateAudio();
     void update(const float& dt);

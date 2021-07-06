@@ -151,17 +151,17 @@ void Item::setItemType(ItemType item)
 }
 
 /*Update Functions*/
-void Item::updateUserInput(sf::Vector2f mouse_view, const float& dt)
+void Item::updateUserInput(sf::Vector2f player, const float& dt)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SHOW_ITEM_TITLES"))) || this->spriteRect.getGlobalBounds().contains(mouse_view))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SHOW_ITEM_TITLES"))) || this->spriteRect.getGlobalBounds().contains(player))
 		this->showItemText = true;
 	else
 		this->showItemText = false;
 }
-void Item::update(sf::Vector2f mouse_view, const float& dt)
+void Item::update(sf::Vector2f player, const float& dt)
 {
 	/*User Input*/
-	this->updateUserInput(mouse_view, dt);
+	this->updateUserInput(player, dt);
 
 	/*Set Sprite Position to Sprite Rect*/
 	this->itemDetails.itemSprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));

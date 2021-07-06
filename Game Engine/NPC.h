@@ -11,11 +11,6 @@ class sf::Texture;
 class sf::CircleShape;
 class sf::RenderTarget;
 
-enum class NPCEmoteStates
-{
-    Default = 0,
-    Alert_1
-};
 enum class NPCDirection
 {
     Idle = 0,
@@ -31,7 +26,7 @@ struct NPCDetails
     std::string name;
 
     /*EmoteState*/
-    NPCEmoteStates emoteState;
+    EmoteStates emoteState;
 
     /*Enemy Direction*/
     NPCDirection currentDirection;
@@ -128,7 +123,7 @@ public:
     /*Setters*/
     void setNPCPosition();
     void setNPC(bool male_1_female_0, int texture_switch_number);
-    void setEmoteState(NPCEmoteStates emote_state);
+    void setEmoteState(EmoteStates emote_state);
 
     /*Getters*/
     bool getDestroy();

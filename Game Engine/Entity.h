@@ -9,6 +9,13 @@ class sf::RectangleShape;
 class sf::Texture;
 class sf::Clock;
 
+enum class EmoteStates
+{
+	Default = 0,
+	Alert_1,
+	Item_2
+};
+
 class Entity
 {
 protected:
@@ -19,6 +26,13 @@ protected:
 	sf::Texture texture;
 	std::vector<sf::IntRect> intRectVector;
 	sf::IntRect spriteIntRect;
+
+	/*Emote Variables*/
+	sf::Sprite emoteSprite;
+	sf::Texture emoteTexture;
+	sf::IntRect emoteIntRect;
+	sf::Clock emoteAnimationClock;
+	int emoteCounter;
 
 	/*Animation Clocks*/
 	sf::Clock animationClock;

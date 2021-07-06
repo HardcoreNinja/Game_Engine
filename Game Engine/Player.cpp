@@ -31,6 +31,7 @@ void Player::initVariables(PlayerDetails player_details)
 	this->quarterMaxVelocity = this->playerDetails.maxVelocity / 4.f;
 
 	/*Collision Variables*/
+	this->itemCollisionBool = false;
 	this->enemyCollisionBool = false;
 	this->npcCollisionBool = false;
 	this->doorCollision = false;
@@ -888,6 +889,14 @@ void Player::initSprite()
 	this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
 }
+void Player::initEmotes()
+{
+	/*Emote Sprite*/
+	this->emoteIntRect = sf::IntRect(0, 0, 32, 32);
+	this->emoteSprite.setTextureRect(this->emoteIntRect);
+	this->emoteSprite.setOrigin(this->emoteSprite.getGlobalBounds().width / 2.f, this->emoteSprite.getGlobalBounds().height / 2.f);
+	this->emoteSprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x, this->spriteRect.getPosition().y - 50.f));
+}
 
 /*Constructor & Destructor*/
 Player::Player(std::map<std::string, int>* supported_keys, PlayerDetails player_details, std::map<std::string, std::unique_ptr<Audio>>& audio_map)
@@ -897,6 +906,7 @@ Player::Player(std::map<std::string, int>* supported_keys, PlayerDetails player_
 	this->initKeybinds(supported_keys);
 	this->initSpriteRect();
 	this->initSprite();
+	this->initEmotes();
 }
 Player::~Player()
 {
@@ -958,6 +968,37 @@ void Player::setItemBenefits(ItemDetails item_details)
 		std::cout << "ERROR::PLAYER::void Item::void Player::setItemBenefits(ItemDetails item_details)::Invalid Switch Entry!\n";
 	}
 }
+void Player::setEmoteState(EmoteStates emote_state)
+{
+	switch (emote_state)
+	{
+	case EmoteStates::Default:
+		break;
+	case EmoteStates::Alert_1:
+		if (!this->emoteTexture.loadFromFile("Resources/Images/Emotes/alert.png"))
+			throw("ERROR::NPC::FAILED_TO_LOAD::alert.png");
+		emoteSprite.setTexture(this->emoteTexture);
+	case EmoteStates::Item_2:
+		if (!this->emoteTexture.loadFromFile("Resources/Images/Emotes/item.png"))
+			throw("ERROR::NPC::FAILED_TO_LOAD::item.png");
+		emoteSprite.setTexture(this->emoteTexture);
+	}
+}
+void Player::setPlayerItemCollisionBool(bool player_item_collision)
+{
+	if (player_item_collision)
+	{
+		this->itemCollisionBool = true;
+		this->playerDetails.emoteState = EmoteStates::Item_2;
+		this->setEmoteState(this->playerDetails.emoteState);
+	}
+	else if (!player_item_collision)
+	{
+		this->itemCollisionBool = false;
+		this->playerDetails.emoteState = EmoteStates::Default;
+		this->setEmoteState(this->playerDetails.emoteState);
+	}
+}
 
 /*Getters*/
 std::tuple<bool, std::string> Player::getDoorInfo()
@@ -980,7 +1021,6 @@ std::tuple<float, float> Player::getMana()
 {
 	return std::make_tuple(this->playerDetails.currentMana, this->playerDetails.maxMana);
 }
-
 const sf::Vector2f Player::getCenter()
 {
 	return this->spriteRect.getPosition() + sf::Vector2f(
@@ -990,6 +1030,21 @@ const sf::Vector2f Player::getCenter()
 }
 
 /*Collision Functions*/
+bool Player::itemCollision(std::tuple<sf::RectangleShape, sf::RectangleShape> tuple)
+{
+	if (std::get<0>(tuple).getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
+	{
+		std::cout << "Item/Player Collision!\n";
+		
+		return true;
+	}
+	else if(!std::get<0>(tuple).getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
+	{
+		std::cout << "Item/Player NO Collision!\n"; 
+		//this->itemCollisionBool = false;
+		return false;
+	}
+}
 void Player::tileCollision(std::tuple<bool, unsigned short, std::string_view> collision_tuple)
 {
 	if (std::get<1>(collision_tuple) == TILEMAP::TileType::Wall)
@@ -1241,81 +1296,125 @@ void Player::updateAnimation()
 	/*Movement "If" Statement*/
 	if (deltaTime > switchTime)
 	{
-			if (this->playerDetails.currentDirection == PlayerDirection::Up)
-			{
-				this->spriteIntRect.top = intRectTop_Up;
+		if (this->playerDetails.currentDirection == PlayerDirection::Up)
+		{
+			this->spriteIntRect.top = intRectTop_Up;
 
-				if (this->spriteIntRect.left == intRectLeft_End)
-					this->spriteIntRect.left = intRectLeft_Start;
-				else
-				{
-					this->spriteIntRect.left += intRectLeft_FrameSize;
-					this->sprite.setTextureRect(this->spriteIntRect);
-					this->animationClock.restart();
-				}
-			}
-			else if (this->playerDetails.currentDirection == PlayerDirection::Down)
+			if (this->spriteIntRect.left == intRectLeft_End)
+				this->spriteIntRect.left = intRectLeft_Start;
+			else
 			{
-				this->spriteIntRect.top = intRectTop_Down;
+				this->spriteIntRect.left += intRectLeft_FrameSize;
+				this->sprite.setTextureRect(this->spriteIntRect);
+				this->animationClock.restart();
+			}
+		}
+		else if (this->playerDetails.currentDirection == PlayerDirection::Down)
+		{
+			this->spriteIntRect.top = intRectTop_Down;
 
-				if (this->spriteIntRect.left == intRectLeft_End)
-					this->spriteIntRect.left = intRectLeft_Start;
-				else
-				{
-					this->spriteIntRect.left += intRectLeft_FrameSize;
-					this->sprite.setTextureRect(this->spriteIntRect);
-					this->animationClock.restart();
-				}
-			}
-			else if (this->playerDetails.currentDirection == PlayerDirection::Left)
+			if (this->spriteIntRect.left == intRectLeft_End)
+				this->spriteIntRect.left = intRectLeft_Start;
+			else
 			{
-				this->spriteIntRect.top = intRectTop_Left;
+				this->spriteIntRect.left += intRectLeft_FrameSize;
+				this->sprite.setTextureRect(this->spriteIntRect);
+				this->animationClock.restart();
+			}
+		}
+		else if (this->playerDetails.currentDirection == PlayerDirection::Left)
+		{
+			this->spriteIntRect.top = intRectTop_Left;
 
-				if (this->spriteIntRect.left == intRectLeft_End)
-					this->spriteIntRect.left = intRectLeft_Start;
-				else
-				{
-					this->spriteIntRect.left += intRectLeft_FrameSize;
-					this->sprite.setTextureRect(this->spriteIntRect);
-					this->animationClock.restart();
-				}
-			}
-			else if (this->playerDetails.currentDirection == PlayerDirection::Right)
+			if (this->spriteIntRect.left == intRectLeft_End)
+				this->spriteIntRect.left = intRectLeft_Start;
+			else
 			{
-				this->spriteIntRect.top = intRectTop_Right;
+				this->spriteIntRect.left += intRectLeft_FrameSize;
+				this->sprite.setTextureRect(this->spriteIntRect);
+				this->animationClock.restart();
+			}
+		}
+		else if (this->playerDetails.currentDirection == PlayerDirection::Right)
+		{
+			this->spriteIntRect.top = intRectTop_Right;
 
-				if (this->spriteIntRect.left == intRectLeft_End)
-					this->spriteIntRect.left = intRectLeft_Start;
-				else
-				{
-					this->spriteIntRect.left += intRectLeft_FrameSize;
-					this->sprite.setTextureRect(this->spriteIntRect);
-					this->animationClock.restart();
-				}
-			}
-			else if (this->playerDetails.currentDirection == PlayerDirection::Idle)
+			if (this->spriteIntRect.left == intRectLeft_End)
+				this->spriteIntRect.left = intRectLeft_Start;
+			else
 			{
-				if (this->playerDetails.oldDirection == PlayerDirection::Up)
-				{
+				this->spriteIntRect.left += intRectLeft_FrameSize;
+				this->sprite.setTextureRect(this->spriteIntRect);
+				this->animationClock.restart();
+			}
+		}
+		else if (this->playerDetails.currentDirection == PlayerDirection::Idle)
+		{
+			if (this->playerDetails.oldDirection == PlayerDirection::Up)
+			{
 				this->spriteIntRect = idleUp;
 				this->sprite.setTextureRect(this->spriteIntRect);
-				}
-				else if (this->playerDetails.oldDirection == PlayerDirection::Down)
-				{
+			}
+			else if (this->playerDetails.oldDirection == PlayerDirection::Down)
+			{
 				this->spriteIntRect = idleDown;
 				this->sprite.setTextureRect(this->spriteIntRect);
-				}
-				else if (this->playerDetails.oldDirection == PlayerDirection::Left)
-				{
+			}
+			else if (this->playerDetails.oldDirection == PlayerDirection::Left)
+			{
 				this->spriteIntRect = idleLeft;
 				this->sprite.setTextureRect(this->spriteIntRect);
-				}
-				else if (this->playerDetails.oldDirection == PlayerDirection::Right)
-				{
+			}
+			else if (this->playerDetails.oldDirection == PlayerDirection::Right)
+			{
 				this->spriteIntRect = idleRight;
 				this->sprite.setTextureRect(this->spriteIntRect);
-				}
 			}
+		}
+	}
+}
+void Player::updateEmoteAnimation()
+{
+	int intRectLeft_Start = 0;
+	int intRectLeft_Middle = 32;
+	int intRectLeft_End = 64;
+
+	int intRectLeft_FrameSize = 32;
+
+	float deltaTime = this->emoteAnimationClock.getElapsedTime().asSeconds();
+	float switchTime = 0.1f;
+
+	int counter = 0;
+
+	if (deltaTime > switchTime)
+	{
+		if (this->emoteIntRect.left == intRectLeft_Start)
+		{
+			counter = 1;
+			this->emoteIntRect.left += intRectLeft_FrameSize;
+			this->emoteSprite.setTextureRect(this->emoteIntRect);
+			this->emoteAnimationClock.restart();
+		}
+		else if (this->emoteIntRect.left == intRectLeft_Middle & counter == 1)
+		{
+			this->emoteIntRect.left += intRectLeft_FrameSize;
+			this->emoteSprite.setTextureRect(this->emoteIntRect);
+			this->emoteAnimationClock.restart();
+		}
+		else if (this->emoteIntRect.left == intRectLeft_Middle & counter == 0)
+		{
+			this->emoteIntRect.left -= intRectLeft_FrameSize;
+			this->emoteSprite.setTextureRect(this->emoteIntRect);
+			this->emoteAnimationClock.restart();
+		}
+		else if (this->emoteIntRect.left == intRectLeft_End)
+		{
+			counter = 0;
+			this->emoteIntRect.left -= intRectLeft_FrameSize;
+			this->emoteSprite.setTextureRect(this->emoteIntRect);
+			this->emoteAnimationClock.restart();
+		}
+
 	}
 }
 void Player::updateStamina()
@@ -1414,6 +1513,10 @@ void Player::update(const float& dt)
 	/*Sprite Position*/
 	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
 
+	/*Emote*/
+	this->updateEmoteAnimation();
+	this->emoteSprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x, this->spriteRect.getPosition().y - 50.f));
+
 	/*Audio*/
 	this->updateAudio();
 }
@@ -1474,4 +1577,7 @@ void Player::render(sf::RenderTarget& target, sf::Shader* shader)
 	shader->setUniform("hasTexture", true);
 
 	target.draw(this->sprite, shader);
+
+	if (this->itemCollisionBool)
+		target.draw(this->emoteSprite);
 }

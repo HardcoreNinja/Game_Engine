@@ -515,6 +515,44 @@ void GameState::updatePlayer(const float& dt)
 	if (this->player->getPlayerDetails().currentHP <= 0.f)
 		this->isGameOver = true;
 }
+bool GameState::updatePlayerItemCollision()
+{
+	int counter = 0;
+
+	for (this->itemItr = this->itemVector.begin(); this->itemItr != this->itemVector.end(); this->itemItr++)
+	{
+		if (this->player->itemCollision(this->itemVector[counter]->getItemRect()))
+			return true;
+		counter++;
+	}
+	return false;
+}
+void GameState::updatePlayerCollisions()
+{
+	/*Player/Wall*/
+	this->player->tileCollision(this->tileMap->getCollision(this->player->getSpriteRect()));
+
+	/*Player/Enemy*/
+	int counter1 = 0;
+	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
+	{
+		this->player->enemyCollision(this->enemyVector[counter1]->getSpriteRectDamageAttackPlayerBool());
+		counter1++;
+	}
+
+	/*Player/NPC*/
+	int counter2 = 0;
+	for (this->npcItr = this->npcVector.begin(); this->npcItr != this->npcVector.end(); this->npcItr++)
+	{
+		this->player->npcCollision(this->npcVector[counter2]->getSpriteRect());
+		counter2++;
+	}
+
+	if (this->updatePlayerItemCollision())
+		this->player->setPlayerItemCollisionBool(true);
+	else if (!this->updatePlayerItemCollision())
+		this->player->setPlayerItemCollisionBool(false);
+}
 void GameState::updateDoorCollisions(const float& dt)
 {
 	/*Level_A*/
@@ -638,27 +676,6 @@ void GameState::updateAudio()
 {
 	this->audioMap["LEVEL_A"]->update();
 	this->audioMap["HOUSE_A"]->update();
-}
-void GameState::updatePlayerCollisions()
-{
-	/*Player/Wall*/
-	this->player->tileCollision(this->tileMap->getCollision(this->player->getSpriteRect()));
-
-	/*Player/Enemy*/
-	int counter1 = 0;
-	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
-	{
-			this->player->enemyCollision(this->enemyVector[counter1]->getSpriteRectDamageAttackPlayerBool());
-			counter1++;
-	}
-
-	/*Player/NPC*/
-	int counter2 = 0;
-	for (this->npcItr = this->npcVector.begin(); this->npcItr != this->npcVector.end(); this->npcItr++)
-	{
-		this->player->npcCollision(this->npcVector[counter2]->getSpriteRect());
-		counter2++;
-	}
 }
 void GameState::updateProjectileLoop(const float& dt)
 {
@@ -814,7 +831,7 @@ void GameState::updateItemLoop(const float& dt)
 	int counter = 0;
 	for (this->itemItr = this->itemVector.begin(); this->itemItr != this->itemVector.end(); this->itemItr++)
 	{
-		this->itemVector[counter]->update(this->mousePositionView, dt);
+		this->itemVector[counter]->update(this->player->getSpriteRect().getPosition(), dt);
 		counter++;
 	}
 }
@@ -823,9 +840,9 @@ void GameState::updateItemDestroyLoop()
 	int counter = 0;
 	for (this->itemItr = this->itemVector.begin(); this->itemItr != this->itemVector.end(); this->itemItr++)
 	{
-		if ((std::get<0>(this->itemVector[counter]->getItemRect()).getGlobalBounds().contains(this->mousePositionView) 
-			|| std::get<1>(this->itemVector[counter]->getItemRect()).getGlobalBounds().contains(this->mousePositionView)) 
-			&& this->gameInfo->sfmlEvent->mouseButton.button == sf::Mouse::Left)
+		if ((std::get<0>(this->itemVector[counter]->getItemRect()).getGlobalBounds().contains(this->player->getSpriteRect().getPosition()) 
+			|| std::get<1>(this->itemVector[counter]->getItemRect()).getGlobalBounds().contains(this->player->getSpriteRect().getPosition()))
+			&& sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("PICK_UP_ITEM"))))
 		{
 			this->audioMap["GAMESTATE_PICKUP_ITEM"]->play();
 			this->inventory->setItemToInventory(this->itemVector[counter]->getItemDetails());

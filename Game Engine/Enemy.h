@@ -11,11 +11,6 @@ class sf::Texture;
 class sf::CircleShape;
 class sf::RenderTarget;
 
-enum class EmoteStates
-{
-    Default = 0,
-    Alert_1
-};
 enum class EnemyDirection
 {
     Idle = 0, 
@@ -80,13 +75,6 @@ private:
     bool attackPlayer;
     int directionNumber;
     sf::CircleShape alertCircle;
-
-    /*Emote Variables*/
-    sf::Sprite emoteSprite;
-    sf::Texture emoteTexture; 
-    sf::IntRect emoteIntRect;
-    sf::Clock emoteAnimationClock;
-    int emoteCounter;
 
     /*Randomization Variables*/
     int randomDirectionCounter;

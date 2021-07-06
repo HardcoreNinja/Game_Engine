@@ -686,36 +686,32 @@ void Enemy::updateEmoteAnimation()
 
 	if (deltaTime > switchTime)
 	{
-		if (this->enemyDetails.emoteState == EmoteStates::Alert_1)
+		if (this->emoteIntRect.left == intRectLeft_Start)
 		{
-
-			if (this->emoteIntRect.left == intRectLeft_Start)
-			{
-				counter = 1;
-				this->emoteCounter += 1;
-				this->emoteIntRect.left += intRectLeft_FrameSize;
-				this->emoteSprite.setTextureRect(this->emoteIntRect);
-				this->emoteAnimationClock.restart();
-			}
-			else if (this->emoteIntRect.left == intRectLeft_Middle & counter == 1)
-			{
-				this->emoteIntRect.left += intRectLeft_FrameSize;
-				this->emoteSprite.setTextureRect(this->emoteIntRect);
-				this->emoteAnimationClock.restart();
-			}
-			else if (this->emoteIntRect.left == intRectLeft_Middle & counter == 0)
-			{
-				this->emoteIntRect.left -= intRectLeft_FrameSize;
-				this->emoteSprite.setTextureRect(this->emoteIntRect);
-				this->emoteAnimationClock.restart();
-			}
-			else if (this->emoteIntRect.left == intRectLeft_End)
-			{
-				counter = 0;
-				this->emoteIntRect.left -= intRectLeft_FrameSize;
-				this->emoteSprite.setTextureRect(this->emoteIntRect);
-				this->emoteAnimationClock.restart();
-			}
+			counter = 1;
+			this->emoteCounter += 1;
+			this->emoteIntRect.left += intRectLeft_FrameSize;
+			this->emoteSprite.setTextureRect(this->emoteIntRect);
+			this->emoteAnimationClock.restart();
+		}
+		else if (this->emoteIntRect.left == intRectLeft_Middle & counter == 1)
+		{
+			this->emoteIntRect.left += intRectLeft_FrameSize;
+			this->emoteSprite.setTextureRect(this->emoteIntRect);
+			this->emoteAnimationClock.restart();
+		}
+		else if (this->emoteIntRect.left == intRectLeft_Middle & counter == 0)
+		{
+			this->emoteIntRect.left -= intRectLeft_FrameSize;
+			this->emoteSprite.setTextureRect(this->emoteIntRect);
+			this->emoteAnimationClock.restart();
+		}
+		else if (this->emoteIntRect.left == intRectLeft_End)
+		{
+			counter = 0;
+			this->emoteIntRect.left -= intRectLeft_FrameSize;
+			this->emoteSprite.setTextureRect(this->emoteIntRect);
+			this->emoteAnimationClock.restart();
 		}
 	}
 }
