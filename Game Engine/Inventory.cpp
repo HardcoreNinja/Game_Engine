@@ -249,14 +249,20 @@ void Inventory::updateItems()
 			);
 		}
 }
-void Inventory::updateUserInput(const sf::Vector2i& mouse_window, const bool& key_time, const float& dt)
+void Inventory::updateUserInput(sf::RenderWindow& window, const sf::Vector2i& mouse_window, const bool& key_time, const float& dt)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SHOW_INVENTORY"))) && key_time)
 	{
 		if (!this->showInventory)
+		{
+			window.setMouseCursorVisible(true);
 			this->showInventory = true;
+		}
 		else if (this->showInventory)
+		{
+			window.setMouseCursorVisible(false);
 			this->showInventory = false;
+		}
 	}	
 
 	int counter = 0;
@@ -270,9 +276,9 @@ void Inventory::updateUserInput(const sf::Vector2i& mouse_window, const bool& ke
 		counter++;		
 	}
 }
-void Inventory::update(const sf::Event& sfml_events, const sf::Vector2i& mouse_window, const bool& key_time, const float& dt)
+void Inventory::update(sf::RenderWindow& window, const sf::Event& sfml_events, const sf::Vector2i& mouse_window, const bool& key_time, const float& dt)
 {
-	this->updateUserInput(mouse_window, key_time, dt);
+	this->updateUserInput(window, mouse_window, key_time, dt);
 	this->updateItems();
 	this->updateUseItem(sfml_events, mouse_window, key_time, dt);
 }

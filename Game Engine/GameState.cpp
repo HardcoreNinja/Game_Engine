@@ -4,6 +4,7 @@
 /*Initializers*/
 void GameState::initVariables(bool came_from_main_menu, PlayerDetails player_details, ProjectileDetails projectile_details)
 {
+	this->gameInfo->window->setMouseCursorVisible(false);
 	this->isGameOver = false;
 	this->projectileDetails = projectile_details;
 	this->cameFromMainMenu = came_from_main_menu;
@@ -482,7 +483,7 @@ void GameState::updateHUD()
 }
 void GameState::updateInventory(const float& dt)
 {
-	this->inventory->update(*this->gameInfo->sfmlEvent, this->mousePositionWindow, this->getKeyTime(), dt);
+	this->inventory->update(*this->gameInfo->window, *this->gameInfo->sfmlEvent, this->mousePositionWindow, this->getKeyTime(), dt);
 
 	if (this->inventory->getUsedItem())
 	{
@@ -874,6 +875,7 @@ void GameState::update(const float& dt)
 	/*Paused*/
 	if (this->isPaused) 
 	{
+		this->gameInfo->window->setMouseCursorVisible(true);
 		this->pauseMenu->update(static_cast<sf::Vector2f>(this->mousePositionGUI));
 		this->updatePauseMenuButtons();
 	}
@@ -882,6 +884,8 @@ void GameState::update(const float& dt)
 	{
 		if (!this->inventory->getShowInventory() && !this->isGameOver)
 		{
+			this->gameInfo->window->setMouseCursorVisible(false);
+
 			/*In-Game Actions*/
 			this->updateInGameActions();
 
