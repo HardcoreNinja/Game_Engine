@@ -536,7 +536,7 @@ void Enemy::updatePath(sf::RectangleShape player_rect, const float& dt)
 	float remainderY_Y = std::abs(enemyPosition.y - closestY[0].y);
 
 	
-	if (this->lastDirection == EnemyDirection::Left || this->lastDirection == EnemyDirection::Right)
+	if (this->lastDirection == Direction::Left || this->lastDirection == Direction::Right)
 	{
 		if (remainderY_Y > 10.f)
 		{
@@ -568,7 +568,7 @@ void Enemy::updatePath(sf::RectangleShape player_rect, const float& dt)
 			this->goingAroundWall = false;
 	}
 		
-	if (this->lastDirection == EnemyDirection::Up || this->lastDirection == EnemyDirection::Down)
+	if (this->lastDirection == Direction::Up || this->lastDirection == Direction::Down)
 	{
 		if (remainderX_X > 10.f)
 		{
@@ -651,26 +651,26 @@ void Enemy::updateAIAttackMovement(const float& dt)
 {
 	if (this->directionNumber == 1)
 		{
-		this->enemyDetails.currentDirection = EnemyDirection::Up;
-		this->enemyDetails.oldDirection = EnemyDirection::Up;
+		this->enemyDetails.currentDirection = Direction::Up;
+		this->enemyDetails.oldDirection = Direction::Up;
 		this->updateVelocity(0.f, -1.f, dt);
 		}
 	else if (this->directionNumber == 2)
 		{
-		this->enemyDetails.currentDirection = EnemyDirection::Down;
-		this->enemyDetails.oldDirection = EnemyDirection::Down;
+		this->enemyDetails.currentDirection = Direction::Down;
+		this->enemyDetails.oldDirection = Direction::Down;
 		this->updateVelocity(0.f, 1.f, dt);
 		}
 	else if (this->directionNumber == 3)
 		{
-		this->enemyDetails.currentDirection = EnemyDirection::Left;
-		this->enemyDetails.oldDirection = EnemyDirection::Left;
+		this->enemyDetails.currentDirection = Direction::Left;
+		this->enemyDetails.oldDirection = Direction::Left;
 		this->updateVelocity(-1.f, 0.f, dt);
 		}
 	else if (this->directionNumber == 4)
 		{
-		this->enemyDetails.currentDirection = EnemyDirection::Right;
-		this->enemyDetails.oldDirection = EnemyDirection::Right;
+		this->enemyDetails.currentDirection = Direction::Right;
+		this->enemyDetails.oldDirection = Direction::Right;
 		this->updateVelocity(1.f, 0.f, dt);
 		}
 }
@@ -725,31 +725,31 @@ void Enemy::updateRandomDirection(const float& dt)
 {
 		if (this->randomDirectionNumber == 0)
 		{
-			this->enemyDetails.currentDirection = EnemyDirection::Idle;
+			this->enemyDetails.currentDirection = Direction::Idle;
 			this->updateVelocity(0.f, 0.f, dt);
 		}
 		else if (this->randomDirectionNumber == 1)
 		{
-			this->enemyDetails.currentDirection = EnemyDirection::Up;
-			this->enemyDetails.oldDirection = EnemyDirection::Up;
+			this->enemyDetails.currentDirection = Direction::Up;
+			this->enemyDetails.oldDirection = Direction::Up;
 			this->updateVelocity(0.f, -1.f, dt);
 		}
 		else if (this->randomDirectionNumber == 2)
 		{
-			this->enemyDetails.currentDirection = EnemyDirection::Down;
-			this->enemyDetails.oldDirection = EnemyDirection::Down;
+			this->enemyDetails.currentDirection = Direction::Down;
+			this->enemyDetails.oldDirection = Direction::Down;
 			this->updateVelocity(0.f, 1.f, dt);
 		}
 		else if (this->randomDirectionNumber == 3)
 		{
-			this->enemyDetails.currentDirection = EnemyDirection::Left;
-			this->enemyDetails.oldDirection = EnemyDirection::Left;
+			this->enemyDetails.currentDirection = Direction::Left;
+			this->enemyDetails.oldDirection = Direction::Left;
 			this->updateVelocity(-1.f, 0.f, dt);
 		}
 		else if (this->randomDirectionNumber == 4)
 		{
-			this->enemyDetails.currentDirection = EnemyDirection::Right;
-			this->enemyDetails.oldDirection = EnemyDirection::Right;
+			this->enemyDetails.currentDirection = Direction::Right;
+			this->enemyDetails.oldDirection = Direction::Right;
 			this->updateVelocity(1.f, 0.f, dt);
 		}
 
@@ -853,7 +853,7 @@ void Enemy::updateAnimation()
 	/*Movement "If" Statement*/
 	if (deltaTime > switchTime)
 	{
-		if (this->enemyDetails.currentDirection == EnemyDirection::Up)
+		if (this->enemyDetails.currentDirection == Direction::Up)
 		{
 			this->spriteIntRect.top = intRectTop_Up;
 
@@ -866,7 +866,7 @@ void Enemy::updateAnimation()
 				this->animationClock.restart();
 			}
 		}
-		else if (this->enemyDetails.currentDirection == EnemyDirection::Down)
+		else if (this->enemyDetails.currentDirection == Direction::Down)
 		{
 			this->spriteIntRect.top = intRectTop_Down;
 
@@ -879,7 +879,7 @@ void Enemy::updateAnimation()
 				this->animationClock.restart();
 			}
 		}
-		else if (this->enemyDetails.currentDirection == EnemyDirection::Left)
+		else if (this->enemyDetails.currentDirection == Direction::Left)
 		{
 			this->spriteIntRect.top = intRectTop_Left;
 
@@ -892,7 +892,7 @@ void Enemy::updateAnimation()
 				this->animationClock.restart();
 			}
 		}
-		else if (this->enemyDetails.currentDirection == EnemyDirection::Right)
+		else if (this->enemyDetails.currentDirection == Direction::Right)
 		{
 			this->spriteIntRect.top = intRectTop_Right;
 
@@ -905,24 +905,24 @@ void Enemy::updateAnimation()
 				this->animationClock.restart();
 			}
 		}
-		else if (this->enemyDetails.currentDirection == EnemyDirection::Idle)
+		else if (this->enemyDetails.currentDirection == Direction::Idle)
 		{
-			if (this->enemyDetails.oldDirection == EnemyDirection::Up)
+			if (this->enemyDetails.oldDirection == Direction::Up)
 			{
 				this->spriteIntRect = idleUp;
 				this->sprite.setTextureRect(this->spriteIntRect);
 			}
-			else if (this->enemyDetails.oldDirection == EnemyDirection::Down)
+			else if (this->enemyDetails.oldDirection == Direction::Down)
 			{
 				this->spriteIntRect = idleDown;
 				this->sprite.setTextureRect(this->spriteIntRect);
 			}
-			else if (this->enemyDetails.oldDirection == EnemyDirection::Left)
+			else if (this->enemyDetails.oldDirection == Direction::Left)
 			{
 				this->spriteIntRect = idleLeft;
 				this->sprite.setTextureRect(this->spriteIntRect);
 			}
-			else if (this->enemyDetails.oldDirection == EnemyDirection::Right)
+			else if (this->enemyDetails.oldDirection == Direction::Right)
 			{
 				this->spriteIntRect = idleRight;
 				this->sprite.setTextureRect(this->spriteIntRect);

@@ -1025,7 +1025,7 @@ void NewCharacterScreen::updateButtons()
 
 			/*Position & Direction*/
 			this->playerDetails.position = sf::Vector2f(207.f, 176.f);
-			this->playerDetails.oldDirection = PlayerDirection::Down;
+			this->playerDetails.oldDirection = Direction::Down;
 
 			/*Movement Variables*/
 			this->playerDetails.velocity = sf::Vector2f(0.f, 0.f);;
@@ -1173,7 +1173,7 @@ void NewCharacterScreen::updateUserInput(const float& dt)
 
 			/*Position & Direction*/
 			this->playerDetails.position = sf::Vector2f(207.f, 176.f);
-			this->playerDetails.oldDirection = PlayerDirection::Down;
+			this->playerDetails.oldDirection = Direction::Down;
 
 			/*Movement Variables*/
 			this->playerDetails.velocity = sf::Vector2f(0.f, 0.f);;

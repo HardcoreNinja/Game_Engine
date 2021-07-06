@@ -11,22 +11,14 @@ class sf::Texture;
 class sf::CircleShape;
 class sf::RenderTarget;
 
-enum class EnemyDirection
-{
-    Idle = 0, 
-    Up,
-    Down,
-    Left,
-    Right
-};
 struct EnemyDetails
 {
     /*EmoteState*/
     EmoteStates emoteState;
 
     /*Enemy Direction*/
-    EnemyDirection currentDirection; 
-    EnemyDirection oldDirection;
+    Direction currentDirection; 
+    Direction oldDirection;
 
     /*Movement Variables*/
     sf::Vector2f velocity; 
@@ -70,11 +62,7 @@ private:
     bool destroy;
 
     /*AI Variables*/
-    EnemyDirection lastDirection;
-    bool goingAroundWall; 
     bool attackPlayer;
-    int directionNumber;
-    sf::CircleShape alertCircle;
 
     /*Randomization Variables*/
     int randomDirectionCounter;

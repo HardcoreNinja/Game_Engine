@@ -467,7 +467,7 @@ void GameState::updateInGameActions()
 			{
 				this->projectile = std::make_unique<Projectile>(this->projectileDetails, this->audioMap);
 				this->projectile->setProjectileType(this->projectileDetails.projectileType);
-				this->projectile->setProjectileDirection(this->player->getPlayerDirection());
+				this->projectile->setDirection(this->player->getDirection());
 				this->projectile->setProjectilePosition(this->player->getSpriteRect());
 				this->player->setManaDrain(this->projectile->getManaDrainFactor());
 				this->projectile->saveToFile();
@@ -595,8 +595,8 @@ void GameState::updateDoorCollisions(const float& dt)
 
 		/*Player*/
 		this->player->setPosition(this->enterTilePosition);
-		this->player->setOldDirection(PlayerDirection::Down);
-		this->player->setCurrentDirection(PlayerDirection::Idle);
+		this->player->setOldDirection(Direction::Down);
+		this->player->setCurrentDirection(Direction::Idle);
 		this->player->setVelocity(sf::Vector2f(0.f, 0.f));
 		this->player->setCurrentTileMap(CurrentTileMap::LEVEL_A);
 
@@ -648,8 +648,8 @@ void GameState::updateDoorCollisions(const float& dt)
 
 		/*Player*/
 		this->player->setPosition(this->enterTilePosition);
-		this->player->setOldDirection(PlayerDirection::Up);
-		this->player->setCurrentDirection(PlayerDirection::Idle);
+		this->player->setOldDirection(Direction::Up);
+		this->player->setCurrentDirection(Direction::Idle);
 		this->player->setVelocity(sf::Vector2f(0.f, 0.f));
 		this->player->setCurrentTileMap(CurrentTileMap::HOUSE_A);
 

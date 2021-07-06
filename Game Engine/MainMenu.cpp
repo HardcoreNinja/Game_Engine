@@ -197,7 +197,7 @@ void MainMenu::loadPlayerDetailsFromFile()
 		ifs >> this->playerDetails.maxMana;
 
 		this->playerDetails.currentTileMap = static_cast<CurrentTileMap>(currenmtTileMap);
-		this->playerDetails.oldDirection = static_cast<PlayerDirection>(oldDirection);
+		this->playerDetails.oldDirection = static_cast<Direction>(oldDirection);
 	}
 
 	ifs.close();

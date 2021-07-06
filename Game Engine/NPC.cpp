@@ -1233,7 +1233,7 @@ void NPC::updatePath(sf::RectangleShape player_rect, const float& dt)
 	float remainderY_Y = std::abs(npcPosition.y - closestY[0].y);
 
 
-	if (this->lastDirection == NPCDirection::Left || this->lastDirection == NPCDirection::Right)
+	if (this->lastDirection == Direction::Left || this->lastDirection == Direction::Right)
 	{
 		if (remainderY_Y > 10.f)
 		{
@@ -1265,7 +1265,7 @@ void NPC::updatePath(sf::RectangleShape player_rect, const float& dt)
 			this->goingAroundWall = false;
 	}
 
-	if (this->lastDirection == NPCDirection::Up || this->lastDirection == NPCDirection::Down)
+	if (this->lastDirection == Direction::Up || this->lastDirection == Direction::Down)
 	{
 		if (remainderX_X > 10.f)
 		{
@@ -1348,31 +1348,31 @@ void NPC::updateAIMovement(const float& dt)
 {
 	if (this->directionNumber == 0)
 	{
-	this->npcDetails.currentDirection = NPCDirection::Idle;
+	this->npcDetails.currentDirection = Direction::Idle;
 	this->updateVelocity(0.f, 0.f, dt);
 	}
 	else if (this->directionNumber == 1)
 	{
-		this->npcDetails.currentDirection = NPCDirection::Up;
-		this->npcDetails.oldDirection = NPCDirection::Up;
+		this->npcDetails.currentDirection = Direction::Up;
+		this->npcDetails.oldDirection = Direction::Up;
 		this->updateVelocity(0.f, -1.f, dt);
 	}
 	else if (this->directionNumber == 2)
 	{
-		this->npcDetails.currentDirection = NPCDirection::Down;
-		this->npcDetails.oldDirection = NPCDirection::Down;
+		this->npcDetails.currentDirection = Direction::Down;
+		this->npcDetails.oldDirection = Direction::Down;
 		this->updateVelocity(0.f, 1.f, dt);
 	}
 	else if (this->directionNumber == 3)
 	{
-		this->npcDetails.currentDirection = NPCDirection::Left;
-		this->npcDetails.oldDirection = NPCDirection::Left;
+		this->npcDetails.currentDirection = Direction::Left;
+		this->npcDetails.oldDirection = Direction::Left;
 		this->updateVelocity(-1.f, 0.f, dt);
 	}
 	else if (this->directionNumber == 4)
 	{
-		this->npcDetails.currentDirection = NPCDirection::Right;
-		this->npcDetails.oldDirection = NPCDirection::Right;
+		this->npcDetails.currentDirection = Direction::Right;
+		this->npcDetails.oldDirection = Direction::Right;
 		this->updateVelocity(1.f, 0.f, dt);
 	}
 }
@@ -1423,31 +1423,31 @@ void NPC::updateRandomDirection(const float& dt)
 {
 	if (this->randomDirectionNumber == 0)
 	{
-		this->npcDetails.currentDirection = NPCDirection::Idle;
+		this->npcDetails.currentDirection = Direction::Idle;
 		this->updateVelocity(0.f, 0.f, dt);
 	}
 	else if (this->randomDirectionNumber == 1)
 	{
-		this->npcDetails.currentDirection = NPCDirection::Up;
-		this->npcDetails.oldDirection = NPCDirection::Up;
+		this->npcDetails.currentDirection = Direction::Up;
+		this->npcDetails.oldDirection = Direction::Up;
 		this->updateVelocity(0.f, -1.f, dt);
 	}
 	else if (this->randomDirectionNumber == 2)
 	{
-		this->npcDetails.currentDirection = NPCDirection::Down;
-		this->npcDetails.oldDirection = NPCDirection::Down;
+		this->npcDetails.currentDirection = Direction::Down;
+		this->npcDetails.oldDirection = Direction::Down;
 		this->updateVelocity(0.f, 1.f, dt);
 	}
 	else if (this->randomDirectionNumber == 3)
 	{
-		this->npcDetails.currentDirection = NPCDirection::Left;
-		this->npcDetails.oldDirection = NPCDirection::Left;
+		this->npcDetails.currentDirection = Direction::Left;
+		this->npcDetails.oldDirection = Direction::Left;
 		this->updateVelocity(-1.f, 0.f, dt);
 	}
 	else if (this->randomDirectionNumber == 4)
 	{
-		this->npcDetails.currentDirection = NPCDirection::Right;
-		this->npcDetails.oldDirection = NPCDirection::Right;
+		this->npcDetails.currentDirection = Direction::Right;
+		this->npcDetails.oldDirection = Direction::Right;
 		this->updateVelocity(1.f, 0.f, dt);
 	}
 
@@ -1551,7 +1551,7 @@ void NPC::updateAnimation()
 	/*Movement "If" Statement*/
 	if (deltaTime > switchTime)
 	{
-		if (this->npcDetails.currentDirection == NPCDirection::Up)
+		if (this->npcDetails.currentDirection == Direction::Up)
 		{
 			this->spriteIntRect.top = intRectTop_Up;
 
@@ -1564,7 +1564,7 @@ void NPC::updateAnimation()
 				this->animationClock.restart();
 			}
 		}
-		else if (this->npcDetails.currentDirection == NPCDirection::Down)
+		else if (this->npcDetails.currentDirection == Direction::Down)
 		{
 			this->spriteIntRect.top = intRectTop_Down;
 
@@ -1577,7 +1577,7 @@ void NPC::updateAnimation()
 				this->animationClock.restart();
 			}
 		}
-		else if (this->npcDetails.currentDirection == NPCDirection::Left)
+		else if (this->npcDetails.currentDirection == Direction::Left)
 		{
 			this->spriteIntRect.top = intRectTop_Left;
 
@@ -1590,7 +1590,7 @@ void NPC::updateAnimation()
 				this->animationClock.restart();
 			}
 		}
-		else if (this->npcDetails.currentDirection == NPCDirection::Right)
+		else if (this->npcDetails.currentDirection == Direction::Right)
 		{
 			this->spriteIntRect.top = intRectTop_Right;
 
@@ -1603,24 +1603,24 @@ void NPC::updateAnimation()
 				this->animationClock.restart();
 			}
 		}
-		else if (this->npcDetails.currentDirection == NPCDirection::Idle)
+		else if (this->npcDetails.currentDirection == Direction::Idle)
 		{
-			if (this->npcDetails.oldDirection == NPCDirection::Up)
+			if (this->npcDetails.oldDirection == Direction::Up)
 			{
 				this->spriteIntRect = idleUp;
 				this->sprite.setTextureRect(this->spriteIntRect);
 			}
-			else if (this->npcDetails.oldDirection == NPCDirection::Down)
+			else if (this->npcDetails.oldDirection == Direction::Down)
 			{
 				this->spriteIntRect = idleDown;
 				this->sprite.setTextureRect(this->spriteIntRect);
 			}
-			else if (this->npcDetails.oldDirection == NPCDirection::Left)
+			else if (this->npcDetails.oldDirection == Direction::Left)
 			{
 				this->spriteIntRect = idleLeft;
 				this->sprite.setTextureRect(this->spriteIntRect);
 			}
-			else if (this->npcDetails.oldDirection == NPCDirection::Right)
+			else if (this->npcDetails.oldDirection == Direction::Right)
 			{
 				this->spriteIntRect = idleRight;
 				this->sprite.setTextureRect(this->spriteIntRect);

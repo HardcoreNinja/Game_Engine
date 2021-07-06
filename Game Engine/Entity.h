@@ -17,6 +17,15 @@ enum class EmoteStates
 	Talk_3
 };
 
+enum class Direction
+{
+	Idle = 0,
+	Up,
+	Down,
+	Left,
+	Right
+};
+
 class Entity
 {
 protected:
@@ -34,6 +43,12 @@ protected:
 	sf::IntRect emoteIntRect;
 	sf::Clock emoteAnimationClock;
 	int emoteCounter;
+
+	/*AI Variables*/
+	Direction lastDirection;
+	bool goingAroundWall;
+	int directionNumber;
+	sf::CircleShape alertCircle;
 
 	/*Animation Clocks*/
 	sf::Clock animationClock;

@@ -20,14 +20,6 @@ enum class CurrentTileMap
     LEVEL_A, 
     HOUSE_A
 };
-enum class PlayerDirection
-{
-    Idle = 0,
-    Up,
-    Down,
-    Left,
-    Right
-};
 
 struct PlayerDetails
 {
@@ -44,8 +36,8 @@ struct PlayerDetails
 
     /*Position & Direction*/
     sf::Vector2f position;
-    PlayerDirection currentDirection;
-    PlayerDirection oldDirection;
+    Direction currentDirection;
+    Direction oldDirection;
 
     /*Movement Variables*/
     sf::Vector2f velocity;
@@ -111,8 +103,8 @@ public:
     /*Setters*/
     void setHealthToFull();
     void setCurrentTileMap(CurrentTileMap current_tile_map);
-    void setOldDirection(PlayerDirection old_direction);
-    void setCurrentDirection(PlayerDirection current_direction);
+    void setOldDirection(Direction old_direction);
+    void setCurrentDirection(Direction current_direction);
     void setVelocity(sf::Vector2f velocity);
     void setPosition(sf::Vector2f player_position);
     void setManaFill(float mana_fill);
@@ -125,7 +117,7 @@ public:
     /*Getters*/
     std::tuple<bool, std::string> getDoorInfo();
     sf::RectangleShape getSpriteRect();
-    PlayerDirection getPlayerDirection();
+    Direction getDirection();
     PlayerDetails getPlayerDetails();
     std::tuple<float, float>getMana();
     const sf::Vector2f getCenter();

@@ -2,11 +2,9 @@
 #define PROJECTILE_H
 #include "Entity.h"
 #include "TileMap.h"
-#include "Player.h"
 
 /*Forward Declarations*/
 class TileMap;
-class Player;
 class Audio;
 class sf::RectangleShape;
 class sf::RenderTarget;
@@ -37,19 +35,12 @@ enum class ProjectileTypes
     Yellow_Ball_5,
     Projectile_MAX,
 };
-enum class  ProjectileDirection
-{
-    Idle = 0,
-    Up, 
-    Down, 
-    Left,
-    Right
-};
+
 struct ProjectileDetails
 {
     /*Enumerators*/
     ProjectileTypes projectileType;
-    ProjectileDirection projectileDirection;
+    Direction direction;
 
     /*Movement Variables*/
     sf::Vector2f velocity;
@@ -115,7 +106,7 @@ public:
 
     /*Setters*/
     void setProjectileType(ProjectileTypes projectile_type);
-    void setProjectileDirection(PlayerDirection player_direction);
+    void setDirection(Direction player_direction);
     void setProjectilePosition(sf::RectangleShape player);
     void setExplosionTexture();
 

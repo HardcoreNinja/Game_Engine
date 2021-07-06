@@ -926,11 +926,11 @@ void Player::setCurrentTileMap(CurrentTileMap current_tile_map)
 {
 	this->playerDetails.currentTileMap = current_tile_map;
 }
-void Player::setOldDirection(PlayerDirection old_direction)
+void Player::setOldDirection(Direction old_direction)
 {
 	this->playerDetails.oldDirection = old_direction;
 }
-void Player::setCurrentDirection(PlayerDirection current_direction)
+void Player::setCurrentDirection(Direction current_direction)
 {
 	this->playerDetails.currentDirection = current_direction;
 }
@@ -1040,7 +1040,7 @@ sf::RectangleShape Player::getSpriteRect()
 {
 	return this->spriteRect;
 }
-PlayerDirection Player::getPlayerDirection()
+Direction Player::getDirection()
 {
 	return this->playerDetails.oldDirection;
 }
@@ -1213,26 +1213,26 @@ void Player::updateUserInput(const float& dt)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("UP"))))
 	{
-		this->playerDetails.currentDirection = PlayerDirection::Up;
-		this->playerDetails.oldDirection = PlayerDirection::Up;
+		this->playerDetails.currentDirection = Direction::Up;
+		this->playerDetails.oldDirection = Direction::Up;
 		this->updateVelocity(0.f, -1.f, dt);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("DOWN"))))
 	{
-		this->playerDetails.currentDirection = PlayerDirection::Down;
-		this->playerDetails.oldDirection = PlayerDirection::Down;
+		this->playerDetails.currentDirection = Direction::Down;
+		this->playerDetails.oldDirection = Direction::Down;
 		this->updateVelocity(0.f, 1.f, dt);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT"))))
 	{
-		this->playerDetails.currentDirection = PlayerDirection::Left;
-		this->playerDetails.oldDirection = PlayerDirection::Left;
+		this->playerDetails.currentDirection = Direction::Left;
+		this->playerDetails.oldDirection = Direction::Left;
 		this->updateVelocity(-1.f, 0.f, dt);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("RIGHT"))))
 	{
-		this->playerDetails.currentDirection = PlayerDirection::Right;
-		this->playerDetails.oldDirection = PlayerDirection::Right;
+		this->playerDetails.currentDirection = Direction::Right;
+		this->playerDetails.oldDirection = Direction::Right;
 		this->updateVelocity(1.f, 0.f, dt);
 	}
 	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("UP")))
@@ -1240,7 +1240,7 @@ void Player::updateUserInput(const float& dt)
 		&& !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFT")))
 		&& !sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("RIGHT"))))
 	{
-		this->playerDetails.currentDirection = PlayerDirection::Idle;
+		this->playerDetails.currentDirection = Direction::Idle;
 		this->updateVelocity(0.f, 0.f, dt);
 	}
 }
@@ -1335,7 +1335,7 @@ void Player::updateAnimation()
 	/*Movement "If" Statement*/
 	if (deltaTime > switchTime)
 	{
-		if (this->playerDetails.currentDirection == PlayerDirection::Up)
+		if (this->playerDetails.currentDirection == Direction::Up)
 		{
 			this->spriteIntRect.top = intRectTop_Up;
 
@@ -1348,7 +1348,7 @@ void Player::updateAnimation()
 				this->animationClock.restart();
 			}
 		}
-		else if (this->playerDetails.currentDirection == PlayerDirection::Down)
+		else if (this->playerDetails.currentDirection == Direction::Down)
 		{
 			this->spriteIntRect.top = intRectTop_Down;
 
@@ -1361,7 +1361,7 @@ void Player::updateAnimation()
 				this->animationClock.restart();
 			}
 		}
-		else if (this->playerDetails.currentDirection == PlayerDirection::Left)
+		else if (this->playerDetails.currentDirection == Direction::Left)
 		{
 			this->spriteIntRect.top = intRectTop_Left;
 
@@ -1374,7 +1374,7 @@ void Player::updateAnimation()
 				this->animationClock.restart();
 			}
 		}
-		else if (this->playerDetails.currentDirection == PlayerDirection::Right)
+		else if (this->playerDetails.currentDirection == Direction::Right)
 		{
 			this->spriteIntRect.top = intRectTop_Right;
 
@@ -1387,24 +1387,24 @@ void Player::updateAnimation()
 				this->animationClock.restart();
 			}
 		}
-		else if (this->playerDetails.currentDirection == PlayerDirection::Idle)
+		else if (this->playerDetails.currentDirection == Direction::Idle)
 		{
-			if (this->playerDetails.oldDirection == PlayerDirection::Up)
+			if (this->playerDetails.oldDirection == Direction::Up)
 			{
 				this->spriteIntRect = idleUp;
 				this->sprite.setTextureRect(this->spriteIntRect);
 			}
-			else if (this->playerDetails.oldDirection == PlayerDirection::Down)
+			else if (this->playerDetails.oldDirection == Direction::Down)
 			{
 				this->spriteIntRect = idleDown;
 				this->sprite.setTextureRect(this->spriteIntRect);
 			}
-			else if (this->playerDetails.oldDirection == PlayerDirection::Left)
+			else if (this->playerDetails.oldDirection == Direction::Left)
 			{
 				this->spriteIntRect = idleLeft;
 				this->sprite.setTextureRect(this->spriteIntRect);
 			}
-			else if (this->playerDetails.oldDirection == PlayerDirection::Right)
+			else if (this->playerDetails.oldDirection == Direction::Right)
 			{
 				this->spriteIntRect = idleRight;
 				this->sprite.setTextureRect(this->spriteIntRect);
@@ -1458,10 +1458,10 @@ void Player::updateEmoteAnimation()
 }
 void Player::updateStamina()
 {
-	if (this->playerDetails.currentStamina > 0.f && (this->playerDetails.currentDirection == PlayerDirection::Up
-		|| this->playerDetails.currentDirection == PlayerDirection::Down
-		|| this->playerDetails.currentDirection == PlayerDirection::Left
-		|| this->playerDetails.currentDirection == PlayerDirection::Right))
+	if (this->playerDetails.currentStamina > 0.f && (this->playerDetails.currentDirection == Direction::Up
+		|| this->playerDetails.currentDirection == Direction::Down
+		|| this->playerDetails.currentDirection == Direction::Left
+		|| this->playerDetails.currentDirection == Direction::Right))
 		this->playerDetails.currentStamina -= this->playerDetails.staminaDrainFactor;
 
 	if (this->playerDetails.currentStamina < 0.f)
@@ -1472,7 +1472,7 @@ void Player::updateStamina()
 	else if (this->playerDetails.currentStamina > 0.f)
 		this->playerDetails.maxVelocity = this->quarterMaxVelocity * 4.f;
 
-	if (this->playerDetails.currentStamina < this->playerDetails.maxStamina && this->playerDetails.currentDirection == PlayerDirection::Idle)
+	if (this->playerDetails.currentStamina < this->playerDetails.maxStamina && this->playerDetails.currentDirection == Direction::Idle)
 		this->playerDetails.currentStamina += this->playerDetails.staminaFillFactor;
 
 	/*std::cout << "Stamina: " << this->playerDetails.currentStamina << '\n';

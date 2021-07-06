@@ -11,15 +11,6 @@ class sf::Texture;
 class sf::CircleShape;
 class sf::RenderTarget;
 
-enum class NPCDirection
-{
-    Idle = 0,
-    Up,
-    Down,
-    Left,
-    Right
-};
-
 struct NPCDetails
 {
     /*NPC Name*/
@@ -29,8 +20,8 @@ struct NPCDetails
     EmoteStates emoteState;
 
     /*Enemy Direction*/
-    NPCDirection currentDirection;
-    NPCDirection oldDirection;
+    Direction currentDirection;
+    Direction oldDirection;
 
     /*Movement Variables*/
     sf::Vector2f velocity;
@@ -87,12 +78,8 @@ private:
     bool destroy;
 
     /*AI Variables*/
-    NPCDirection lastDirection;
-    bool goingAroundWall;
     bool interactWithPlayer;
     bool talkingToPlayer;
-    int directionNumber;
-    sf::CircleShape alertCircle;
 
     /*Emote Variables*/
     sf::Sprite emoteSprite;

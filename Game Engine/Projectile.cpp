@@ -319,39 +319,39 @@ void Projectile::setProjectileType(ProjectileTypes projectile_type)
 		std::cout << "ERROR::PROJECITLE::void Projectile::setProjectileType(ProjectileTypes projectile_type))::Invalid Switch Entry!\n";
 	}
 }
-void Projectile::setProjectileDirection(PlayerDirection player_direction)
+void Projectile::setDirection(Direction player_direction)
 {
 	switch (player_direction)
 	{
-		case PlayerDirection::Idle:
-			this->projectileDetails.projectileDirection = ProjectileDirection::Idle;
+		case Direction::Idle:
+			this->projectileDetails.direction = Direction::Idle;
 			break;
-		case PlayerDirection::Up:
-			this->projectileDetails.projectileDirection = ProjectileDirection::Up;
+		case Direction::Up:
+			this->projectileDetails.direction = Direction::Up;
 			break;
-		case PlayerDirection::Down:
-			this->projectileDetails.projectileDirection = ProjectileDirection::Down;
+		case Direction::Down:
+			this->projectileDetails.direction = Direction::Down;
 			break;
-		case PlayerDirection::Left:
-			this->projectileDetails.projectileDirection = ProjectileDirection::Left;
+		case Direction::Left:
+			this->projectileDetails.direction = Direction::Left;
 			break;
-		case PlayerDirection::Right:
-			this->projectileDetails.projectileDirection = ProjectileDirection::Right;
+		case Direction::Right:
+			this->projectileDetails.direction = Direction::Right;
 			break;
 	    default:
-			std::cout << "PROJECTILE:: void getPlayerDirection():: INVALID ENTRY...\n";
+			std::cout << "PROJECTILE:: void getDirection():: INVALID ENTRY...\n";
 			break;
 	}
 }
 void Projectile::setProjectilePosition(sf::RectangleShape player)
 {
-	if(this->projectileDetails.projectileDirection == ProjectileDirection::Up)
+	if(this->projectileDetails.direction == Direction::Up)
 	this->spriteRect.setPosition(player.getPosition().x, player.getPosition().y - 50.f);
-	if (this->projectileDetails.projectileDirection == ProjectileDirection::Down)
+	if (this->projectileDetails.direction == Direction::Down)
 		this->spriteRect.setPosition(player.getPosition().x, player.getPosition().y + 50.f);
-	if (this->projectileDetails.projectileDirection == ProjectileDirection::Left)
+	if (this->projectileDetails.direction == Direction::Left)
 		this->spriteRect.setPosition(player.getPosition().x - 50.f, player.getPosition().y);
-	if (this->projectileDetails.projectileDirection == ProjectileDirection::Right)
+	if (this->projectileDetails.direction == Direction::Right)
 		this->spriteRect.setPosition(player.getPosition().x + 50.f, player.getPosition().y);
 }
 void Projectile::setExplosionTexture()
@@ -434,19 +434,19 @@ void Projectile::updateAudio()
 }
 void Projectile::updateDirection(const float& dt)
 {
-	if (this->projectileDetails.projectileDirection == ProjectileDirection::Up)
+	if (this->projectileDetails.direction == Direction::Up)
 	{
 		this->updateVelocity(0.f, -1.f, dt);
 	}
-	else if (this->projectileDetails.projectileDirection == ProjectileDirection::Down)
+	else if (this->projectileDetails.direction == Direction::Down)
 	{
 		this->updateVelocity(0.f, 1.f, dt);
 	}
-	else if (this->projectileDetails.projectileDirection == ProjectileDirection::Left)
+	else if (this->projectileDetails.direction == Direction::Left)
 	{
 		this->updateVelocity(-1.f, 0.f, dt);
 	}
-	else if (this->projectileDetails.projectileDirection == ProjectileDirection::Right)
+	else if (this->projectileDetails.direction == Direction::Right)
 	{
 		this->updateVelocity(1.f, 0.f, dt);
 	}
