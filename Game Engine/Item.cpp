@@ -65,7 +65,7 @@ void Item::initText()
 		throw ("ERROR::ITEM::FAILED_TO_LOAD:BreatheFire.ttf");
 
 	/*Text Shape*/
-	this->textShape.setSize(sf::Vector2f(100.f, 25.f));
+	this->textShape.setSize(sf::Vector2f(125.f, 25.f));
 	this->textShape.setOrigin(this->textShape.getGlobalBounds().width / 2.f, this->textShape.getGlobalBounds().height / 2.f);
 	this->textShape.setFillColor(sf::Color(0, 0, 0, 150));
 
@@ -141,21 +141,21 @@ void Item::setItemType(ItemType item)
 			throw("ERROR::ITEM::FAILED_TO_LOAD::Consumables/hp.png");
 		this->itemDetails.itemSprite.setTexture(this->itemDetails.itemTexture);
 		this->itemDetails.hp = 25.f;
-		this->text.setString("Health Potion");
+		this->text.setString("Health Potion (P)");
 		break;
 	case ItemType::Stamina_Potion:
 		if (!this->itemDetails.itemTexture.loadFromFile("Resources/Images/Items/Consumables/stamina.png"))
 			throw("ERROR::ITEM::FAILED_TO_LOAD::Consumables/stamina.png");
 		this->itemDetails.itemSprite.setTexture(this->itemDetails.itemTexture);
 		this->itemDetails.stamina = 25.f;
-		this->text.setString("Stamina Potion");
+		this->text.setString("Stamina Potion (P)");
 		break;
 	case ItemType::Mana_Potion:
 		if (!this->itemDetails.itemTexture.loadFromFile("Resources/Images/Items/Consumables/mana.png"))
 			throw("ERROR::ITEM::FAILED_TO_LOAD::Consumables/mana.png");
 		this->itemDetails.itemSprite.setTexture(this->itemDetails.itemTexture);
 		this->itemDetails.mana = 25.f;
-		this->text.setString("Mana Potion");
+		this->text.setString("Mana Potion (P)");
 		break;
 	default:
 		std::cout << "ERROR::ITEM::void Item::setItemType(ItemType consumable)::Invalid Switch Entry!\n";
