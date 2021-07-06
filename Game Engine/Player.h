@@ -120,6 +120,7 @@ public:
     void setItemBenefits(ItemDetails item_details);
     void setEmoteState(EmoteStates emote_state);
     void setPlayerItemCollisionBool(bool player_item_collision);
+    void setPlayerNPCCollisionBool(bool player_npc_collision);
 
     /*Getters*/
     std::tuple<bool, std::string> getDoorInfo();
@@ -133,7 +134,7 @@ public:
     bool itemCollision(std::tuple<sf::RectangleShape, sf::RectangleShape> tuple);
     void tileCollision(std::tuple<bool, unsigned short, std::string_view> collision_tuple);
     void enemyCollision(std::tuple< sf::RectangleShape, float, bool> enemy_tuple);
-    void npcCollision(sf::RectangleShape npc_rect);
+    bool npcCollision(sf::RectangleShape npc_rect);
 
     /*Update Functions*/
     void updateUserInput(const float& dt);

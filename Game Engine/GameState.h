@@ -127,6 +127,7 @@ public:
     void updateManaFill();
     void updatePlayer(const float& dt);
     bool updatePlayerItemCollision();
+    bool updatePlayerNPCCollision();
     void updatePlayerCollisions();
     void updateDoorCollisions(const float& dt);
     void updateAudio();

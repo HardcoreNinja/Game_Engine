@@ -527,6 +527,18 @@ bool GameState::updatePlayerItemCollision()
 	}
 	return false;
 }
+bool GameState::updatePlayerNPCCollision()
+{
+	/*Player/NPC*/
+	int counter2 = 0;
+	for (this->npcItr = this->npcVector.begin(); this->npcItr != this->npcVector.end(); this->npcItr++)
+	{
+		if (this->player->npcCollision(this->npcVector[counter2]->getSpriteRect()))
+			return true;
+		counter2++;
+	}
+	return false; 
+}
 void GameState::updatePlayerCollisions()
 {
 	/*Player/Wall*/
@@ -540,14 +552,13 @@ void GameState::updatePlayerCollisions()
 		counter1++;
 	}
 
-	/*Player/NPC*/
-	int counter2 = 0;
-	for (this->npcItr = this->npcVector.begin(); this->npcItr != this->npcVector.end(); this->npcItr++)
-	{
-		this->player->npcCollision(this->npcVector[counter2]->getSpriteRect());
-		counter2++;
-	}
-
+	/*Player/NPC Collision*/
+	if (this->updatePlayerNPCCollision())
+		this->player->setPlayerNPCCollisionBool(true);
+	else if (!this->updatePlayerNPCCollision())
+		this->player->setPlayerNPCCollisionBool(false);
+	
+	/*PLayer/Item Collision*/
 	if (this->updatePlayerItemCollision())
 		this->player->setPlayerItemCollisionBool(true);
 	else if (!this->updatePlayerItemCollision())

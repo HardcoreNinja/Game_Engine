@@ -13,7 +13,8 @@ enum class EmoteStates
 {
 	Default = 0,
 	Alert_1,
-	Item_2
+	Item_2,
+	Talk_3
 };
 
 class Entity

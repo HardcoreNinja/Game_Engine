@@ -899,7 +899,12 @@ void Player::initEmotes()
 }
 
 /*Constructor & Destructor*/
-Player::Player(std::map<std::string, int>* supported_keys, PlayerDetails player_details, std::map<std::string, std::unique_ptr<Audio>>& audio_map)
+Player::Player(
+	std::map<std::string, int>* supported_keys, 
+	PlayerDetails player_details, 
+	std::map<std::string, 
+	std::unique_ptr<Audio>>& audio_map
+)
 	:Entity(audio_map)
 {
 	this->initVariables(player_details);
@@ -976,12 +981,21 @@ void Player::setEmoteState(EmoteStates emote_state)
 		break;
 	case EmoteStates::Alert_1:
 		if (!this->emoteTexture.loadFromFile("Resources/Images/Emotes/alert.png"))
-			throw("ERROR::NPC::FAILED_TO_LOAD::alert.png");
+			throw("ERROR::PLAYER::FAILED_TO_LOAD::alert.png");
 		emoteSprite.setTexture(this->emoteTexture);
+		break;
 	case EmoteStates::Item_2:
 		if (!this->emoteTexture.loadFromFile("Resources/Images/Emotes/item.png"))
-			throw("ERROR::NPC::FAILED_TO_LOAD::item.png");
+			throw("ERROR::PLAYER::FAILED_TO_LOAD::item.png");
 		emoteSprite.setTexture(this->emoteTexture);
+		break;
+	case EmoteStates::Talk_3:
+		if (!this->emoteTexture.loadFromFile("Resources/Images/Emotes/talk.png"))
+			throw("ERROR::PLAYER::FAILED_TO_LOAD::talk.png");
+		emoteSprite.setTexture(this->emoteTexture);
+		break;
+	default: 
+		throw("ERROR::PLAYER::void Player::setEmoteState(EmoteStates emote_state)::INVALID_ENTRY");
 	}
 }
 void Player::setPlayerItemCollisionBool(bool player_item_collision)
@@ -997,6 +1011,42 @@ void Player::setPlayerItemCollisionBool(bool player_item_collision)
 		this->itemCollisionBool = false;
 		this->playerDetails.emoteState = EmoteStates::Default;
 		this->setEmoteState(this->playerDetails.emoteState);
+	}
+}
+void Player::setPlayerNPCCollisionBool(bool player_npc_collision)
+{
+	if (player_npc_collision)
+	{
+		this->npcCollisionBool = true;
+		this->playerDetails.emoteState = EmoteStates::Talk_3;
+		this->setEmoteState(this->playerDetails.emoteState);
+		std::cout << "Player/NPC Collision\n";
+	}
+	else if (!player_npc_collision)
+	{
+		this->npcCollisionBool = false;
+		this->playerDetails.emoteState = EmoteStates::Default;
+		this->setEmoteState(this->playerDetails.emoteState);
+		std::cout << "NO Player/NPC Collision\n";
+	}
+
+	if (this->npcCollisionBool == true)
+	{
+		sf::Vector2f position = this->spriteRect.getPosition();
+
+		if (this->playerDetails.velocity.x != 0.f)
+		{
+			position.x = this->oldPosition.x;
+			this->playerDetails.velocity.x = 0.f;
+		}
+
+		if (this->playerDetails.velocity.y != 0.f)
+		{
+			position.y = this->oldPosition.y;
+			this->playerDetails.velocity.y = 0.f;
+		}
+
+		this->spriteRect.setPosition(position);
 	}
 }
 
@@ -1140,33 +1190,14 @@ void Player::enemyCollision(std::tuple<sf::RectangleShape, float, bool> enemy_tu
 		this->spriteRect.setPosition(position);
 	}
 }
-void Player::npcCollision(sf::RectangleShape npc_rect)
+bool Player::npcCollision(sf::RectangleShape npc_rect)
 {
 	if (npc_rect.getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
 	{
-		this->npcCollisionBool = true;
+		return true;
 	}
-	else
-		this->npcCollisionBool = false;
-
-	if (this->npcCollisionBool == true)
-	{
-		sf::Vector2f position = this->spriteRect.getPosition();
-
-		if (this->playerDetails.velocity.x != 0.f)
-		{
-			position.x = this->oldPosition.x;
-			this->playerDetails.velocity.x = 0.f;
-		}
-
-		if (this->playerDetails.velocity.y != 0.f)
-		{
-			position.y = this->oldPosition.y;
-			this->playerDetails.velocity.y = 0.f;
-		}
-
-		this->spriteRect.setPosition(position);
-	}
+	else if (!npc_rect.getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
+		return false;
 }
 
 /*Update Functions*/
@@ -1578,6 +1609,9 @@ void Player::render(sf::RenderTarget& target, sf::Shader* shader)
 
 	target.draw(this->sprite, shader);
 
-	if (this->itemCollisionBool)
+	if (
+		this->itemCollisionBool 
+		|| this->npcCollisionBool
+		)
 		target.draw(this->emoteSprite);
 }
