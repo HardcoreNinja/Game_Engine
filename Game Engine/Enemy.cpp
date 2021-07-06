@@ -347,6 +347,9 @@ void Enemy::setEmoteState(EmoteStates emote_state)
 		if (!this->emoteTexture.loadFromFile("Resources/Images/Emotes/alert.png"))
 			throw("ERROR::ENEMY::FAILED_TO_LOAD::alert.png");
 		this->emoteSprite.setTexture(this->emoteTexture);
+		break;
+	default:
+		throw("ERROR::ENEMY::void Enemy::setEmoteState(EmoteStates emote_state)::INVALID_ENTRY");
 	}
 }
 
@@ -686,32 +689,35 @@ void Enemy::updateEmoteAnimation()
 
 	if (deltaTime > switchTime)
 	{
-		if (this->emoteIntRect.left == intRectLeft_Start)
+		if (this->enemyDetails.emoteState == EmoteStates::Alert_1)
 		{
-			counter = 1;
-			this->emoteCounter += 1;
-			this->emoteIntRect.left += intRectLeft_FrameSize;
-			this->emoteSprite.setTextureRect(this->emoteIntRect);
-			this->emoteAnimationClock.restart();
-		}
-		else if (this->emoteIntRect.left == intRectLeft_Middle & counter == 1)
-		{
-			this->emoteIntRect.left += intRectLeft_FrameSize;
-			this->emoteSprite.setTextureRect(this->emoteIntRect);
-			this->emoteAnimationClock.restart();
-		}
-		else if (this->emoteIntRect.left == intRectLeft_Middle & counter == 0)
-		{
-			this->emoteIntRect.left -= intRectLeft_FrameSize;
-			this->emoteSprite.setTextureRect(this->emoteIntRect);
-			this->emoteAnimationClock.restart();
-		}
-		else if (this->emoteIntRect.left == intRectLeft_End)
-		{
-			counter = 0;
-			this->emoteIntRect.left -= intRectLeft_FrameSize;
-			this->emoteSprite.setTextureRect(this->emoteIntRect);
-			this->emoteAnimationClock.restart();
+			if (this->emoteIntRect.left == intRectLeft_Start)
+			{
+				counter = 1;
+				this->emoteCounter += 1;
+				this->emoteIntRect.left += intRectLeft_FrameSize;
+				this->emoteSprite.setTextureRect(this->emoteIntRect);
+				this->emoteAnimationClock.restart();
+			}
+			else if (this->emoteIntRect.left == intRectLeft_Middle & counter == 1)
+			{
+				this->emoteIntRect.left += intRectLeft_FrameSize;
+				this->emoteSprite.setTextureRect(this->emoteIntRect);
+				this->emoteAnimationClock.restart();
+			}
+			else if (this->emoteIntRect.left == intRectLeft_Middle & counter == 0)
+			{
+				this->emoteIntRect.left -= intRectLeft_FrameSize;
+				this->emoteSprite.setTextureRect(this->emoteIntRect);
+				this->emoteAnimationClock.restart();
+			}
+			else if (this->emoteIntRect.left == intRectLeft_End)
+			{
+				counter = 0;
+				this->emoteIntRect.left -= intRectLeft_FrameSize;
+				this->emoteSprite.setTextureRect(this->emoteIntRect);
+				this->emoteAnimationClock.restart();
+			}
 		}
 	}
 }
