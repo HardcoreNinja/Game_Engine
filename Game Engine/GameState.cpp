@@ -933,6 +933,7 @@ void GameState::update(const float& dt)
 			this->updateInventory(dt);
 		else if (!this->inventory->getShowInventory() && this->isGameOver)
 		{
+			this->gameInfo->window->setMouseCursorVisible(true);
 			this->gameOver->update(static_cast<sf::Vector2f>(this->mousePositionGUI));
 			this->updateGameOverButtons();
 		}
