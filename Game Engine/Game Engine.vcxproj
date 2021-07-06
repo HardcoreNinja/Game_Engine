@@ -216,6 +216,7 @@
     <None Include="Config\mainmenu_keybinds.ini" />
     <None Include="Config\music.ini" />
     <None Include="Config\newcharacterscreen_keybinds.ini" />
+    <None Include="Config\npc_keybinds.ini" />
     <None Include="Config\player_details.ini" />
     <None Include="Config\player_keybinds.ini" />
     <None Include="Config\settings_active_element_ID.ini" />

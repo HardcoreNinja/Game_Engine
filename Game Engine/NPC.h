@@ -106,6 +106,7 @@ private:
 
     /*Initializers*/
     void initVariables(std::vector<sf::Vector2f> npc_spawn_positions, std::vector<sf::Vector2f> path_finder_markings);
+    void initKeybinds(std::map<std::string, int>* supported_keys);
     void initSpriteRect();
     void initSprite(bool male_1_female_0, int texture_switch_number);
     void initText();
@@ -116,7 +117,8 @@ public:
         std::vector<sf::Vector2f> path_finder_markings, 
         bool male_1_female_0, 
         int texture_switch_number,
-        std::map<std::string, std::unique_ptr<Audio>>& audio_map
+        std::map<std::string, std::unique_ptr<Audio>>& audio_map,
+        std::map<std::string, int>* supported_keys
     );
     virtual ~NPC();
 
@@ -131,6 +133,7 @@ public:
     sf::RectangleShape getSpriteRect();
     std::tuple<sf::RectangleShape, float, bool> getSpriteRectDamageInteractWithPlayerBool();
     const bool getShowNPCText();
+    sf::CircleShape getAlertCircle();
 
     /*Collisions Functions*/
     void projectileCollision(std::tuple<sf::RectangleShape, int> collision_tuple);
@@ -140,7 +143,7 @@ public:
 
     /*Update Functions*/
     void updateDialog();
-    void updateInteractWithPlayer(sf::RectangleShape player_rect, sf::Vector2f mouse_view, const sf::Event& smfl_events, const bool& key_time);
+    void updateInteractWithPlayer(sf::RectangleShape player_rect, const sf::Event& smfl_events, const bool& key_time);
     void updatePath(sf::RectangleShape player_rect, const float& dt);
     void updateAIDirection(sf::RectangleShape player_rect, const float& dt);
     void updateAIMovement(const float& dt);
@@ -149,7 +152,7 @@ public:
     void updateVelocity(float dir_x, float dir_y, const float& dt);
     void updateMovement(const float& dt);
     void updateAnimation();
-    void update(sf::RectangleShape player_rect, sf::Vector2f mouse_view, const sf::Event& smfl_events, const bool& key_time, const float& dt);
+    void update(sf::RectangleShape player_rect, const sf::Event& smfl_events, const bool& key_time, const float& dt);
 
     /*Render Functions*/
     void render(sf::RenderTarget& target);

@@ -316,6 +316,9 @@
     <None Include="Shaders\Player\vertex.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="Config\npc_keybinds.ini">
+      <Filter>Resource Files\Config\Keybinds</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Fonts\Dosis.ttf">

@@ -1029,25 +1029,6 @@ void Player::setPlayerNPCCollisionBool(bool player_npc_collision)
 		this->setEmoteState(this->playerDetails.emoteState);
 		std::cout << "NO Player/NPC Collision\n";
 	}
-
-	if (this->npcCollisionBool == true)
-	{
-		sf::Vector2f position = this->spriteRect.getPosition();
-
-		if (this->playerDetails.velocity.x != 0.f)
-		{
-			position.x = this->oldPosition.x;
-			this->playerDetails.velocity.x = 0.f;
-		}
-
-		if (this->playerDetails.velocity.y != 0.f)
-		{
-			position.y = this->oldPosition.y;
-			this->playerDetails.velocity.y = 0.f;
-		}
-
-		this->spriteRect.setPosition(position);
-	}
 }
 
 /*Getters*/
@@ -1190,14 +1171,41 @@ void Player::enemyCollision(std::tuple<sf::RectangleShape, float, bool> enemy_tu
 		this->spriteRect.setPosition(position);
 	}
 }
-bool Player::npcCollision(sf::RectangleShape npc_rect)
+bool Player::npcCollision(sf::RectangleShape npc_rectangle, sf::CircleShape npc_circle)
 {
-	if (npc_rect.getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
+	bool npcRectCollision = false;
+
+	if (npc_rectangle.getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
+		npcRectCollision = true;
+	else if (!npc_rectangle.getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
+		npcRectCollision = false;
+
+	if (npcRectCollision == true)
+	{
+		sf::Vector2f position = this->spriteRect.getPosition();
+
+		if (this->playerDetails.velocity.x != 0.f)
+		{
+			position.x = this->oldPosition.x;
+			this->playerDetails.velocity.x = 0.f;
+		}
+
+		if (this->playerDetails.velocity.y != 0.f)
+		{
+			position.y = this->oldPosition.y;
+			this->playerDetails.velocity.y = 0.f;
+		}
+
+		this->spriteRect.setPosition(position);
+	}
+
+	if (npc_circle.getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
 	{
 		return true;
 	}
-	else if (!npc_rect.getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
+	else if (!npc_circle.getGlobalBounds().intersects(this->spriteRect.getGlobalBounds()))
 		return false;
+
 }
 
 /*Update Functions*/

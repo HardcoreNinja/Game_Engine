@@ -202,17 +202,17 @@ void GameState::initTileMap(PlayerDetails player_details)
 			this->player->setOldDirection(player_details.oldDirection);
 
 			/*NPC Female #9*/
-			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 9, this->audioMap);
+			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 9, this->audioMap, this->gameInfo->supportedKeys);
 			this->npc->setNPCPosition();
 			this->npcVector.push_back(std::move(this->npc));
 
 			/*NPC Female #17*/
-			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 17, this->audioMap);
+			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 17, this->audioMap, this->gameInfo->supportedKeys);
 			this->npc->setNPCPosition();
 			this->npcVector.push_back(std::move(this->npc));
 
 			/*NPC Male #53*/
-			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 1, 53, this->audioMap);
+			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 1, 53, this->audioMap, this->gameInfo->supportedKeys);
 			this->npc->setNPCPosition();
 			this->npcVector.push_back(std::move(this->npc));
 
@@ -530,12 +530,12 @@ bool GameState::updatePlayerItemCollision()
 bool GameState::updatePlayerNPCCollision()
 {
 	/*Player/NPC*/
-	int counter2 = 0;
+	int counter = 0;
 	for (this->npcItr = this->npcVector.begin(); this->npcItr != this->npcVector.end(); this->npcItr++)
 	{
-		if (this->player->npcCollision(this->npcVector[counter2]->getSpriteRect()))
+		if (this->player->npcCollision( this->npcVector[counter]->getSpriteRect(), this->npcVector[counter]->getAlertCircle()))
 			return true;
-		counter2++;
+		counter++;
 	}
 	return false; 
 }
@@ -646,7 +646,7 @@ void GameState::updateDoorCollisions(const float& dt)
 		this->tileMap->loadFromFile("Config/house_a.ini", "Resources/Images/Tiles/PipoyaMasterLevel.png");
 		this->enterTilePosition = this->tileMap->getEnterTilePosition();
 
-		/*PLayer*/
+		/*Player*/
 		this->player->setPosition(this->enterTilePosition);
 		this->player->setOldDirection(PlayerDirection::Up);
 		this->player->setCurrentDirection(PlayerDirection::Idle);
@@ -654,17 +654,17 @@ void GameState::updateDoorCollisions(const float& dt)
 		this->player->setCurrentTileMap(CurrentTileMap::HOUSE_A);
 
 		/*NPC Female #9*/
-		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 9, this->audioMap);
+		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 9, this->audioMap, this->gameInfo->supportedKeys);
 		this->npc->setNPCPosition();
 		this->npcVector.push_back(std::move(this->npc));
 
 		/*NPC Female #17*/
-		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 17, this->audioMap);
+		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 17, this->audioMap, this->gameInfo->supportedKeys);
 		this->npc->setNPCPosition();
 		this->npcVector.push_back(std::move(this->npc));
 
 		/*NPC Male #53*/
-		this->npc = std::make_unique<NPC>( this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 1, 53, this->audioMap);
+		this->npc = std::make_unique<NPC>( this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 1, 53, this->audioMap, this->gameInfo->supportedKeys);
 		this->npc->setNPCPosition();
 		this->npcVector.push_back(std::move(this->npc));
 
@@ -806,7 +806,7 @@ void GameState::updateNPCLoop(const float& dt)
 	int counter1 = 0;
 	for (this->npcItr = this->npcVector.begin(); this->npcItr != this->npcVector.end(); this->npcItr++)
 	{
-		this->npcVector[counter1]->update(this->player->getSpriteRect(), this->mousePositionView, *this->gameInfo->sfmlEvent, this->getKeyTime(), dt);
+		this->npcVector[counter1]->update(this->player->getSpriteRect(), *this->gameInfo->sfmlEvent, this->getKeyTime(), dt);
 		counter1++;
 	}
 }

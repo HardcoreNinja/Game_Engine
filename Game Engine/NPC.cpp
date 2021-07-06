@@ -50,6 +50,27 @@ void NPC::initVariables(std::vector<sf::Vector2f> npc_spawn_positions, std::vect
 	this->talkingToPlayer = false;
 	this->directionNumber = 0;
 }
+void NPC::initKeybinds(std::map<std::string, int>* supported_keys)
+{
+	std::ifstream ifs("Config/npc_keybinds.ini");
+
+	if (ifs.is_open())
+	{
+		std::string key = "";
+		std::string keyboardKey = "";
+
+		while (ifs >> key >> keyboardKey)
+
+			this->keybinds[key] = supported_keys->at(keyboardKey);
+	}
+	ifs.close();
+
+	//Debug Tester
+	for (auto i : this->keybinds)
+	{
+		std::cout << i.first << " " << i.second << '\n';
+	}
+}
 void NPC::initSpriteRect()
 {
 	/*Enemy Sprite Rect*/
@@ -60,7 +81,7 @@ void NPC::initSpriteRect()
 	this->spriteRect.setOrigin(this->spriteRect.getGlobalBounds().width / 2.f, this->spriteRect.getGlobalBounds().height / 2.f);
 
 	/*Alert Circle*/
-	this->alertCircle = sf::CircleShape(200);
+	this->alertCircle = sf::CircleShape(50);
 	this->alertCircle.setOutlineThickness(1.f);
 	this->alertCircle.setOutlineColor(sf::Color::Magenta);
 	this->alertCircle.setFillColor(sf::Color::Transparent);
@@ -131,11 +152,13 @@ NPC::NPC(
 	std::vector<sf::Vector2f> path_finder_markings, 
 	bool male_1_female_0, 
 	int texture_switch_number, 
-	std::map<std::string, std::unique_ptr<Audio>>& audio_map
+	std::map<std::string, std::unique_ptr<Audio>>& audio_map,
+	std::map<std::string, int>* supported_keys
 )
 	:Entity(audio_map)
 {
 	this->initVariables(npc_spawn_positions, path_finder_markings);
+	this->initKeybinds(supported_keys);
 	this->initSpriteRect();
 	this->initSprite(male_1_female_0, texture_switch_number);
 	this->initText();
@@ -1004,7 +1027,10 @@ const bool NPC::getShowNPCText()
 {
 	return this->showNPCText;
 }
-
+sf::CircleShape NPC::getAlertCircle()
+{
+	return this->alertCircle;
+}
 
 /*Collisions Functions*/
 void NPC::projectileCollision(std::tuple<sf::RectangleShape, int> collision_tuple)
@@ -1132,9 +1158,9 @@ void NPC::updateDialog()
 		this->audioMap["NPC_TEXT_CLICK"]->play();
 	}
 }
-void NPC::updateInteractWithPlayer(sf::RectangleShape player_rect, sf::Vector2f mouse_view, const sf::Event& smfl_events, const bool& key_time)
+void NPC::updateInteractWithPlayer(sf::RectangleShape player_rect, const sf::Event& smfl_events, const bool& key_time)
 {
-	if (this->spriteRect.getGlobalBounds().contains(mouse_view) && smfl_events.mouseButton.button == sf::Mouse::Left)
+	if (this->alertCircle.getGlobalBounds().intersects(player_rect.getGlobalBounds()) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("TALK"))))
 	{
 		std::cout << "Clicked NPC!\n";
 		this->interactWithPlayer = true;
@@ -1602,10 +1628,10 @@ void NPC::updateAnimation()
 		}
 	}
 }
-void NPC::update(sf::RectangleShape player_rect, sf::Vector2f mouse_view, const sf::Event& smfl_events, const bool& key_time, const float& dt)
+void NPC::update(sf::RectangleShape player_rect, const sf::Event& smfl_events, const bool& key_time, const float& dt)
 {
 	/*Interact With Player*/
-	this->updateInteractWithPlayer(player_rect, mouse_view, smfl_events, key_time);
+	this->updateInteractWithPlayer(player_rect, smfl_events, key_time);
 
 	/*Interact With Player or Random Direction*/
 	if (this->interactWithPlayer && !this->talkingToPlayer)
