@@ -152,7 +152,15 @@ void Inventory::updateUseItem(const sf::Event& sfml_events, const sf::Vector2i& 
 {
 	for (int i = 0; i < this->inventoryDetails.itemDetailsVector.size(); i++)
 	{
-		if (this->cellVector[i]->getGlobalBounds().contains(static_cast<float>(mouse_window.x), static_cast<float>(mouse_window.y)) && (sfml_events.mouseButton.button == sf::Mouse::Left && key_time))
+		if (
+			this->cellVector[i]->getGlobalBounds().contains(
+				static_cast<float>(mouse_window.x), 
+				static_cast<float>(mouse_window.y)
+			) 
+			&& sfml_events.type == sf::Event::MouseButtonPressed 
+			&& sfml_events.mouseButton.button == sf::Mouse::Left 
+			&& key_time
+			)
 		{
 			switch (this->inventoryDetails.itemDetailsVector[i].itemType)
 			{
