@@ -22,40 +22,37 @@ TILEMAP::Tile::Tile(
 	//this->shape.setOutlineThickness(1.f);
 	this->shape.setRotation(this->shapeRotation);
 
-	/*Color Codes for Collision & Tile Types
-	if (this->collision)
+	
+	/*if (this->collision)
 	{
 		this->shape.setFillColor(sf::Color::Red);
-	}
+	}*/
 
+	/*Color Codes for Collision & Tile Types
 	switch (this->tileType)
 	{
 	case TILEMAP::TileType::Default:
-		this->shape.setOutlineColor(sf::Color::Transparent);
 		break;
 	case TILEMAP::TileType::Chest:
-		this->shape.setOutlineColor(sf::Color::Yellow);
+		this->shape.setColor(sf::Color::Yellow);
 		break;
 	case TILEMAP::TileType::Door:
-		this->shape.setOutlineColor(sf::Color::Blue);
+		this->shape.setColor(sf::Color::Blue);
 		break;
 	case TILEMAP::TileType::Wall:
-		this->shape.setOutlineColor(sf::Color::Magenta);
+		this->shape.setColor(sf::Color::Red);
 		break;
 	case TILEMAP::TileType::Enemy_Spawn_Point:
-		this->shape.setOutlineColor(sf::Color::White);
+		this->shape.setColor(sf::Color::White);
 		break;
 	case TILEMAP::TileType::Path_Finder_Markings:
-		this->shape.setOutlineColor(sf::Color::Cyan);
-		this->shape.setFillColor(sf::Color::Cyan);
+		this->shape.setColor(sf::Color::Cyan);
 		break;
 	case TILEMAP::TileType::Invisible_Wall:
-		this->shape.setOutlineColor(sf::Color::White);
-		this->shape.setFillColor(sf::Color::Red);
+		this->shape.setColor(sf::Color::Magenta);
 		break;
 	case TILEMAP::TileType::Enter_Tile:
-		this->shape.setOutlineColor(sf::Color::Cyan);
-		this->shape.setFillColor(sf::Color::Magenta);
+		this->shape.setColor(sf::Color(76, 0, 153));
 		break;
 	}*/
 }

@@ -39,12 +39,7 @@ private:
     bool cameFromMainMenu;
 
     /*Tile Map*/
-    std::unique_ptr<TILEMAP::TileMap> tileMap;
     sf::Vector2f enterTilePosition;
-
-    /*Render Texture*/
-    sf::RenderTexture renderTexture;
-    sf::Sprite renderSprite;
 
     /*Audio*/ 
     std::unique_ptr<Audio> audio;
@@ -58,9 +53,6 @@ private:
 
     /*Inventory*/
     std::unique_ptr<Inventory> inventory;
-
-    /*Shader*/
-    sf::Shader shader;
 
     /*Projectile Variables*/
     int projectileTypeCounter;

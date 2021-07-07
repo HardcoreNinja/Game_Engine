@@ -30,6 +30,9 @@ private:
     void initMainMenuKeybinds();
     void initMainMenuFonts();
     void initMainMenuButtons();
+    void initShader();
+    void initRenderTexture();
+    void initTileMap();
 public:
     /*Constuctor & Destructor*/
     MainMenu(GameInfo* game_info);
@@ -48,6 +51,7 @@ public:
     void loadProjectileDetailsFromFile();
 
     /*Render Functions*/
+    void renderTileMap(sf::RenderTarget& target);
     void renderButtons(sf::RenderTarget& target);
     virtual void render(sf::RenderTarget* target);
 };

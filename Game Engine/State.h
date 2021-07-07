@@ -77,6 +77,16 @@ protected:
 	sf::View defaultWindowView;
 	sf::View view;
 
+	/*Render Texture*/
+	sf::RenderTexture renderTexture;
+	sf::Sprite renderSprite;
+
+	/*Tile Map*/
+	std::unique_ptr<TILEMAP::TileMap> tileMap;
+
+	/*Shader*/
+	sf::Shader shader;
+
 	/*Pause Menu*/
 	std::unique_ptr<PauseMenu> pauseMenu;
 

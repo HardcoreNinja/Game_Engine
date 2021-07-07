@@ -88,7 +88,7 @@ void Editor::initTextureSelector()
 
 	/*Gray Side Bar*/
 	this->sideBar.setSize(sf::Vector2f(40.f, static_cast<float>(this->gameInfo->window->getSize().y)));
-	this->sideBar.setFillColor(sf::Color(50, 50, 50, 255));
+	this->sideBar.setFillColor(sf::Color(50, 50, 50, 100));
 	this->sideBar.setOutlineColor(sf::Color::White);
 	this->sideBar.setOutlineThickness(1.f);
 }

@@ -38,7 +38,7 @@ void MainMenu::initMainMenuKeybinds()
 }
 void MainMenu::initMainMenuFonts()
 {
-	if (!this->font.loadFromFile("Resources/Fonts/Dosis.ttf"))
+	if (!this->font.loadFromFile("Resources/Fonts/BreatheFire.ttf"))
 	{
 		throw ("ERROR::MAIN_MENU::FAILED_TO_LOAD:Dosis.ttf");
 	}
@@ -82,15 +82,52 @@ void MainMenu::initMainMenuButtons()
 		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 }
+void MainMenu::initShader()
+{
+	if (!this->shader.loadFromFile("Shaders/Player/vertex.vert", "Shaders/Player/fragment.frag"))
+		std::cout << "Error Loading Shader!\n";
+}
+void MainMenu::initRenderTexture()
+{
+	//std::cout << "Window Size: " << this->gameInfo->window->getSize().x << " x " << this->gameInfo->window->getSize().y << '\n';
+	this->renderTexture.create(this->gameInfo->window->getSize().x, this->gameInfo->window->getSize().y);
+	this->renderTexture.setSmooth(true);
+	this->renderSprite.setTexture(this->renderTexture.getTexture());
+	this->renderSprite.setTextureRect(sf::IntRect(0, 0, this->gameInfo->window->getSize().x, this->gameInfo->window->getSize().y));
+}
+void MainMenu::initTileMap()
+{
+	sf::Vector2i mapDimensions = sf::Vector2i(0, 0);
+	int tileSize = 0;
+
+	std::ifstream ifs("Config/main_menu_tile_map.ini");
+	if (ifs.is_open())
+	{
+		ifs >> mapDimensions.x >> mapDimensions.y;
+		ifs >> tileSize;
+	}
+	ifs.close();
+
+	this->tileMap = std::make_unique<TILEMAP::TileMap>(
+		static_cast<float>(tileSize),                                //Tile Size
+		mapDimensions.x, mapDimensions.y,              //Map Width & Height (in Squares)
+		tileSize, tileSize,                            //Texture Width & Height
+		"Resources/Images/Tiles/PipoyaMasterLevel.png" //Tile Sheet File Path
+		);
+
+	this->tileMap->loadFromFile("Config/main_menu_tile_map.ini", "Resources/Images/Tiles/PipoyaMasterLevel.png");
+}
 
 /*Constructor & Destructor*/
 MainMenu::MainMenu(GameInfo* game_info)
 	: State(game_info)
 {
-	this->initMainMenuBackground();
+//	this->initMainMenuBackground();
 	this->initMainMenuKeybinds();
 	this->initMainMenuFonts();
 	this->initMainMenuButtons();
+	this->initRenderTexture();
+	this->initTileMap();
 }
 MainMenu::~MainMenu()
 {
@@ -234,6 +271,10 @@ void MainMenu::loadProjectileDetailsFromFile()
 }
 
 /*Render Functions*/
+void MainMenu::renderTileMap(sf::RenderTarget& target)
+{
+	this->tileMap->render(target, this->view, sf::Vector2f(static_cast<float>(this->gameInfo->window->getSize().x) / 2.f, static_cast<float>(this->gameInfo->window->getSize().y) / 2.f), &this->shader);
+}
 void MainMenu::renderButtons(sf::RenderTarget& target)
 {
 	for (auto& i : this->buttons)
@@ -243,6 +284,14 @@ void MainMenu::render(sf::RenderTarget* target)
 {
 	if (!target)
 		target = this->gameInfo->window;
-	target->draw(this->backgroundRect);
+	//target->draw(this->backgroundRect);
+
+	/*Items Rendered to Render Texture*/
+	this->renderTexture.clear();
+	this->renderTileMap(this->renderTexture);
+	this->renderTexture.display();
+	target->draw(this->renderSprite);
+
 	this->renderButtons(*target);
+
 }
