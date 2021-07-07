@@ -144,6 +144,18 @@ void NPC::initText()
 	this->textBody.setFont(font);
 	this->textBody.setFillColor(sf::Color::White);
 	this->textBody.setCharacterSize(15);
+
+	/*Text Collision Shape*/
+	this->textCollisionShape.setSize(sf::Vector2f(100.f, 25.f));
+	this->textCollisionShape.setOrigin(this->textCollisionShape.getGlobalBounds().width / 2.f, this->textCollisionShape.getGlobalBounds().height / 2.f);
+	this->textCollisionShape.setFillColor(sf::Color(0, 0, 0, 150));
+
+	/*Text Collision*/
+	this->textCollision.setFont(font);
+	this->textCollision.setFillColor(sf::Color::White);
+	this->textCollision.setCharacterSize(15);
+	this->textCollision.setOrigin(this->textCollision.getGlobalBounds().width / 2.f, this->textCollision.getGlobalBounds().height / 2.f);
+	this->textCollision.setPosition(sf::Vector2f(this->textCollisionShape.getPosition().x, this->textCollisionShape.getPosition().y - static_cast<float>(this->textCollision.getCharacterSize()) / 4.f));
 }
 
 /*Constructor & Destructor*/
@@ -443,6 +455,7 @@ void NPC::setNPC(bool male_1_female_0, int texture_switch_number)
 			this->sprite.setTexture(this->texture);
 			this->npcDetails.name = "Lydian: ";
 			this->npcDetails.dialog1 = "The library started funding drag queen story hour.\n They said if you don't let your child\n sit on their lap, you're a bigot.\n Is that normal?\n";
+			this->textCollision.setString("Lydian (T)");
 			break;
 		case 54:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Male/54.png"))
@@ -576,6 +589,7 @@ void NPC::setNPC(bool male_1_female_0, int texture_switch_number)
 			this->sprite.setTexture(this->texture);
 			this->npcDetails.name = "Aeolian: ";
 			this->npcDetails.dialog1 = "Wow, that's something that Joe Biden won.\n I didn't think he had a chance.\n How do you when the election with no audience?\n";
+			this->textCollision.setString("Aeolian (T)");
 			break;
 		case 10:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/10.png"))
@@ -618,6 +632,7 @@ void NPC::setNPC(bool male_1_female_0, int texture_switch_number)
 			this->sprite.setTexture(this->texture);
 			this->npcDetails.name = "Pali: ";
 			this->npcDetails.dialog1 = "I took the COVID-19 vaccine and now I feel funny.\n Once they enacted the 5G my mood has been different.\n Do you think it could have been posion?\n";
+			this->textCollision.setString("Pali (T)");
 			break;
 		case 18:
 			if (!this->texture.loadFromFile("Resources/Images/Characters/Female/18.png"))
@@ -1128,12 +1143,14 @@ void NPC::alertCircleCollision(sf::RectangleShape player_rect)
 {
 	if (this->alertCircle.getGlobalBounds().intersects(player_rect.getGlobalBounds()))
 	{
+		std::cout << "Player Colliding NPC Circle!\n";
 		this->alertCircleCollisionBool = true;
-		this->interactWithPlayer = true;
-		//std::cout << "Alert Circle Player Collision Bool: " << this->alertCircleCollisionBool << '\n';
 	}
 	else
+	{
+		std::cout << "Player NOT Colliding NPC Circle!\n";
 		this->alertCircleCollisionBool = false;
+	}
 
 	if (this->alertCircleCollisionBool)
 	{
@@ -1670,6 +1687,10 @@ void NPC::update(sf::RectangleShape player_rect, const sf::Event& smfl_events, c
 		this->textBodyShape.getPosition().x - (this->textBodyShape.getSize().x / 2.f) + (this->textBodyShape.getSize().x / 2.f),
 		this->textBodyShape.getPosition().y - static_cast<float>(this->textBody.getCharacterSize()) / 4.f)
 	);
+
+	/*Set Sprite Position to Sprite Rect*/
+	this->textCollisionShape.setPosition(sf::Vector2f(this->spriteRect.getPosition().x, this->spriteRect.getPosition().y - 50.f));
+	this->textCollision.setPosition(sf::Vector2f(this->textCollisionShape.getPosition().x, this->textCollisionShape.getPosition().y - static_cast<float>(this->textCollision.getCharacterSize()) / 4.f));
 }
 
 /*Render Functions*/
@@ -1680,7 +1701,11 @@ void NPC::render(sf::RenderTarget& target)
 	//target.draw(this->alertCircle);
 
 	if (this->alertCircleCollisionBool)
-		target.draw(this->emoteSprite);
+	{
+		//target.draw(this->emoteSprite);
+		target.draw(this->textCollisionShape);
+		target.draw(this->textCollision);
+	}
 
 	if (this->showNPCText)
 	{

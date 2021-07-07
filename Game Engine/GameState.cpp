@@ -837,6 +837,14 @@ void GameState::updateNPCCollisions()
 			this->npcVector[j]->projectileCollision(this->projectileVector[i]->getProjectileSpriteRectAndInt());
 		}
 	}
+
+	/*NPC Alert Circle/Player*/
+	int counter3 = 0;
+	for (this->npcItr = this->npcVector.begin(); this->npcItr != this->npcVector.end(); this->npcItr++)
+	{
+		this->npcVector[counter3]->alertCircleCollision(this->player->getSpriteRect());
+		counter3++;
+	}
 }
 void GameState::updateItemLoop(const float& dt)
 {
@@ -1061,8 +1069,8 @@ void GameState::render(sf::RenderTarget* target)
 	this->renderSprite.setTexture(this->renderTexture.getTexture());
 	this->renderProjectiles(this->renderTexture);
 	this->renderEnemies(this->renderTexture);
-	this->renderNPCs(this->renderTexture);
 	this->renderPlayer(this->renderTexture);
+	this->renderNPCs(this->renderTexture);
 	this->renderItems(this->renderTexture);
 	this->renderTexture.display();
 	target->draw(this->renderSprite);

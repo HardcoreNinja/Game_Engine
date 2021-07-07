@@ -60,12 +60,14 @@ private:
     bool showNPCText;
     sf::Text textName;
     sf::Text textBody;
+    sf::Text textCollision;
     sf::Font font;
     sf::Clock dialogClock; 
     int character;
     sf::RectangleShape textBackground;
     sf::RectangleShape textNameShape;
     sf::RectangleShape textBodyShape;
+    sf::RectangleShape textCollisionShape;
 
     /*Collision Variables*/
     bool projectileCollisionBool;
