@@ -65,7 +65,7 @@ void PauseMenu::addButton(std::string map_key, float pos_y, std::string button_t
 		pos_x, pos_y,                  //Button Rect Position
 		width, height,                 //Button Rect Size
 		&this->font, button_text, 50,   //Button Font, Text, and Character Size
-		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50),//Text Color
+		sf::Color::White, sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50),//Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));    //Button Rect Fill Color (Outline Color Optional)
 }
 

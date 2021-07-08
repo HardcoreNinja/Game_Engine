@@ -35,9 +35,9 @@ void GameState::initKeybinds()
 }
 void GameState::initFonts()
 {
-	if (!this->font.loadFromFile("Resources/Fonts/Dosis.ttf"))
+	if (!this->font.loadFromFile("Resources/Fonts/BreatheFire.ttf"))
 	{
-		throw ("ERROR::MAIN_MENU::FAILED_TO_LOAD:Dosis.ttf");
+		throw ("ERROR::GAME_STATE::FAILED_TO_LOAD:BreatheFire.ttf");
 	}
 
 	this->text.setFont(this->font);
@@ -123,7 +123,6 @@ void GameState::initTileMap(PlayerDetails player_details)
 		this->initEnemies();
 
 		/*Audio*/
-		this->gameInfo->audioMap["LEVEL_A"]->setVolume(0.f);
 		this->gameInfo->audioMap["LEVEL_A"]->setLoop(true);
 		this->gameInfo->audioMap["LEVEL_A"]->play();
 		this->gameInfo->audioMap["LEVEL_A"]->setFadeIn(true);
@@ -173,7 +172,6 @@ void GameState::initTileMap(PlayerDetails player_details)
 			this->npcVector.push_back(std::move(this->npc));
 
 			/*Audio*/
-			this->gameInfo->audioMap["HOUSE_A"]->setVolume(0.f);
 			this->gameInfo->audioMap["HOUSE_A"]->setLoop(true);
 			this->gameInfo->audioMap["HOUSE_A"]->play();
 			this->gameInfo->audioMap["HOUSE_A"]->setFadeIn(true);
