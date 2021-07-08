@@ -38,6 +38,11 @@ struct GameInfo
 	/*User Input*/
 	std::map<std::string, int>* supportedKeys;
 
+	/*Audio*/
+	std::unique_ptr<Audio> audio;
+	std::map<std::string, std::unique_ptr<Audio>> audioMap;
+	std::map<std::string, std::unique_ptr<Audio>>::iterator audioMapItr;
+
 	/*Cursor*/
 	sf::Cursor* cursor;
 	sf::Cursor* cursorDown;
@@ -86,10 +91,6 @@ protected:
 	/*Tile Map*/
 	std::unique_ptr<TILEMAP::TileMap> tileMap;
 
-	/*Audio*/
-	std::unique_ptr<Audio> audio;
-	std::map<std::string, std::unique_ptr<Audio>> audioMap;
-
 	/*Shader*/
 	sf::Shader shader;
 
@@ -113,6 +114,7 @@ protected:
 
 	/*Initializers*/
 	void initVariables(GameInfo* game_info);
+	void initAudio();
 	void initView();
 public:
 	/*Constuctor & Destructor*/

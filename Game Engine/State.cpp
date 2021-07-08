@@ -12,6 +12,46 @@ void State::initVariables(GameInfo* game_info)
 	this->isPaused = false;
 	this->initView();
 }
+void State::initAudio()
+{
+	std::ifstream ifs_sfx("Config/sfx.ini");
+
+	if (ifs_sfx.is_open())
+	{
+		std::string key = "";
+		std::string file_path = "";
+
+		while (ifs_sfx >> key >> file_path)
+		{
+			std::cout << file_path << '\n';
+			this->gameInfo->audio = std::make_unique<Audio>(true, file_path);
+			this->gameInfo->audioMap[key] = std::move(this->gameInfo->audio);
+		}
+	}
+	ifs_sfx.close();
+
+	std::ifstream ifs_music("Config/music.ini");
+
+	if (ifs_music.is_open())
+	{
+		std::string key = "";
+		std::string file_path = "";
+
+		while (ifs_music >> key >> file_path)
+		{
+			std::cout << file_path << '\n';
+			this->gameInfo->audio = std::make_unique<Audio>(false, file_path);
+			this->gameInfo->audioMap[key] = std::move(this->gameInfo->audio);
+		}
+	}
+	ifs_music.close();
+
+	//Debug Tester
+	for (auto& i : this->gameInfo->audioMap)
+	{
+		std::cout << i.first << " " << i.second << '\n';
+	}	
+}
 void State::initView()
 {
 	this->defaultWindowView = this->gameInfo->window->getDefaultView();
@@ -25,6 +65,7 @@ void State::initView()
 State::State(GameInfo* game_info)
 {
 	this->initVariables(game_info);
+	this->initAudio();
 }
 State::~State()
 {

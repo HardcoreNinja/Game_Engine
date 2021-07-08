@@ -82,7 +82,6 @@ private:
 
     /*Initializers*/
     void initVariables(bool came_from_main_menu, PlayerDetails player_details, ProjectileDetails projectile_details);
-    void initAudio();
     void initKeybinds();
     void initFonts();
     void initShader();

@@ -53,19 +53,6 @@ void Game::initCursor()
 
 	this->window->setMouseCursor(this->cursor);
 }
-
-void Game::initGameInfo()
-{
-	this->gameInfo.states = &this->states;
-	this->gameInfo.graphicsSettings = &this->graphicsSettings;
-	this->gameInfo.window = this->window.get();
-	this->gameInfo.sfmlEvent = &this->sfmlEvent;
-	this->gameInfo.supportedKeys = &this->supportedKeys;
-	this->gameInfo.cursorImage = &this->cursorImage;
-	this->gameInfo.cursor = &this->cursor;
-	this->gameInfo.cursorImageDown = &this->cursorImageDown;
-	this->gameInfo.cursorDown = &this->cursorDown;
-}
 void Game::initSupportedKeys()
 {
 	std::ifstream ifs("Config/supported_keys.ini");
@@ -89,6 +76,18 @@ void Game::initSupportedKeys()
 			std::cout << i.first << " " << i.second << '\n';
 		}
 }
+void Game::initGameInfo()
+{
+	this->gameInfo.states = &this->states;
+	this->gameInfo.graphicsSettings = &this->graphicsSettings;
+	this->gameInfo.window = this->window.get();
+	this->gameInfo.sfmlEvent = &this->sfmlEvent;
+	this->gameInfo.supportedKeys = &this->supportedKeys;
+	this->gameInfo.cursorImage = &this->cursorImage;
+	this->gameInfo.cursor = &this->cursor;
+	this->gameInfo.cursorImageDown = &this->cursorImageDown;
+	this->gameInfo.cursorDown = &this->cursorDown;
+}
 void Game::initStates()
 {
 	this->states.push_back(std::make_unique<MainMenu>(&this->gameInfo));
@@ -101,8 +100,8 @@ Game::Game()
 	this->initGraphicsSettings();
 	this->initWindow();
 	this->initCursor();
-	this->initGameInfo();
 	this->initSupportedKeys();
+	this->initGameInfo();
 	this->initStates();
 }
 Game::~Game()

@@ -12,46 +12,6 @@ void GameState::initVariables(bool came_from_main_menu, PlayerDetails player_det
 	this->maxNumberOfEnemies = 4;
 	this->numberOfEnemies = this->maxNumberOfEnemies;
 }
-void GameState::initAudio()
-{
-	std::ifstream ifs_sfx("Config/sfx.ini");
-
-	if (ifs_sfx.is_open())
-	{
-		std::string key = "";
-		std::string file_path = "";
-
-		while (ifs_sfx >> key >> file_path)
-		{
-			std::cout << file_path << '\n';
-			this->audio = std::make_unique<Audio>(true, file_path);
-			this->audioMap[key] = std::move(this->audio);
-		}
-	}
-	ifs_sfx.close();
-
-	std::ifstream ifs_music("Config/music.ini");
-
-	if (ifs_music.is_open())
-	{
-		std::string key = "";
-		std::string file_path = "";
-
-		while (ifs_music >> key >> file_path)
-		{
-			std::cout << file_path << '\n';
-			this->audio = std::make_unique<Audio>(false, file_path);
-			this->audioMap[key] = std::move(this->audio);
-		}
-	}
-	ifs_music.close();
-
-	//Debug Tester
-	for (auto& i : this->audioMap)
-	{
-		std::cout << i.first << " " << i.second << '\n';
-	}
-}
 void GameState::initKeybinds()
 {
 	std::ifstream ifs("Config/game_state_keybinds.ini");
@@ -132,7 +92,7 @@ void GameState::initGameOver()
 }
 void GameState::initPlayer(PlayerDetails player_details)
 {
-	this->player = std::make_unique<Player>(this->gameInfo->supportedKeys, player_details, this->audioMap);
+	this->player = std::make_unique<Player>(this->gameInfo->supportedKeys, player_details, this->gameInfo->audioMap);
 }
 void GameState::initTileMap(PlayerDetails player_details)
 {
@@ -168,10 +128,10 @@ void GameState::initTileMap(PlayerDetails player_details)
 		this->initEnemies();
 
 		/*Audio*/
-		this->audioMap["LEVEL_A"]->setVolume(0.f);
-		this->audioMap["LEVEL_A"]->setLoop(true);
-		this->audioMap["LEVEL_A"]->play();
-		this->audioMap["LEVEL_A"]->setFadeIn(true);
+		this->gameInfo->audioMap["LEVEL_A"]->setVolume(0.f);
+		this->gameInfo->audioMap["LEVEL_A"]->setLoop(true);
+		this->gameInfo->audioMap["LEVEL_A"]->play();
+		this->gameInfo->audioMap["LEVEL_A"]->setFadeIn(true);
 	}
 
 	/*House_A*/
@@ -203,25 +163,25 @@ void GameState::initTileMap(PlayerDetails player_details)
 			this->player->setOldDirection(player_details.oldDirection);
 
 			/*NPC Female #9*/
-			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 9, this->audioMap, this->gameInfo->supportedKeys);
+			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 9, this->gameInfo->audioMap, this->gameInfo->supportedKeys);
 			//this->npc->setNPCPosition();
 			this->npcVector.push_back(std::move(this->npc));
 
 			/*NPC Female #17*/
-			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 17, this->audioMap, this->gameInfo->supportedKeys);
+			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 17, this->gameInfo->audioMap, this->gameInfo->supportedKeys);
 			//this->npc->setNPCPosition();
 			this->npcVector.push_back(std::move(this->npc));
 
 			/*NPC Male #53*/
-			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 1, 53, this->audioMap, this->gameInfo->supportedKeys);
+			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 1, 53, this->gameInfo->audioMap, this->gameInfo->supportedKeys);
 			//this->npc->setNPCPosition();
 			this->npcVector.push_back(std::move(this->npc));
 
 			/*Audio*/
-			this->audioMap["HOUSE_A"]->setVolume(0.f);
-			this->audioMap["HOUSE_A"]->setLoop(true);
-			this->audioMap["HOUSE_A"]->play();
-			this->audioMap["HOUSE_A"]->setFadeIn(true);
+			this->gameInfo->audioMap["HOUSE_A"]->setVolume(0.f);
+			this->gameInfo->audioMap["HOUSE_A"]->setLoop(true);
+			this->gameInfo->audioMap["HOUSE_A"]->play();
+			this->gameInfo->audioMap["HOUSE_A"]->setFadeIn(true);
 	}
 }
 void GameState::initHUD()
@@ -230,7 +190,7 @@ void GameState::initHUD()
 }
 void GameState::initInventory()
 {
-	this->inventory = std::make_unique<Inventory>(this->gameInfo->supportedKeys, *this->gameInfo->window, this->audioMap);
+	this->inventory = std::make_unique<Inventory>(this->gameInfo->supportedKeys, *this->gameInfo->window, this->gameInfo->audioMap);
 
 	if (this->cameFromMainMenu)
 		this->inventory->loadToFile();
@@ -239,7 +199,7 @@ void GameState::initEnemies()
 {
 	for (int i = 0; i < this->numberOfEnemies; i++)
 	{
-		this->enemy = std::make_unique<Enemy>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), this->audioMap);
+		this->enemy = std::make_unique<Enemy>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), this->gameInfo->audioMap);
 		this->enemy->setEnemyPosition();
 		this->enemyVector.push_back(std::move(this->enemy));
 	}
@@ -250,7 +210,6 @@ GameState::GameState(GameInfo* game_info, PlayerDetails player_details, Projecti
 	: State(game_info)
 {
 	this->initVariables(came_from_main_menu, player_details, projectile_details);
-	this->initAudio();
 	this->initKeybinds();
 	this->initFonts();
 	this->initShader();
@@ -347,6 +306,12 @@ void GameState::updatePauseMenuButtons()
 		/*Save Invetory Details*/
 		this->inventory->saveToFile();
 
+		/*Stop Audio*/
+		for (this->gameInfo->audioMapItr = this->gameInfo->audioMap.begin(); this->gameInfo->audioMapItr != this->gameInfo->audioMap.end(); this->gameInfo->audioMapItr++)
+		{
+			this->gameInfo->audioMapItr->second->stop();
+		}
+
 		/*Erase the NewCharacter Screen and Shrink States Vector*/
 		if (!this->cameFromMainMenu)
 		{
@@ -378,6 +343,12 @@ void GameState::updateGameOverButtons()
 
 		/*Save Invetory Details*/
 		this->inventory->saveToFile();
+
+		/*Stop Audio*/
+		for (this->gameInfo->audioMapItr = this->gameInfo->audioMap.begin(); this->gameInfo->audioMapItr != this->gameInfo->audioMap.end(); this->gameInfo->audioMapItr++)
+		{
+			this->gameInfo->audioMapItr->second->stop();
+		}
 
 		/*Erase the NewCharacter Screen and Shrink States Vector*/
 		if (!this->cameFromMainMenu)
@@ -466,7 +437,7 @@ void GameState::updateInGameActions()
 		{
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("SHOOT"))))
 			{
-				this->projectile = std::make_unique<Projectile>(this->projectileDetails, this->audioMap);
+				this->projectile = std::make_unique<Projectile>(this->projectileDetails, this->gameInfo->audioMap);
 				this->projectile->setProjectileType(this->projectileDetails.projectileType);
 				this->projectile->setDirection(this->player->getDirection());
 				this->projectile->setProjectilePosition(this->player->getSpriteRect());
@@ -608,16 +579,16 @@ void GameState::updateDoorCollisions(const float& dt)
 		/*Remake Enemies*/
 		for (int i = 0; i < this->numberOfEnemies; i++)
 		{
-			this->enemy = std::make_unique<Enemy>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), this->audioMap);
+			this->enemy = std::make_unique<Enemy>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), this->gameInfo->audioMap);
 			this->enemy->setEnemyPosition();
 			this->enemyVector.push_back(std::move(this->enemy));
 		}
 
 		/*Play Music*/
-		this->audioMap["HOUSE_A"]->setFadeOut(true);
-		this->audioMap["LEVEL_A"]->setLoop(true);
-		this->audioMap["LEVEL_A"]->play();
-		this->audioMap["LEVEL_A"]->setFadeIn(true);
+		this->gameInfo->audioMap["HOUSE_A"]->setFadeOut(true);
+		this->gameInfo->audioMap["LEVEL_A"]->setLoop(true);
+		this->gameInfo->audioMap["LEVEL_A"]->play();
+		this->gameInfo->audioMap["LEVEL_A"]->setFadeIn(true);
 	}
 
 	/*House_A*/
@@ -655,17 +626,17 @@ void GameState::updateDoorCollisions(const float& dt)
 		this->player->setCurrentTileMap(CurrentTileMap::HOUSE_A);
 
 		/*NPC Female #9*/
-		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 9, this->audioMap, this->gameInfo->supportedKeys);
+		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 9, this->gameInfo->audioMap, this->gameInfo->supportedKeys);
 		//this->npc->setNPCPosition();
 		this->npcVector.push_back(std::move(this->npc));
 
 		/*NPC Female #17*/
-		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 17, this->audioMap, this->gameInfo->supportedKeys);
+		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 17, this->gameInfo->audioMap, this->gameInfo->supportedKeys);
 		//this->npc->setNPCPosition();
 		this->npcVector.push_back(std::move(this->npc));
 
 		/*NPC Male #53*/
-		this->npc = std::make_unique<NPC>( this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 1, 53, this->audioMap, this->gameInfo->supportedKeys);
+		this->npc = std::make_unique<NPC>( this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 1, 53, this->gameInfo->audioMap, this->gameInfo->supportedKeys);
 		//this->npc->setNPCPosition();
 		this->npcVector.push_back(std::move(this->npc));
 
@@ -678,16 +649,16 @@ void GameState::updateDoorCollisions(const float& dt)
 			this->itemVector.pop_back();
 
 		/*Play Music*/
-		this->audioMap["LEVEL_A"]->setFadeOut(true);
-		this->audioMap["HOUSE_A"]->setLoop(true);
-		this->audioMap["HOUSE_A"]->play();
-		this->audioMap["HOUSE_A"]->setFadeIn(true);
+		this->gameInfo->audioMap["LEVEL_A"]->setFadeOut(true);
+		this->gameInfo->audioMap["HOUSE_A"]->setLoop(true);
+		this->gameInfo->audioMap["HOUSE_A"]->play();
+		this->gameInfo->audioMap["HOUSE_A"]->setFadeIn(true);
 	}	
 }
 void GameState::updateAudio()
 {
-	this->audioMap["LEVEL_A"]->update();
-	this->audioMap["HOUSE_A"]->update();
+	this->gameInfo->audioMap["LEVEL_A"]->update();
+	this->gameInfo->audioMap["HOUSE_A"]->update();
 }
 void GameState::updateProjectileLoop(const float& dt)
 {
@@ -791,7 +762,7 @@ void GameState::updateEnemyDestroyLoop()
 	{
 		if (this->enemyVector[counter]->getDestroy())
 		{
-			this->item = std::make_unique<Item>(this->gameInfo->supportedKeys, this->audioMap);
+			this->item = std::make_unique<Item>(this->gameInfo->supportedKeys, this->gameInfo->audioMap);
 			this->item->setPosition(this->enemyVector[counter]->getSpriteRect().getPosition());
 			this->itemVector.push_back(std::move(this->item));
 
@@ -865,7 +836,7 @@ void GameState::updateItemDestroyLoop()
 			&& sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("PICK_UP_ITEM")))
 			)
 		{
-			this->audioMap["GAMESTATE_PICKUP_ITEM"]->play();
+			this->gameInfo->audioMap["GAMESTATE_PICKUP_ITEM"]->play();
 			this->inventory->setItemToInventory(this->itemVector[counter]->getItemDetails());
 			this->itemVector.erase(this->itemItr);
 			break;
@@ -962,7 +933,6 @@ void GameState::reinitializeState()
 			element->setDestroy(true);
 
 		this->initVariables(this->cameFromMainMenu, this->player->getPlayerDetails(), this->projectileDetails);
-		this->initAudio();
 		this->initPlayer(this->player->getPlayerDetails());
 		this->initTileMap(this->player->getPlayerDetails());
 	}
@@ -970,7 +940,7 @@ void GameState::reinitializeState()
 
 	/*Inventory*/
 	this->inventory->saveToFile();
-	this->inventory = std::make_unique<Inventory>(this->gameInfo->supportedKeys, *this->gameInfo->window, this->audioMap);
+	this->inventory = std::make_unique<Inventory>(this->gameInfo->supportedKeys, *this->gameInfo->window, this->gameInfo->audioMap);
 	this->inventory->loadToFile();
 }
 

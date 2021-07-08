@@ -13,7 +13,7 @@ void NPC::initVariables(std::vector<sf::Vector2f> npc_spawn_positions, std::vect
 
 	/*Movement Variables*/
 	this->npcDetails.velocity = sf::Vector2f(0.f, 0.f);
-	this->npcDetails.maxVelocity = 384.f;
+	this->npcDetails.maxVelocity = 200.f;
 	this->npcDetails.acceleration = 26.f;
 	this->npcDetails.deceleration = 19.f;
 
@@ -1480,7 +1480,7 @@ void NPC::updateRandomDirection(const float& dt)
 
 	this->randomDirectionCounter++;
 
-	if (this->randomDirectionCounter > 200)
+	if (this->randomDirectionCounter > 1000)
 	{
 		this->randomDirectionNumber = this->getRandomInt(0, 5);
 

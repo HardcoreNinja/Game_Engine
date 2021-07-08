@@ -1,6 +1,17 @@
 #include "Header.h"
 #include "MainMenu.h"
 /*Initializers*/
+void MainMenu::initBackground()
+{
+	this->background.setSize(
+		sf::Vector2f(
+			static_cast<float>(this->gameInfo->window->getSize().x),
+			static_cast<float>(this->gameInfo->window->getSize().x)
+		)
+	);
+
+	this->background.setFillColor(sf::Color(0, 0, 0, 150));
+}
 void MainMenu::initKeybinds()
 {
 	std::ifstream ifs("Config/mainmenu_keybinds.ini");
@@ -37,35 +48,35 @@ void MainMenu::initButtons()
 		120.f, 550.f,                  //Button Rect Position
 		200.f, 50.f,                   // Button Rect Size
 		&this->font, "Quit Game", 50,  //Button Font, Text, and Character Size
-		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
+		sf::Color(255, 255, 255, 255), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 
 	this->buttons["SETTINGS"] = std::make_unique<GUI::Button>(
 		120.f, 450.f,                  //Button Rect Position
 		200.f, 50.f,                   // Button Rect Size
 		&this->font, "Settings", 50,   //Button Font, Text, and Character Size
-		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
+		sf::Color(255, 255, 255, 255), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 
 	this->buttons["EDITOR"] = std::make_unique<GUI::Button>(
 		120.f, 350.f,                  //Button Rect Position
 		200.f, 50.f,                   // Button Rect Size
 		&this->font, "Editor", 50,     //Button Font, Text, and Character Size
-		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
+		sf::Color(255, 255, 255, 255), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 
 	this->buttons["NEW_GAME"] = std::make_unique<GUI::Button>(
 		120.f, 250.f,                  //Button Rect Position
 		200.f, 50.f,                   // Button Rect Size
 		&this->font, "New Game", 50,   //Button Font, Text, and Character Size
-		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
+		sf::Color(255, 255, 255, 255), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 
 	this->buttons["CONTINUE_GAME"] = std::make_unique<GUI::Button>(
 		120.f, 150.f,                  //Button Rect Position
 		200.f, 50.f,                   // Button Rect Size
 		&this->font, "Continue", 50,   //Button Font, Text, and Character Size
-		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
+		sf::Color(255, 255, 255, 255), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 }
 void MainMenu::initShader()
@@ -103,80 +114,39 @@ void MainMenu::initTileMap()
 
 	this->tileMap->loadFromFile("Config/main_menu_tile_map.ini", "Resources/Images/Tiles/PipoyaMasterLevel.png");
 }
-void MainMenu::initAudio()
-{
-	std::ifstream ifs_sfx("Config/sfx.ini");
-
-	if (ifs_sfx.is_open())
-	{
-		std::string key = "";
-		std::string file_path = "";
-
-		while (ifs_sfx >> key >> file_path)
-		{
-			std::cout << file_path << '\n';
-			this->audio = std::make_unique<Audio>(true, file_path);
-			this->audioMap[key] = std::move(this->audio);
-		}
-	}
-	ifs_sfx.close();
-
-	std::ifstream ifs_music("Config/music.ini");
-
-	if (ifs_music.is_open())
-	{
-		std::string key = "";
-		std::string file_path = "";
-
-		while (ifs_music >> key >> file_path)
-		{
-			std::cout << file_path << '\n';
-			this->audio = std::make_unique<Audio>(false, file_path);
-			this->audioMap[key] = std::move(this->audio);
-		}
-	}
-	ifs_music.close();
-
-	//Debug Tester
-	for (auto& i : this->audioMap)
-	{
-		std::cout << i.first << " " << i.second << '\n';
-	}
-}
 void MainMenu::initNPC()
 {
 	/*Random Number Generator Seed*/
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 	srand(seed);
 
-	this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), this->getRandomInt(0, 3), this->getRandomInt(1, 70), this->audioMap);
+	this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), this->getRandomInt(0, 3), this->getRandomInt(1, 70), this->gameInfo->audioMap);
 	//this->npc->setNPCPosition();
 	this->npcVector.push_back(std::move(this->npc));
-	this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), this->getRandomInt(0, 3), this->getRandomInt(1, 70), this->audioMap);
+	this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), this->getRandomInt(0, 3), this->getRandomInt(1, 70), this->gameInfo->audioMap);
 	//this->npc->setNPCPosition();
 	this->npcVector.push_back(std::move(this->npc));
-	this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), this->getRandomInt(0, 3), this->getRandomInt(1, 70), this->audioMap);
+	this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), this->getRandomInt(0, 3), this->getRandomInt(1, 70), this->gameInfo->audioMap);
 	//this->npc->setNPCPosition();
 	this->npcVector.push_back(std::move(this->npc));
-	this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), this->getRandomInt(0, 3), this->getRandomInt(1, 70), this->audioMap);
+	this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), this->getRandomInt(0, 3), this->getRandomInt(1, 70), this->gameInfo->audioMap);
 	//this->npc->setNPCPosition();
 	this->npcVector.push_back(std::move(this->npc));
-	this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), this->getRandomInt(0, 3), this->getRandomInt(1, 70), this->audioMap);
+	this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), this->getRandomInt(0, 3), this->getRandomInt(1, 70), this->gameInfo->audioMap);
 	//this->npc->setNPCPosition();
 	this->npcVector.push_back(std::move(this->npc));
 }
-
 
 /*Constructor & Destructor*/
 MainMenu::MainMenu(GameInfo* game_info)
 	: State(game_info)
 {
+	this->initBackground();
 	this->initKeybinds();
 	this->initFonts();
 	this->initButtons();
 	this->initRenderTexture();
 	this->initTileMap();
-	this->initAudio();
 	this->initNPC();
 }
 MainMenu::~MainMenu()
@@ -265,7 +235,6 @@ void MainMenu::reinitializeState()
 	this->initShader();
 	this->initRenderTexture(); 
 	this->initTileMap();
-	this->initAudio();
 	this->initNPC();
 }
 
@@ -352,6 +321,10 @@ void MainMenu::loadProjectileDetailsFromFile()
 }
 
 /*Render Functions*/
+void MainMenu::renderBackground(sf::RenderTarget& target)
+{
+	target.draw(this->background);
+}
 void MainMenu::renderTileMap(sf::RenderTarget& target)
 {
 	this->tileMap->render(target, this->view, sf::Vector2f(static_cast<float>(this->gameInfo->window->getSize().x) / 2.f, static_cast<float>(this->gameInfo->window->getSize().y) / 2.f), &this->shader);
@@ -381,6 +354,7 @@ void MainMenu::render(sf::RenderTarget* target)
 	this->renderTexture.clear();
 	this->renderTileMap(this->renderTexture);
 	this->renderNPCs(this->renderTexture);
+	this->renderBackground(this->renderTexture);
 	this->renderTexture.display();
 	target->draw(this->renderSprite);
 
