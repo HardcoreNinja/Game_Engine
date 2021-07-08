@@ -41,10 +41,6 @@ private:
     /*Tile Map*/
     sf::Vector2f enterTilePosition;
 
-    /*Audio*/ 
-    std::unique_ptr<Audio> audio;
-    std::map<std::string, std::unique_ptr<Audio>> audioMap; 
-
     /*Player*/
     std::unique_ptr<Player> player;
 

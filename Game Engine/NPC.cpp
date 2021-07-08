@@ -19,6 +19,8 @@ void NPC::initVariables(std::vector<sf::Vector2f> npc_spawn_positions, std::vect
 
 	/*Spawn Random Position Vector*/
 	this->npcDetails.enemySpawnPosition = npc_spawn_positions[this->getRandomInt(0, npc_spawn_positions.size())];
+	this->setNPCPosition();
+
 	//std::cout << "Random Number: " << this->getRandomInt(0, npc_spawn_positions.size()) << '\n';
 
 	/*Path Finder Markings*/
@@ -171,6 +173,14 @@ NPC::NPC(
 {
 	this->initVariables(npc_spawn_positions, path_finder_markings);
 	this->initKeybinds(supported_keys);
+	this->initSpriteRect();
+	this->initSprite(male_1_female_0, texture_switch_number);
+	this->initText();
+}
+NPC::NPC(std::vector<sf::Vector2f> npc_spawn_positions, std::vector<sf::Vector2f> path_finder_markings, bool male_1_female_0, int texture_switch_number, std::map<std::string, std::unique_ptr<Audio>>& audio_map)
+	: Entity(audio_map)
+{
+	this->initVariables(npc_spawn_positions, path_finder_markings);
 	this->initSpriteRect();
 	this->initSprite(male_1_female_0, texture_switch_number);
 	this->initText();
@@ -1691,6 +1701,12 @@ void NPC::update(sf::RectangleShape player_rect, const sf::Event& smfl_events, c
 	/*Set Sprite Position to Sprite Rect*/
 	this->textCollisionShape.setPosition(sf::Vector2f(this->spriteRect.getPosition().x, this->spriteRect.getPosition().y - 50.f));
 	this->textCollision.setPosition(sf::Vector2f(this->textCollisionShape.getPosition().x, this->textCollisionShape.getPosition().y - static_cast<float>(this->textCollision.getCharacterSize()) / 4.f));
+}
+void NPC::update(const float& dt)
+{
+	this->updateRandomDirection(dt);
+	/*Set Sprite Position to Sprite Rect*/
+	this->sprite.setPosition(sf::Vector2f(this->spriteRect.getPosition().x - 2.f, this->spriteRect.getPosition().y - 1.f));
 }
 
 /*Render Functions*/

@@ -204,17 +204,17 @@ void GameState::initTileMap(PlayerDetails player_details)
 
 			/*NPC Female #9*/
 			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 9, this->audioMap, this->gameInfo->supportedKeys);
-			this->npc->setNPCPosition();
+			//this->npc->setNPCPosition();
 			this->npcVector.push_back(std::move(this->npc));
 
 			/*NPC Female #17*/
 			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 17, this->audioMap, this->gameInfo->supportedKeys);
-			this->npc->setNPCPosition();
+			//this->npc->setNPCPosition();
 			this->npcVector.push_back(std::move(this->npc));
 
 			/*NPC Male #53*/
 			this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 1, 53, this->audioMap, this->gameInfo->supportedKeys);
-			this->npc->setNPCPosition();
+			//this->npc->setNPCPosition();
 			this->npcVector.push_back(std::move(this->npc));
 
 			/*Audio*/
@@ -656,17 +656,17 @@ void GameState::updateDoorCollisions(const float& dt)
 
 		/*NPC Female #9*/
 		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 9, this->audioMap, this->gameInfo->supportedKeys);
-		this->npc->setNPCPosition();
+		//this->npc->setNPCPosition();
 		this->npcVector.push_back(std::move(this->npc));
 
 		/*NPC Female #17*/
 		this->npc = std::make_unique<NPC>(this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 0, 17, this->audioMap, this->gameInfo->supportedKeys);
-		this->npc->setNPCPosition();
+		//this->npc->setNPCPosition();
 		this->npcVector.push_back(std::move(this->npc));
 
 		/*NPC Male #53*/
 		this->npc = std::make_unique<NPC>( this->tileMap->getSpawnPositions(), this->tileMap->getPathFinderMarkings(), 1, 53, this->audioMap, this->gameInfo->supportedKeys);
-		this->npc->setNPCPosition();
+		//this->npc->setNPCPosition();
 		this->npcVector.push_back(std::move(this->npc));
 
 		/*Destroy Enemies*/

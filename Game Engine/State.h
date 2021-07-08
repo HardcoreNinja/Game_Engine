@@ -5,6 +5,7 @@
 #include "PauseMenu.h"
 #include "GameOver.h"
 #include "TileMap.h"
+#include "Audio.h"
 
 /*Class Forward Declarations*/
 class State;
@@ -14,6 +15,7 @@ class PauseMenu;
 class GameOver;
 class Tile;
 class TileMap;
+class Audio;
 class TextureSelector;
 class sf::RenderWindow;
 class sf::RectangleShape;
@@ -83,6 +85,10 @@ protected:
 
 	/*Tile Map*/
 	std::unique_ptr<TILEMAP::TileMap> tileMap;
+
+	/*Audio*/
+	std::unique_ptr<Audio> audio;
+	std::map<std::string, std::unique_ptr<Audio>> audioMap;
 
 	/*Shader*/
 	sf::Shader shader;

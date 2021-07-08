@@ -109,6 +109,13 @@ public:
         std::map<std::string, std::unique_ptr<Audio>>& audio_map,
         std::map<std::string, int>* supported_keys
     );
+    NPC(
+        std::vector<sf::Vector2f> npc_spawn_positions,
+        std::vector<sf::Vector2f> path_finder_markings,
+        bool male_1_female_0,
+        int texture_switch_number, 
+        std::map<std::string, std::unique_ptr<Audio>>& audio_map
+    );
     virtual ~NPC();
 
     /*Setters*/
@@ -142,6 +149,7 @@ public:
     void updateMovement(const float& dt);
     void updateAnimation();
     void update(sf::RectangleShape player_rect, const sf::Event& smfl_events, const bool& key_time, const float& dt);
+    void update(const float& dt);
 
     /*Render Functions*/
     void render(sf::RenderTarget& target);
