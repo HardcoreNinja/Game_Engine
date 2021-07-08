@@ -28,15 +28,15 @@ private:
     /*Projectile Details*/
     ProjectileDetails projectileDetails;
 
-    /*Background Rectangle*/
-    sf::RectangleShape background;
+    /*Overlay Rectangle*/
+    sf::RectangleShape overlay;
 
     /*NPC Variables*/
     std::unique_ptr<NPC> npc;
     std::vector<std::unique_ptr<NPC>>::const_iterator npcItr;
     std::vector<std::unique_ptr<NPC>> npcVector;
 
-    void initBackground();
+    void initOverlay();
     void initKeybinds();
     void initFonts();
     void initButtons();
@@ -67,7 +67,7 @@ public:
     void loadProjectileDetailsFromFile();
 
     /*Render Functions*/
-    void renderBackground(sf::RenderTarget& target);
+    void renderOverlay(sf::RenderTarget& target);
     void renderTileMap(sf::RenderTarget& target);
     void renderNPCs(sf::RenderTarget& target);
     void renderButtons(sf::RenderTarget& target);

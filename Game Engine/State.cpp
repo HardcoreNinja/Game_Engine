@@ -10,7 +10,6 @@ void State::initVariables(GameInfo* game_info)
 	this->mouseReleased = false;
 	this->tileSize = 32.f;
 	this->isPaused = false;
-	this->initView();
 }
 void State::initAudio()
 {
@@ -72,6 +71,7 @@ State::State(GameInfo* game_info)
 	this->initVariables(game_info);
 	this->initAudio();
 	this->initShader();
+	this->initView();
 }
 State::~State()
 {

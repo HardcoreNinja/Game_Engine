@@ -15,7 +15,7 @@ void Settings::initOverlay()
 	this->overlay.setSize(
 		sf::Vector2f(
 			static_cast<float>(this->gameInfo->window->getSize().x),
-			static_cast<float>(this->gameInfo->window->getSize().x)
+			static_cast<float>(this->gameInfo->window->getSize().y)
 		)
 	);
 
@@ -122,21 +122,15 @@ void Settings::initTextTitles()
 	this->text.setFillColor(sf::Color::White);
 	this->text.setString("Resolution: \n\n Fullscreen: \n\n VSync: \n\n Anti-Aliasing: \n\n");
 }
-void Settings::initRenderTexture()
-{
-	//std::cout << "Window Size: " << this->gameInfo->window->getSize().x << " x " << this->gameInfo->window->getSize().y << '\n';
-	this->renderTexture.create(this->gameInfo->window->getSize().x, this->gameInfo->window->getSize().y);
-	this->renderTexture.setSmooth(true);
-	this->renderSprite.setTexture(this->renderTexture.getTexture());
-	this->renderSprite.setTextureRect(sf::IntRect(0, 0, this->gameInfo->window->getSize().x, this->gameInfo->window->getSize().y));
-}
 
 /*Constuctor & Destructor*/
 Settings::Settings(
 	GameInfo* game_info, 
 	std::vector<std::unique_ptr<NPC>>::const_iterator& npc_itr,
 	std::vector<std::unique_ptr<NPC>>& npc_vector,
-	std::unique_ptr<TILEMAP::TileMap>& tile_map
+	std::unique_ptr<TILEMAP::TileMap>& tile_map,
+	sf::RenderTexture* render_texture,
+	sf::Sprite* render_sprite
 )
 	: State(game_info), mainMenuNPCItr(npc_itr), mainMenuNPCVector(npc_vector), mainMenuTileMap(tile_map)
 {
@@ -147,7 +141,9 @@ Settings::Settings(
 	this->initButtons();
 	this->initDropdownLists();
 	this->initTextTitles();
-	this->initRenderTexture();
+
+	this->mainMenuRenderTexture = render_texture;
+	this->mainMenuRenderSprite = render_sprite;
 }
 Settings::~Settings()
 {
@@ -436,7 +432,7 @@ void Settings::renderOverlay(sf::RenderTarget& target)
 }
 void Settings::renderTileMap(sf::RenderTarget& target)
 {
-	this->mainMenuTileMap->render(target, this->view, sf::Vector2f(static_cast<float>(this->gameInfo->window->getSize().x) / 2.f, static_cast<float>(this->gameInfo->window->getSize().y) / 2.f), &this->shader);
+	this->mainMenuTileMap->render(target, this->view, this->mainMenuTileMap->getEnterTilePosition(), &this->shader);
 }
 void Settings::renderNPCs(sf::RenderTarget& target)
 {
@@ -464,12 +460,12 @@ void Settings::render(sf::RenderTarget* target)
 {
 	if (!target)
 		target = this->gameInfo->window;
-	this->renderTexture.clear();
-	this->renderTileMap(this->renderTexture);
-	this->renderNPCs(this->renderTexture);
-	this->renderOverlay(this->renderTexture);
+	this->mainMenuRenderTexture->clear();
+	this->renderTileMap(*this->mainMenuRenderTexture);
+	this->renderNPCs(*this->mainMenuRenderTexture);
+	this->renderOverlay(*this->mainMenuRenderTexture);
 	this->renderTexture.display();
-	target->draw(this->renderSprite);
+	target->draw(*this->mainMenuRenderSprite);
 
 	target->draw(this->text);
 	this->renderButtons(*target);

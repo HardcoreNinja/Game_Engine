@@ -30,6 +30,9 @@ private:
     /*MainMenu TileMap*/
     std::unique_ptr<TILEMAP::TileMap>& mainMenuTileMap;
 
+    sf::RenderTexture* mainMenuRenderTexture;
+    sf::Sprite* mainMenuRenderSprite;
+
     /*Initializers*/
     void initVariables();
     void initOverlay();
@@ -38,7 +41,6 @@ private:
     void initButtons();
     void initDropdownLists();
     void initTextTitles();
-    void initRenderTexture();
 
     /*Active Element IDs*/
    unsigned short resolutionID ;
@@ -58,7 +60,9 @@ public:
         GameInfo* game_info, 
         std::vector<std::unique_ptr<NPC>>::const_iterator& npc_itr,
         std::vector<std::unique_ptr<NPC>>& npc_vector, 
-        std::unique_ptr<TILEMAP::TileMap>& tile_map
+        std::unique_ptr<TILEMAP::TileMap>& tile_map,
+        sf::RenderTexture* mainMenuRenderTexture,
+        sf::Sprite* mainMenuRenderSprite
     );
     virtual ~Settings();
 

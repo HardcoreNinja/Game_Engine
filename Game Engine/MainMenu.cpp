@@ -1,16 +1,16 @@
 #include "Header.h"
 #include "MainMenu.h"
 /*Initializers*/
-void MainMenu::initBackground()
+void MainMenu::initOverlay()
 {
-	this->background.setSize(
+	this->overlay.setSize(
 		sf::Vector2f(
 			static_cast<float>(this->gameInfo->window->getSize().x),
-			static_cast<float>(this->gameInfo->window->getSize().x)
+			static_cast<float>(this->gameInfo->window->getSize().y)
 		)
 	);
 
-	this->background.setFillColor(sf::Color(0, 0, 0, 150));
+	this->overlay.setFillColor(sf::Color(0, 0, 0, 150));
 }
 void MainMenu::initKeybinds()
 {
@@ -136,7 +136,7 @@ void MainMenu::initNPC()
 MainMenu::MainMenu(GameInfo* game_info)
 	: State(game_info)
 {
-	this->initBackground();
+	this->initOverlay();
 	this->initKeybinds();
 	this->initFonts();
 	this->initButtons();
@@ -160,7 +160,7 @@ void MainMenu::updateButtons()
 
 	/*Settings*/
 	if (this->buttons["SETTINGS"]->isPressed() && this->getKeyTime())
-		this->gameInfo->states->push_back(std::make_unique<Settings>(this->gameInfo, this->npcItr, this->npcVector, this->tileMap));
+		this->gameInfo->states->push_back(std::make_unique<Settings>(this->gameInfo, this->npcItr, this->npcVector, this->tileMap, &this->renderTexture, &this->renderSprite));
 
 	/*Editor*/
 	if (this->buttons["EDITOR"]->isPressed() && this->getKeyTime())
@@ -224,13 +224,11 @@ int MainMenu::getRandomInt(int min, int max)
 void MainMenu::reinitializeState()
 {
 	std::cout << "Reinitializing MainMenu!\n";
+	this->initOverlay();
 	this->initKeybinds();
 	this->initFonts();
 	this->initButtons();
-	this->initShader();
-	this->initRenderTexture(); 
 	this->initTileMap();
-	this->initNPC();
 }
 
 /*Save & Load Functions*/
@@ -316,13 +314,13 @@ void MainMenu::loadProjectileDetailsFromFile()
 }
 
 /*Render Functions*/
-void MainMenu::renderBackground(sf::RenderTarget& target)
+void MainMenu::renderOverlay(sf::RenderTarget& target)
 {
-	target.draw(this->background);
+	target.draw(this->overlay);
 }
 void MainMenu::renderTileMap(sf::RenderTarget& target)
 {
-	this->tileMap->render(target, this->view, sf::Vector2f(static_cast<float>(this->gameInfo->window->getSize().x) / 2.f, static_cast<float>(this->gameInfo->window->getSize().y) / 2.f), &this->shader);
+	this->tileMap->render(target, this->view, this->tileMap->getEnterTilePosition(), &this->shader);
 }
 void MainMenu::renderNPCs(sf::RenderTarget& target)
 {
@@ -343,16 +341,15 @@ void MainMenu::render(sf::RenderTarget* target)
 {
 	if (!target)
 		target = this->gameInfo->window;
-	//target->draw(this->backgroundRect);
+	//target->draw(this->overlayRect);
 
 	/*Items Rendered to Render Texture*/
 	this->renderTexture.clear();
 	this->renderTileMap(this->renderTexture);
 	this->renderNPCs(this->renderTexture);
-	this->renderBackground(this->renderTexture);
+	this->renderOverlay(this->renderTexture);
 	this->renderTexture.display();
 	target->draw(this->renderSprite);
 
 	this->renderButtons(*target);
-
 }
