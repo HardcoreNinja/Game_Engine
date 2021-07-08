@@ -115,6 +115,7 @@ protected:
 	/*Initializers*/
 	void initVariables(GameInfo* game_info);
 	void initAudio();
+	void initShader();
 	void initView();
 public:
 	/*Constuctor & Destructor*/

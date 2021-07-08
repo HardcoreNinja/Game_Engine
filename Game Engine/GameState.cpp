@@ -45,11 +45,6 @@ void GameState::initFonts()
 	this->text.setCharacterSize(12);
 	this->text.setPosition(sf::Vector2f(static_cast<float>(this->mousePositionWindow.x), static_cast<float>(this->mousePositionWindow.y)));
 }
-void GameState::initShader()
-{
-	if (!this->shader.loadFromFile("Shaders/Player/vertex.vert", "Shaders/Player/fragment.frag"))
-	std::cout << "Error Loading Shader!\n";
-}
 void GameState::initRenderTexture()
 {
 	//std::cout << "Window Size: " << this->gameInfo->window->getSize().x << " x " << this->gameInfo->window->getSize().y << '\n';
@@ -212,7 +207,6 @@ GameState::GameState(GameInfo* game_info, PlayerDetails player_details, Projecti
 	this->initVariables(came_from_main_menu, player_details, projectile_details);
 	this->initKeybinds();
 	this->initFonts();
-	this->initShader();
 	this->initRenderTexture();
 	this->initPauseMenu();
 	this->initGameOver();

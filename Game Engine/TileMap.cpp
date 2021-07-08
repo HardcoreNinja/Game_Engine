@@ -28,7 +28,7 @@ TILEMAP::Tile::Tile(
 		this->shape.setFillColor(sf::Color::Red);
 	}*/
 
-	/*Color Codes for Collision & Tile Types*/
+	/*Color Codes for Collision & Tile Types
 	switch (this->tileType)
 	{
 	case TILEMAP::TileType::Default:
@@ -54,7 +54,7 @@ TILEMAP::Tile::Tile(
 	case TILEMAP::TileType::Enter_Tile:
 		this->shape.setColor(sf::Color(76, 0, 153));
 		break;
-	}
+	}*/
 }
 TILEMAP::Tile::~Tile()
 {

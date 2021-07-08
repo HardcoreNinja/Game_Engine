@@ -84,7 +84,6 @@ private:
     void initVariables(bool came_from_main_menu, PlayerDetails player_details, ProjectileDetails projectile_details);
     void initKeybinds();
     void initFonts();
-    void initShader();
     void initRenderTexture();
     void initPauseMenu();
     void initGameOver();

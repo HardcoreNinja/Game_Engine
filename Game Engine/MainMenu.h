@@ -40,7 +40,6 @@ private:
     void initKeybinds();
     void initFonts();
     void initButtons();
-    void initShader();
     void initRenderTexture();
     void initTileMap();
     void initNPC();

@@ -1,6 +1,18 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 #include "State.h"
+#include "NPC.h"
+
+/*Class Forward Declarations*/
+class State;
+class NPC;
+class TileMap;
+class Button;
+class DropdownList;
+class sf::Shader;
+class sf::RenderTarget;
+class sf::RectangleShape;
+
 class Settings :
     public State
 {
@@ -8,14 +20,25 @@ private:
     /*Video Modes*/
     std::vector<sf::VideoMode> videoModes;
 
+    /*Overlay*/
+    sf::RectangleShape overlay;
+
+    /*Main Menu NPCs*/
+    std::vector<std::unique_ptr<NPC>>::const_iterator& mainMenuNPCItr;
+    std::vector<std::unique_ptr<NPC>>& mainMenuNPCVector;
+
+    /*MainMenu TileMap*/
+    std::unique_ptr<TILEMAP::TileMap>& mainMenuTileMap;
+
     /*Initializers*/
     void initVariables();
-    void initBackground();
+    void initOverlay();
     void initKeybinds();
     void initFonts();
     void initButtons();
     void initDropdownLists();
     void initTextTitles();
+    void initRenderTexture();
 
     /*Active Element IDs*/
    unsigned short resolutionID ;
@@ -31,10 +54,17 @@ private:
 
 public:
     /*Constuctor & Destructor*/
-    Settings(GameInfo* game_info);
+    Settings(
+        GameInfo* game_info, 
+        std::vector<std::unique_ptr<NPC>>::const_iterator& npc_itr,
+        std::vector<std::unique_ptr<NPC>>& npc_vector, 
+        std::unique_ptr<TILEMAP::TileMap>& tile_map
+    );
     virtual ~Settings();
 
     /*Update Functions*/
+    void updateNPCLoop(const float& dt);
+    void updateNPCCollisions();
     void updateButtons();
     void updateDropdownLists(const float& dt);
     virtual void updateUserInput(const float& dt);
@@ -49,6 +79,9 @@ public:
     void loadFromFile();
 
     /*Render Functions*/
+    void renderOverlay(sf::RenderTarget& target);
+    void renderTileMap(sf::RenderTarget& target);
+    void renderNPCs(sf::RenderTarget& target);
     void renderButtons(sf::RenderTarget& target);
     void renderDropdownLists(sf::RenderTarget& target);
     virtual void render(sf::RenderTarget* target);

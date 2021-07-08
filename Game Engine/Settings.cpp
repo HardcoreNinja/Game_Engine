@@ -10,19 +10,16 @@ void Settings::initVariables()
 	this->pauseVSync = false;
 	this->pauseAnti_Aliasing = false;
 }
-void Settings::initBackground()
+void Settings::initOverlay()
 {
-	this->backgroundRect.setSize(
+	this->overlay.setSize(
 		sf::Vector2f(
-			static_cast<float>(this->gameInfo->graphicsSettings->resolution.width),
-			static_cast<float>(this->gameInfo->graphicsSettings->resolution.height)
+			static_cast<float>(this->gameInfo->window->getSize().x),
+			static_cast<float>(this->gameInfo->window->getSize().x)
 		)
 	);
 
-	if (!this->backgroundTexture.loadFromFile("Resources/Images/mainmenu_background.jpg"))
-		throw("ERROR::MAIN_MENU::FAILED_TO_LOAD::mainmenu_background.jpg");
-
-	this->backgroundRect.setTexture(&this->backgroundTexture);
+	this->overlay.setFillColor(sf::Color(0, 0, 0, 150));
 }
 void Settings::initKeybinds()
 {
@@ -47,7 +44,7 @@ void Settings::initKeybinds()
 }
 void Settings::initFonts()
 {
-	if (!this->font.loadFromFile("Resources/Fonts/Dosis.ttf"))
+	if (!this->font.loadFromFile("Resources/Fonts/BreatheFire.ttf"))
 	{
 		throw ("ERROR::MAIN_MENU::FAILED_TO_LOAD:Dosis.ttf");
 	}
@@ -60,14 +57,14 @@ void Settings::initButtons()
 		300.f, 550.f,                  //Button Rect Position
 		200.f, 50.f,                   //Button Rect Size
 		&this->font, "Apply", 50,//Button Font, Text, and Character Size
-		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50),//Text Color
+		sf::Color::White, sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50),//Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));    //Button Rect Fill Color (Outline Color Optional)
 
 	this->buttons["BACK"] = std::make_unique<GUI::Button>(
 		100.f, 550.f,                  //Button Rect Position
 		200.f, 50.f,                   //Button Rect Size
 		&this->font, "Back", 50,//Button Font, Text, and Character Size
-		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50),//Text Color
+		sf::Color::White, sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50),//Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));    //Button Rect Fill Color (Outline Color Optional)
 }
 void Settings::initDropdownLists()
@@ -125,18 +122,32 @@ void Settings::initTextTitles()
 	this->text.setFillColor(sf::Color::White);
 	this->text.setString("Resolution: \n\n Fullscreen: \n\n VSync: \n\n Anti-Aliasing: \n\n");
 }
+void Settings::initRenderTexture()
+{
+	//std::cout << "Window Size: " << this->gameInfo->window->getSize().x << " x " << this->gameInfo->window->getSize().y << '\n';
+	this->renderTexture.create(this->gameInfo->window->getSize().x, this->gameInfo->window->getSize().y);
+	this->renderTexture.setSmooth(true);
+	this->renderSprite.setTexture(this->renderTexture.getTexture());
+	this->renderSprite.setTextureRect(sf::IntRect(0, 0, this->gameInfo->window->getSize().x, this->gameInfo->window->getSize().y));
+}
 
 /*Constuctor & Destructor*/
-Settings::Settings(GameInfo* game_info)
-	: State(game_info)
+Settings::Settings(
+	GameInfo* game_info, 
+	std::vector<std::unique_ptr<NPC>>::const_iterator& npc_itr,
+	std::vector<std::unique_ptr<NPC>>& npc_vector,
+	std::unique_ptr<TILEMAP::TileMap>& tile_map
+)
+	: State(game_info), mainMenuNPCItr(npc_itr), mainMenuNPCVector(npc_vector), mainMenuTileMap(tile_map)
 {
 	this->initVariables();
-	this->initBackground();
+	this->initOverlay();
 	this->initKeybinds();
 	this->initFonts();
 	this->initButtons();
 	this->initDropdownLists();
 	this->initTextTitles();
+	this->initRenderTexture();
 }
 Settings::~Settings()
 {
@@ -325,6 +336,25 @@ void Settings::updateUserInput(const float& dt)
 		this->saveToFile();
 	}
 }
+void Settings::updateNPCLoop(const float& dt)
+{
+	int counter1 = 0;
+	for (this->mainMenuNPCItr = this->mainMenuNPCVector.begin(); this->mainMenuNPCItr != this->mainMenuNPCVector.end(); this->mainMenuNPCItr++)
+	{
+		this->mainMenuNPCVector[counter1]->update(dt);
+		counter1++;
+	}
+}
+void Settings::updateNPCCollisions()
+{
+	/*NPC/Wall*/
+	int counter1 = 0;
+	for (this->mainMenuNPCItr = this->mainMenuNPCVector.begin(); this->mainMenuNPCItr != this->mainMenuNPCVector.end(); this->mainMenuNPCItr++)
+	{
+		this->mainMenuNPCVector[counter1]->tileCollision(this->mainMenuTileMap->getCollision(this->mainMenuNPCVector[counter1]->getSpriteRect()));
+		counter1++;
+	}
+}
 void Settings::update(const float& dt)
 {
 	this->updateSFMLEvents();
@@ -333,6 +363,9 @@ void Settings::update(const float& dt)
 	this->updateButtons();
 	this->updateDropdownLists(dt);
 	this->updateUserInput(dt);
+	this->updateNPCLoop(dt);
+	this->updateNPCCollisions();
+
 }
 
 /*Window Functions*/
@@ -358,7 +391,7 @@ void Settings::reinitializeState()
 {
 	std::cout << "Reinitializing Settings!\n";
 	this->initVariables();
-	this->initBackground();
+	this->initOverlay();
 	this->initKeybinds();
 	this->initFonts();
 	this->initButtons();
@@ -397,6 +430,24 @@ void Settings::loadFromFile()
 }
 
 /*Render Functions*/
+void Settings::renderOverlay(sf::RenderTarget& target)
+{
+	target.draw(this->overlay);
+}
+void Settings::renderTileMap(sf::RenderTarget& target)
+{
+	this->mainMenuTileMap->render(target, this->view, sf::Vector2f(static_cast<float>(this->gameInfo->window->getSize().x) / 2.f, static_cast<float>(this->gameInfo->window->getSize().y) / 2.f), &this->shader);
+}
+void Settings::renderNPCs(sf::RenderTarget& target)
+{
+	int counter = 0;
+	for (this->mainMenuNPCItr = this->mainMenuNPCVector.begin(); this->mainMenuNPCItr != this->mainMenuNPCVector.end(); this->mainMenuNPCItr++)
+	{
+		this->mainMenuNPCVector[counter]->render(target);
+
+		counter++;
+	}
+}
 void Settings::renderButtons(sf::RenderTarget& target)
 {
 	for (auto& itr1 : this->buttons)
@@ -413,7 +464,13 @@ void Settings::render(sf::RenderTarget* target)
 {
 	if (!target)
 		target = this->gameInfo->window;
-	target->draw(this->backgroundRect);
+	this->renderTexture.clear();
+	this->renderTileMap(this->renderTexture);
+	this->renderNPCs(this->renderTexture);
+	this->renderOverlay(this->renderTexture);
+	this->renderTexture.display();
+	target->draw(this->renderSprite);
+
 	target->draw(this->text);
 	this->renderButtons(*target);
 	this->renderDropdownLists(*target);	

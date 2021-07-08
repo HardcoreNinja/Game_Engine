@@ -52,6 +52,11 @@ void State::initAudio()
 		std::cout << i.first << " " << i.second << '\n';
 	}	
 }
+void State::initShader()
+{
+	if (!this->shader.loadFromFile("Shaders/Player/vertex.vert", "Shaders/Player/fragment.frag"))
+		std::cout << "Error Loading Shader!\n";
+}
 void State::initView()
 {
 	this->defaultWindowView = this->gameInfo->window->getDefaultView();
@@ -66,6 +71,7 @@ State::State(GameInfo* game_info)
 {
 	this->initVariables(game_info);
 	this->initAudio();
+	this->initShader();
 }
 State::~State()
 {
