@@ -124,8 +124,8 @@ void GameState::initTileMap(PlayerDetails player_details)
 
 		/*Audio*/
 		this->gameInfo->audioMap["LEVEL_A"]->setLoop(true);
-		this->gameInfo->audioMap["LEVEL_A"]->play();
 		this->gameInfo->audioMap["LEVEL_A"]->setFadeIn(true);
+		this->gameInfo->audioMap["LEVEL_A"]->play();
 	}
 
 	/*House_A*/
@@ -173,8 +173,8 @@ void GameState::initTileMap(PlayerDetails player_details)
 
 			/*Audio*/
 			this->gameInfo->audioMap["HOUSE_A"]->setLoop(true);
-			this->gameInfo->audioMap["HOUSE_A"]->play();
 			this->gameInfo->audioMap["HOUSE_A"]->setFadeIn(true);
+			this->gameInfo->audioMap["HOUSE_A"]->play();	
 	}
 }
 void GameState::initHUD()
@@ -583,8 +583,8 @@ void GameState::updateDoorCollisions(const float& dt)
 		/*Play Music*/
 		this->gameInfo->audioMap["HOUSE_A"]->setFadeOut(true);
 		this->gameInfo->audioMap["LEVEL_A"]->setLoop(true);
-		this->gameInfo->audioMap["LEVEL_A"]->play();
 		this->gameInfo->audioMap["LEVEL_A"]->setFadeIn(true);
+		this->gameInfo->audioMap["LEVEL_A"]->play();
 	}
 
 	/*House_A*/
@@ -647,8 +647,8 @@ void GameState::updateDoorCollisions(const float& dt)
 		/*Play Music*/
 		this->gameInfo->audioMap["LEVEL_A"]->setFadeOut(true);
 		this->gameInfo->audioMap["HOUSE_A"]->setLoop(true);
-		this->gameInfo->audioMap["HOUSE_A"]->play();
 		this->gameInfo->audioMap["HOUSE_A"]->setFadeIn(true);
+		this->gameInfo->audioMap["HOUSE_A"]->play();
 	}	
 }
 void GameState::updateAudio()
