@@ -2,6 +2,19 @@
 #include "Settings.h"
 
 /*Initializers*/
+void Settings::initVariables(
+	sf::RenderTexture* render_texture,
+	sf::Sprite* render_sprite
+)
+{
+	this->videoModes = sf::VideoMode::getFullscreenModes();
+	this->mainMenuRenderTexture = render_texture;
+	this->mainMenuRenderSprite = render_sprite;
+	this->pauseButtons = false;
+	this->pauseFullScreen = false;
+	this->pauseVSync = false;
+	this->pauseAnti_Aliasing = false;
+}
 void Settings::initVariables()
 {
 	this->videoModes = sf::VideoMode::getFullscreenModes();
@@ -134,16 +147,13 @@ Settings::Settings(
 )
 	: State(game_info), mainMenuNPCItr(npc_itr), mainMenuNPCVector(npc_vector), mainMenuTileMap(tile_map)
 {
-	this->initVariables();
+	this->initVariables(render_texture, render_sprite);
 	this->initOverlay();
 	this->initKeybinds();
 	this->initFonts();
 	this->initButtons();
 	this->initDropdownLists();
 	this->initTextTitles();
-
-	this->mainMenuRenderTexture = render_texture;
-	this->mainMenuRenderSprite = render_sprite;
 }
 Settings::~Settings()
 {
@@ -334,21 +344,21 @@ void Settings::updateUserInput(const float& dt)
 }
 void Settings::updateNPCLoop(const float& dt)
 {
-	int counter1 = 0;
+	int counter = 0;
 	for (this->mainMenuNPCItr = this->mainMenuNPCVector.begin(); this->mainMenuNPCItr != this->mainMenuNPCVector.end(); this->mainMenuNPCItr++)
 	{
-		this->mainMenuNPCVector[counter1]->update(dt);
-		counter1++;
+		this->mainMenuNPCVector[counter]->update(dt);
+		counter++;
 	}
 }
 void Settings::updateNPCCollisions()
 {
 	/*NPC/Wall*/
-	int counter1 = 0;
+	int counter = 0;
 	for (this->mainMenuNPCItr = this->mainMenuNPCVector.begin(); this->mainMenuNPCItr != this->mainMenuNPCVector.end(); this->mainMenuNPCItr++)
 	{
-		this->mainMenuNPCVector[counter1]->tileCollision(this->mainMenuTileMap->getCollision(this->mainMenuNPCVector[counter1]->getSpriteRect()));
-		counter1++;
+		this->mainMenuNPCVector[counter]->tileCollision(this->mainMenuTileMap->getCollision(this->mainMenuNPCVector[counter]->getSpriteRect()));
+		counter++;
 	}
 }
 void Settings::update(const float& dt)
@@ -361,7 +371,6 @@ void Settings::update(const float& dt)
 	this->updateUserInput(dt);
 	this->updateNPCLoop(dt);
 	this->updateNPCCollisions();
-
 }
 
 /*Window Functions*/
@@ -460,6 +469,7 @@ void Settings::render(sf::RenderTarget* target)
 {
 	if (!target)
 		target = this->gameInfo->window;
+
 	this->mainMenuRenderTexture->clear();
 	this->renderTileMap(*this->mainMenuRenderTexture);
 	this->renderNPCs(*this->mainMenuRenderTexture);

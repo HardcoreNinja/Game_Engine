@@ -27,13 +27,18 @@ private:
     std::vector<std::unique_ptr<NPC>>::const_iterator& mainMenuNPCItr;
     std::vector<std::unique_ptr<NPC>>& mainMenuNPCVector;
 
-    /*MainMenu TileMap*/
+    /*Main Menu TileMap*/
     std::unique_ptr<TILEMAP::TileMap>& mainMenuTileMap;
 
+    /*Main Menu Render Texture Variables*/
     sf::RenderTexture* mainMenuRenderTexture;
     sf::Sprite* mainMenuRenderSprite;
 
     /*Initializers*/
+    void initVariables(
+        sf::RenderTexture* render_texture,
+        sf::Sprite* render_sprite
+    );
     void initVariables();
     void initOverlay();
     void initKeybinds();
@@ -67,11 +72,11 @@ public:
     virtual ~Settings();
 
     /*Update Functions*/
-    void updateNPCLoop(const float& dt);
-    void updateNPCCollisions();
     void updateButtons();
     void updateDropdownLists(const float& dt);
     virtual void updateUserInput(const float& dt);
+    void updateNPCLoop(const float& dt);
+    void updateNPCCollisions();
     virtual void update(const float& dt);
 
     /*Reinitialize Functions*/

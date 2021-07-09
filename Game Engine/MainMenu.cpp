@@ -175,7 +175,7 @@ void MainMenu::updateButtons()
 
 	/*New Character Screen*/
 	if (this->buttons["NEW_GAME"]->isPressed() && this->getKeyTime())
-		this->gameInfo->states->push_back(std::make_unique<NewCharacterScreen>(this->gameInfo));
+		this->gameInfo->states->push_back(std::make_unique<NewCharacterScreen>(this->gameInfo, this->npcItr, this->npcVector, this->tileMap, &this->renderTexture, &this->renderSprite));
 
 	/*Continue Game*/
 	if (this->buttons["CONTINUE_GAME"]->isPressed() && this->getKeyTime())

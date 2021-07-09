@@ -2,11 +2,30 @@
 #include "NewCharacterScreen.h"
 
 /*Initializers*/
+void NewCharacterScreen::initVariables(sf::RenderTexture* render_texture, sf::Sprite* render_sprite)
+{
+	this->mainMenuRenderTexture = render_texture;
+	this->mainMenuRenderSprite = render_sprite;
+	this->male1Female0 = true;
+	this->textureSwitchCounter = 1;
+	this->displayNameWarning = false;
+}
 void NewCharacterScreen::initVariables()
 {
 	this->male1Female0 = true;
 	this->textureSwitchCounter = 1;
 	this->displayNameWarning = false;
+}
+void NewCharacterScreen::initOverlay()
+{
+	this->overlay.setSize(
+		sf::Vector2f(
+			static_cast<float>(this->gameInfo->window->getSize().x),
+			static_cast<float>(this->gameInfo->window->getSize().y)
+		)
+	);
+
+	this->overlay.setFillColor(sf::Color(0, 0, 0, 150));
 }
 void NewCharacterScreen::initKeybinds()
 {
@@ -29,23 +48,12 @@ void NewCharacterScreen::initKeybinds()
 		std::cout << i.first << " " << i.second << '\n';
 	}
 }
-void NewCharacterScreen::initBackground()
-{
-	/*Background*/
-	this->background.setSize(sf::Vector2f(
-		static_cast<float>(this->gameInfo->window->getSize().x),
-		static_cast<float>(this->gameInfo->window->getSize().y)
-	)
-	);
-
-	this->background.setFillColor(sf::Color(20, 20, 20, 100));
-}
 void NewCharacterScreen::initText()
 {
 	/*Menu Text*/
-	if (!this->font.loadFromFile("Resources/Fonts/Dosis.ttf"))
+	if (!this->font.loadFromFile("Resources/Fonts/BreatheFire.ttf"))
 	{
-		throw ("ERROR::NEW_CHARACTER_SCREEN::FAILED_TO_LOAD:Dosis.ttf");
+		throw ("ERROR::NEW_CHARACTER_SCREEN::FAILED_TO_LOAD::BreatheFire.ttf");
 	}
 
 	/*Title Text*/
@@ -76,38 +84,38 @@ void NewCharacterScreen::initText()
 void NewCharacterScreen::initButtons()
 {
 	this->buttons["BACK"] = std::make_unique<GUI::Button>(
-		100.f, 550.f,                  //Button Rect Position
+		120.f, 550.f,                  //Button Rect Position
 		200.f, 50.f,                   // Button Rect Size
 		&this->font, "Back", 50,  //Button Font, Text, and Character Size
-		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
+		sf::Color::White, sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 
 	this->buttons["START_GAME"] = std::make_unique<GUI::Button>(
-		100.f, 450.f,                  //Button Rect Position
+		120.f, 450.f,                  //Button Rect Position
 		200.f, 50.f,                   // Button Rect Size
 		&this->font, "Start Game", 50,       //Button Font, Text, and Character Size
-		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
+		sf::Color::White, sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 
 	this->buttons["<"] = std::make_unique<GUI::Button>(
 		static_cast<float>(this->gameInfo->window->getSize().x) / 2.f - 25.f, static_cast<float>(this->gameInfo->window->getSize().y) / 2 + 25.f,                  //Button Rect Position
 		50.f, 50.f,                   // Button Rect Size
 		&this->font, "<", 50,       //Button Font, Text, and Character Size
-		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
+		sf::Color::White, sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 
 	this->buttons[">"] = std::make_unique<GUI::Button>(
 		static_cast<float>(this->gameInfo->window->getSize().x) / 2.f + 25.f, static_cast<float>(this->gameInfo->window->getSize().y) / 2 + 25.f,                  //Button Rect Position
 		50.f, 50.f,                   // Button Rect Size
 		&this->font, ">", 50,       //Button Font, Text, and Character Size
-		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
+		sf::Color::White, sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 
 	this->buttons["M/F"] = std::make_unique<GUI::Button>(
 		static_cast<float>(this->gameInfo->window->getSize().x) / 2.f, static_cast<float>(this->gameInfo->window->getSize().y) / 2 + 100.f,                  //Button Rect Position
 		50.f, 50.f,                   // Button Rect Size
 		&this->font, "M/F", 50,       //Button Font, Text, and Character Size
-		sf::Color(70, 70, 70, 200), sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
+		sf::Color::White, sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 
 }
@@ -128,12 +136,19 @@ void NewCharacterScreen::initSprite()
 }
 
 /*Constructor & Destructor*/
-NewCharacterScreen::NewCharacterScreen(GameInfo* game_info)
-	: State(game_info)
+NewCharacterScreen::NewCharacterScreen(
+	GameInfo* game_info,
+	std::vector<std::unique_ptr<NPC>>::const_iterator& npc_itr,
+	std::vector<std::unique_ptr<NPC>>& npc_vector,
+	std::unique_ptr<TILEMAP::TileMap>& tile_map,
+	sf::RenderTexture* render_texture,
+	sf::Sprite* render_sprite
+)
+	: State(game_info), mainMenuNPCItr(npc_itr), mainMenuNPCVector(npc_vector), mainMenuTileMap(tile_map)
 {
-	this->initVariables();
+	this->initVariables(render_texture, render_sprite);
+	this->initOverlay();
 	this->initKeybinds();
-	this->initBackground();
 	this->initText();
 	this->initButtons();
 	this->initSprite();
@@ -1255,16 +1270,37 @@ void NewCharacterScreen::updateNameText()
 
 		this->nameText.setString(ss.str());
 }
+void NewCharacterScreen::updateNPCLoop(const float& dt)
+{
+	int counter = 0;
+	for (this->mainMenuNPCItr = this->mainMenuNPCVector.begin(); this->mainMenuNPCItr != this->mainMenuNPCVector.end(); this->mainMenuNPCItr++)
+	{
+		this->mainMenuNPCVector[counter]->update(dt);
+		counter++;
+	}
+}
+void NewCharacterScreen::updateNPCCollisions()
+{
+	/*NPC/Wall*/
+	int counter = 0;
+	for (this->mainMenuNPCItr = this->mainMenuNPCVector.begin(); this->mainMenuNPCItr != this->mainMenuNPCVector.end(); this->mainMenuNPCItr++)
+	{
+		this->mainMenuNPCVector[counter]->tileCollision(this->mainMenuTileMap->getCollision(this->mainMenuNPCVector[counter]->getSpriteRect()));
+		counter++;
+	}
+}
 void NewCharacterScreen::update(const float& dt)
 {
 	this->updateSFMLEvents();
 	this->updateKeyTime(dt);
 	this->updateMousePosition();
+	this->updateTexture();
+	this->updateAnimation();
 	this->updateButtons();
 	this->updateUserInput(dt);
 	this->updateNameText();
-	this->updateAnimation();
-	this->updateTexture();
+	this->updateNPCLoop(dt);
+	this->updateNPCCollisions();
 
 	/*Name Warning Text Toggle*/
 	if (this->displayNameWarning == true)
@@ -1279,21 +1315,35 @@ void NewCharacterScreen::reinitializeState()
 {
 	std::cout << "Reinitializing NewCharacterScreen!\n";
 	this->initVariables();
+	this->initOverlay();
 	this->initKeybinds();
-	this->initBackground();
 	this->initText();
 	this->initButtons();
 	this->initSprite();
 }
 
 /*Render Functions*/
+void NewCharacterScreen::renderOverlay(sf::RenderTarget& target)
+{
+	target.draw(this->overlay);
+}
+void NewCharacterScreen::renderTileMap(sf::RenderTarget& target)
+{
+	this->mainMenuTileMap->render(target, this->view, this->mainMenuTileMap->getEnterTilePosition(), &this->shader);
+}
+void NewCharacterScreen::renderNPCs(sf::RenderTarget& target)
+{
+	int counter = 0;
+	for (this->mainMenuNPCItr = this->mainMenuNPCVector.begin(); this->mainMenuNPCItr != this->mainMenuNPCVector.end(); this->mainMenuNPCItr++)
+	{
+		this->mainMenuNPCVector[counter]->render(target);
+
+		counter++;
+	}
+}
 void NewCharacterScreen::renderSprite(sf::RenderTarget& target)
 {
 	target.draw(sprite);
-}
-void NewCharacterScreen::renderBackground(sf::RenderTarget& target)
-{
-	target.draw(this->background);
 }
 void NewCharacterScreen::renderText(sf::RenderTarget& target)
 {
@@ -1314,8 +1364,14 @@ void NewCharacterScreen::render(sf::RenderTarget* target)
 	if (!target)
 		target = this->gameInfo->window;
 
+	this->mainMenuRenderTexture->clear();
+	this->renderTileMap(*this->mainMenuRenderTexture);
+	this->renderNPCs(*this->mainMenuRenderTexture);
+	this->renderOverlay(*this->mainMenuRenderTexture);
+	this->renderTexture.display();
+	target->draw(*this->mainMenuRenderSprite);
+
 	this->renderSprite(*target);
-	this->renderBackground(*target);
 	this->renderText(*target);
 	this->renderButtons(*target);
 }
