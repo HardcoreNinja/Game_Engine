@@ -57,13 +57,16 @@ void NewCharacterScreen::initText()
 	}
 
 	/*Title Text*/
-	this->titleShape.setPosition(sf::Vector2f(static_cast<float>(this->gameInfo->window->getSize().x) / 2.f, 30.f));
+	this->titleShape.setPosition(sf::Vector2f(static_cast<float>(this->gameInfo->window->getSize().x + 17.f) / 2.f, 200.f));
 	this->titleShape.setSize(sf::Vector2f(200.f, 50.f));
 	this->titleShape.setOrigin(this->titleShape.getGlobalBounds().width / 2.f, this->titleShape.getGlobalBounds().height / 2.f);
 
 	this->text.setFont(font);
 	this->text.setString("Choose a Hero");
-	this->text.setFillColor(sf::Color::White);
+	this->text.setOutlineColor(sf::Color::Black);
+	this->text.setOutlineThickness(2.f);
+	this->text.setFillColor(sf::Color::Magenta);
+
 	this->text.setCharacterSize(30);
 	this->text.setOrigin(this->text.getGlobalBounds().width / 2.f, this->text.getGlobalBounds().height / 2.f);
 	this->text.setPosition(sf::Vector2f(this->titleShape.getPosition().x, this->titleShape.getPosition().y - static_cast<float>(this->text.getCharacterSize()) / 4.f));
@@ -141,10 +144,11 @@ NewCharacterScreen::NewCharacterScreen(
 	std::vector<std::unique_ptr<NPC>>::const_iterator& npc_itr,
 	std::vector<std::unique_ptr<NPC>>& npc_vector,
 	std::unique_ptr<TILEMAP::TileMap>& tile_map,
+	sf::Text& text,
 	sf::RenderTexture* render_texture,
 	sf::Sprite* render_sprite
 )
-	: State(game_info), mainMenuNPCItr(npc_itr), mainMenuNPCVector(npc_vector), mainMenuTileMap(tile_map)
+	: State(game_info), mainMenuNPCItr(npc_itr), mainMenuNPCVector(npc_vector), mainMenuTileMap(tile_map), mainMenuTitleText(text)
 {
 	this->initVariables(render_texture, render_sprite);
 	this->initOverlay();
@@ -1327,6 +1331,10 @@ void NewCharacterScreen::renderOverlay(sf::RenderTarget& target)
 {
 	target.draw(this->overlay);
 }
+void NewCharacterScreen::renderTitleText(sf::RenderTarget& target)
+{
+	target.draw(this->mainMenuTitleText);
+}
 void NewCharacterScreen::renderTileMap(sf::RenderTarget& target)
 {
 	this->mainMenuTileMap->render(target, this->view, this->mainMenuTileMap->getEnterTilePosition(), &this->shader);
@@ -1371,6 +1379,7 @@ void NewCharacterScreen::render(sf::RenderTarget* target)
 	this->renderTexture.display();
 	target->draw(*this->mainMenuRenderSprite);
 
+	this->renderTitleText(*target);
 	this->renderSprite(*target);
 	this->renderText(*target);
 	this->renderButtons(*target);

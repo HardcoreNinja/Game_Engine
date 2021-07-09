@@ -22,6 +22,10 @@ class MainMenu :
     public State
 {
 private:
+    /*Title Text*/
+    sf::Text titleText; 
+    sf::Font titleFont;
+
     /*Player Details*/
     PlayerDetails playerDetails;
 
@@ -37,6 +41,7 @@ private:
     std::vector<std::unique_ptr<NPC>> npcVector;
 
     void initOverlay();
+    void initTitleText();
     void initMusic(); 
     void initKeybinds();
     void initFonts();
@@ -69,6 +74,7 @@ public:
 
     /*Render Functions*/
     void renderOverlay(sf::RenderTarget& target);
+    void renderTitleText(sf::RenderTarget& target);
     void renderTileMap(sf::RenderTarget& target);
     void renderNPCs(sf::RenderTarget& target);
     void renderButtons(sf::RenderTarget& target);

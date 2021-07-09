@@ -138,14 +138,15 @@ void Settings::initTextTitles()
 
 /*Constuctor & Destructor*/
 Settings::Settings(
-	GameInfo* game_info, 
+	GameInfo* game_info,
 	std::vector<std::unique_ptr<NPC>>::const_iterator& npc_itr,
 	std::vector<std::unique_ptr<NPC>>& npc_vector,
 	std::unique_ptr<TILEMAP::TileMap>& tile_map,
+	sf::Text& text,
 	sf::RenderTexture* render_texture,
 	sf::Sprite* render_sprite
 )
-	: State(game_info), mainMenuNPCItr(npc_itr), mainMenuNPCVector(npc_vector), mainMenuTileMap(tile_map)
+	: State(game_info), mainMenuNPCItr(npc_itr), mainMenuNPCVector(npc_vector), mainMenuTileMap(tile_map), mainMenuTitleText(text)
 {
 	this->initVariables(render_texture, render_sprite);
 	this->initOverlay();
@@ -439,6 +440,10 @@ void Settings::renderOverlay(sf::RenderTarget& target)
 {
 	target.draw(this->overlay);
 }
+void Settings::renderTitleText(sf::RenderTarget& target)
+{
+	target.draw(this->mainMenuTitleText);
+}
 void Settings::renderTileMap(sf::RenderTarget& target)
 {
 	this->mainMenuTileMap->render(target, this->view, this->mainMenuTileMap->getEnterTilePosition(), &this->shader);
@@ -477,6 +482,7 @@ void Settings::render(sf::RenderTarget* target)
 	this->renderTexture.display();
 	target->draw(*this->mainMenuRenderSprite);
 
+	this->renderTitleText(*target);
 	target->draw(this->text);
 	this->renderButtons(*target);
 	this->renderDropdownLists(*target);	

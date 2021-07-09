@@ -12,6 +12,25 @@ void MainMenu::initOverlay()
 
 	this->overlay.setFillColor(sf::Color(0, 0, 0, 150));
 }
+void MainMenu::initTitleText()
+{
+	if (!this->titleFont.loadFromFile("Resources/Fonts/WarPriestExpanded.ttf"))
+	{
+		throw ("ERROR::MAIN_MENU::FAILED_TO_LOAD:WarPriestExpanded.ttf");
+	}
+
+	this->titleText.setFont(this->titleFont);
+
+	this->titleText.setOutlineColor(sf::Color::Red);
+	this->titleText.setOutlineThickness(2.f);
+	this->titleText.setFillColor(sf::Color::Yellow);
+	this->titleText.setCharacterSize(40);
+	this->titleText.setString("            Wake's \n               2D \n SFML RPG ENGINE");
+	this->titleText.setOrigin(this->titleText.getGlobalBounds().width / 2.f, this->titleText.getGlobalBounds().height / 2.f);
+	this->titleText.setPosition(sf::Vector2f(static_cast<float>(this->gameInfo->window->getSize().x / 2.f) + 150.f, + 125.f));
+	this->titleText.rotate(25.f);
+	
+}
 void MainMenu::initMusic()
 {
 	this->gameInfo->audioMap["MAIN_MENU"]->setLoop(true);
@@ -143,6 +162,7 @@ MainMenu::MainMenu(GameInfo* game_info)
 	: State(game_info)
 {
 	this->initOverlay();
+	this->initTitleText();
 	this->initMusic();
 	this->initKeybinds();
 	this->initFonts();
@@ -167,7 +187,7 @@ void MainMenu::updateButtons()
 
 	/*Settings*/
 	if (this->buttons["SETTINGS"]->isPressed() && this->getKeyTime())
-		this->gameInfo->states->push_back(std::make_unique<Settings>(this->gameInfo, this->npcItr, this->npcVector, this->tileMap, &this->renderTexture, &this->renderSprite));
+		this->gameInfo->states->push_back(std::make_unique<Settings>(this->gameInfo, this->npcItr, this->npcVector, this->tileMap, this->titleText, &this->renderTexture, &this->renderSprite));
 
 	/*Editor*/
 	if (this->buttons["EDITOR"]->isPressed() && this->getKeyTime())
@@ -175,7 +195,7 @@ void MainMenu::updateButtons()
 
 	/*New Character Screen*/
 	if (this->buttons["NEW_GAME"]->isPressed() && this->getKeyTime())
-		this->gameInfo->states->push_back(std::make_unique<NewCharacterScreen>(this->gameInfo, this->npcItr, this->npcVector, this->tileMap, &this->renderTexture, &this->renderSprite));
+		this->gameInfo->states->push_back(std::make_unique<NewCharacterScreen>(this->gameInfo, this->npcItr, this->npcVector, this->tileMap, this->titleText, &this->renderTexture, &this->renderSprite));
 
 	/*Continue Game*/
 	if (this->buttons["CONTINUE_GAME"]->isPressed() && this->getKeyTime())
@@ -185,7 +205,6 @@ void MainMenu::updateButtons()
 		this->loadProjectileDetailsFromFile();
 		this->gameInfo->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails, this->projectileDetails, true));
 	}
-
 }
 void MainMenu::updateNPCLoop(const float& dt)
 {
@@ -326,6 +345,10 @@ void MainMenu::renderOverlay(sf::RenderTarget& target)
 {
 	target.draw(this->overlay);
 }
+void MainMenu::renderTitleText(sf::RenderTarget& target)
+{
+	target.draw(this->titleText);
+}
 void MainMenu::renderTileMap(sf::RenderTarget& target)
 {
 	this->tileMap->render(target, this->view, this->tileMap->getEnterTilePosition(), &this->shader);
@@ -359,5 +382,6 @@ void MainMenu::render(sf::RenderTarget* target)
 	this->renderTexture.display();
 	target->draw(this->renderSprite);
 
+	this->renderTitleText(*target);
 	this->renderButtons(*target);
 }

@@ -23,6 +23,9 @@ private:
     /*Overlay*/
     sf::RectangleShape overlay;
 
+    /*Main Menu Title Text*/
+    sf::Text& mainMenuTitleText;
+
     /*Main Menu NPCs*/
     std::vector<std::unique_ptr<NPC>>::const_iterator& mainMenuNPCItr;
     std::vector<std::unique_ptr<NPC>>& mainMenuNPCVector;
@@ -66,6 +69,7 @@ public:
         std::vector<std::unique_ptr<NPC>>::const_iterator& npc_itr,
         std::vector<std::unique_ptr<NPC>>& npc_vector, 
         std::unique_ptr<TILEMAP::TileMap>& tile_map,
+        sf::Text& text,
         sf::RenderTexture* mainMenuRenderTexture,
         sf::Sprite* mainMenuRenderSprite
     );
@@ -89,6 +93,7 @@ public:
 
     /*Render Functions*/
     void renderOverlay(sf::RenderTarget& target);
+    void renderTitleText(sf::RenderTarget& target);
     void renderTileMap(sf::RenderTarget& target);
     void renderNPCs(sf::RenderTarget& target);
     void renderButtons(sf::RenderTarget& target);
