@@ -1,7 +1,7 @@
 #include "Header.h"
 #include "Game.h"
 
-int main()
+int WinMain()
 {
     Game game;
     game.run();
