@@ -85,7 +85,7 @@ void Settings::initDropdownLists()
 	/*Load Active Element IDs*/
 	this->loadFromFile();
 
-	/*Resolution*/
+	/*Resolution
 	std::vector<std::string> videoModeStringVector;
 	for (auto& i : this->videoModes)
 		videoModeStringVector.push_back(std::to_string(i.width) + " x " + std::to_string(i.height));
@@ -95,9 +95,9 @@ void Settings::initDropdownLists()
 		this->font, videoModeStringVector.data(), 20,         //Dropdown List Font, String Vector, and Character Size
 		this->keyTime, this->maxKeyTime,                      //Dropdown List Key Time Info
 		static_cast<unsigned>(videoModeStringVector.size())); //Dropdown ListString Vector Size
-	this->dropdownLists["RESOLUTION"]->setActiveElementID(this->resolutionID);
+	this->dropdownLists["RESOLUTION"]->setActiveElementID(this->resolutionID);*/
 
-	/*Fullscreen*/
+	/*Fullscreen
 	std::vector<std::string> fullscreenStringVector = { "No", "Yes" };
 	this->dropdownLists["FULLSCREEN"] = std::make_unique<GUI::DropdownList>(
 		200.f, 227.f,                                          //Dropdown List Position
@@ -105,12 +105,12 @@ void Settings::initDropdownLists()
 		this->font, fullscreenStringVector.data(), 25,         //Dropdown List Font, String Vector, and Character Size
 		this->keyTime, this->maxKeyTime,                       //Dropdown List Key Time Info
 		static_cast<unsigned>(fullscreenStringVector.size())); //Dropdown ListString Vector Size
-	this->dropdownLists["FULLSCREEN"]->setActiveElementID(this->fullscreenID);
+	this->dropdownLists["FULLSCREEN"]->setActiveElementID(this->fullscreenID);*/
 
 	/*VSync*/
 	std::vector<std::string> vSyncStringVector = { "No", "Yes" };
 	this->dropdownLists["VSYNC"] = std::make_unique<GUI::DropdownList>(
-		200.f, 291.f,                                     //Dropdown List Position
+		200.f, 163.f,                                     //Dropdown List Position
 		100.f, 25.f,                                      //Dropdown List Size 
 		this->font, vSyncStringVector.data(), 25,         //Dropdown List Font, String Vector, and Character Size
 		this->keyTime, this->maxKeyTime,                  //Dropdown List Key Time Info
@@ -119,7 +119,7 @@ void Settings::initDropdownLists()
 
 	std::vector<std::string> anti_AliasingStringVector = { "0x", "1x", "2x", "4x", "8x", "16x", "32x" };
 	this->dropdownLists["ANTI_ALIASING"] = std::make_unique<GUI::DropdownList>(
-		200.f, 355.f,                                             //Dropdown List Position
+		200.f, 220.f,                                             //Dropdown List Position
 		100.f, 25.f,                                              //Dropdown List Size 
 		this->font, anti_AliasingStringVector.data(), 25,         //Dropdown List Font, String Vector, and Character Size
 		this->keyTime, this->maxKeyTime,                          //Dropdown List Key Time Info
@@ -133,7 +133,7 @@ void Settings::initTextTitles()
 	this->text.setOrigin(this->text.getGlobalBounds().width / 2.f, this->text.getGlobalBounds().height / 2.f);
 	this->text.setPosition(sf::Vector2f(0.f, 144.f));
 	this->text.setFillColor(sf::Color::White);
-	this->text.setString("Resolution: \n\n Fullscreen: \n\n VSync: \n\n Anti-Aliasing: \n\n");
+	this->text.setString("VSync: \n\n Anti-Aliasing: \n\n");
 }
 
 /*Constuctor & Destructor*/
@@ -228,7 +228,7 @@ void Settings::updateButtons()
 }
 void Settings::updateDropdownLists(const float& dt)
 {
-	/*Resolution*/
+	/*Resolution
 		this->dropdownLists["RESOLUTION"]->update(this->mousePositionView, dt);
 
 		if (this->dropdownLists["RESOLUTION"]->getShowList())
@@ -244,9 +244,9 @@ void Settings::updateDropdownLists(const float& dt)
 			this->pauseFullScreen = false;
 			this->pauseVSync = false;
 			this->pauseAnti_Aliasing = false;
-		}
+		}*/
 
-		/*Fullscreen*/
+		/*Fullscreen
 		if (!pauseFullScreen)
 		{
 			this->dropdownLists["FULLSCREEN"]->update(this->mousePositionView, dt);
@@ -256,7 +256,7 @@ void Settings::updateDropdownLists(const float& dt)
 
 			if (!this->dropdownLists["FULLSCREEN"]->getShowList() && this->mouseReleased)
 				this->pauseVSync = false;
-		}
+		}*/
 
 		/*VSync*/
 		if (!this->pauseVSync)
@@ -462,8 +462,8 @@ void Settings::renderDropdownLists(sf::RenderTarget& target)
 {
 	this->dropdownLists["ANTI_ALIASING"]->render(target);
 	this->dropdownLists["VSYNC"]->render(target);
-	this->dropdownLists["FULLSCREEN"]->render(target);
-	this->dropdownLists["RESOLUTION"]->render(target);
+	//this->dropdownLists["FULLSCREEN"]->render(target);
+	//this->dropdownLists["RESOLUTION"]->render(target);
 }
 void Settings::render(sf::RenderTarget* target)
 {

@@ -79,7 +79,7 @@ void NewCharacterScreen::initText()
 	this->nameWarningText.setString("You forgot to name your Hero!");
 	this->nameWarningText.setFillColor(sf::Color::Red);
 	this->nameWarningText.setCharacterSize(15);
-	this->nameWarningText.setPosition(0.f, 250.f);
+	this->nameWarningText.setPosition(10.f, 250.f);
 }
 void NewCharacterScreen::initButtons()
 {
@@ -98,21 +98,21 @@ void NewCharacterScreen::initButtons()
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 
 	this->buttons["<"] = std::make_unique<GUI::Button>(
-		static_cast<float>(this->gameInfo->window->getSize().x) / 2.f - 25.f, static_cast<float>(this->gameInfo->window->getSize().y) / 2 + 25.f,                  //Button Rect Position
+		static_cast<float>(this->gameInfo->window->getSize().x) / 2.f, static_cast<float>(this->gameInfo->window->getSize().y) / 2 + 35.f,                  //Button Rect Position
 		50.f, 50.f,                   // Button Rect Size
 		&this->font, "<", 50,       //Button Font, Text, and Character Size
 		sf::Color::White, sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 
 	this->buttons[">"] = std::make_unique<GUI::Button>(
-		static_cast<float>(this->gameInfo->window->getSize().x) / 2.f + 25.f, static_cast<float>(this->gameInfo->window->getSize().y) / 2 + 25.f,                  //Button Rect Position
+		static_cast<float>(this->gameInfo->window->getSize().x) / 2.f + 34.f, static_cast<float>(this->gameInfo->window->getSize().y) / 2 + 35.f,                  //Button Rect Position
 		50.f, 50.f,                   // Button Rect Size
 		&this->font, ">", 50,       //Button Font, Text, and Character Size
 		sf::Color::White, sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));     //Button Rect Fill Color (Outline Color Optional)
 
 	this->buttons["M/F"] = std::make_unique<GUI::Button>(
-		static_cast<float>(this->gameInfo->window->getSize().x) / 2.f, static_cast<float>(this->gameInfo->window->getSize().y) / 2 + 100.f,                  //Button Rect Position
+		static_cast<float>(this->gameInfo->window->getSize().x) / 2.f + 21, static_cast<float>(this->gameInfo->window->getSize().y) / 2 + 100.f,                  //Button Rect Position
 		50.f, 50.f,                   // Button Rect Size
 		&this->font, "M/F", 50,       //Button Font, Text, and Character Size
 		sf::Color::White, sf::Color(250, 150, 150, 250), sf::Color(20, 20, 20, 50), //Text Color
@@ -132,7 +132,7 @@ void NewCharacterScreen::initSprite()
 	sprite.setTexture(this->texture);
 	sprite.setTextureRect(this->spriteIntRect);
 	sprite.setOrigin(sprite.getGlobalBounds().width / 2.f, sprite.getGlobalBounds().height / 2.f);
-	sprite.setPosition(static_cast<float>(this->gameInfo->window->getSize().x) / 2.f, static_cast<float>(this->gameInfo->window->getSize().y) / 2.f);
+	sprite.setPosition(static_cast<float>(this->gameInfo->window->getSize().x) / 2.f + 17.f, static_cast<float>(this->gameInfo->window->getSize().y) / 2.f);
 }
 
 /*Constructor & Destructor*/
@@ -1247,7 +1247,7 @@ void NewCharacterScreen::updateNameText()
 {
 	std::stringstream ss;
 
-		this->nameText.setPosition(0.f, 200.f);
+		this->nameText.setPosition(10.f, 200.f);
 		
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("BACKSPACE"))) && this->getKeyTime())
 		{
