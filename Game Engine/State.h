@@ -25,6 +25,12 @@ class sf::View;
 
 struct GameInfo
 {
+
+	GameInfo(std::map<std::string, std::unique_ptr<Audio>>& audio_map)
+		: audioMap(audio_map)
+	{
+	}
+
 	/*State Vector*/
 	std::vector<std::unique_ptr<State>>* states;
 
@@ -39,9 +45,7 @@ struct GameInfo
 	std::map<std::string, int>* supportedKeys;
 
 	/*Audio*/
-	std::unique_ptr<Audio> audio;
-	std::map<std::string, std::unique_ptr<Audio>> audioMap;
-	std::map<std::string, std::unique_ptr<Audio>>::iterator audioMapItr;
+	std::map<std::string, std::unique_ptr<Audio>>& audioMap;
 
 	/*Cursor*/
 	sf::Cursor* cursor;
@@ -114,7 +118,7 @@ protected:
 
 	/*Initializers*/
 	void initVariables(GameInfo* game_info);
-	void initAudio();
+	
 	void initShader();
 	void initView();
 public:

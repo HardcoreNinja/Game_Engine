@@ -298,11 +298,13 @@ void GameState::updatePauseMenuButtons()
 		/*Save Invetory Details*/
 		this->inventory->saveToFile();
 
-		/*Stop Audio*/
-		for (this->gameInfo->audioMapItr = this->gameInfo->audioMap.begin(); this->gameInfo->audioMapItr != this->gameInfo->audioMap.end(); this->gameInfo->audioMapItr++)
-		{
-			this->gameInfo->audioMapItr->second->stop();
-		}
+		/*Stop Current Audio*/
+		for (auto& i : this->gameInfo->audioMap)
+			i.second->stop();
+		
+		/*Play Main Menu Audio*/
+		this->gameInfo->audioMap["MAIN_MENU"]->setFadeIn(true);
+		this->gameInfo->audioMap["MAIN_MENU"]->play();
 
 		/*Erase the NewCharacter Screen and Shrink States Vector*/
 		if (!this->cameFromMainMenu)
@@ -336,11 +338,13 @@ void GameState::updateGameOverButtons()
 		/*Save Invetory Details*/
 		this->inventory->saveToFile();
 
-		/*Stop Audio*/
-		for (this->gameInfo->audioMapItr = this->gameInfo->audioMap.begin(); this->gameInfo->audioMapItr != this->gameInfo->audioMap.end(); this->gameInfo->audioMapItr++)
-		{
-			this->gameInfo->audioMapItr->second->stop();
-		}
+		/*Stop Current Audio*/
+		for (auto& i : this->gameInfo->audioMap)
+			i.second->stop();
+		
+		/*Play Main Menu Audio*/
+		this->gameInfo->audioMap["MAIN_MENU"]->setFadeIn(true);
+		this->gameInfo->audioMap["MAIN_MENU"]->play();
 
 		/*Erase the NewCharacter Screen and Shrink States Vector*/
 		if (!this->cameFromMainMenu)

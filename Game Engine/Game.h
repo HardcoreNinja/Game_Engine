@@ -28,6 +28,10 @@ private:
 	/*Input Variables*/
 	std::map<std::string, int> supportedKeys;
 
+	/*Audio*/
+	std::unique_ptr<Audio> audio;
+	std::map<std::string, std::unique_ptr<Audio>> audioMap;
+
 	/*Cursor*/
 	sf::Image cursorImage;
 	sf::Cursor cursor;
@@ -36,6 +40,7 @@ private:
 
 	/*Initializers*/
 	void initVariables();
+	void initAudio();
 	void initGraphicsSettings();
 	void initWindow();
 	void initCursor();
@@ -50,6 +55,7 @@ public:
 	/*Update Functions*/
 	void updateDeltaTime();
 	//void updateSFMLEvents();
+	void updateAudio();
 	void update();
 
 	/*Render Functions*/

@@ -36,9 +36,9 @@ void Editor::initKeybinds()
 }
 void Editor::initFonts()
 {
-	if (!this->font.loadFromFile("Resources/Fonts/Dosis.ttf"))
+	if (!this->font.loadFromFile("Resources/Fonts/BreatheFire.ttf"))
 	{
-		throw ("ERROR::MAIN_MENU::FAILED_TO_LOAD:Dosis.ttf");
+		throw ("ERROR::MAIN_MENU::FAILED_TO_LOAD:BreatheFire.ttf");
 	}
 
 	this->text.setFont(this->font);

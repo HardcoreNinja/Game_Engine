@@ -37,6 +37,7 @@ private:
     std::vector<std::unique_ptr<NPC>> npcVector;
 
     void initOverlay();
+    void initMusic(); 
     void initKeybinds();
     void initFonts();
     void initButtons();

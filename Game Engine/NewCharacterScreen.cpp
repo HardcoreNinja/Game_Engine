@@ -1015,6 +1015,9 @@ void NewCharacterScreen::updateButtons()
 			this->displayNameWarning = true;
 		else
 		{
+			/*Fade Out Main Menu Music*/
+			this->gameInfo->audioMap["MAIN_MENU"]->setFadeOut(true);
+
 			/*New Character Details*/
 			this->playerDetails.name = this->nameString;
 			this->playerDetails.textureSwitchCounter = this->textureSwitchCounter;
@@ -1163,6 +1166,9 @@ void NewCharacterScreen::updateUserInput(const float& dt)
 			this->displayNameWarning = true;
 		else
 		{
+			/*Fade Out Main Menu Music*/
+			this->gameInfo->audioMap["MAIN_MENU"]->setFadeOut(true);
+
 			/*New Character Details*/
 			this->playerDetails.name = this->nameString;
 			this->playerDetails.textureSwitchCounter = this->textureSwitchCounter;

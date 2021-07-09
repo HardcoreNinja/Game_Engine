@@ -12,6 +12,12 @@ void MainMenu::initOverlay()
 
 	this->overlay.setFillColor(sf::Color(0, 0, 0, 150));
 }
+void MainMenu::initMusic()
+{
+	this->gameInfo->audioMap["MAIN_MENU"]->setLoop(true);
+	this->gameInfo->audioMap["MAIN_MENU"]->setFadeIn(true);
+	this->gameInfo->audioMap["MAIN_MENU"]->play();
+}
 void MainMenu::initKeybinds()
 {
 	std::ifstream ifs("Config/mainmenu_keybinds.ini");
@@ -137,6 +143,7 @@ MainMenu::MainMenu(GameInfo* game_info)
 	: State(game_info)
 {
 	this->initOverlay();
+	this->initMusic();
 	this->initKeybinds();
 	this->initFonts();
 	this->initButtons();
@@ -173,6 +180,7 @@ void MainMenu::updateButtons()
 	/*Continue Game*/
 	if (this->buttons["CONTINUE_GAME"]->isPressed() && this->getKeyTime())
 	{
+		this->gameInfo->audioMap["MAIN_MENU"]->setFadeOut(true);
 		this->loadPlayerDetailsFromFile();
 		this->loadProjectileDetailsFromFile();
 		this->gameInfo->states->push_back(std::make_unique<GameState>(this->gameInfo, this->playerDetails, this->projectileDetails, true));
