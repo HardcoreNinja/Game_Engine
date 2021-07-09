@@ -1046,7 +1046,7 @@ void NewCharacterScreen::updateButtons()
 			this->playerDetails.currentTileMap = CurrentTileMap::LEVEL_A;
 
 			/*Position & Direction*/
-			this->playerDetails.position = sf::Vector2f(207.f, 176.f);
+			this->playerDetails.position = sf::Vector2f(832.f, 535.f);
 			this->playerDetails.oldDirection = Direction::Down;
 
 			/*Movement Variables*/
@@ -1197,7 +1197,7 @@ void NewCharacterScreen::updateUserInput(const float& dt)
 			this->playerDetails.currentTileMap = CurrentTileMap::LEVEL_A;
 
 			/*Position & Direction*/
-			this->playerDetails.position = sf::Vector2f(207.f, 176.f);
+			this->playerDetails.position = sf::Vector2f(832.f, 535.f);
 			this->playerDetails.oldDirection = Direction::Down;
 
 			/*Movement Variables*/
