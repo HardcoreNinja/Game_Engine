@@ -174,15 +174,15 @@ void Settings::updateButtons()
 	//Apply Seceleted Settings
 	if (this->buttons["APPLY"]->isPressed())
 	{
-		/*Resolution*/
+		/*Resolution
 		std::cout << this->dropdownLists["RESOLUTION"]->getActiveElementID() << '\n';
 		this->resolutionID = this->dropdownLists["RESOLUTION"]->getActiveElementID();
-		this->gameInfo->graphicsSettings->resolution = this->videoModes[this->dropdownLists["RESOLUTION"]->getActiveElementID()];
+		this->gameInfo->graphicsSettings->resolution = this->videoModes[this->dropdownLists["RESOLUTION"]->getActiveElementID()];*/
 
-		/*Fullscreen*/
+		/*Fullscreen
 		std::cout << this->dropdownLists["FULLSCREEN"]->getActiveElementID() << '\n';
 		this->fullscreenID = this->dropdownLists["FULLSCREEN"]->getActiveElementID();
-		this->gameInfo->graphicsSettings->isFullscreen = this->dropdownLists["FULLSCREEN"]->getActiveElementID();
+		this->gameInfo->graphicsSettings->isFullscreen = this->dropdownLists["FULLSCREEN"]->getActiveElementID();*/
 		
 		/*VSync*/
 		std::cout << this->dropdownLists["VSYNC"]->getActiveElementID() << '\n';
