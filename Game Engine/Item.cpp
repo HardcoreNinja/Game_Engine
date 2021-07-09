@@ -185,10 +185,19 @@ void Item::update(sf::RectangleShape player_rect, const float& dt)
 }
 
 /*Render Functions*/
-void Item::render(sf::RenderTarget& target)
+void Item::render(sf::RenderTarget& target, sf::Vector2f player_center, sf::Shader* shader)
 {
 	target.draw(this->spriteRect);
-	target.draw(this->itemDetails.itemSprite);
+
+	if (shader)
+	{
+		shader->setUniform("hasTexture", true);
+		shader->setUniform("lightPosition", player_center);
+		target.draw(this->itemDetails.itemSprite, shader);
+	}
+	else if (!shader)
+		target.draw(this->itemDetails.itemSprite);
+
 	//target.draw(this->alertCircle);
 
 	if (this->showItemText)

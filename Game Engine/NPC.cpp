@@ -1710,10 +1710,19 @@ void NPC::update(const float& dt)
 }
 
 /*Render Functions*/
-void NPC::render(sf::RenderTarget& target)
+void NPC::render(sf::RenderTarget& target, sf::Vector2f player_center, sf::Shader* shader)
 {
-	target.draw(this->sprite);
 	target.draw(this->spriteRect);
+
+	if (shader)
+	{
+		shader->setUniform("hasTexture", true);
+		shader->setUniform("lightPosition", player_center);
+		target.draw(this->sprite, shader);
+	}
+	else if (!shader)
+		target.draw(this->sprite);
+
 	//target.draw(this->alertCircle);
 
 	if (this->alertCircleCollisionBool)

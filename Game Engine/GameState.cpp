@@ -972,7 +972,7 @@ void GameState::renderProjectiles(sf::RenderTarget& target)
 	int counter = 0;
 	for (this->projectileItr = this->projectileVector.begin(); this->projectileItr != this->projectileVector.end(); this->projectileItr++)
 	{
-		this->projectileVector[counter]->render(target);
+		this->projectileVector[counter]->render(target, this->player->getCenter(), &this->shader);
 
 		counter++;
 	}
@@ -982,7 +982,7 @@ void GameState::renderEnemies(sf::RenderTarget& target)
 	int counter = 0;
 	for (this->enemyItr = this->enemyVector.begin(); this->enemyItr != this->enemyVector.end(); this->enemyItr++)
 	{
-		this->enemyVector[counter]->render(target);
+		this->enemyVector[counter]->render(target, this->player->getCenter(), &this->shader);
 
 		counter++;
 	}
@@ -992,7 +992,7 @@ void GameState::renderNPCs(sf::RenderTarget& target)
 	int counter = 0;
 	for (this->npcItr = this->npcVector.begin(); this->npcItr != this->npcVector.end(); this->npcItr++)
 	{
-		this->npcVector[counter]->render(target);
+		this->npcVector[counter]->render(target, this->player->getCenter(), &this->shader);
 
 		counter++;
 	}
@@ -1018,7 +1018,7 @@ void GameState::renderItems(sf::RenderTarget& target)
 	int counter = 0;
 	for (this->itemItr = this->itemVector.begin(); this->itemItr != this->itemVector.end(); this->itemItr++)
 	{
-		this->itemVector[counter]->render(target);
+		this->itemVector[counter]->render(target, this->player->getCenter(), &this->shader);
 
 		counter++;
 	}

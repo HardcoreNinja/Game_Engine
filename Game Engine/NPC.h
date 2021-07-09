@@ -152,6 +152,6 @@ public:
     void update(const float& dt);
 
     /*Render Functions*/
-    void render(sf::RenderTarget& target);
+    void render(sf::RenderTarget& target, sf::Vector2f player_center = sf::Vector2f(0.f, 0.f), sf::Shader* shader = NULL);
 };
 #endif

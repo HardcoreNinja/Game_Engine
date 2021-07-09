@@ -109,7 +109,7 @@ void TILEMAP::Tile::render(sf::RenderTarget& target, sf::Vector2f player_center,
 		
 		target.draw(this->shape, shader);
 	}
-	else 
+	else if (!shader)
 		target.draw(this->shape);
 }
 

@@ -811,8 +811,16 @@ void Projectile::saveToFile()
 }
 
 /*Render Functions*/
-void Projectile::render(sf::RenderTarget& target)
+void Projectile::render(sf::RenderTarget& target, sf::Vector2f player_center, sf::Shader* shader)
 {
 	target.draw(this->spriteRect);
-	target.draw(this->sprite);
+
+	if (shader)
+	{
+		shader->setUniform("hasTexture", true);
+		shader->setUniform("lightPosition", player_center);
+		target.draw(this->sprite, shader);
+	}
+	else if (!shader)
+		target.draw(this->sprite);
 }

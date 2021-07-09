@@ -1634,18 +1634,19 @@ void Player::saveToFile()
 }
 
 /*Render Functions*/
-void Player::render(sf::RenderTarget& target, sf::Shader* shader)
+void Player::render(sf::RenderTarget& target, sf::Shader* shader = NULL)
 {
 	target.draw(this->spriteRect);
 
-	shader->setUniform("lightPosition", this->getCenter());
-	shader->setUniform("hasTexture", true);
+	if (shader)
+	{
+		shader->setUniform("hasTexture", true);
+		shader->setUniform("lightPosition", this->getCenter());
+		target.draw(this->sprite, shader);
+	}
+	else if(!shader)
+		target.draw(this->sprite);
 
-	target.draw(this->sprite, shader);
-
-	if (
-		this->itemCollisionBool 
-		|| this->npcCollisionBool
-		)
+	if (this->itemCollisionBool || this->npcCollisionBool)
 		target.draw(this->emoteSprite);
 }

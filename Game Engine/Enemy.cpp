@@ -54,7 +54,7 @@ void Enemy::initSpriteRect()
 	/*Enemy Sprite Rect*/
 	this->spriteRect.setSize(sf::Vector2f(26.f, 32.f));
 	this->spriteRect.setOutlineThickness(1.f);
-	this->spriteRect.setOutlineColor(sf::Color::Red);
+	this->spriteRect.setOutlineColor(sf::Color::Transparent);
 	this->spriteRect.setFillColor(sf::Color::Transparent);
 	this->spriteRect.setOrigin(this->spriteRect.getGlobalBounds().width / 2.f, this->spriteRect.getGlobalBounds().height / 2.f);
 
@@ -965,9 +965,19 @@ void Enemy::update(sf::RectangleShape player_rect, const float& dt)
 }
 
 /*Render Functions*/
-void Enemy::render(sf::RenderTarget& target)
+void Enemy::render(sf::RenderTarget& target, sf::Vector2f player_center, sf::Shader* shader)
 {
-	target.draw(this->sprite);
+	target.draw(this->spriteRect);
+
+	if (shader)
+	{
+		shader->setUniform("hasTexture", true);
+		shader->setUniform("lightPosition", player_center);
+		target.draw(this->sprite, shader);
+	}
+	else if (!shader)
+		target.draw(this->sprite);
+
 	target.draw(this->alertCircle);
 
 	if (this->alertCircleCollisionBool && this->emoteCounter < 5)
