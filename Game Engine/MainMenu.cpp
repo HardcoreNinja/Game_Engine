@@ -33,9 +33,9 @@ void MainMenu::initTitleText()
 }
 void MainMenu::initMusic()
 {
+	this->gameInfo->audioMap["MAIN_MENU"]->setVolume(0.f);
 	this->gameInfo->audioMap["MAIN_MENU"]->setLoop(true);
 	this->gameInfo->audioMap["MAIN_MENU"]->setFadeIn(true);
-	this->gameInfo->audioMap["MAIN_MENU"]->play();
 }
 void MainMenu::initKeybinds()
 {
@@ -200,6 +200,8 @@ void MainMenu::updateButtons()
 	/*Continue Game*/
 	if (this->buttons["CONTINUE_GAME"]->isPressed() && this->getKeyTime())
 	{
+		this->gameInfo->audioMap["MAIN_MENU"]->setVolume(100.f);
+		this->gameInfo->audioMap["MAIN_MENU"]->setLoop(false);
 		this->gameInfo->audioMap["MAIN_MENU"]->setFadeOut(true);
 		this->loadPlayerDetailsFromFile();
 		this->loadProjectileDetailsFromFile();

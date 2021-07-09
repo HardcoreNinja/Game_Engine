@@ -1035,6 +1035,8 @@ void NewCharacterScreen::updateButtons()
 		else
 		{
 			/*Fade Out Main Menu Music*/
+			this->gameInfo->audioMap["MAIN_MENU"]->setVolume(100.f);
+			this->gameInfo->audioMap["MAIN_MENU"]->setFadeOut(false);
 			this->gameInfo->audioMap["MAIN_MENU"]->setFadeOut(true);
 
 			/*New Character Details*/
@@ -1186,6 +1188,8 @@ void NewCharacterScreen::updateUserInput(const float& dt)
 		else
 		{
 			/*Fade Out Main Menu Music*/
+			this->gameInfo->audioMap["MAIN_MENU"]->setVolume(100.f);
+			this->gameInfo->audioMap["MAIN_MENU"]->setFadeOut(false);
 			this->gameInfo->audioMap["MAIN_MENU"]->setFadeOut(true);
 
 			/*New Character Details*/

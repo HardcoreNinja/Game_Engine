@@ -123,9 +123,9 @@ void GameState::initTileMap(PlayerDetails player_details)
 		this->initEnemies();
 
 		/*Audio*/
+		this->gameInfo->audioMap["LEVEL_A"]->setVolume(0.f);
 		this->gameInfo->audioMap["LEVEL_A"]->setLoop(true);
 		this->gameInfo->audioMap["LEVEL_A"]->setFadeIn(true);
-		this->gameInfo->audioMap["LEVEL_A"]->play();
 	}
 
 	/*House_A*/
@@ -172,9 +172,9 @@ void GameState::initTileMap(PlayerDetails player_details)
 			this->npcVector.push_back(std::move(this->npc));
 
 			/*Audio*/
+			this->gameInfo->audioMap["HOUSE_A"]->setVolume(0.f);
 			this->gameInfo->audioMap["HOUSE_A"]->setLoop(true);
 			this->gameInfo->audioMap["HOUSE_A"]->setFadeIn(true);
-			this->gameInfo->audioMap["HOUSE_A"]->play();	
 	}
 }
 void GameState::initHUD()
@@ -303,8 +303,9 @@ void GameState::updatePauseMenuButtons()
 			i.second->stop();
 		
 		/*Play Main Menu Audio*/
+		this->gameInfo->audioMap["MAIN_MENU"]->setVolume(0.f);
+		this->gameInfo->audioMap["MAIN_MENU"]->setLoop(true);
 		this->gameInfo->audioMap["MAIN_MENU"]->setFadeIn(true);
-		this->gameInfo->audioMap["MAIN_MENU"]->play();
 
 		/*Erase the NewCharacter Screen and Shrink States Vector*/
 		if (!this->cameFromMainMenu)
@@ -343,8 +344,9 @@ void GameState::updateGameOverButtons()
 			i.second->stop();
 		
 		/*Play Main Menu Audio*/
+		this->gameInfo->audioMap["MAIN_MENU"]->setVolume(0.f);
+		this->gameInfo->audioMap["MAIN_MENU"]->setLoop(true);
 		this->gameInfo->audioMap["MAIN_MENU"]->setFadeIn(true);
-		this->gameInfo->audioMap["MAIN_MENU"]->play();
 
 		/*Erase the NewCharacter Screen and Shrink States Vector*/
 		if (!this->cameFromMainMenu)
@@ -581,10 +583,13 @@ void GameState::updateDoorCollisions(const float& dt)
 		}
 
 		/*Play Music*/
+		this->gameInfo->audioMap["HOUSE_A"]->setVolume(100.f);
+		this->gameInfo->audioMap["HOUSE_A"]->setLoop(false);
 		this->gameInfo->audioMap["HOUSE_A"]->setFadeOut(true);
+
+		this->gameInfo->audioMap["LEVEL_A"]->setVolume(0.f);
 		this->gameInfo->audioMap["LEVEL_A"]->setLoop(true);
 		this->gameInfo->audioMap["LEVEL_A"]->setFadeIn(true);
-		this->gameInfo->audioMap["LEVEL_A"]->play();
 	}
 
 	/*House_A*/
@@ -645,10 +650,13 @@ void GameState::updateDoorCollisions(const float& dt)
 			this->itemVector.pop_back();
 
 		/*Play Music*/
+		this->gameInfo->audioMap["LEVEL_A"]->setVolume(100.f);
+		this->gameInfo->audioMap["LEVEL_A"]->setLoop(false);
 		this->gameInfo->audioMap["LEVEL_A"]->setFadeOut(true);
+
+		this->gameInfo->audioMap["HOUSE_A"]->setVolume(0.f);
 		this->gameInfo->audioMap["HOUSE_A"]->setLoop(true);
 		this->gameInfo->audioMap["HOUSE_A"]->setFadeIn(true);
-		this->gameInfo->audioMap["HOUSE_A"]->play();
 	}	
 }
 void GameState::updateAudio()

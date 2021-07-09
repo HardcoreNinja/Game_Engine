@@ -58,11 +58,13 @@ void Audio::setVolume(float volume_level)
 {
 	if (this->sound_1_music_0)
 	{
-		this->sound.setVolume(volume_level);
+		this->volumeCounter = volume_level;
+		this->sound.setVolume(this->volumeCounter);
 	}
 	else if (!this->sound_1_music_0)
 	{
-		this->music.setVolume(volume_level);
+		this->volumeCounter = volume_level;
+		this->music.setVolume(this->volumeCounter);
 	}
 }
 void Audio::setPlayOffset(float play_offset)
@@ -130,6 +132,9 @@ void Audio::updateFadeIn()
 	{
 		if (this->sound_1_music_0)
 		{
+			if(this->sound.getStatus() == sf::SoundSource::Status::Stopped)
+				this->sound.play();
+
 			if (this->sound.getVolume() < 100.f)
 			{
 				this->volumeCounter += 0.5f;
@@ -144,6 +149,9 @@ void Audio::updateFadeIn()
 		}
 		else if (!this->sound_1_music_0)
 		{
+			if (this->music.getStatus() == sf::SoundSource::Status::Stopped)
+				this->music.play();
+
 			if (this->music.getVolume() <= 100.f)
 			{
 				this->volumeCounter += 0.5f;
@@ -165,6 +173,9 @@ void Audio::updateFadeOut()
 	{
 		if (this->sound_1_music_0)
 		{
+			if (this->sound.getStatus() == sf::SoundSource::Status::Stopped)
+				this->sound.play();
+
 			if (this->sound.getVolume() > 0.f)
 			{
 				this->volumeCounter -= 0.5f;
@@ -181,6 +192,9 @@ void Audio::updateFadeOut()
 		}
 		else if (!this->sound_1_music_0)
 		{
+			if (this->music.getStatus() == sf::SoundSource::Status::Stopped)
+				this->music.play();
+
 			if (this->music.getVolume() > 0.f)
 			{
 				this->volumeCounter -= 0.5f;
