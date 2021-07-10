@@ -20,6 +20,7 @@ private:
 	GraphicsSettings graphicsSettings;
 	std::unique_ptr<sf::RenderWindow> window;
 	sf::Event sfmlEvent;
+	sf::Image appIcon;
 
 	/*Delta Time Variables*/
 	float dt;

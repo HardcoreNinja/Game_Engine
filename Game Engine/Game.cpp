@@ -64,6 +64,11 @@ void Game::initWindow()
 	}
 	this->window->setFramerateLimit(this->graphicsSettings.frameRateLimit);
 	this->window->setVerticalSyncEnabled(this->graphicsSettings.isVSync);
+
+	if (!this->appIcon.loadFromFile("Resources/Images/App Icon/window_icon.png"))
+		throw ("ERROR::GAME::COULD_NOT_LOAD_APP_ICON");
+
+	this->window->setIcon(this->appIcon.getSize().x, this->appIcon.getSize().y, this->appIcon.getPixelsPtr());
 }
 void Game::initCursor()
 {
