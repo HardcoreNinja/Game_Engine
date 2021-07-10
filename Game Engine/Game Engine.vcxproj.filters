@@ -112,6 +112,9 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{9101a4ee-2fc9-4f3c-8468-2bb558993c79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\App Icon">
+      <UniqueIdentifier>{7e72330b-e401-40a1-ad96-42d03632c7df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Header.cpp">
@@ -257,6 +260,9 @@
     <ClInclude Include="Particle.h">
       <Filter>Source Files\Particle</Filter>
     </ClInclude>
+    <ClInclude Include="resource3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\settings_keybinds.ini">
@@ -338,5 +344,13 @@
     <Image Include="Resources\Images\Tiles\PipoyaMasterLevel.png">
       <Filter>Resource Files\Images\Tiles</Filter>
     </Image>
+    <Image Include="Resources\Images\App Icon\app_icon.ico">
+      <Filter>Resource Files\App Icon</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game Engine.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

@@ -202,6 +202,7 @@
     <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
+    <ClInclude Include="resource3.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="TileMap.h" />
@@ -229,6 +230,7 @@
     <None Include="Shaders\Player\vertex.vert" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Resources\Images\App Icon\app_icon.ico" />
     <Image Include="Resources\Images\mainmenu_background.jpg" />
     <Image Include="Resources\Images\Tiles\MasterLevelTileSheet.png" />
     <Image Include="Resources\Images\Tiles\MasterMapTileSheet.png" />
@@ -236,6 +238,9 @@
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Fonts\Dosis.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game Engine.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
