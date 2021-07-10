@@ -17,9 +17,9 @@ private:
 	std::vector<std::unique_ptr<State>> states;
 
 	/*Window Variables*/
-	GraphicsSettings graphicsSettings;
+	std::unique_ptr<GraphicsSettings> graphicsSettings;
 	std::unique_ptr<sf::RenderWindow> window;
-	sf::Event sfmlEvent;
+	std::unique_ptr<sf::Event> sfmlEvent;
 	sf::Image appIcon;
 
 	/*Delta Time Variables*/
@@ -33,18 +33,11 @@ private:
 	std::unique_ptr<Audio> audio;
 	std::map<std::string, std::unique_ptr<Audio>> audioMap;
 
-	/*Cursor*/
-	sf::Image cursorImage;
-	sf::Cursor cursor;
-	sf::Image cursorImageDown;
-	sf::Cursor cursorDown;
-
 	/*Initializers*/
 	void initVariables();
 	void initAudio();
 	void initGraphicsSettings();
 	void initWindow();
-	void initCursor();
 	void initGameInfo();
 	void initSupportedKeys();
 	void initStates();

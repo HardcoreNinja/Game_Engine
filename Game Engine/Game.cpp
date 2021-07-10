@@ -6,6 +6,9 @@ void Game::initVariables()
 {
 	this->window = NULL;
 	this->dt = 0.f;
+
+	this->graphicsSettings = std::make_unique<GraphicsSettings>();
+	this->sfmlEvent = std::make_unique<sf::Event>();
 }
 void Game::initAudio()
 {
@@ -49,54 +52,26 @@ void Game::initAudio()
 }
 void Game::initGraphicsSettings()
 {
-	this->graphicsSettings.loadFromFile();
+	this->graphicsSettings->loadFromFile();
 }
 void Game::initWindow()
 {
-	auto style = graphicsSettings.isFullscreen ? sf::Style::Fullscreen : sf::Style::Close | sf::Style::Titlebar;
+	auto style = graphicsSettings->isFullscreen ? sf::Style::Fullscreen : sf::Style::Close | sf::Style::Titlebar;
 	{
 		this->window = std::make_unique<sf::RenderWindow>(
-			this->graphicsSettings.resolution, 
-			this->graphicsSettings.title,
+			this->graphicsSettings->resolution, 
+			this->graphicsSettings->title,
 			style,
-			this->graphicsSettings.contextSettings
+			this->graphicsSettings->contextSettings
 			);
 	}
-	this->window->setFramerateLimit(this->graphicsSettings.frameRateLimit);
-	this->window->setVerticalSyncEnabled(this->graphicsSettings.isVSync);
+	this->window->setFramerateLimit(this->graphicsSettings->frameRateLimit);
+	this->window->setVerticalSyncEnabled(this->graphicsSettings->isVSync);
 
 	if (!this->appIcon.loadFromFile("Resources/Images/App Icon/window_icon.png"))
 		throw ("ERROR::GAME::COULD_NOT_LOAD_APP_ICON");
 
 	this->window->setIcon(this->appIcon.getSize().x, this->appIcon.getSize().y, this->appIcon.getPixelsPtr());
-}
-void Game::initCursor()
-{
-	/*Cursor*/
-	if (!this->cursorImage.loadFromFile("Resources/Images/Cursor/cursor.gif"))
-		throw ("ERROR::GAME::COULD_NOT_LOAD_CURSOR_IMAGE");
-	if (
-		!this->cursor.loadFromPixels(
-			this->cursorImage.getPixelsPtr(),
-			sf::Vector2u(this->cursorImage.getSize().x, this->cursorImage.getSize().y),
-			sf::Vector2u(0, 0)
-		)
-		)
-		throw ("ERROR::GAME::COULD_NOT_LOAD_CURSOR_PIXELS");
-
-	/*Cursor Down*/
-	if (!this->cursorImageDown.loadFromFile("Resources/Images/Cursor/cursor_down.gif"))
-		throw ("ERROR::GAME::COULD_NOT_LOAD_CURSOR_IMAGE");
-	if (
-		!this->cursorDown.loadFromPixels(
-			this->cursorImageDown.getPixelsPtr(),
-			sf::Vector2u(this->cursorImageDown.getSize().x, this->cursorImageDown.getSize().y),
-			sf::Vector2u(0, 0)
-		)
-		)
-		throw ("ERROR::GAME::COULD_NOT_LOAD_CURSOR_PIXELS");
-
-	this->window->setMouseCursor(this->cursor);
 }
 void Game::initSupportedKeys()
 {
@@ -124,14 +99,10 @@ void Game::initSupportedKeys()
 void Game::initGameInfo()
 {
 	this->gameInfo.states = &this->states;
-	this->gameInfo.graphicsSettings = &this->graphicsSettings;
+	this->gameInfo.graphicsSettings = this->graphicsSettings.get();
 	this->gameInfo.window = this->window.get();
-	this->gameInfo.sfmlEvent = &this->sfmlEvent;
+	this->gameInfo.sfmlEvent = this->sfmlEvent.get();
 	this->gameInfo.supportedKeys = &this->supportedKeys;
-	this->gameInfo.cursorImage = &this->cursorImage;
-	this->gameInfo.cursor = &this->cursor;
-	this->gameInfo.cursorImageDown = &this->cursorImageDown;
-	this->gameInfo.cursorDown = &this->cursorDown;
 }
 void Game::initStates()
 {
@@ -146,7 +117,6 @@ Game::Game()
 	this->initAudio();
 	this->initGraphicsSettings();
 	this->initWindow();
-	this->initCursor();
 	this->initSupportedKeys();
 	this->initGameInfo();
 	this->initStates();

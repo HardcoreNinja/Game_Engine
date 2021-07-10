@@ -11,6 +11,34 @@ void State::initVariables(GameInfo* game_info)
 	this->tileSize = 32.f;
 	this->isPaused = false;
 }
+void State::initCursor()
+{
+	/*Cursor*/
+	if (!this->gameInfo->cursorImage.loadFromFile("Resources/Images/Cursor/cursor.gif"))
+		throw ("ERROR::GAME::COULD_NOT_LOAD_CURSOR_IMAGE");
+	if (
+		!this->gameInfo->cursor.loadFromPixels(
+			this->gameInfo->cursorImage.getPixelsPtr(),
+			sf::Vector2u(this->gameInfo->cursorImage.getSize().x, this->gameInfo->cursorImage.getSize().y),
+			sf::Vector2u(0, 0)
+		)
+		)
+		throw ("ERROR::GAME::COULD_NOT_LOAD_CURSOR_PIXELS");
+
+	/*Cursor Down*/
+	if (!this->gameInfo->cursorImageDown.loadFromFile("Resources/Images/Cursor/cursor_down.gif"))
+		throw ("ERROR::GAME::COULD_NOT_LOAD_CURSOR_IMAGE");
+	if (
+		!this->gameInfo->cursorDown.loadFromPixels(
+			this->gameInfo->cursorImageDown.getPixelsPtr(),
+			sf::Vector2u(this->gameInfo->cursorImageDown.getSize().x, this->gameInfo->cursorImageDown.getSize().y),
+			sf::Vector2u(0, 0)
+		)
+		)
+		throw ("ERROR::GAME::COULD_NOT_LOAD_CURSOR_PIXELS");
+
+	this->gameInfo->window->setMouseCursor(this->gameInfo->cursor);
+}
 void State::initShader()
 {
 	if (!this->shader.loadFromFile("Shaders/Player/vertex.vert", "Shaders/Player/fragment.frag"))
@@ -29,6 +57,7 @@ void State::initView()
 State::State(GameInfo* game_info)
 {
 	this->initVariables(game_info);
+	this->initCursor();
 	this->initShader();
 	this->initView();
 }
@@ -78,13 +107,13 @@ void State::updateSFMLEvents()
 			std::cout << "Mouse Pressed!\n";
 			this->mouseReleased = false;
 
-			this->gameInfo->window->setMouseCursor(*this->gameInfo->cursorDown);
+			this->gameInfo->window->setMouseCursor(this->gameInfo->cursorDown);
 		}
 		else if (this->gameInfo->sfmlEvent->type == sf::Event::MouseButtonReleased)
 		{
 			std::cout << "Mouse Released!\n";
 			this->mouseReleased = true;
-			this->gameInfo->window->setMouseCursor(*this->gameInfo->cursor);
+			this->gameInfo->window->setMouseCursor(this->gameInfo->cursor);
 		}
 		else if (this->gameInfo->sfmlEvent->type == sf::Event::Resized)
 		{

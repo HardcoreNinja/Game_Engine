@@ -48,10 +48,10 @@ struct GameInfo
 	std::map<std::string, std::unique_ptr<Audio>>& audioMap;
 
 	/*Cursor*/
-	sf::Cursor* cursor;
-	sf::Cursor* cursorDown;
-	sf::Image* cursorImage;
-	sf::Image* cursorImageDown;
+	sf::Cursor cursor;
+	sf::Cursor cursorDown;
+	sf::Image cursorImage;
+	sf::Image cursorImageDown;
 
 };
 class State
@@ -118,7 +118,7 @@ protected:
 
 	/*Initializers*/
 	void initVariables(GameInfo* game_info);
-	
+	void initCursor();
 	void initShader();
 	void initView();
 public:
